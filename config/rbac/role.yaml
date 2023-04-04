@@ -37,4 +37,21 @@ rules:
       - patch
       - update
       - watch
+  ##
+  ## Rules for smartabyar-smartvillage.computate.org/v1, Kind: TrafficFlowObserved
+  ##
+  - apiGroups:
+      - smartabyar-smartvillage.computate.org
+    resources:
+      - trafficflowobserveds
+      - trafficflowobserveds/status
+      - trafficflowobserveds/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
 #+kubebuilder:scaffold:rules
