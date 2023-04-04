@@ -1,0 +1,130 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: trafficflowobserveds.smartvillage.computate.org
+spec:
+  group: smartvillage.computate.org
+  names:
+    kind: TrafficFlowObserved
+    listKind: TrafficFlowObservedList
+    plural: trafficflowobserveds
+    singular: trafficflowobserved
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: TrafficFlowObserved is the Schema for the trafficflowobserveds API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: Spec defines the desired state of TrafficFlowObserved
+            type: object
+            properties:
+              id:
+                type: string
+                description: |
+                  A unique ID for this TrafficFlowObserved device. 
+                  It can be as simple as the number 1. 
+              device:
+                type: object
+                properties:
+                  transport:
+                    type: string
+                    default: MQTT
+                    enum:
+                      - MQTT
+                      - AMQP
+              serviceGroup:
+                type: object
+                properties:
+                  cbHost:
+                    type: string
+                    default: http://orion-ld-fiware.apps-crc.testing
+                  resource:
+                    type: string
+                    default: /iot/json
+              sumo:
+                type: object
+                properties:
+                  runTime:
+                    type: number
+                    default: 43200
+                  demandScale:
+                    type: array
+                    items:
+                      type: number
+                  lam:
+                    type: array
+                    items:
+                      type: number
+                  fixSeed:
+                    type: boolean
+                    default: false
+                  vTypes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          default: v1
+                          description: The name of the vehicle type
+                        accel:
+                          type: number
+                          default: 2.6
+                          description: The acceleration ability of vehicles of this type (in m/s^2)
+                        decel:
+                          type: number
+                          default: 4.5
+                          description: The deceleration ability of vehicles of this type (in m/s^2)
+                        sigma:
+                          type: number
+                          default: 0.5
+                          description: The driver imperfection (0 denotes perfect driving)
+                        length:
+                          type: number
+                          default: 5
+                          description: The vehicle's netto-length (length) (in m)
+                        minGap:
+                          type: number
+                          default: 1
+                          description: Empty space after leader [m]
+                        maxSpeed:
+                          type: number
+                          default: 55
+                          description: The vehicle's (technical) maximum velocity (in m/s)
+                  routes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          default: r1
+                          description: The name of the route
+                        edges:
+                          type: string
+                          default: "96027913#0 96027913#2 30186293 311389510#1"
+                          description: The edges the vehicle shall drive along, given as their ids, separated using spaces
+          status:
+            description: Status defines the observed state of TrafficFlowObserved
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

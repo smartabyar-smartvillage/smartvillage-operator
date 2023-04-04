@@ -6,13 +6,13 @@ metadata:
     app.kubernetes.io/name: clusterrole
     app.kubernetes.io/instance: trafficflowobserved-viewer-role
     app.kubernetes.io/component: rbac
-    app.kubernetes.io/created-by: smartabyar-smartvillage-operator
-    app.kubernetes.io/part-of: smartabyar-smartvillage-operator
+    app.kubernetes.io/created-by: smartvillage-operator
+    app.kubernetes.io/part-of: smartvillage-operator
     app.kubernetes.io/managed-by: kustomize
   name: trafficflowobserved-viewer-role
 rules:
 - apiGroups:
-  - smartabyar-smartvillage.computate.org
+  - smartvillage.computate.org
   resources:
   - trafficflowobserveds
   verbs:
@@ -20,7 +20,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - smartabyar-smartvillage.computate.org
+  - smartvillage.computate.org
   resources:
   - trafficflowobserveds/status
   verbs:

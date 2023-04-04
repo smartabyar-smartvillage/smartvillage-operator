@@ -38,10 +38,10 @@ rules:
       - update
       - watch
   ##
-  ## Rules for smartabyar-smartvillage.computate.org/v1, Kind: TrafficFlowObserved
+  ## Rules for smartvillage.computate.org/v1, Kind: TrafficFlowObserved
   ##
   - apiGroups:
-      - smartabyar-smartvillage.computate.org
+      - smartvillage.computate.org
     resources:
       - trafficflowobserveds
       - trafficflowobserveds/status

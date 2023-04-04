@@ -1,0 +1,90 @@
+---
+device_id: {{ DEVICE_ID }}
+entity_name: {{ ENTITY_NAME }}
+entity_type: {{ENTITY_TYPE }}
+transport: {{ device.transport }}
+attributes:
+  - object_id: address
+    name: address
+    type: object
+  - object_id: alternateName
+    name: alternateName
+    type: string
+  - object_id: areaServed
+    name: areaServed
+    type: string
+  - object_id: averageGapDistance
+    name: averageGapDistance
+    type: string
+  - object_id: averageHeadwayTime
+    name: averageHeadwayTime
+    type: string
+  - object_id: averageVehicleLength
+    name: averageVehicleLength
+    type: string
+  - object_id: averageVehicleSpeed
+    name: averageVehicleSpeed
+    type: string
+  - object_id: congested
+    name: congested
+    type: boolean
+  - object_id: dataProvider
+    name: dataProvider
+    type: string
+  - object_id: dateCreated
+    name: dateCreated
+    type: string
+  - object_id: dateModified
+    name: dateModified
+    type: string
+  - object_id: dateObserved
+    name: dateObserved
+    type: string
+  - object_id: dateObservedFrom
+    name: dateObservedFrom
+    type: string
+  - object_id: dateObservedTo
+    name: dateObservedTo
+    type: string
+  - object_id: description
+    name: description
+    type: string
+  - object_id: intensity
+    name: intensity
+    type: string
+  - object_id: laneDirection
+    name: laneDirection
+    type: string
+  - object_id: laneId
+    name: laneId
+    type: string
+  - object_id: name
+    name: name
+    type: string
+  - object_id: occupancy
+    name: occupancy
+    type: string
+  - object_id: owner
+    name: owner
+    type: object
+  - object_id: refRoadSegment
+    name: refRoadSegment
+    type: string
+  - object_id: reversedLane
+    name: reversedLane
+    type: boolean
+  - object_id: seeAlso
+    name: seeAlso
+    type: object
+  - object_id: source
+    name: source
+    type: string
+  - object_id: type
+    name: type
+    type: string
+  - object_id: vehicleSubType
+    name: vehicleSubType
+    type: string
+  - object_id: vehicleType
+    name: vehicleType
+    type: string

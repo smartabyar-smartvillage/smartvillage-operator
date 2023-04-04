@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/name: namespace
     app.kubernetes.io/instance: system
     app.kubernetes.io/component: manager
-    app.kubernetes.io/created-by: smartabyar-smartvillage-operator
-    app.kubernetes.io/part-of: smartabyar-smartvillage-operator
+    app.kubernetes.io/created-by: smartvillage-operator
+    app.kubernetes.io/part-of: smartvillage-operator
     app.kubernetes.io/managed-by: kustomize
   name: system
 ---
@@ -21,8 +21,8 @@ metadata:
     app.kubernetes.io/name: deployment
     app.kubernetes.io/instance: controller-manager
     app.kubernetes.io/component: manager
-    app.kubernetes.io/created-by: smartabyar-smartvillage-operator
-    app.kubernetes.io/part-of: smartabyar-smartvillage-operator
+    app.kubernetes.io/created-by: smartvillage-operator
+    app.kubernetes.io/part-of: smartvillage-operator
     app.kubernetes.io/managed-by: kustomize
 spec:
   selector:
@@ -68,7 +68,7 @@ spec:
       containers:
       - args:
         - --leader-elect
-        - --leader-election-id=smartabyar-smartvillage-operator
+        - --leader-election-id=smartvillage-operator
         image: controller:latest
         name: manager
         env:

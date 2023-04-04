@@ -1,2 +1,4 @@
 ---
-# defaults file for TrafficFlowObserved
+ENTITY_TYPE: TrafficFlowObserved
+DEVICE_ID: "{{ ENTITY_TYPE }}_{{ id }}"
+ENTITY_NAME: "urn:ngsi-ld:{{ ENTITY_TYPE }}:{{ DEVICE_ID }}"

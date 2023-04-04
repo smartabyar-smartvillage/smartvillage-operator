@@ -1,2 +1,51 @@
 ---
 # tasks file for TrafficFlowObserved
+
+- name: "Provision the {{ DEVICE_ID }} device"
+  connection: local
+  uri:
+    timeout: 90
+    url: "http://iotagent-json-north-fiware.apps-crc.testing/iot/devices"
+    method: POST
+    headers:
+      Content-Type: "application/json"
+      Fiware-Service: ansible_test
+      Fiware-ServicePath: /
+      Cache-Control: no-cache
+    body_format: json
+    body:
+      devices:
+        - "{{ lookup('template', 'device.yml') }}"
+    return_content: true
+    status_code: 
+      - 200
+      - 201
+  register: CREATE_DEVICE
+  ignore_errors: true
+- debug:
+    var: CREATE_DEVICE
+- name: "Update the ansible-test1 device"
+  connection: local
+  uri:
+    timeout: 90
+    url: "http://iotagent-json-north-fiware.apps-crc.testing/iot/devices/{{ DEVICE_ID | urlencode }}"
+    method: PUT
+    headers:
+      Content-Type: "application/json"
+      Fiware-Service: ansible_test
+      Fiware-ServicePath: /environment
+      Cache-Control: no-cache
+    body_format: json
+    body: "{{ lookup('template', 'device.yml') | combine({ 'device_id': omit }) | combine({ 'entity_name': omit }) | combine({ 'entity_type': omit }) }}"
+    return_content: true
+    status_code: 
+      - 204
+  register: UPDATE_DEVICE
+  ignore_errors: true
+  when: CREATE_DEVICE.failed
+- debug:
+    msg: "{{ UPDATE_DEVICE }}"
+  when: CREATE_DEVICE.failed
+- fail:
+    msg: "{{ UPDATE_DEVICE }}"
+  when: CREATE_DEVICE.failed and UPDATE_DEVICE.failed

@@ -1,5 +1,5 @@
 ---
-- name: Create the smartabyar-smartvillage.computate.org/v1.TrafficFlowObserved
+- name: Create the smartvillage.computate.org/v1.TrafficFlowObserved
   k8s:
     state: present
     namespace: '{{ namespace }}'
@@ -10,7 +10,7 @@
       type: Successful
       status: "True"
   vars:
-    cr_file: 'smartabyar-smartvillage_v1_trafficflowobserved.yaml'
+    cr_file: 'smartvillage_v1_trafficflowobserved.yaml'
 
 - name: Add assertions here
   assert:

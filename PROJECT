@@ -4,13 +4,13 @@ layout:
 plugins:
   manifests.sdk.operatorframework.io/v2: {}
   scorecard.sdk.operatorframework.io/v2: {}
-projectName: smartabyar-smartvillage-operator
+projectName: smartvillage-operator
 resources:
 - api:
     crdVersion: v1
     namespaced: true
   domain: computate.org
-  group: smartabyar-smartvillage
+  group: smartvillage
   kind: TrafficFlowObserved
   version: v1
 version: "3"

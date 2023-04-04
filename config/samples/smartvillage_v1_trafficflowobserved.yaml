@@ -1,12 +1,12 @@
-apiVersion: smartabyar-smartvillage.computate.org/v1
+apiVersion: smartvillage.computate.org/v1
 kind: TrafficFlowObserved
 metadata:
   labels:
     app.kubernetes.io/name: trafficflowobserved
     app.kubernetes.io/instance: trafficflowobserved-sample
-    app.kubernetes.io/part-of: smartabyar-smartvillage-operator
+    app.kubernetes.io/part-of: smartvillage-operator
     app.kubernetes.io/managed-by: kustomize
-    app.kubernetes.io/created-by: smartabyar-smartvillage-operator
+    app.kubernetes.io/created-by: smartvillage-operator
   name: trafficflowobserved-sample
 spec:
   # TODO(user): Add fields here
