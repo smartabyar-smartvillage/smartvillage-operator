@@ -33,13 +33,52 @@ spec:
             description: Spec defines the desired state of TrafficFlowObserved
             type: object
             properties:
-              id:
-                type: string
-                description: |
-                  A unique ID for this TrafficFlowObserved device. 
-                  It can be as simple as the number 1. 
+              fiware:
+                type: object
+                required:
+                  - service
+                properties:
+                  service:
+                    type: string
+                    default: SmartTrafficLights
+                    description: |
+                      Describes the provided service for these devices. 
+                      Use all lowercase letters. 
+                      No characters with accents. 
+                  service_path:
+                    type: string
+                    description: |
+                      Fiware-ServicePath is an optional header. 
+                      It is assumed that all the entities created without Fiware-ServicePath 
+                      (or that don't include service path information in the database) 
+                      belongs to a root scope "/" implicitely. 
+                      Scope must start with "/" (only 'absolute' scopes are allowed). 
+                      10 maximum scope levels in a path. 
+                      50 maximum characters in each level, only alphanum and underscore allowed. 
+              service_group:
+                type: object
+                required:
+                  - cb_host
+                  - apikey
+                properties:
+                  cb_host:
+                    type: string
+                    default: http://orion-ld-fiware.apps-crc.testing
+                  apikey:
+                    type: string
+                    default: VeberodIntersection1
+                    description: |
+                      Where apiKey is an alphanumerical string used to group devices logically 
+                      (and for security matters) and deviceId is an ID that uniquely identifies the device. 
+                      The API Key can be configured globally for an instance of the IoT Agent, 
+                      or specifically for a given group of devices. 
+                  resource:
+                    type: string
+                    default: /iot/json
               device:
                 type: object
+                required:
+                  - transport
                 properties:
                   transport:
                     type: string
@@ -47,22 +86,30 @@ spec:
                     enum:
                       - MQTT
                       - AMQP
-              serviceGroup:
-                type: object
-                properties:
-                  cbHost:
+                  id:
                     type: string
-                    default: http://orion-ld-fiware.apps-crc.testing
-                  resource:
-                    type: string
-                    default: /iot/json
+                    description: |
+                      A unique ID for this TrafficFlowObserved device. 
+                      It can be as simple as the number 1. 
+                      No characters with accents. 
+              iot_host:
+                type: string
+                default: http://iotagent-json-north-fiware.apps-crc.testing
               sumo:
                 type: object
+                required:
+                  - run_time
+                  - demand_scale
+                  - lam
                 properties:
-                  runTime:
+                  run_time:
                     type: number
                     default: 43200
-                  demandScale:
+                  initial_parameters:
+                    type: array
+                    items:
+                      type: number
+                  demand_scale:
                     type: array
                     items:
                       type: number
@@ -70,10 +117,10 @@ spec:
                     type: array
                     items:
                       type: number
-                  fixSeed:
+                  fix_seed:
                     type: boolean
                     default: false
-                  vTypes:
+                  v_types:
                     type: array
                     items:
                       type: object
@@ -98,11 +145,11 @@ spec:
                           type: number
                           default: 5
                           description: The vehicle's netto-length (length) (in m)
-                        minGap:
+                        min_gap:
                           type: number
                           default: 1
                           description: Empty space after leader [m]
-                        maxSpeed:
+                        max_speed:
                           type: number
                           default: 55
                           description: The vehicle's (technical) maximum velocity (in m/s)

@@ -1,0 +1,48 @@
+---
+- name: "Provision the {{ service_group.apikey }} service group"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ iot_host }}/iot/services"
+    method: POST
+    headers:
+      Content-Type: "application/json"
+      Fiware-Service: "{{ fiware.service | lower }}"
+      Fiware-ServicePath: "{{ fiware.service_path }}"
+    body_format: json
+    body:
+      services:
+        - "{{ SERVICE_GROUP_BODY }}"
+    return_content: true
+    status_code: 
+      - 200
+      - 201
+  register: CREATE_SERVICE
+  ignore_errors: true
+- debug:
+    var: CREATE_SERVICE
+- name: "Update the {{ service_group.apikey }} service group"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ iot_host }}/iot/services?apikey={{ service_group.apikey | urlencode }}&resource={{ service_group.resource | urlencode }}"
+    method: PUT
+    headers:
+      Content-Type: "application/json"
+      Fiware-Service: "{{ fiware.service }}"
+      Fiware-ServicePath: "{{ fiware.service_path }}"
+      Cache-Control: no-cache
+    body_format: json
+    body: "{{ SERVICE_GROUP_BODY | combine({ 'apikey': omit }) | combine({ 'resource': omit }) }}"
+    return_content: true
+    status_code: 
+      - 204
+  register: UPDATE_SERVICE
+  ignore_errors: true
+  when: CREATE_SERVICE.failed
+- debug:
+    msg: "{{ UPDATE_SERVICE }}"
+  when: CREATE_SERVICE.failed
+- fail:
+    msg: "{{ UPDATE_SERVICE }}"
+  when: CREATE_SERVICE.failed and UPDATE_SERVICE.failed

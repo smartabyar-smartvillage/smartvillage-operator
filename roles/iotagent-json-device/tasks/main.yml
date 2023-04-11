@@ -1,0 +1,49 @@
+---
+- name: "Provision the {{ device.id }} device"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ iot_host }}/iot/devices"
+    method: POST
+    headers:
+      Content-Type: "application/json"
+      Fiware-Service: "{{ fiware.service | lower }}"
+      Fiware-ServicePath: "{{ fiware.service_path }}"
+      Cache-Control: no-cache
+    body_format: json
+    body:
+      devices:
+        - "{{ lookup('template', 'device.yml') | from_yaml }}"
+    return_content: true
+    status_code: 
+      - 200
+      - 201
+  register: CREATE_DEVICE
+  ignore_errors: true
+- debug:
+    var: CREATE_DEVICE
+- name: "Update the {{ device.id }} device"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ iot_host }}/iot/devices/{{ device.id | urlencode }}"
+    method: PUT
+    headers:
+      Content-Type: "application/json"
+      Fiware-Service: "{{ fiware.service | lower }}"
+      Fiware-ServicePath: "{{ fiware.service_path }}"
+      Cache-Control: no-cache
+    body_format: json
+    body: "{{ lookup('template', 'device.yml') | from_yaml | combine({ 'device_id': omit }) | combine({ 'entity_name': omit, 'entity_type': omit, 'transport': omit }) }}"
+    return_content: true
+    status_code: 
+      - 204
+  register: UPDATE_DEVICE
+  ignore_errors: true
+  when: CREATE_DEVICE.failed
+- debug:
+    msg: "{{ UPDATE_DEVICE }}"
+  when: CREATE_DEVICE.failed
+- fail:
+    msg: "{{ UPDATE_DEVICE }}"
+  when: CREATE_DEVICE.failed and UPDATE_DEVICE.failed

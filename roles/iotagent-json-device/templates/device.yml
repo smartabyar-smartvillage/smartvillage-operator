@@ -1,90 +1,87 @@
 ---
-device_id: {{ DEVICE_ID }}
-entity_name: {{ ENTITY_NAME }}
-entity_type: {{ENTITY_TYPE }}
-transport: {{ device.transport }}
+device_id: "{{ device.id }}"
+entity_name: "{{ ENTITY_NAME }}"
+entity_type: "{{ENTITY_TYPE }}"
+transport: "{{ device.transport }}"
 attributes:
   - object_id: address
     name: address
-    type: object
+    type: Object
   - object_id: alternateName
     name: alternateName
-    type: string
+    type: Text
   - object_id: areaServed
     name: areaServed
-    type: string
+    type: Text
   - object_id: averageGapDistance
     name: averageGapDistance
-    type: string
+    type: Text
   - object_id: averageHeadwayTime
     name: averageHeadwayTime
-    type: string
+    type: Text
   - object_id: averageVehicleLength
     name: averageVehicleLength
-    type: string
+    type: Text
   - object_id: averageVehicleSpeed
     name: averageVehicleSpeed
-    type: string
+    type: Text
   - object_id: congested
     name: congested
-    type: boolean
+    type: Boolean
   - object_id: dataProvider
     name: dataProvider
-    type: string
+    type: Text
   - object_id: dateCreated
     name: dateCreated
-    type: string
+    type: Text
   - object_id: dateModified
     name: dateModified
-    type: string
+    type: Text
   - object_id: dateObserved
     name: dateObserved
-    type: string
+    type: Text
   - object_id: dateObservedFrom
     name: dateObservedFrom
-    type: string
+    type: Text
   - object_id: dateObservedTo
     name: dateObservedTo
-    type: string
+    type: Text
   - object_id: description
     name: description
-    type: string
+    type: Text
   - object_id: intensity
     name: intensity
-    type: string
+    type: Text
   - object_id: laneDirection
     name: laneDirection
-    type: string
+    type: Text
   - object_id: laneId
     name: laneId
-    type: string
+    type: Text
   - object_id: name
     name: name
-    type: string
+    type: Text
   - object_id: occupancy
     name: occupancy
-    type: string
+    type: Text
   - object_id: owner
     name: owner
-    type: object
+    type: Object
   - object_id: refRoadSegment
     name: refRoadSegment
-    type: string
+    type: Text
   - object_id: reversedLane
     name: reversedLane
-    type: boolean
+    type: Boolean
   - object_id: seeAlso
     name: seeAlso
-    type: object
+    type: Object
   - object_id: source
     name: source
-    type: string
-  - object_id: type
-    name: type
-    type: string
+    type: Text
   - object_id: vehicleSubType
     name: vehicleSubType
-    type: string
+    type: Text
   - object_id: vehicleType
     name: vehicleType
-    type: string
+    type: Text

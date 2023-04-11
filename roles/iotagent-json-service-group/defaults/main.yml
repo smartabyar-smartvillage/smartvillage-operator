@@ -1,0 +1,2 @@
+---
+SERVICE_GROUP_BODY: "{{ lookup('template', 'serviceGroup.yml') | from_yaml }}"

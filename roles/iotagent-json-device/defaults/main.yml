@@ -1,0 +1,2 @@
+---
+ENTITY_NAME: "urn:ngsi-ld:{{ ENTITY_TYPE }}:{{ device.id }}"

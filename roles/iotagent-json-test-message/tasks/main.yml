@@ -1,0 +1,13 @@
+---
+
+- debug:
+    msg: "{{ lookup('template', 'TrafficFlowObserved1.json') }}"
+- name: Publish message on MQTT topic to {{ DEVICE1_BODY.device_id }} device
+  community.general.mqtt:
+    server: fiware-broker-mqtt-0-svc-rte-fiware.apps-crc.testing
+    port: 80
+    topic: "/{{ SERVICE1_BODY.apikey }}/{{ DEVICE1_BODY.device_id }}/attrs"
+#    payload: "{{ lookup('template', 'TrafficFlowObserved1.json') | from_json | combine({ 'id': omit }) | combine({ 'type': omit }) | to_json }}"
+    payload: '{"intensity":222}'
+    qos: 0
+

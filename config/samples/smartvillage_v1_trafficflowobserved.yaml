@@ -7,6 +7,33 @@ metadata:
     app.kubernetes.io/part-of: smartvillage-operator
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/created-by: smartvillage-operator
-  name: trafficflowobserved-sample
+  name: 'sweden-veberod-1-sjobovagen-se'
 spec:
-  # TODO(user): Add fields here
+  iot_host: http://iotagent-json-north-fiware.apps-crc.testing
+  fiware:
+    service: smarttrafficlights
+    service_path: /Sweden/Veberod/CityCenter
+  service_group:
+    cb_host: 'http://orion-ld-fiware.apps-crc.testing'
+    resource: /iot/json
+    apikey: VeberodIntersection1
+  device:
+    transport: MQTT
+    id: 'Sjobovagen-SE'
+  sumo:
+    initial_parameters: [10, 20, 30, 50, 10, 10, 8, 8, 5, 5]
+    demand_scale: [1.4, 1.4]
+    fix_seed: false
+    lam: [0.11, 0.125, 0.01, 0.01]
+    routes:
+      - edges: '96027913#0 96027913#2 30186293 311389510#1'
+        id: r13
+    run_time: 0
+    v_types:
+      - accel: 2.6
+        decel: 4.5
+        id: v12
+        length: 5
+        max_speed: 55
+        min_gap: 1
+        sigma: 0.5
