@@ -3,7 +3,7 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ iot_host }}/iot/devices"
+    url: "{{ iot_agent.iot_host }}/iot/devices"
     method: POST
     headers:
       Content-Type: "application/json"
@@ -26,7 +26,7 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ iot_host }}/iot/devices/{{ device.id | urlencode }}"
+    url: "{{ iot_agent.iot_host }}/iot/devices/{{ device.id | urlencode }}"
     method: PUT
     headers:
       Content-Type: "application/json"

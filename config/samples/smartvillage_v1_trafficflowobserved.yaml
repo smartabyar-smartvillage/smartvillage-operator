@@ -20,11 +20,20 @@ spec:
   device:
     transport: MQTT
     id: 'Sjobovagen-SE'
+  smartabyar_smartvillage:
+    enabled: true
+    auth_secret_name: keycloak-client-secret-smartvillage
+    auth_token_url: https://keycloak-sso.apps-crc.testing/realms/SMARTVILLAGE/protocol/openid-connect/token
+    site_base_url: https://smartvillage.apps-crc.testing
+    smart_model_api: /api/traffic-flow-observed
   sumo:
-    initial_parameters: [10, 20, 30, 50, 10, 10, 8, 8, 5, 5]
-    demand_scale: [1.4, 1.4]
+    enabled: true
     fix_seed: false
-    lam: [0.11, 0.125, 0.01, 0.01]
+    avg_vehicle_per_min: 10.00
+    demand_scaling_factor: 1.00
+    min_green_time_sec: 20.00
+    max_green_time_sec: 30.00
+    queue_threshold: 8.00
     routes:
       - edges: '96027913#0 96027913#2 30186293 311389510#1'
         id: r13

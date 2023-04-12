@@ -54,4 +54,21 @@ rules:
       - patch
       - update
       - watch
+  ##
+  ## Rules for smartvillage.computate.org/v1, Kind: SmartTrafficLight
+  ##
+  - apiGroups:
+      - smartvillage.computate.org
+    resources:
+      - smarttrafficlights
+      - smarttrafficlights/status
+      - smarttrafficlights/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
 #+kubebuilder:scaffold:rules

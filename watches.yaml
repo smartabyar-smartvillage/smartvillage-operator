@@ -4,4 +4,8 @@
   group: smartvillage.computate.org
   kind: TrafficFlowObserved
   role: trafficflowobserved
+- version: v1
+  group: smartvillage.computate.org
+  kind: SmartTrafficLight
+  role: smarttrafficlight
 #+kubebuilder:scaffold:watch

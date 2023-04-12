@@ -13,4 +13,11 @@ resources:
   group: smartvillage
   kind: TrafficFlowObserved
   version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  domain: computate.org
+  group: smartvillage
+  kind: SmartTrafficLight
+  version: v1
 version: "3"

@@ -35,8 +35,6 @@ spec:
             properties:
               fiware:
                 type: object
-                required:
-                  - service
                 properties:
                   service:
                     type: string
@@ -57,9 +55,6 @@ spec:
                       50 maximum characters in each level, only alphanum and underscore allowed. 
               service_group:
                 type: object
-                required:
-                  - cb_host
-                  - apikey
                 properties:
                   cb_host:
                     type: string
@@ -77,8 +72,6 @@ spec:
                     default: /iot/json
               device:
                 type: object
-                required:
-                  - transport
                 properties:
                   transport:
                     type: string
@@ -92,31 +85,48 @@ spec:
                       A unique ID for this TrafficFlowObserved device. 
                       It can be as simple as the number 1. 
                       No characters with accents. 
-              iot_host:
-                type: string
-                default: http://iotagent-json-north-fiware.apps-crc.testing
+              iot_agent:
+                type: object
+                properties:
+                  iot_host:
+                    type: string
+                    default: http://iotagent-json-north-fiware.apps-crc.testing
+              smartabyar_smartvillage:
+                type: object
+                properties:
+                  enabled:
+                    type: boolean
+                    default: false
+                  auth_secret_name:
+                    type: string
+                    default: keycloak-client-secret-smartcity
+                  auth_token_url:
+                    type: string
+                    default: https://keycloak-sso.apps-crc.testing/realms/SMARTVILLAGE/protocol/openid-connect/token
               sumo:
                 type: object
-                required:
-                  - run_time
-                  - demand_scale
-                  - lam
                 properties:
+                  enabled:
+                    type: boolean
+                    default: false
+                  avg_vehicle_per_min:
+                    default: 10.00
+                    type: number
+                  demand_scaling_factor:
+                    default: 1.00
+                    type: number
+                  min_green_time_sec:
+                    default: 20.00
+                    type: number
+                  max_green_time_sec:
+                    default: 30.00
+                    type: number
+                  queue_threshold:
+                    default: 8.00
+                    type: number
                   run_time:
                     type: number
                     default: 43200
-                  initial_parameters:
-                    type: array
-                    items:
-                      type: number
-                  demand_scale:
-                    type: array
-                    items:
-                      type: number
-                  lam:
-                    type: array
-                    items:
-                      type: number
                   fix_seed:
                     type: boolean
                     default: false

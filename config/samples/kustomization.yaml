@@ -1,4 +1,5 @@
 ## Append samples you want in your CSV to this file as resources ##
 resources:
 - smartvillage_v1_trafficflowobserved.yaml
+- smartvillage_v1_smarttrafficlight.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples

@@ -1,10 +1,13 @@
 ---
-- name: Setup iotagent-json
+- name: Run smartabyar-smartvillage-import
   hosts: localhost
   connection: local
   roles:
-    - iotagent-json-service-group
+    - smartabyar-smartvillage-import
   vars:
+    ansible_operator_meta:
+      name: sweden-veberod-1-sjobovagen-se
+      namespace: smart-village-view
     ENTITY_TYPE: TrafficFlowObserved
     iot_agent:
       iot_host: http://iotagent-json-north-fiware.apps-crc.testing
@@ -18,7 +21,15 @@
     device:
       transport: MQTT
       id: 'Sjobovagen-SE'
+    ENTITY_NAME: "urn:ngsi-ld:{{ ENTITY_TYPE }}:{{ device.id }}"
+    smartabyar_smartvillage:
+      enabled: true
+      auth_secret_name: keycloak-client-secret-smartvillage
+      auth_token_url: https://keycloak-sso.apps-crc.testing/realms/SMARTVILLAGE/protocol/openid-connect/token
+      site_base_url: https://smartvillage.apps-crc.testing
+      import_api_uri: /api/traffic-flow-observed-import
     sumo:
+      enabled: true
       initial_parameters: [10, 20, 30, 50, 10, 10, 8, 8, 5, 5]
       demand_scale: [1.4, 1.4]
       fix_seed: false

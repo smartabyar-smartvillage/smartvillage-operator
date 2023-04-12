@@ -1,0 +1,2 @@
+list:
+  {{ [ CONTEXT_BROKER_ENTITY.json ] | to_yaml }}

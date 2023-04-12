@@ -1,0 +1,56 @@
+---
+- name: Get auth secrets
+  set_fact:
+    CLIENT_ID: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=smartabyar_smartvillage.auth_secret_name, namespace=ansible_operator_meta.namespace, validate_certs=false)[0].data.CLIENT_ID | b64decode }}"
+    CLIENT_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=smartabyar_smartvillage.auth_secret_name, namespace=ansible_operator_meta.namespace, validate_certs=false)[0].data.CLIENT_SECRET | b64decode }}"
+- debug:
+    var: CLIENT_SECRET
+- name: "Get the entity from the context broker"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ service_group.cb_host }}/v2/entities/{{ ENTITY_NAME | urlencode }}?options=keyValues"
+    method: GET
+    headers:
+      Fiware-Service: "{{ fiware.service | lower }}"
+      Fiware-ServicePath: "{{ fiware.service_path }}"
+    return_content: true
+    status_code: 
+      - 200
+      - 201
+  register: CONTEXT_BROKER_ENTITY
+- name: Get site access token
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ AUTH_TOKEN_URL }}"
+    method: POST
+    body_format: form-urlencoded
+    body:
+      grant_type: client_credentials
+      client_id: "{{ CLIENT_ID }}"
+      client_secret: "{{ CLIENT_SECRET }}"
+    return_content: true
+    validate_certs: false
+    status_code: 
+      - 200
+      - 201
+  register: AUTH_TOKEN
+- name: "Import the Smart Data Model"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ SITE_BASE_URL }}{{ smartabyar_smartvillage.import_api_uri }}"
+    method: PUT
+    headers:
+      Content-Type: "application/json"
+      Authorization: "Bearer {{ AUTH_TOKEN.json.access_token }}"
+    body_format: json
+    body: "{{ lookup('template', ENTITY_TYPE + '.yml') | from_yaml }}"
+    return_content: true
+    validate_certs: false
+    status_code: 
+      - 200
+      - 201
+  register: IMPORT_MODEL
+
