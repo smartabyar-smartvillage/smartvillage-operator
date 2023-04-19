@@ -5,10 +5,11 @@
   roles:
     - smartabyar-smartvillage-import
   vars:
+    ENTITY_TYPE: TrafficFlowObserved
+    ENTITY_NAME: "urn:ngsi-ld:{{ ENTITY_TYPE }}:{{ device.id }}"
     ansible_operator_meta:
       name: sweden-veberod-1-sjobovagen-se
       namespace: smart-village-view
-    ENTITY_TYPE: TrafficFlowObserved
     iot_agent:
       iot_host: http://iotagent-json-north-fiware.apps-crc.testing
     fiware:
@@ -21,7 +22,6 @@
     device:
       transport: MQTT
       id: 'Sjobovagen-SE'
-    ENTITY_NAME: "urn:ngsi-ld:{{ ENTITY_TYPE }}:{{ device.id }}"
     smartabyar_smartvillage:
       enabled: true
       auth_secret_name: keycloak-client-secret-smartvillage
