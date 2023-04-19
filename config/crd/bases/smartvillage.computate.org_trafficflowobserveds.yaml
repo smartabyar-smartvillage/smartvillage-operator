@@ -85,6 +85,15 @@ spec:
                       A unique ID for this TrafficFlowObserved device. 
                       It can be as simple as the number 1. 
                       No characters with accents. 
+                  mqtt_host:
+                    type: string
+                    default: fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
+                  mqtt_port:
+                    type: number
+                    default: 1883
+                  mqtt_subscription_topic:
+                    type: string
+                    default: iot/subscribe
               iot_agent:
                 type: object
                 properties:
@@ -176,6 +185,17 @@ spec:
                           type: string
                           default: "96027913#0 96027913#2 30186293 311389510#1"
                           description: The edges the vehicle shall drive along, given as their ids, separated using spaces
+              attributes:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    object_id:
+                      type: string
+                    name:
+                      type: string
+                    type:
+                      type: string
           status:
             description: Status defines the observed state of TrafficFlowObserved
             type: object
