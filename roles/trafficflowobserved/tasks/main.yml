@@ -10,3 +10,6 @@
 - name: Run Ansible role iotagent-json-device
   include_role:
     name: iotagent-json-device
+- name: Run Ansible role iotagent-json-subscription
+  include_role:
+    name: iotagent-json-subscription

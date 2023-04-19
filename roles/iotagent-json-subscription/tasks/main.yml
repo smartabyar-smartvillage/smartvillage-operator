@@ -1,0 +1,46 @@
+---
+- name: "Provision the {{ ENTITY_NAME }} subscription"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ service_group.cb_host }}/v2/subscriptions"
+    method: POST
+    headers:
+      Content-Type: "application/json"
+      Fiware-Service: "{{ fiware.service | lower }}"
+      Fiware-ServicePath: "{{ fiware.service_path }}"
+    body_format: json
+    body: "{{ SUBSCRIPTION_BODY }}"
+    return_content: true
+    status_code: 
+      - 200
+      - 201
+  register: CREATE_SUBSCRIPTION
+  ignore_errors: true
+- debug:
+    var: CREATE_SUBSCRIPTION
+- name: "Update the {{ subscription.apikey }} subscription"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ iot_agent.iot_host }}/v2/subscriptions/{{ ENTITY_NAME | urlencode }}"
+    method: PATCH
+    headers:
+      Content-Type: "application/json"
+      Fiware-Service: "{{ fiware.service }}"
+      Fiware-ServicePath: "{{ fiware.service_path }}"
+      Cache-Control: no-cache
+    body_format: json
+    body: "{{ SUBSCRIPTION_BODY }}"
+    return_content: true
+    status_code: 
+      - 204
+  register: UPDATE_SUBSCRIPTION
+  ignore_errors: true
+  when: CREATE_SUBSCRIPTION.failed
+- debug:
+    msg: "{{ UPDATE_SUBSCRIPTION }}"
+  when: CREATE_SUBSCRIPTION.failed
+- fail:
+    msg: "{{ UPDATE_SUBSCRIPTION }}"
+  when: CREATE_SUBSCRIPTION.failed and UPDATE_SUBSCRIPTION.failed

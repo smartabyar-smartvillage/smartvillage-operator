@@ -3,15 +3,15 @@
   hosts: localhost
   connection: local
   roles:
-    - iotagent-json-device
+    - iotagent-json-subscription
   vars:
     ENTITY_TYPE: TrafficFlowObserved
     ENTITY_NAME: "urn:ngsi-ld:{{ ENTITY_TYPE }}:{{ device.id }}"
     iot_agent:
       iot_host: http://iotagent-json-north-fiware.apps-crc.testing
     fiware:
-      service: 
-      service_path: /
+      service: smarttrafficlights
+      service_path: /Sweden/Veberod/CityCenter
     service_group:
       cb_host: 'http://orion-ld-fiware.apps-crc.testing'
       resource: /iot/json
@@ -21,7 +21,7 @@
       id: 'Sjobovagen-SE'
       mqtt_host: fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
       mqtt_port: 1883
-      mqtt_subscription_topic: iot/subscribe
+      mqtt_subscription_topic: iot-subscribe
     sumo:
       initial_parameters: [10, 20, 30, 50, 10, 10, 8, 8, 5, 5]
       demand_scale: [1.4, 1.4]

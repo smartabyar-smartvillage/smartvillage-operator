@@ -1,0 +1,2 @@
+---
+SUBSCRIPTION_BODY: "{{ lookup('template', 'subscription.yml') | from_yaml }}"

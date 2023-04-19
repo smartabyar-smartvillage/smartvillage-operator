@@ -1,0 +1,30 @@
+---
+# if not given  it will be assigned during subscription process and returned to client
+id: "{{ ENTITY_NAME }}"
+#type: "Subscription"
+#name: "{{ ENTITY_NAME }}"
+description: "{{ ENTITY_NAME }}"
+subject:
+  entities:
+    - id: "{{ ENTITY_NAME }}"
+      type: "{{ ENTITY_TYPE }}"
+#  watchedAttributes: {{ attributes | map(attribute='name') | to_json }}
+#  isActive: true
+notification:
+#  attributes: {{ attributes | map(attribute='name') | to_json }}
+#  format: "keyValues"
+#  endpoint:
+#    uri: "mqtt://{{ device.mqtt_host }}:{{ device.mqtt_port }}/{{ device.mqtt_subscription_topic }}"
+#    accept: application/json
+#  status: "ok"
+  http:
+    url: https://www.computate.org/test
+#  mqtt:
+#    url: "mqtt://{{ device.mqtt_host }}:{{ device.mqtt_port }}/{{ device.mqtt_subscription_topic }}"
+#    topic: "{{ device.mqtt_subscription_topic }}"
+#    qos: 2
+  attrs:
+{% for key, attribute in attributes %}
+    - "{{ attribute.name | default(key) }}"
+{% endfor %}
+  
