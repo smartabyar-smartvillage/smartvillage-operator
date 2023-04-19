@@ -1,0 +1,47 @@
+---
+- name: Find adopters file {{ MODEL_SRC }}/ADOPTERS.yaml
+  stat:
+    path: "{{ MODEL_SRC }}/ADOPTERS.yaml"
+  register: STAT_MODEL_ADOPTERS
+- name: Find model file {{ MODEL_SRC }}/model.yaml
+  stat:
+    path: "{{ MODEL_SRC }}/model.yaml"
+  register: STAT_MODEL_SPEC
+- name: Find doc spec file {{ MODEL_SRC }}/doc/spec.md
+  stat:
+    path: "{{ MODEL_SRC }}/doc/spec.md"
+  register: STAT_MODEL_DOC_SPEC
+- name: Find model description in {{ MODEL_SRC }}/model.yaml
+  set_fact:
+    MODEL_SPEC: "{{ lookup('file', MODEL_SRC + '/model.yaml') | from_yaml }}"
+    MODEL_ADOPTERS: "{{ lookup('file', MODEL_SRC + '/ADOPTERS.yaml') }}"
+    MODEL_DOCUMENTATION: "{{ lookup('file', MODEL_SRC + '/doc/spec.md') }}"
+  when: STAT_MODEL_ADOPTERS.stat.exists 
+    and STAT_MODEL_DOC_SPEC.stat.exists 
+    and STAT_MODEL_SPEC.stat.exists
+- name: Append {{ MODEL_NAME }} model data to fiware_domain/defaults/main.yml
+  lineinfile:
+    line: |-2
+                {{ MODEL_NAME }}:
+                  MODEL_NAME: {{ MODEL_NAME }}
+                  SUBMODULE_SHORT_NAME: {{ SUBMODULE_SHORT_NAME }}
+                  DOMAIN_NAME: {{ DOMAIN_NAME }}
+                  COMBINED_NAME: {{ MODEL_NAME }} - {{ SUBMODULE_SHORT_NAME }} - {{ DOMAIN_NAME }}
+                  MODEL_DESCRIPTION: {{ MODEL_SPEC[ MODEL_NAME ].description | default('') | to_json }}
+                  MODEL_ADOPTERS: {{ MODEL_ADOPTERS | to_json }}
+                  MODEL_DOCUMENTATION: {{ MODEL_DOCUMENTATION | to_json }}
+    path: "{{ DOMAIN_DEFAULTS_PATH }}"
+    insertbefore: EOF
+  when: STAT_MODEL_ADOPTERS.stat.exists 
+    and STAT_MODEL_DOC_SPEC.stat.exists 
+    and STAT_MODEL_SPEC.stat.exists
+#    and MODEL_ADOPTERS.currentAdopters[0].adopter is defined
+#    and MODEL_ADOPTERS.currentAdopters[0].adopter != None
+#- name: Loop on FIWARE Smart Data Submodules of {{ MODEL_NAME }}
+#  include_tasks: generate_submodule_data.yml
+#  vars:
+#    MODEL_DATA: "{{ item }}"
+#    MODEL_SRC: "{{ item.path }}"
+#    MODEL_NAME: "{{ item.path | basename }}"
+#    MODEL_NAME: "{{ item.path | basename }}"
+#  loop: "{{ MODEL_DIRS.files }}"

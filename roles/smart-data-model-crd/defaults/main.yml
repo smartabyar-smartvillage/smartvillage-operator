@@ -1,3 +1,5 @@
 ---
 MODEL_CRD_PATH: "{{ playbook_dir }}/config/crd/bases/smartvillage.computate.org_{{ ENTITY_TYPE | lower }}s.yaml"
 MODEL_SAMPLE_PATH: "{{ playbook_dir }}/config/samples/smartvillage_v1_{{ ENTITY_TYPE | lower }}.yaml"
+MODEL_SPEC_PATH: "{{ lookup('env', 'HOME') }}/.local/src/smart-data-models/{{ DOMAIN_NAME | replace(' ', '') }}/dataModel.{{SUBMODULE_SHORT_NAME }}/{{ MODEL_NAME }}/model.yaml"
+MODEL_SPEC: "{{ lookup('file', MODEL_SPEC_PATH) | from_yaml }}"

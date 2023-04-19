@@ -6,4 +6,5 @@
   hosts: localhost
   connection: local
   roles:
+    - smart-data-model-domain
     - smart-data-model-crd

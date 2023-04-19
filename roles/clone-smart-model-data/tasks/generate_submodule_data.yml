@@ -1,0 +1,23 @@
+---
+- name: Append {{ SUBMODULE_SHORT_NAME }} submodule data to fiware_domain/defaults/main.yml
+  lineinfile:
+    line: |-2
+            {{ SUBMODULE_SHORT_NAME }}:
+              SUBMODULE_SHORT_NAME: {{ SUBMODULE_SHORT_NAME }}
+              MODELS:
+    path: "{{ DOMAIN_DEFAULTS_PATH }}"
+    insertbefore: EOF
+- name: Get all models of {{ SUBMODULE_SHORT_NAME }}
+  find:
+    paths: "{{ SUBMODULE_SRC }}"
+    file_type: directory
+  register: MODEL_DIRS
+- name: Loop on FIWARE Smart Data Submodules of {{ SUBMODULE_SHORT_NAME }}
+  include_tasks: generate_model_data.yml
+  vars:
+    MODEL_SRC: "{{ MODEL_DATA.path }}"
+    MODEL_NAME: "{{ MODEL_DATA.path | basename }}"
+    MODEL_SHORT_NAME: "{{ MODEL_DATA.path | basename }}"
+  loop: "{{ MODEL_DIRS.files }}"
+  loop_control:
+    loop_var: MODEL_DATA

@@ -10,29 +10,31 @@ metadata:
     app.kubernetes.io/created-by: smartvillage-operator
   name: 'sweden-veberod-1-sjobovagen-se'
 spec:
+  description: |
+    An observation of traffic flow conditions at a certain place and time.
+  fiware:
+    service: smarttrafficlights
+    service_path: /Sweden/Veberod/CityCenter
   iot_agent:
     iot_host: http://iotagent-json-north-fiware.apps-crc.testing
-  fiware:
-    service: trafficflowobserveds
-    service_path: /Sweden/Veberod/CityCenter
   service_group:
-    cb_host: 'http://orion-ld-fiware.apps-crc.testing'
+    cb_host: http://orion-ld-fiware.apps-crc.testing
     resource: /iot/json
     apikey: VeberodIntersection1
   device:
     transport: MQTT
-    id: 'Sjobovagen-SE'
+    id: Sjobovagen-SE
     mqtt_host: fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
     mqtt_port: 1883
     mqtt_subscription_topic: iot/subscribe
   smartabyar_smartvillage:
-    enabled: true
+    enabled: True
     auth_secret_name: keycloak-client-secret-smartvillage
     auth_token_url: https://keycloak-sso.apps-crc.testing/realms/SMARTVILLAGE/protocol/openid-connect/token
     site_base_url: https://smartvillage.apps-crc.testing
     smart_model_api: /api/traffic-flow-observed
   alternate_model:
-    enabled: true
+    enabled: True
     id: sumo
   attributes:
     address: |

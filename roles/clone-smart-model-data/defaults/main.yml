@@ -1,0 +1,39 @@
+---
+DOMAIN_DEFAULTS_PATH: "{{ playbook_dir }}/roles/smart-data-model-domain/defaults/main.yml"
+FIWARE_SMART_DATA_MODEL_DOMAIN_REPOS:
+  - DOMAIN_NAME: Smart Cities
+    PROJECT_SRC: "{{ lookup('env', 'HOME') }}/.local/src/smart-data-models/SmartCities"
+    REPO_URL: https://github.com/smart-data-models/SmartCities.git
+  - DOMAIN_NAME: Smart Agrifood
+    PROJECT_SRC: "{{ lookup('env', 'HOME') }}/.local/src/smart-data-models/SmartAgrifood"
+    REPO_URL: https://github.com/smart-data-models/SmartAgrifood.git
+  - DOMAIN_NAME: Smart Water
+    PROJECT_SRC: "{{ lookup('env', 'HOME') }}/.local/src/smart-data-models/SmartWater"
+    REPO_URL: https://github.com/smart-data-models/SmartWater.git
+  - DOMAIN_NAME: Smart Energy
+    PROJECT_SRC: "{{ lookup('env', 'HOME') }}/.local/src/smart-data-models/SmartEnergy"
+    REPO_URL: https://github.com/smart-data-models/SmartEnergy.git
+  - DOMAIN_NAME: Smart Environment
+    PROJECT_SRC: "{{ lookup('env', 'HOME') }}/.local/src/smart-data-models/SmartEnvironment"
+    REPO_URL: https://github.com/smart-data-models/SmartEnvironment.git
+  - DOMAIN_NAME: Smart Sensoring
+    PROJECT_SRC: "{{ lookup('env', 'HOME') }}/.local/src/smart-data-models/Smart-Sensoring"
+    REPO_URL: https://github.com/smart-data-models/Smart-Sensoring.git
+  - DOMAIN_NAME: Smart Aeronautics
+    PROJECT_SRC: "{{ lookup('env', 'HOME') }}/.local/src/smart-data-models/SmartAeronautics"
+    REPO_URL: https://github.com/smart-data-models/SmartAeronautics.git
+  - DOMAIN_NAME: Smart Destination
+    PROJECT_SRC: "{{ lookup('env', 'HOME') }}/.local/src/smart-data-models/SmartDestination"
+    REPO_URL: https://github.com/smart-data-models/SmartDestination.git
+  - DOMAIN_NAME: Cross Sector
+    PROJECT_SRC: "{{ lookup('env', 'HOME') }}/.local/src/smart-data-models/CrossSector"
+    REPO_URL: https://github.com/smart-data-models/CrossSector.git
+  - DOMAIN_NAME: Smart Robotics
+    PROJECT_SRC: "{{ lookup('env', 'HOME') }}/.local/src/smart-data-models/SmartRobotics"
+    REPO_URL: https://github.com/smart-data-models/SmartRobotics.git
+  - DOMAIN_NAME: Smart Health
+    PROJECT_SRC: "{{ lookup('env', 'HOME') }}/.local/src/smart-data-models/SmartHealth"
+    REPO_URL: https://github.com/smart-data-models/SmartHealth.git
+  - DOMAIN_NAME: Smart Manufacturing
+    PROJECT_SRC: "{{ lookup('env', 'HOME') }}/.local/src/smart-data-models/SmartManufacturing"
+    REPO_URL: https://github.com/smart-data-models/SmartManufacturing.git

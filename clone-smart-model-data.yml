@@ -1,0 +1,6 @@
+---
+- name: Clone the FIWARE Smart Data Models data from Git Repos
+  hosts: localhost
+  connection: local
+  roles:
+    - clone-smart-model-data

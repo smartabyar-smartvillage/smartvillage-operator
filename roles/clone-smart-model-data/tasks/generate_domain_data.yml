@@ -1,0 +1,45 @@
+---
+- name: set DOMAIN_NAME
+  set_fact:
+    DOMAIN_NAME: "{{ DOMAIN_DATA.DOMAIN_NAME }}"
+- name: Check for the {{ DOMAIN_DATA.DOMAIN_NAME }} .git directory
+  stat:
+    path: "{{ DOMAIN_DATA.PROJECT_SRC }}/.git"
+  register: SITE_GIT_DIR
+- name: Check for the {{ DOMAIN_DATA.DOMAIN_NAME }} README.md file
+  stat:
+    path: "{{ DOMAIN_DATA.PROJECT_SRC }}/README.md"
+  register: SITE_README
+- name: Create the {{ DOMAIN_DATA.DOMAIN_NAME }} source directory {{ DOMAIN_DATA.PROJECT_SRC }}
+  file:
+    name: "{{ DOMAIN_DATA.PROJECT_SRC }}"
+    state: directory
+  when: not SITE_GIT_DIR.stat.exists and not SITE_README.stat.exists
+- name: Clone the {{ DOMAIN_DATA.REPO_URL }} source code into {{ DOMAIN_DATA.PROJECT_SRC }}
+  git:
+    repo: "{{ DOMAIN_DATA.REPO_URL }}"
+    dest: "{{ DOMAIN_DATA.PROJECT_SRC }}"
+  when: not SITE_GIT_DIR.stat.exists and not SITE_README.stat.exists
+- name: Append {{ DOMAIN_DATA.PROJECT_SRC }} domain data to fiware_domain/defaults/main.yml
+  lineinfile:
+    line: |-2
+        {{ DOMAIN_DATA.DOMAIN_NAME }}:
+          DOMAIN_NAME: {{ DOMAIN_DATA.DOMAIN_NAME }}
+          REPO_URL: {{ DOMAIN_DATA.REPO_URL }}
+          SUBMODULES:
+    path: "{{ DOMAIN_DEFAULTS_PATH }}"
+    insertbefore: EOF
+- name: Get all submodules of {{ DOMAIN_DATA.DOMAIN_NAME }}
+  find:
+    paths: "{{ DOMAIN_DATA.PROJECT_SRC }}"
+    file_type: directory
+  register: SUBMODULE_DIRS
+- name: Loop on FIWARE Smart Data Submodules of {{ DOMAIN_DATA.DOMAIN_NAME }}
+  include_tasks: generate_submodule_data.yml
+  vars:
+    SUBMODULE_SRC: "{{ SUBMODULE_DATA.path }}"
+    SUBMODULE_NAME: "{{ SUBMODULE_DATA.path | basename }}"
+    SUBMODULE_SHORT_NAME: "{{ SUBMODULE_DATA.path | basename | split('dataModel.') | last }}"
+  loop: "{{ SUBMODULE_DIRS.files }}"
+  loop_control:
+    loop_var: SUBMODULE_DATA

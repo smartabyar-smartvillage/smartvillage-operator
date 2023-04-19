@@ -1,60 +1,192 @@
 ---
-apiVersion: smartvillage.computate.org/v1
-kind: {{ ENTITY_TYPE }}
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
 metadata:
-  labels:
-    app.kubernetes.io/name: {{ ENTITY_TYPE | lower }}
-    app.kubernetes.io/instance: {{ ENTITY_TYPE | lower }}-sample
-    app.kubernetes.io/part-of: smartvillage-operator
-    app.kubernetes.io/managed-by: kustomize
-    app.kubernetes.io/created-by: smartvillage-operator
-  name: 'sweden-veberod-1-sjobovagen-se'
+  name: {{ ENTITY_TYPE | lower }}s.smartvillage.computate.org
 spec:
-  iot_agent:
-    iot_host: http://iotagent-json-north-fiware.apps-crc.testing
-  fiware:
-    service: {{ ENTITY_TYPE | lower }}s
-    service_path: /Sweden/Veberod/CityCenter
-  service_group:
-    cb_host: 'http://orion-ld-fiware.apps-crc.testing'
-    resource: /iot/json
-    apikey: VeberodIntersection1
-  device:
-    transport: MQTT
-    id: 'Sjobovagen-SE'
-    mqtt_host: fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
-    mqtt_port: 1883
-    mqtt_subscription_topic: iot/subscribe
-  smartabyar_smartvillage:
-    enabled: true
-    auth_secret_name: keycloak-client-secret-smartvillage
-    auth_token_url: https://keycloak-sso.apps-crc.testing/realms/SMARTVILLAGE/protocol/openid-connect/token
-    site_base_url: https://smartvillage.apps-crc.testing
-    smart_model_api: /api/traffic-flow-observed
-  alternate_model:
-    enabled: true
-    id: sumo
-  attributes:
-    areaServed:
-      name: areaServed
-      type: Text
-      description: |
-        The geographic area where a service or offered item is provided
-      docs: |
-        https://github.com/smart-data-models/dataModel.Transportation/blob/ca8d89fe82b71403fcb0905b96c79b8d9bff54bb/TrafficFlowObserved/model.yaml#L40-L45
-      alternate_name: edges
-      alternate_description: |
-        The edges the vehicle shall drive along, given as their ids, separated using spaces
-      alternate_docs: |
-        https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html#routes
-      default: |
-        96027913#0 96027913#2 30186293 311389510#1
-      minimum: 1
-{% for key, attribute in attributes %}
-    {{ key }}:
-      name: {{ attribute.name | default(key) }}
-      type: {{ attribute.type }}
-{% if attribute.description %}
-      description: |
-        {{ attribute.description | indent( width=4, indentfirst=True) }}
+  group: smartvillage.computate.org
+  names:
+    kind: {{ ENTITY_TYPE }}
+    listKind: {{ ENTITY_TYPE }}List
+    plural: {{ ENTITY_TYPE | lower }}s
+    singular: {{ ENTITY_TYPE | lower }}
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: |
+          {{ ENTITY_TYPE }} is the Schema for the {{ ENTITY_TYPE | lower }}s API
+          {{ FIWARE_SMART_DATA_MODELS[DOMAIN_NAME].SUBMODULES[SUBMODULE_SHORT_NAME].MODELS[MODEL_NAME].MODEL_DESCRIPTION | indent(10, False) }}
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: Spec defines the desired state of {{ ENTITY_TYPE }}
+            type: object
+            properties:
+{% if spec.fiware is defined %}
+              fiware:
+                type: object
+                properties:
+                  service:
+                    type: string
+                    default: {{ spec.fiware.service }}
+                    description: |
+                      Describes the provided service for these devices. 
+                      Use all lowercase letters. 
+                      No characters with accents. 
+                  service_path:
+                    type: string
+                    default: {{ spec.fiware.service_path }}
+                    description: |
+                      Fiware-ServicePath is an optional header. 
+                      It is assumed that all the entities created without Fiware-ServicePath 
+                      (or that don't include service path information in the database) 
+                      belongs to a root scope "/" implicitely. 
+                      Scope must start with "/" (only 'absolute' scopes are allowed). 
+                      10 maximum scope levels in a path. 
+                      50 maximum characters in each level, only alphanum and underscore allowed. 
+{% endif %}
+{% if spec.iot_agent is defined %}
+              iot_agent:
+                type: object
+                properties:
+                  iot_host:
+                    type: string
+                    default: {{ spec.iot_agent.iot_host }}
+{% endif %}
+{% if spec.service_group is defined %}
+              service_group:
+                type: object
+                properties:
+                  cb_host:
+                    type: string
+                    default: {{ spec.service_group.cb_host }}
+                  resource:
+                    type: string
+                    default: {{ spec.service_group.resource }}
+                  apikey:
+                    type: string
+                    default: {{ spec.service_group.apikey }}
+                    description: |
+                      Where apiKey is an alphanumerical string used to group devices logically 
+                      (and for security matters) and deviceId is an ID that uniquely identifies the device. 
+                      The API Key can be configured globally for an instance of the IoT Agent, 
+                      or specifically for a given group of devices. 
+{% endif %}
+{% if spec.device is defined %}
+              device:
+                type: object
+                properties:
+                  transport:
+                    type: string
+                    default: {{ spec.device.transport }}
+                    enum:
+                      - MQTT
+                      - AMQP
+                  id:
+                    type: string
+                    description: |
+                      A unique ID for this {{ ENTITY_TYPE }} device. 
+                      It can be as simple as the number 1. 
+                      No characters with accents. 
+                    default: {{ spec.device.id }}
+                  mqtt_host:
+                    type: string
+                    default: {{ spec.device.mqtt_host }}
+                  mqtt_port:
+                    type: number
+                    default: {{ spec.device.mqtt_port }}
+                  mqtt_subscription_topic:
+                    type: string
+                    default: {{ spec.device.mqtt_subscription_topic }}
+{% endif %}
+{% if spec.smartabyar_smartvillage is defined %}
+              smartabyar_smartvillage:
+                type: object
+                properties:
+                  enabled:
+                    type: boolean
+                    default: {{ spec.smartabyar_smartvillage.enabled }}
+                  auth_secret_name:
+                    type: string
+                    default: {{ spec.smartabyar_smartvillage.auth_secret_name }}
+                  auth_token_url:
+                    type: string
+                    default: {{ spec.smartabyar_smartvillage.auth_token_url }}
+                  site_base_url:
+                    type: string
+                    default: {{ spec.smartabyar_smartvillage.site_base_url }}
+                  smart_model_api:
+                    type: string
+                    default: {{ spec.smartabyar_smartvillage.smart_model_api }}
+{% endif %}
+{% if spec.alternate_model is defined %}
+              alternate_model:
+                type: object
+                properties:
+                  enabled:
+                    type: boolean
+                    default: {{ spec.alternate_model.enabled }}
+                  id:
+                    default: {{ spec.alternate_model.id }}
+                    type: string
+{% endif %}
+              attributes:
+                type: object
+                properties:
+                  object_id:
+                    type: string
+{% for key, attribute in spec.attributes.items() %}
+                  {{ key }}:
+                    type: {{ attribute.type }}
+{% if attribute.default is defined %}
+{% if (attribute.default | type_debug) == 'AnsibleUnicode' %}
+                    default: |
+                      {{ attribute.default | indent(22, False) }}{% else %}
+{% if (attribute.default | type_debug) == 'dict' %}
+                    default:
+                      {{ attribute.default | to_nice_yaml(indent=2) | indent(22, False) }}{% else %}
+                    default: {{ attribute.default }}
+{% endif %}
+{% endif %}
+{% endif %}
+{% if MODEL_SPEC[ ENTITY_TYPE ].properties[key] is defined and spec.alternate_model.name is defined %}
+                    description: |2
+                      {{ MODEL_SPEC[ ENTITY_TYPE ].properties[key].description | indent(22, False) }}
+                      See the docs here: https://github.com/smart-data-models/dataModel.{{ SUBMODULE_SHORT_NAME }}/blob/HEAD/{{ MODEL_NAME }}/model.yaml
+{% if attribute.alternate_name is defined %}
+
+                      In {{ spec.alternate_model.name }}, this attribute is known as {{ attribute.alternate_name }}: 
+{% if attribute.alternate_description is defined %}
+                      {{ attribute.alternate_description | indent(22, False) }}
+{% endif %}
+{% if attribute.alternate_docs is defined %}
+                      See the {{ spec.alternate_model.name }} docs here: {{ attribute.alternate_docs | indent(22, False) }}
+{% endif %}
+{% endif %}
+{% endif %}
+{% if MODEL_SPEC[ ENTITY_TYPE ].properties[key].properties is defined %}
+                    properties:
+                      {{ MODEL_SPEC[ ENTITY_TYPE ].properties[key].properties | to_nice_yaml(indent=2) | indent(22, False) }}{% endif %}
 {% endfor %}
+          status:
+            description: Status defines the observed state of {{ ENTITY_TYPE }}
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

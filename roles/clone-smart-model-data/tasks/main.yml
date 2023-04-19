@@ -1,0 +1,12 @@
+---
+- name: Create the fiware_domain/defaults/main.yml
+  copy:
+    content: |+
+      FIWARE_SMART_DATA_MODELS:
+    dest: "{{ DOMAIN_DEFAULTS_PATH }}"
+    force: true
+- name: Loop on FIWARE Smart Data Model Domains
+  include_tasks: generate_domain_data.yml
+  vars:
+    DOMAIN_DATA: "{{ item }}"
+  loop: "{{ FIWARE_SMART_DATA_MODEL_DOMAIN_REPOS }}"
