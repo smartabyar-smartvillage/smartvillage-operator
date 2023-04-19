@@ -1,0 +1,9 @@
+---
+# Be sure to set the ENTITY_TYPE var before running this playbook. 
+# ansible-playbook smart-data-model-crd.yaml -e ENTITY_TYPE=TrafficFlowObserved
+
+- name: Write Smart Data Model CRD
+  hosts: localhost
+  connection: local
+  roles:
+    - smart-data-model-crd

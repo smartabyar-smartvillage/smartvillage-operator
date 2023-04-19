@@ -1,0 +1,60 @@
+---
+apiVersion: smartvillage.computate.org/v1
+kind: {{ ENTITY_TYPE }}
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ ENTITY_TYPE | lower }}
+    app.kubernetes.io/instance: {{ ENTITY_TYPE | lower }}-sample
+    app.kubernetes.io/part-of: smartvillage-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: smartvillage-operator
+  name: 'sweden-veberod-1-sjobovagen-se'
+spec:
+  iot_agent:
+    iot_host: http://iotagent-json-north-fiware.apps-crc.testing
+  fiware:
+    service: {{ ENTITY_TYPE | lower }}s
+    service_path: /Sweden/Veberod/CityCenter
+  service_group:
+    cb_host: 'http://orion-ld-fiware.apps-crc.testing'
+    resource: /iot/json
+    apikey: VeberodIntersection1
+  device:
+    transport: MQTT
+    id: 'Sjobovagen-SE'
+    mqtt_host: fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
+    mqtt_port: 1883
+    mqtt_subscription_topic: iot/subscribe
+  smartabyar_smartvillage:
+    enabled: true
+    auth_secret_name: keycloak-client-secret-smartvillage
+    auth_token_url: https://keycloak-sso.apps-crc.testing/realms/SMARTVILLAGE/protocol/openid-connect/token
+    site_base_url: https://smartvillage.apps-crc.testing
+    smart_model_api: /api/traffic-flow-observed
+  alternate_model:
+    enabled: true
+    id: sumo
+  attributes:
+    areaServed:
+      name: areaServed
+      type: Text
+      description: |
+        The geographic area where a service or offered item is provided
+      docs: |
+        https://github.com/smart-data-models/dataModel.Transportation/blob/ca8d89fe82b71403fcb0905b96c79b8d9bff54bb/TrafficFlowObserved/model.yaml#L40-L45
+      alternate_name: edges
+      alternate_description: |
+        The edges the vehicle shall drive along, given as their ids, separated using spaces
+      alternate_docs: |
+        https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html#routes
+      default: |
+        96027913#0 96027913#2 30186293 311389510#1
+      minimum: 1
+{% for key, attribute in attributes %}
+    {{ key }}:
+      name: {{ attribute.name | default(key) }}
+      type: {{ attribute.type }}
+{% if attribute.description %}
+      description: |
+        {{ attribute.description | indent( width=4, indentfirst=True) }}
+{% endfor %}

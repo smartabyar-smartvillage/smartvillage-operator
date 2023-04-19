@@ -1,10 +1,10 @@
 ---
 apiVersion: smartvillage.computate.org/v1
-kind: TrafficFlowObserved
+kind: {{ ENTITY_TYPE }}
 metadata:
   labels:
-    app.kubernetes.io/name: trafficflowobserved
-    app.kubernetes.io/instance: trafficflowobserved-sample
+    app.kubernetes.io/name: {{ ENTITY_TYPE | lower }}
+    app.kubernetes.io/instance: {{ ENTITY_TYPE | lower }}-sample
     app.kubernetes.io/part-of: smartvillage-operator
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/created-by: smartvillage-operator
@@ -13,7 +13,7 @@ spec:
   iot_agent:
     iot_host: http://iotagent-json-north-fiware.apps-crc.testing
   fiware:
-    service: trafficflowobserveds
+    service: {{ ENTITY_TYPE | lower }}s
     service_path: /Sweden/Veberod/CityCenter
   service_group:
     cb_host: 'http://orion-ld-fiware.apps-crc.testing'
@@ -35,10 +35,14 @@ spec:
     enabled: true
     id: sumo
   attributes:
-    address: |
-      addressCountry: Sweden
-      addressLocality: Veberöd
-      streetAddress: Sjöbovägen
-    areaServed: |
-      96027913#0 96027913#2 30186293 311389510#1
-    averageGapDistance: 1
+{% for key, attribute in attributes.items() %}
+{% if attribute.default is defined %}
+{% if (attribute.default | type_debug) == 'AnsibleUnicode' %}
+    {{ key }}: |
+      {{ attribute.default | indent(6, False) }}{% else %}
+{% if (attribute.default | type_debug) == 'dict' %}
+    {{ key }}: |
+      {{ attribute.default | to_nice_yaml | indent(6, False) }}{% else %}
+    {{ key }}: {{ attribute.default }}{% endif %}
+{% endif %}
+{% endif %}{% endfor %}
