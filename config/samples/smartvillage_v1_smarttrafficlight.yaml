@@ -1,0 +1,18 @@
+apiVersion: smartvillage.computate.org/v1
+kind: SmartTrafficLight
+metadata:
+  labels:
+    app.kubernetes.io/name: smarttrafficlight
+    app.kubernetes.io/instance: smarttrafficlight-sample
+    app.kubernetes.io/part-of: smartvillage-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: smartvillage-operator
+  name: smarttrafficlight-sample
+spec:
+  # TODO(user): Add fields here
+  id: TrafficSimulation_1
+  simulationName: Veberöd intersection
+  paramStepSize: 1.00
+  paramRunTime: 1000
+  paramItersPerPar: 3
+  paramTotalIterNum: 5
