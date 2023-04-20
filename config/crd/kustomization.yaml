@@ -4,4 +4,5 @@
 resources:
 - bases/smartvillage.computate.org_trafficflowobserveds.yaml
 - bases/smartvillage.computate.org_smarttrafficlights.yaml
+- bases/smartvillage.computate.org_smartabyarsmartvillages.yaml
 #+kubebuilder:scaffold:crdkustomizeresource

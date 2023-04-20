@@ -71,4 +71,21 @@ rules:
       - patch
       - update
       - watch
+  ##
+  ## Rules for smartvillage.computate.org/v1, Kind: SmartaByarSmartVillage
+  ##
+  - apiGroups:
+      - smartvillage.computate.org
+    resources:
+      - smartabyarsmartvillages
+      - smartabyarsmartvillages/status
+      - smartabyarsmartvillages/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
 #+kubebuilder:scaffold:rules

@@ -2,4 +2,5 @@
 resources:
 - smartvillage_v1_trafficflowobserved.yaml
 - smartvillage_v1_smarttrafficlight.yaml
+- smartvillage_v1_smartabyarsmartvillage.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples

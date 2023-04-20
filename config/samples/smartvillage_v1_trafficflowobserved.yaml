@@ -37,7 +37,7 @@ spec:
     enabled: True
     id: sumo
   attributes:
-    address: |
+    address:
       addressCountry: Sweden
       addressLocality: Veberöd
       streetAddress: Sjöbovägen

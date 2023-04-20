@@ -1,0 +1,12 @@
+apiVersion: smartvillage.computate.org/v1
+kind: SmartaByarSmartVillage
+metadata:
+  labels:
+    app.kubernetes.io/name: smartabyarsmartvillage
+    app.kubernetes.io/instance: smartabyarsmartvillage-sample
+    app.kubernetes.io/part-of: smartvillage-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: smartvillage-operator
+  name: smartabyarsmartvillage-sample
+spec:
+  # TODO(user): Add fields here
