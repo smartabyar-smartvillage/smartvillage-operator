@@ -40,14 +40,14 @@ spec:
         The mailing address
       docs: |
         https://github.com/smart-data-models/dataModel.Transportation/blob/ca8d89fe82b71403fcb0905b96c79b8d9bff54bb/TrafficFlowObserved/model.yaml#L4-L34
-    alternateName:
+    alternate_name:
       name: alternateName
       type: string
       description: |
         An alternative name for this item
       docs: |
         https://github.com/smart-data-models/dataModel.Transportation/blob/ca8d89fe82b71403fcb0905b96c79b8d9bff54bb/TrafficFlowObserved/model.yaml#L35-L39
-    areaServed:
+    area_served:
       name: areaServed
       type: string
       description: |
@@ -61,7 +61,7 @@ spec:
         https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html#routes
       default: |
         96027913#0 96027913#2 30186293 311389510#1
-    averageGapDistance:
+    average_gap_distance:
       name: averageGapDistance
       type: number
       description: |
@@ -75,7 +75,7 @@ spec:
         https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html#available_vtype_attributes
       minimum: 1
       default: 1
-    averageHeadwayTime:
+    average_headway_time:
       # See Smart Data Model: 
       name: averageHeadwayTime
       type: string
@@ -85,31 +85,31 @@ spec:
         Exact interpretation varies by model. 
         For the default model Krauss this is based on the net space between leader back and follower front).
       alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
-    averageVehicleLength:
+    average_vehicle_length:
       name: averageVehicleLength
       type: string
-    averageVehicleSpeed:
+    average_vehicle_speed:
       name: averageVehicleSpeed
       type: string
     congested:
       name: congested
       type: boolean
-    dataProvider:
+    data_provider:
       name: dataProvider
       type: string
-    dateCreated:
+    date_created:
       name: dateCreated
       type: string
-    dateModified:
+    date_modified:
       name: dateModified
       type: string
-    dateObserved:
+    date_observed:
       name: dateObserved
       type: string
-    dateObservedFrom:
+    date_observed_from:
       name: dateObservedFrom
       type: string
-    dateObservedTo:
+    date_observed_to:
       name: dateObservedTo
       type: string
     description:
@@ -118,10 +118,10 @@ spec:
     intensity:
       name: intensity
       type: string
-    laneDirection:
+    lane_direction:
       name: laneDirection
       type: string
-    laneId:
+    lane_id:
       name: laneId
       type: string
     name:
@@ -133,21 +133,21 @@ spec:
     owner:
       name: owner
       type: object
-    refRoadSegment:
+    ref_road_segment:
       name: refRoadSegment
       type: string
-    reversedLane:
+    reversed_lane:
       name: reversedLane
       type: boolean
-    seeAlso:
+    see_also:
       name: seeAlso
       type: object
     source:
       name: source
       type: string
-    vehicleSubType:
+    vehicle_sub_type:
       name: vehicleSubType
       type: string
-    vehicleType:
+    vehicle_type:
       name: vehicleType
       type: string

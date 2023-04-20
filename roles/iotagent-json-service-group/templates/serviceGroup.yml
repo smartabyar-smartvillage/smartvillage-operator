@@ -4,8 +4,8 @@ cbHost: "{{ service_group.cb_host }}"
 entity_type: "{{ENTITY_TYPE }}"
 resource: "{{ service_group.resource }}"
 attributes:
-{% for key, attribute in attributes %}
+{% for key, attribute in attributes.items() %}
   - object_id: {{ key }}
-    name: {{ attribute.name | default(key) }}
-    type: {{ attribute.type }}
+    name: {{ spec.attributes[key].name | default(key) }}
+    type: {{ spec.attributes[key].type }}
 {% endfor %}

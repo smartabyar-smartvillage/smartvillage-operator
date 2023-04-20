@@ -1,2 +1,3 @@
 ---
+ENTITY_NAME: "urn:ngsi-ld:{{ ENTITY_TYPE }}:{{ device.id }}"
 SUBSCRIPTION_BODY: "{{ lookup('template', 'subscription.yml') | from_yaml }}"

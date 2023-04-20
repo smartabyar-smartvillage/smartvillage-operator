@@ -3,10 +3,10 @@
   hosts: localhost
   connection: local
   roles:
+    - smart-data-model-vars
     - iotagent-json-subscription
   vars:
     ENTITY_TYPE: TrafficFlowObserved
-    ENTITY_NAME: "urn:ngsi-ld:{{ ENTITY_TYPE }}:{{ device.id }}"
     iot_agent:
       iot_host: http://iotagent-json-north-fiware.apps-crc.testing
     fiware:
@@ -40,84 +40,11 @@
           min_gap: 1
           sigma: 0.5
     attributes:
-      - object_id: address
-        name: address
-        type: Object
-      - object_id: alternateName
-        name: alternateName
-        type: Text
-      - object_id: areaServed
-        name: areaServed
-        type: Text
-      - object_id: averageGapDistance
-        name: averageGapDistance
-        type: Text
-      - object_id: averageHeadwayTime
-        name: averageHeadwayTime
-        type: Text
-      - object_id: averageVehicleLength
-        name: averageVehicleLength
-        type: Text
-      - object_id: averageVehicleSpeed
-        name: averageVehicleSpeed
-        type: Text
-      - object_id: congested
-        name: congested
-        type: Boolean
-      - object_id: dataProvider
-        name: dataProvider
-        type: Text
-      - object_id: dateCreated
-        name: dateCreated
-        type: Text
-      - object_id: dateModified
-        name: dateModified
-        type: Text
-      - object_id: dateObserved
-        name: dateObserved
-        type: Text
-      - object_id: dateObservedFrom
-        name: dateObservedFrom
-        type: Text
-      - object_id: dateObservedTo
-        name: dateObservedTo
-        type: Text
-      - object_id: description
-        name: description
-        type: Text
-      - object_id: intensity
-        name: intensity
-        type: Text
-      - object_id: laneDirection
-        name: laneDirection
-        type: Text
-      - object_id: laneId
-        name: laneId
-        type: Text
-      - object_id: name
-        name: name
-        type: Text
-      - object_id: occupancy
-        name: occupancy
-        type: Text
-      - object_id: owner
-        name: owner
-        type: Object
-      - object_id: refRoadSegment
-        name: refRoadSegment
-        type: Text
-      - object_id: reversedLane
-        name: reversedLane
-        type: Boolean
-      - object_id: seeAlso
-        name: seeAlso
-        type: Object
-      - object_id: source
-        name: source
-        type: Text
-      - object_id: vehicleSubType
-        name: vehicleSubType
-        type: Text
-      - object_id: vehicleType
-        name: vehicleType
-        type: Text
+      address:
+        addressCountry: Sweden
+        addressLocality: Veberöd
+        streetAddress: Sjöbovägen
+      area_served: |
+        96027913#0 96027913#2 30186293 311389510#1
+      average_gap_distance: 1
+    ENTITY_NAME: "urn:ngsi-ld:{{ ENTITY_TYPE }}:{{ device.id }}"

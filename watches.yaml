@@ -8,4 +8,8 @@
   group: smartvillage.computate.org
   kind: SmartTrafficLight
   role: smarttrafficlight
+- version: v1
+  group: smartvillage.computate.org
+  kind: SmartaByarSmartVillage
+  role: smartabyarsmartvillage
 #+kubebuilder:scaffold:watch
