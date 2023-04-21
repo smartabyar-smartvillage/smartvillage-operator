@@ -1,4 +1,3 @@
----
 apiVersion: smartvillage.computate.org/v1
 kind: {{ ENTITY_TYPE }}
 metadata:
@@ -8,10 +7,10 @@ metadata:
     app.kubernetes.io/part-of: smartvillage-operator
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/created-by: smartvillage-operator
-  name: 'sweden-veberod-1-sjobovagen-se'
+  name: {{ name | default('sweden-veberod-1-sjobovagen-se') }}
 spec:
   description: |
-    {{ FIWARE_SMART_DATA_MODELS[DOMAIN_NAME].SUBMODULES[SUBMODULE_SHORT_NAME].MODELS[MODEL_NAME].MODEL_DESCRIPTION | indent(4, False) }}
+    {{ MODEL_DESCRIPTION }}
 {% if spec.fiware is defined %}
   fiware:
     service: {{ spec.fiware.service }}
@@ -48,6 +47,7 @@ spec:
     enabled: {{ spec.alternate_model.enabled }}
     id: {{ spec.alternate_model.id }}
 {% endif %}
+{% if spec.attributes is defined %}
   attributes:
 {% for key, attribute in spec.attributes.items() %}
 {% if attribute.default is defined %}
@@ -61,3 +61,57 @@ spec:
 {% endif %}
 {% endif %}
 {% endfor %}
+{% endif %}
+{% if env is defined %}
+{% for key1, var1 in env.items() %}
+{% if var1.default is defined %}
+{% if (var1.default | type_debug) == 'AnsibleUnicode' %}
+  {{ key1 }}: |-
+    {{ var1.default | indent(6, False) }}
+{% else %}
+{% if (var1.default | type_debug) in ['dict', 'list'] %}
+  {{ key1 }}:
+    {{ var1.default | to_nice_yaml(indent=2) | indent(6, False) }}
+{% else %}
+  {{ key1 }}: {{ var1.default }}
+{% endif %}
+{% endif %}
+{% endif %}
+{% if var1.properties is defined %}
+  {{ key1 }}:
+{% for key2, var2 in var1.properties.items() %}
+{% if var2.default is defined %}
+{% if (var2.default | type_debug) == 'AnsibleUnicode' %}
+    {{ key2 }}: |-
+      {{ var2.default | indent(6, False) }}
+{% else %}
+{% if (var2.default | type_debug) in ['dict', 'list'] %}
+    {{ key2 }}:
+      {{ var2.default | to_nice_yaml(indent=2) | indent(8, False) }}
+{% else %}
+    {{ key2 }}: {{ var2.default }}
+{% endif %}
+{% endif %}
+{% endif %}
+{% if var2.properties is defined %}
+    {{ key2 }}:
+{% for key3, var3 in var2.properties.items() %}
+{% if var3.default is defined %}
+{% if (var3.default | type_debug) == 'AnsibleUnicode' %}
+      {{ key3 }}: |-
+        {{ var3.default | indent(6, False) }}
+{% else %}
+{% if (var3.default | type_debug) in ['dict', 'list'] %}
+      {{ key3 }}:
+        {{ var3.default | to_nice_yaml(indent=2) | indent(10, False) }}
+{% else %}
+      {{ key3 }}: {{ var3.default }}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}

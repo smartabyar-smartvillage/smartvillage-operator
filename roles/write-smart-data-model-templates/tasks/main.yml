@@ -3,7 +3,7 @@
   ansible.builtin.template:
     src: "sample.yaml"
     dest: "{{ MODEL_SAMPLE_PATH }}"
-- name: "Write the {{ ENTITY_TYPE }} sample: {{ MODEL_CRD_PATH }}"
+- name: "Write the {{ ENTITY_TYPE }} CRD: {{ MODEL_CRD_PATH }}"
   ansible.builtin.template:
     src: "crd.yaml"
     dest: "{{ MODEL_CRD_PATH }}"

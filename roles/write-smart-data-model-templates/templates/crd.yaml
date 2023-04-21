@@ -17,7 +17,7 @@ spec:
       openAPIV3Schema:
         description: |
           {{ ENTITY_TYPE }} is the Schema for the {{ ENTITY_TYPE | lower }}s API
-          {{ FIWARE_SMART_DATA_MODELS[DOMAIN_NAME].SUBMODULES[SUBMODULE_SHORT_NAME].MODELS[MODEL_NAME].MODEL_DESCRIPTION | indent(10, False) }}
+          {{ MODEL_DESCRIPTION | indent(6, False) }}
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -35,6 +35,7 @@ spec:
             description: Spec defines the desired state of {{ ENTITY_TYPE }}
             type: object
             properties:
+{% if spec is defined %}
 {% if spec.fiware is defined %}
               fiware:
                 type: object
@@ -181,6 +182,36 @@ spec:
                     properties:
                       {{ MODEL_SPEC[ ENTITY_TYPE ].properties[key].properties | to_nice_yaml(indent=2) | indent(22, False) }}{% endif %}
 {% endfor %}
+{% endif %}
+{% if env is defined %}
+{% for key, var in env.items() %}
+              {{ key }}:
+                type: {{ var.type }}
+{% if var.default is defined %}
+{% if (var.default | type_debug) == 'AnsibleUnicode' %}
+                default: |
+                  {{ var.default | indent(16, False) }}
+{% else %}
+{% if (var.default | type_debug) == 'dict' %}
+                default:
+                  {{ var.default | to_nice_yaml(indent=2) | indent(16, False) }}
+{% else %}
+                default: {{ var.default }}
+{% endif %}
+{% endif %}
+{% endif %}
+{% if var.properties is defined %}
+                properties:
+                  {{ var.properties | to_nice_yaml(indent=2) | indent(16, False) }}
+{% endif %}
+{% if var.minimum is defined %}
+                minimum: {{ var.minimum }}
+{% endif %}
+{% if var.minimum is defined %}
+                maximum: {{ var.maximum }}
+{% endif %}
+{% endfor %}
+{% endif %}
           status:
             description: Status defines the observed state of {{ ENTITY_TYPE }}
             type: object

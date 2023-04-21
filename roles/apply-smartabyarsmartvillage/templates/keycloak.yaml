@@ -1,0 +1,27 @@
+apiVersion: keycloak.org/v1alpha1
+kind: Keycloak
+metadata:
+  name: {{ SSO.CLUSTER_NAME }}
+  namespace: {{ ansible_operator_meta.namespace }}
+  labels:
+    app: {{ SSO.CLUSTER_NAME }}
+spec:
+  instances: 1
+  externalAccess:
+    enabled: true
+  externalDatabase:
+    enabled: true
+  keycloakDeploymentSpec:
+    experimental:
+      env:
+        - name: DB_ADDR
+          valueFrom:
+            secretKeyRef:
+              name: keycloak-db-secret
+              key: POSTGRES_EXTERNAL_ADDRESS
+        - name: KEYCLOAK_POSTGRESQL_SERVICE_HOST
+          valueFrom:
+            secretKeyRef:
+              name: keycloak-db-secret
+              key: POSTGRES_EXTERNAL_ADDRESS
+    

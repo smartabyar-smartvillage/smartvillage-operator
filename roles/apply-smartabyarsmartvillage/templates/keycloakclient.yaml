@@ -1,0 +1,89 @@
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: {{ SITE_NAME }}
+  namespace: {{ ansible_operator_meta.namespace }}
+  labels:
+    app: {{ SSO.CLUSTER_NAME }}
+    realm: SMARTVILLAGE
+    client: smartvillage
+spec:
+  realmSelector:
+     matchLabels:
+      app: {{ SSO.CLUSTER_NAME }}
+      realm: SMARTVILLAGE
+  client:
+    id: smartvillage
+    clientId: smartvillage
+    standardFlowEnabled: true
+    serviceAccountsEnabled: true
+    authorizationServicesEnabled: true
+    frontchannelLogout: true
+    protocol: openid-connect
+    redirectUris:
+      - http://localhost:12080/logout
+      - http://localhost:12080/callback
+      - https://oauth-openshift.apps-crc.testing/oauth2callback/sso
+    defaultClientScopes:
+      - profile
+      - smartvillage
+    authorizationSettings:
+      scopes:
+        - id: POST
+          name: POST
+          displayName: POST
+        - id: DELETE
+          name: DELETE
+          displayName: DELETE
+        - id: GET
+          name: GET
+          displayName: GET
+        - id: PATCH
+          name: PATCH
+          displayName: PATCH
+        - id: PUTImport
+          name: PUTImport
+          displayName: PUTImport
+        - id: Search
+          name: Search
+          displayName: Search
+      resources:
+        - name: TrafficSimulation
+          displayName: TrafficSimulation
+          uris:
+            - /api/traffic-simulation
+            - /traffic-simulation
+          scopes:
+            - POST
+            - DELETE
+            - GET
+            - PATCH
+            - PUTImport
+            - Search
+        - name: SiteUser
+          displayName: SiteUser
+          uris:
+            - /api/user
+            - /user
+          scopes:
+            - POST
+            - DELETE
+            - GET
+            - PATCH
+            - PUTImport
+            - Search
+      policies:
+        - id: admin-policy
+          name: admin
+          logic: POSITIVE
+          decisionStrategy: UNANIMOUS
+          type: role
+          config:
+            roles: "[{\"id\":\"admin\",\"required\":true}]"
+        - id: user-policy
+          name: user
+          logic: POSITIVE
+          decisionStrategy: UNANIMOUS
+          type: client
+          config:
+            clients: "[\"smartvillage\"]"

@@ -1,0 +1,236 @@
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakRealm
+metadata:
+  name: {{ SITE_NAME }}
+  namespace: {{ ansible_operator_meta.namespace }}
+  labels:
+    app: {{ SSO.CLUSTER_NAME }}
+    realm: SMARTVILLAGE
+spec:
+  realm:
+    id: "SMARTVILLAGE"
+    realm: "SMARTVILLAGE"
+    enabled: true
+    displayName: "SMARTVILLAGE"
+    registrationAllowed: true
+    resetPasswordAllowed: true
+    editUsernameAllowed: true
+    rememberMe: true
+    verifyEmail: true
+    loginWithEmailAllowed: true
+    roles:
+      realm:
+        - id: user
+          name: user
+        - id: student
+          name: student
+        - id: viewer
+          name: viewer
+        - id: admin
+          name: admin
+        - id: super-admin
+          name: super-admin
+          composite: true
+          composites:
+            realm:
+              - admin
+    clientScopes:
+      - id: smartvillage-smartvillage
+        name: smartvillage
+        description: A client scope for the smartvillage client
+        protocol: openid-connect
+        protocolMappers: 
+          - config:
+              access.token.claim: 'true'
+              id.token.claim: 'false'
+              included.client.audience: 'smartvillage'
+            consentRequired: false
+            id: smartvillage-smartvillage
+            name: smartvillage
+            protocol: openid-connect
+            protocolMapper: oidc-audience-mapper
+      - id: smartvillage-profile
+        name: profile
+        description: "OpenID Connect built-in scope: profile"
+        protocol: openid-connect
+        protocolMappers: 
+          - config:
+              access.token.claim: 'true'
+              claim.name: email_verified
+              id.token.claim: 'true'
+              jsonType.label: boolean
+              user.attribute: emailVerified
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: smartvillage-email-verified
+            name: email verified
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-property-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: preferred_username
+              id.token.claim: 'true'
+              jsonType.label: String
+              user.attribute: username
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: smartvillage-username
+            name: username
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-property-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: groups
+              id.token.claim: 'true'
+              jsonType.label: String
+              multivalued: 'true'
+              user.attribute: foo
+            consentRequired: false
+            id: smartvillage-groups
+            name: groups
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-realm-role-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: family_name
+              id.token.claim: 'true'
+              jsonType.label: String
+              user.attribute: lastName
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: smartvillage-family-name
+            name: family name
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-property-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: given_name
+              id.token.claim: 'true'
+              jsonType.label: String
+              user.attribute: firstName
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: smartvillage-given-name
+            name: given name
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-property-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: email
+              id.token.claim: 'true'
+              jsonType.label: String
+              user.attribute: email
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: smartvillage-email
+            name: email
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-property-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: middle_name
+              id.token.claim: 'true'
+              jsonType.label: String
+              user.attribute: middleName
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: smartvillage-middle-name
+            name: middle name
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-attribute-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: locale
+              id.token.claim: 'true'
+              jsonType.label: String
+              user.attribute: locale
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: smartvillage-locale
+            name: locale
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-attribute-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: nickname
+              id.token.claim: 'true'
+              jsonType.label: String
+              user.attribute: nickname
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: smartvillage-nickname
+            name: nickname
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-attribute-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: updated_at
+              id.token.claim: 'true'
+              jsonType.label: long
+              user.attribute: updatedAt
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: smartvillage-updated-at
+            name: updated at
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-attribute-mapper
+          - config:
+              access.token.claim: 'true'
+              id.token.claim: 'true'
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: smartvillage-full-name
+            name: full name
+            protocol: openid-connect
+            protocolMapper: oidc-full-name-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: profile
+              id.token.claim: 'true'
+              jsonType.label: String
+              user.attribute: profile
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: smartvillage-profile
+            name: profile
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-attribute-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: resource_access.${client_id}.roles
+              jsonType.label: String
+              multivalued: 'true'
+              user.attribute: foo
+            consentRequired: false
+            id: smartvillage-client-roles
+            name: client roles
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-client-role-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: zoneinfo
+              id.token.claim: 'true'
+              jsonType.label: String
+              user.attribute: zoneinfo
+              userinfo.token.claim: 'true'
+            consentRequired: false
+            id: smartvillage-zoneinfo
+            name: zoneinfo
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-attribute-mapper
+          - config:
+              access.token.claim: 'true'
+              claim.name: realm_access.roles
+              jsonType.label: String
+              multivalued: 'true'
+              user.attribute: foo
+            consentRequired: false
+            id: smartvillage-realm-roles
+            name: realm roles
+            protocol: openid-connect
+            protocolMapper: oidc-usermodel-realm-role-mapper
+    defaultDefaultClientScopes:
+      - smartvillage
+  instanceSelector:
+    matchLabels:
+      app: {{ SSO.CLUSTER_NAME }}

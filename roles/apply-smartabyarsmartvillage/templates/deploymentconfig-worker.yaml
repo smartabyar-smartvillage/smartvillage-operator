@@ -1,0 +1,382 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: {{ SITE_NAME }}-worker
+  namespace: {{ ansible_operator_meta.namespace }}
+spec:
+  replicas: '{{ SITE_REPLICAS }}'
+  selector:
+    app: "{{ SITE_NAME }}"
+    deploymentconfig: "{{ SITE_NAME }}"
+  strategy:
+    activeDeadlineSeconds: 21600
+    recreateParams:
+      timeoutSeconds: 600
+    resources: {}
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: "{{ SITE_NAME }}"
+        deploymentconfig: "{{ SITE_NAME }}"
+    spec:
+      containers:
+        - imagePullPolicy: Always
+          name: "{{ SITE_NAME }}"
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+            - containerPort: 8081
+              name: cluster
+              protocol: TCP
+            - containerPort: 9779
+              name: prometheus
+              protocol: TCP
+            - containerPort: 8778
+              name: jolokia
+              protocol: TCP
+            - containerPort: 3333
+              name: jms
+              protocol: TCP
+            - containerPort: 8998
+              name: debug
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: "HTTP"
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 20
+            successThreshold: 1
+            failureThreshold: 20
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: "HTTP"
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 20
+            successThreshold: 1
+            failureThreshold: 20
+          resources:
+            limits:
+              memory: '{{ SITE_LIMITS_MEMORY }}'
+              cpu: '{{ SITE_LIMITS_CPU }}'
+            requests:
+              memory: '{{ SITE_REQUESTS_MEMORY }}'
+              cpu: '{{ SITE_REQUESTS_CPU }}'
+          env:
+
+            - name: SITE_PORT
+              value: "8080"
+            - name: SITE_BASE_URL
+              value: "https://{{ SITE_HOST_NAME }}"
+            - name: STATIC_BASE_URL
+              value: "{{ STATIC_BASE_URL }}"
+            - name: STATIC_PATH
+              value: "/usr/local/src/smartabyar-smartvillage/src/main/resources/webroot"
+            - name: SITE_ZONE
+              value: "{{ SITE.ZONE }}"
+            - name: SITE_LOCALE
+              value: "{{ SITE.LOCALE }}"
+            - name: SITE_INSTANCES
+              value: "{{ SITE.INSTANCES }}"
+            - name: OPENSHIFT_SERVICE
+              value: "{{ SITE_NAME }}"
+            - name: CLUSTER_PORT
+              value: "8081"
+            - name: WORKER_POOL_SIZE
+              value: "{{ SITE.WORKER_POOL_SIZE }}"
+            - name: DYNAMIC_PAGE_PATH
+              value: '["/usr/local/src/smartabyar-smartvillage/page"]'
+            - name: VERTX_WARNING_EXCEPTION_SECONDS
+              value: "{{ VERTX_WARNING_EXCEPTION_SECONDS }}"
+            - name: CLUSTER_HOST_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+            - name: CLUSTER_PUBLIC_HOST_NAME
+              value: "{{ SITE_NAME }}.{{ ansible_operator_meta.namespace }}.svc"
+            - name: JAVA_OPTS
+              value: "{{ JAVA_OPTS }}"
+
+            - name: ZOOKEEPER_HOST_NAME
+              value: "{{ ZOOKEEPER.HOST_NAME }}"
+            - name: ZOOKEEPER_PORT
+              value: "{{ ZOOKEEPER.PORT }}"
+            - name: ZOOKEEPER_MAX_RETRIES
+              value: "{{ ZOOKEEPER.MAX_RETRIES }}"
+            - name: ZOOKEEPER_BASE_SLEEP_TIME_MILLIS
+              value: "{{ ZOOKEEPER.BASE_SLEEP_TIME_MILLIS }}"
+            - name: ZOOKEEPER_MAX_SLEEP_MILLIS
+              value: "{{ ZOOKEEPER.MAX_SLEEP_MILLIS }}"
+            - name: ZOOKEEPER_CONNECTION_TIMEOUT_MILLIS
+              value: "{{ ZOOKEEPER.CONNECTION_TIMEOUT_MILLIS }}"
+            - name: ZOOKEEPER_SESSION_TIMEOUT_MILLIS
+              value: "{{ ZOOKEEPER.SESSION_TIMEOUT_MILLIS }}"
+
+            - name: AUTH_REALM
+              value: "{{ AUTH.REALM }}"
+            - name: AUTH_CLIENT
+              valueFrom:
+                secretKeyRef:
+                  key: CLIENT_ID
+                  name: "{{ SSO.CLIENT_SECRET_NAME }}"
+            - name: AUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: CLIENT_SECRET
+                  name: "{{ SSO.CLIENT_SECRET_NAME }}"
+            - name: AUTH_HOST_NAME
+              value: "{{ AUTH.HOST_NAME | default(SSO_ROUTE.host) }}"
+            - name: AUTH_PORT
+              value: "{{ AUTH.PORT }}"
+            - name: AUTH_SSL
+              value: "{{ AUTH.SSL }}"
+            - name: AUTH_URL
+              value: "https://{{ AUTH.HOST_NAME | default(SSO_ROUTE.host) }}/auth"
+            - name: AUTH_TOKEN_URI
+              value: "{{ AUTH.TOKEN_URI }}"
+
+            - name: JDBC_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: JDBC_HOST
+                  name: {{ DATABASE.SECRET_NAME }}
+            - name: JDBC_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: JDBC_PORT
+                  name: {{ DATABASE.SECRET_NAME }}
+            - name: JDBC_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  key: JDBC_DATABASE
+                  name: {{ DATABASE.SECRET_NAME }}
+            - name: JDBC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: JDBC_USERNAME
+                  name: {{ DATABASE.SECRET_NAME }}
+            - name: JDBC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: JDBC_PASSWORD
+                  name: {{ DATABASE.SECRET_NAME }}
+
+            - name: SOLR_HOST_NAME
+              value: "{{ SOLR.HOST_NAME }}"
+            - name: SOLR_PORT
+              value: "{{ SOLR.PORT }}"
+            - name: SOLR_URL
+              value: "{{ 'https://' if SOLR.SSL else 'http://' }}{{ SOLR.HOST_NAME }}:{{ SOLR.PORT }}/solr/{{ SOLR.COLLECTION }}"
+            - name: SOLR_COLLECTION
+              value: "{{ SOLR_COLLECTION }}"
+{% if EMAIL.ENABLED %}
+
+            - name: EMAIL_AUTH
+              valueFrom:
+                secretKeyRef:
+                  key: EMAIL_AUTH
+                  name: "{{ EMAIL.SECRET_NAME }}"
+            - name: EMAIL_FROM
+              valueFrom:
+                secretKeyRef:
+                  key: EMAIL_FROM
+                  name: "{{ EMAIL.SECRET_NAME }}"
+            - name: EMAIL_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: EMAIL_HOST
+                  name: "{{ EMAIL.SECRET_NAME }}"
+            - name: EMAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: EMAIL_PASSWORD
+                  name: "{{ EMAIL.SECRET_NAME }}"
+            - name: EMAIL_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: EMAIL_PORT
+                  name: "{{ EMAIL.SECRET_NAME }}"
+            - name: EMAIL_SSL
+              valueFrom:
+                secretKeyRef:
+                  key: EMAIL_SSL
+                  name: "{{ EMAIL.SECRET_NAME }}"
+            - name: EMAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: EMAIL_USERNAME
+                  name: "{{ EMAIL.SECRET_NAME }}"
+{% endif %}
+            - name: ENABLE_IMPORT_DATA
+              value: "{{ IMPORT_DATA.ENABLED }}"
+            - name: ENABLE_IMPORT_DATA_SitePage
+              value: '{{ IMPORT_DATA.SitePage.ENABLED }}'
+            - name: ENABLE_IMPORT_DATA_SiteHtm
+              value: '{{ IMPORT_DATA.SiteHtm.ENABLED }}'
+
+            - name: AUTH_ROLE_ADMIN
+              value: '{{ AUTH_ROLE.ADMIN }}'
+            - name: AUTH_ROLE_REQUIRED_SiteUser
+              value: '{{ AUTH_ROLE.SiteUser }}'
+            - name: AUTH_ROLE_REQUIRED_MapResult
+              value: '{{ AUTH_ROLE.MapResult }}'
+            - name: AUTH_ROLE_REQUIRED_SystemEvent
+              value: '{{ AUTH_ROLE.SystemEvent }}'
+            - name: AUTH_ROLE_REQUIRED_SitePage
+              value: '{{ AUTH_ROLE.SitePage }}'
+            - name: AUTH_ROLE_REQUIRED_SiteHtm
+              value: '{{ AUTH_ROLE.SiteHtm }}'
+            - name: AUTH_ROLE_REQUIRED_IotNode
+              value: '{{ AUTH_ROLE.IotNode }}'
+            - name: AUTH_ROLE_REQUIRED_IotNodeStep
+              value: '{{ AUTH_ROLE.IotNodeStep }}'
+            - name: AUTH_ROLE_REQUIRED_PersonStep
+              value: '{{ AUTH_ROLE.PersonStep }}'
+            - name: AUTH_ROLE_REQUIRED_BicycleStep
+              value: '{{ AUTH_ROLE.BicycleStep }}'
+            - name: AUTH_ROLE_REQUIRED_TimeStep
+              value: '{{ AUTH_ROLE.TimeStep }}'
+            - name: AUTH_ROLE_REQUIRED_TrafficSimulation
+              value: '{{ AUTH_ROLE.TrafficSimulation }}'
+            - name: AUTH_ROLE_REQUIRED_TrafficFlowObserved
+              value: '{{ AUTH_ROLE.TrafficFlowObserved }}'
+            - name: AUTH_ROLE_REQUIRED_TrafficLight
+              value: '{{ AUTH_ROLE.TrafficLight }}'
+            - name: AUTH_ROLE_REQUIRED_TrafficLightStep
+              value: '{{ AUTH_ROLE.TrafficLightStep }}'
+            - name: AUTH_ROLE_REQUIRED_VehicleStep
+              value: '{{ AUTH_ROLE.VehicleStep }}'
+
+            - name: SUMO_EXECUTABLE_PATH
+              value: /usr/local/bin/sumo
+            - name: PYTHON_EXECUTABLE_PATH
+              value: /opt/python/bin/python
+
+            - name: "DEFAULT_MAP_LOCATION"
+              value: "55.61888,13.548799"
+            - name: "DEFAULT_MAP_ZOOM"
+              value: "11"
+
+            - name: "YGGIO_HOST_NAME"
+              valueFrom:
+                secretKeyRef:
+                  key: "YGGIO_HOST_NAME"
+                  name: "{{ SITE.SECRET_NAME }}"
+            - name: "YGGIO_PORT"
+              valueFrom:
+                secretKeyRef:
+                  key: "YGGIO_PORT"
+                  name: "{{ SITE.SECRET_NAME }}"
+            - name: "YGGIO_SSL"
+              valueFrom:
+                secretKeyRef:
+                  key: "YGGIO_SSL"
+                  name: "{{ SITE.SECRET_NAME }}"
+            - name: "YGGIO_API_RELATIVE_URI_IotNode"
+              valueFrom:
+                secretKeyRef:
+                  key: "YGGIO_API_RELATIVE_URI_IotNode"
+                  name: "{{ SITE.SECRET_NAME }}"
+            - name: "YGGIO_AUTH_LOCAL_URI"
+              valueFrom:
+                secretKeyRef:
+                  key: "YGGIO_AUTH_LOCAL_URI"
+                  name: "{{ SITE.SECRET_NAME }}"
+            - name: "YGGIO_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  key: "YGGIO_USERNAME"
+                  name: "{{ SITE.SECRET_NAME }}"
+            - name: "YGGIO_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  key: "YGGIO_PASSWORD"
+                  name: "{{ SITE.SECRET_NAME }}"
+
+            - name: "FCD_SYNC_PATH"
+              value: /usr/local/share/sumo/fcd
+
+            - name: "FIWARE_SSL"
+              valueFrom:
+                secretKeyRef:
+                  key: "FIWARE_SSL"
+                  name: "{{ SITE.SECRET_NAME }}"
+            - name: "FIWARE_HOST_NAME"
+              valueFrom:
+                secretKeyRef:
+                  key: "FIWARE_HOST_NAME"
+                  name: "{{ SITE.SECRET_NAME }}"
+            - name: "FIWARE_PORT"
+              valueFrom:
+                secretKeyRef:
+                  key: "FIWARE_PORT"
+                  name: "{{ SITE.SECRET_NAME }}"
+            - name: "FIWARE_API_URI"
+              valueFrom:
+                secretKeyRef:
+                  key: "FIWARE_API_URI"
+                  name: "{{ SITE.SECRET_NAME }}"
+
+            - name: "KAFKA_BROKERS"
+              value: "{{ KAFKA.BROKERS }}"
+            - name: "KAFKA_GROUP"
+              value: "{{ KAFKA.GROUP }}"
+            - name: "SECURITY_PROTOCOL"
+              value: "{{ KAFKA.SECURITY_PROTOCOL }}"
+            - name: "SSL_KEYSTORE_TYPE"
+              value: "{{ KAFKA.SSL_KEYSTORE_TYPE }}"
+            - name: "SSL_KEYSTORE_LOCATION"
+              value: "{{ KAFKA.SSL_KEYSTORE_LOCATION }}"
+            - name: "SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  key: "user.password"
+                  name: "{{ KAFKA.KEYSTORE_SECRET }}"
+              value: "{{ KAFKA.SSL_KEYSTORE_PASSWORD }}"
+            - name: "SSL_TRUSTSTORE_TYPE"
+              value: "{{ KAFKA.SSL_TRUSTSTORE_TYPE }}"
+            - name: "SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  key: "ca.password"
+                  name: "{{ KAFKA.TRUSTSTORE_SECRET }}"
+            - name: "SSL_TRUSTSTORE_LOCATION"
+              value: "{{ KAFKA.SSL_TRUSTSTORE_LOCATION }}"
+
+            - name: "MQTT_HOST"
+              value: "{{ MQTT.HOST }}"
+            - name: "MQTT_PORT"
+              value: "{{ MQTT.PORT }}"
+            - name: "MQTT_IOT_SUBSCRIBE_TOPIC"
+              value: "{{ MQTT.IOT_SUBSCRIBE_TOPIC }}"
+
+          volumeMounts:
+{% if SITE_VOLUME_MOUNT_PATH and SITE_VOLUME_NAME %}
+            - mountPath: "{{ SITE_VOLUME_MOUNT_PATH }}"
+              name: "{{ SITE_VOLUME_NAME }}"
+{% endif %}
+      volumes:
+{% if SITE_VOLUME_NAME %}
+        - name: "{{ SITE_VOLUME_NAME }}"
+          persistentVolumeClaim:
+            claimName: "{{ SITE_VOLUME_NAME }}"
+{% endif %}
+  triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - {{ SITE_NAME }}
+        from:
+          kind: ImageStreamTag
+          name: '{{ SITE_NAME }}:latest'
+          namespace: "{{ ansible_operator_meta.namespace }}"
+      type: ImageChange
+    - type: ConfigChange

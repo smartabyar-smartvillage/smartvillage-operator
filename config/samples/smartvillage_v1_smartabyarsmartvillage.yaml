@@ -7,6 +7,169 @@ metadata:
     app.kubernetes.io/part-of: smartvillage-operator
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/created-by: smartvillage-operator
-  name: smartabyarsmartvillage-sample
+  name: smartvillage
 spec:
-  # TODO(user): Add fields here
+  description: |
+    Red Hat Global Social Innovation Program is partnering with Boston University and Smarta Byar 
+    in order to collaborate on creating a global and open research platform allowing researchers 
+    to study what social sustainability means by using a digital twin of Veberöd, Sweden 
+    as the test village, supported by Smarta Byar.
+
+  WEB_REPLICAS: 3
+  WORKER_REPLICAS: 1
+  SITE:
+    LIMITS_MEMORY: |-
+      1000Mi
+    LIMITS_CPU: |-
+      2
+    REQUESTS_MEMORY: |-
+      500Mi
+    REQUESTS_CPU: |-
+      1
+    NAME: |-
+      smartvillage
+    SECRET_NAME: |-
+      smartvillage
+    ZONE: |-
+      America/New_York
+    LOCALE: |-
+      en-US
+    INSTANCES: 3
+    STATIC_BASE_URL: |-
+      http://localhost:12080/static
+    TEMPLATE_PATH: |-
+      /home/ctate/.local/src/smartabyar-smartvillage/src/main/resources/templates
+    WORKER_POOL_SIZE: 1
+    ENABLE_ZOOKEEPER_CLUSTER: True
+    SSL_VERIFY: False
+    DEFAULT_MAP_LOCATION: |-
+      55.61888,13.548799
+    DEFAULT_MAP_ZOOM: 11
+    VERTX_WARNING_EXCEPTION_SECONDS: 60
+    JAVA_OPTS: |-
+      
+  ZOOKEEPER:
+    HOST_NAME: |-
+      default-solrcloud-zookeeper-client
+    PORT: 2181
+    MAX_RETRIES: 0
+    BASE_SLEEP_TIME_MILLIS: 5000
+    MAX_SLEEP_MILLIS: 5000
+    CONNECTION_TIMEOUT_MILLIS: 3000
+    SESSION_TIMEOUT_MILLIS: 5000
+  SSO:
+    CREATE: True
+    CLUSTER_NAME: |-
+      sso
+    DATABASE_SECRET_NAME: |-
+      postgres-pguser-sso
+    CLIENT_SECRET_NAME: |-
+      keycloak-client-secret-smartvillage
+  AUTH:
+    PORT: 443
+    SSL: True
+    REALM: |-
+      SMARTVILLAGE
+    CLIENT: |-
+      smartvillage
+    TOKEN_URI: |-
+      /auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+  DATABASE:
+    CLUSTER_NAME: |-
+      postgres
+    SECRET_NAME: |-
+      postgres-pguser-smartvillage
+    CREATE: True
+  SOLR:
+    HOST_NAME: |-
+      default-solrcloud-common
+    PORT: 80
+    SSL: False
+    URL: |-
+      https://solr-solr.apps-crc.testing/solr/smartabyar-smartvillage
+    COLLECTION: |-
+      smartvillage
+  EMAIL:
+    ENABLED: False
+  IMPORT_DATA:
+    ENABLED: True
+    SitePage:
+      ENABLED: True
+    SiteHtm:
+      ENABLED: True
+  AUTH_ROLE:
+    ADMIN: |-
+      SiteAdmin
+    SITEUSER: |-
+      SiteAdmin
+    SITEPAGE: |-
+      SiteAdmin
+    IOTNODE: |-
+      SiteAdmin
+    MAPRESULT: |-
+      SiteAdmin
+    IOTNODESTEP: |-
+      SiteAdmin
+    VEHICLESTEP: |-
+      SiteAdmin
+    PERSONSTEP: |-
+      SiteAdmin
+    TRAFFICLIGHT: |-
+      SiteAdmin
+    TRAFFICLIGHTSTEP: |-
+      SiteAdmin
+    TRAFFICSIMULATION: |-
+      SiteAdmin
+    SIMULATIONREPORT: |-
+      SiteAdmin
+  SUMO:
+    EXECUTABLE_PATH: |-
+      /home/ctate/.local/bin/sumo
+    PYTHON_EXECUTABLE_PATH: |-
+      /home/ctate/python/bin/python
+    FCD_SYNC_PATH: |-
+      /home/ctate/.local/share/sumo/data/veberod/fcd
+  YGGIO:
+    ENABLED: False
+    HOST_NAME: 
+    PORT: 443
+    SSL: True
+    USERNAME: |-
+      /v2
+    API_RELATIVE_URI_IotNode: |-
+      /api/iotnodes
+    AUTH_LOCAL_URI: |-
+      /api/auth/local
+  FIWARE:
+    SSL: False
+    PORT: 80
+    HOST_NAME: |-
+      orion-ld-fiware.apps-crc.testing
+    API_URI: |-
+      /v2
+  KAFKA:
+    KEYSTORE_SECRET: |-
+      kafka-user-smartvillage
+    TRUSTSTORE_SECRET: |-
+      kafka-user-smartvillage
+    BROKERS: |-
+      kafka0.apps-crc.testing:32000
+    GROUP: |-
+      smartvillage-kafka-group
+    SECURITY_PROTOCOL: |-
+      SSL
+    SSL_KEYSTORE_TYPE: |-
+      PKCS12
+    SSL_KEYSTORE_LOCATION: |-
+      /home/ctate/.local/src/smartabyar-smartvillage/config/user.p12
+    SSL_TRUSTSTORE_TYPE: |-
+      PKCS12
+    SSL_TRUSTSTORE_LOCATION: |-
+      /home/ctate/.local/src/smartabyar-smartvillage/config/ca.p12
+  MQTT:
+    ENABLED: True
+    HOST: |-
+      fiware-broker-mqtt-nodeport.apps-crc.testing
+    PORT: 30083
+    IOT_SUBSCRIBE_TOPIC: |-
+      iot-subscribe

@@ -1,0 +1,67 @@
+---
+- name: Install {{ SITE_NAME }} PostgreSQL cluster on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'postgrescluster.yaml') }}"
+  when: DATABASE.CREATE
+- name: Query SSO database secret
+  set_fact:
+    SSO_DATABASE_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=SSO.DATABASE_SECRET_NAME, namespace=ansible_operator_meta.namespace)[0].data }}"
+- name: Query SSO route and site host name
+  set_fact:
+    SSO_ROUTE: "{{ query('kubernetes.core.k8s', kind='Route', api_version='route.openshift.io/v1', resource_name='keycloak', namespace='smartvillage')[0].spec | default('') }}"
+    SITE_HOST_NAME: "{{ SITE.HOST_NAME | default(SITE_NAME + query('kubernetes.core.k8s', kind='Ingress', api_version='config.openshift.io/v1', resource_name='cluster')[0].spec.domain) }}"
+- name: Set static base URL
+  set_fact:
+    SITE_BASE_URL: "https://{{ SITE_HOST_NAME }}"
+    STATIC_BASE_URL: "{{ SITE.STATIC_BASE_URL | default('https://' + SITE_HOST_NAME + '/static') }}"
+- name: Install keycloak-db-secret on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'keycloak-db-secret.yaml') }}"
+- name: Install {{ SITE_NAME }} Keycloak cluster on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'keycloak.yaml') }}"
+  when: SSO.CREATE
+- name: Install {{ SITE_NAME }} Keycloak realm on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'keycloakrealm.yaml') }}"
+  when: SSO.CREATE
+- name: Install {{ SITE_NAME }} Keycloak client on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'keycloakclient.yaml') }}"
+  when: SSO.CREATE
+#- name: Install {{ SITE_NAME }} secret on OpenShift
+#  k8s:
+#    state: present
+#    definition: "{{ lookup('template', 'secret.yaml') }}"
+- name: Install {{ SITE_NAME }} image stream on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'imagestream.yaml') }}"
+- name: Install {{ SITE_NAME }} deployment config on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'deploymentconfig-web.yaml') }}"
+#- name: Install {{ SITE_NAME }} worker persistent volume claims on OpenShift
+#  k8s:
+#    state: present
+#    definition: "{{ lookup('template', 'persistentvolumeclaim.yaml') }}"
+#  with_sequence: start=1 end=WORKER_REPLICAS
+#- name: Install {{ SITE_NAME }} service on OpenShift
+#  k8s:
+#    state: present
+#    definition: "{{ lookup('template', 'service-web.yaml') }}"
+#- name: Install {{ SITE_NAME }} route on OpenShift
+#  k8s:
+#    state: present
+#    definition: "{{ lookup('template', 'route.yaml') }}"
+#- name: Create Solr collection
+#  shell: "oc login {{ SOLR_HOST }} --token={{ REDHAT_OPENSHIFT_TOKEN }} && oc exec $(oc get pod -l app=solr -o jsonpath='{.items[0].metadata.name}' -n {{ SOLR_NAMESPACE }}) -n {{ SOLR_NAMESPACE }} -- /opt/solr/bin/solr create_collection -c {{ SOLR_COLLECTION }} -n computate || true"
+#  register: create_collection
+#- name: Print create_collection command
+#  debug:
+#    var: create_collection

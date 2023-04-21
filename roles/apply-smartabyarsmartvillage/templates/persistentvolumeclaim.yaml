@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ SITE_VOLUME_SIZE }}
+{% if SITE_STORAGE_CLASS_NAME is defined %}
+  storageClassName: "{{ SITE_STORAGE_CLASS_NAME }}"
+{% endif %}
