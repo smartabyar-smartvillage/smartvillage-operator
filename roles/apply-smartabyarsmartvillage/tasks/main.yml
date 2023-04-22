@@ -87,14 +87,14 @@
 #    state: present
 #    definition: "{{ lookup('template', 'persistentvolumeclaim.yaml') }}"
 #  with_sequence: start=1 end=WORKER_REPLICAS
-#- name: Install {{ SITE_NAME }} service on OpenShift
-#  k8s:
-#    state: present
-#    definition: "{{ lookup('template', 'service-web.yaml') }}"
-#- name: Install {{ SITE_NAME }} route on OpenShift
-#  k8s:
-#    state: present
-#    definition: "{{ lookup('template', 'route.yaml') }}"
+- name: Install {{ SITE_NAME }}-web service on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'service-web.yaml') }}"
+- name: Install {{ SITE_NAME }}-web route on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'route.yaml') }}"
 #- name: Create Solr collection
 #  shell: "oc login {{ SOLR_HOST }} --token={{ REDHAT_OPENSHIFT_TOKEN }} && oc exec $(oc get pod -l app=solr -o jsonpath='{.items[0].metadata.name}' -n {{ SOLR_NAMESPACE }}) -n {{ SOLR_NAMESPACE }} -- /opt/solr/bin/solr create_collection -c {{ SOLR_COLLECTION }} -n computate || true"
 #  register: create_collection
