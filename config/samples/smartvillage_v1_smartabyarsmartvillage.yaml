@@ -15,6 +15,7 @@ spec:
     to study what social sustainability means by using a digital twin of Veberöd, Sweden 
     as the test village, supported by Smarta Byar.
 
+  ENABLE_DEV_NODEPORTS: False
   WEB_REPLICAS: 3
   WORKER_REPLICAS: 1
   SITE:
@@ -104,6 +105,8 @@ spec:
       SiteAdmin
     SITEPAGE: |-
       SiteAdmin
+    SITEHTM: |-
+      SiteAdmin
     IOTNODE: |-
       SiteAdmin
     MAPRESULT: |-
@@ -121,6 +124,14 @@ spec:
     TRAFFICSIMULATION: |-
       SiteAdmin
     SIMULATIONREPORT: |-
+      SiteAdmin
+    SYSTEMEVENT: |-
+      SiteAdmin
+    BICYCLESTEP: |-
+      SiteAdmin
+    TIMESTEP: |-
+      SiteAdmin
+    TRAFFICFLOWOBSERVED: |-
       SiteAdmin
   SUMO:
     EXECUTABLE_PATH: |-
@@ -149,9 +160,9 @@ spec:
       /v2
   KAFKA:
     KEYSTORE_SECRET: |-
-      kafka-user-smartvillage
+      smartvillage-kafka
     TRUSTSTORE_SECRET: |-
-      kafka-user-smartvillage
+      smartvillage-kafka-cluster-ca-cert
     BROKERS: |-
       kafka0.apps-crc.testing:32000
     GROUP: |-
@@ -161,15 +172,15 @@ spec:
     SSL_KEYSTORE_TYPE: |-
       PKCS12
     SSL_KEYSTORE_LOCATION: |-
-      /home/ctate/.local/src/smartabyar-smartvillage/config/user.p12
+      /opt/kafka/keystore/user.p12
     SSL_TRUSTSTORE_TYPE: |-
       PKCS12
     SSL_TRUSTSTORE_LOCATION: |-
-      /home/ctate/.local/src/smartabyar-smartvillage/config/ca.p12
+      /opt/kafka/truststore/ca.p12
   MQTT:
     ENABLED: True
     HOST: |-
-      fiware-broker-mqtt-nodeport.apps-crc.testing
-    PORT: 30083
+      fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
+    PORT: 1883
     IOT_SUBSCRIBE_TOPIC: |-
       iot-subscribe

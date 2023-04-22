@@ -15,6 +15,7 @@
   set_fact:
     SITE_BASE_URL: "https://{{ SITE_HOST_NAME }}"
     STATIC_BASE_URL: "{{ SITE.STATIC_BASE_URL | default('https://' + SITE_HOST_NAME + '/static') }}"
+
 - name: Install keycloak-db-secret on OpenShift
   k8s:
     state: present
@@ -34,6 +35,41 @@
     state: present
     definition: "{{ lookup('template', 'keycloakclient.yaml') }}"
   when: SSO.CREATE
+
+- name: Install {{ SITE_NAME }} Kafka cluster on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'kafka.yaml') }}"
+- name: Install {{ SITE_NAME }} Kafka user on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'kafkauser.yaml') }}"
+  when: SSO.CREATE
+- name: Install {{ SITE_NAME }} Kafka Topic smartvillage-sumo-run on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'kafkatopic-smartvillage-sumo-run.yaml') }}"
+  when: SSO.CREATE
+- name: Install {{ SITE_NAME }} Kafka Topic smartvillage-sumo-run-report on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'kafkatopic-smartvillage-sumo-run-report.yaml') }}"
+  when: SSO.CREATE
+- name: Install {{ SITE_NAME }} Kafka Topic smartvillage-sumo-stop on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'kafkatopic-smartvillage-sumo-stop.yaml') }}"
+  when: SSO.CREATE
+
+- name: Install {{ SITE_NAME }} AMQ Broker on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'activemqartemis.yaml') }}"
+- name: Install {{ SITE_NAME }} AMQ Broker Address on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'activemqartemisaddress.yaml') }}"
+
 #- name: Install {{ SITE_NAME }} secret on OpenShift
 #  k8s:
 #    state: present

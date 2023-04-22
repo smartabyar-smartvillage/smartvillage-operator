@@ -7,6 +7,9 @@ description: |
   as the test village, supported by Smarta Byar.
 env:
 
+  ENABLE_DEV_NODEPORTS:
+    type: boolean
+    default: false
   WEB_REPLICAS:
     type: number
     default: 3
@@ -221,6 +224,12 @@ env:
           ENABLED:
             type: boolean
             default: true
+      IotNode:
+        type: object
+        properties:
+          ENABLED:
+            type: boolean
+            default: false
   
   # The Auth roles required to be an admin in the site. 
   AUTH_ROLE:
@@ -341,16 +350,16 @@ env:
     properties:
       KEYSTORE_SECRET:
         type: string
-        default: kafka-user-smartvillage
+        default: smartvillage-kafka
       TRUSTSTORE_SECRET:
         type: string
-        default: kafka-user-smartvillage
+        default: smartvillage-kafka-cluster-ca-cert
       BROKERS:
         type: string
         default: kafka0.apps-crc.testing:32000
       GROUP:
         type: string
-        default: smartvillage-kafka-group
+        default: smartvillage-kafka
       SECURITY_PROTOCOL:
         type: string
         default: SSL
@@ -359,14 +368,14 @@ env:
         default: PKCS12
       SSL_KEYSTORE_LOCATION:
         type: string
-        default: /home/ctate/.local/src/smartabyar-smartvillage/config/user.p12
+        default: /opt/kafka/keystore/user.p12
       SSL_TRUSTSTORE_TYPE:
         type: string
         default: PKCS12
       SSL_TRUSTSTORE_LOCATION:
         type: string
-        default: /home/ctate/.local/src/smartabyar-smartvillage/config/ca.p12
-  
+        default: /opt/kafka/truststore/ca.p12
+
   MQTT:
     type: object
     properties:
@@ -375,10 +384,10 @@ env:
         default: true
       HOST:
         type: string
-        default: fiware-broker-mqtt-nodeport.apps-crc.testing
+        default: fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
       PORT:
         type: number
-        default: 30083
+        default: 1883
       IOT_SUBSCRIBE_TOPIC:
         type: string
         default: iot-subscribe

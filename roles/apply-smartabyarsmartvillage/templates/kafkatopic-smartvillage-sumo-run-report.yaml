@@ -1,0 +1,8 @@
+kind: KafkaTopic
+apiVersion: kafka.strimzi.io/v1beta2
+metadata:
+  name: smartvillage-sumo-run-report
+  labels:
+    strimzi.io/cluster: smartvillage-kafka
+  namespace: {{ ansible_operator_meta.namespace }}
+spec: {}

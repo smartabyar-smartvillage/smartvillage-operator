@@ -11,6 +11,7 @@
       name: smartvillage
       namespace: smartvillage
 
+    ENABLE_DEV_NODEPORTS: True
     WEB_REPLICAS: 3
     WORKER_REPLICAS: 1
     SITE:
@@ -92,6 +93,8 @@
         ENABLED: True
       SiteHtm:
         ENABLED: True
+      IotNode:
+        ENABLED: False
     AUTH_ROLE:
       ADMIN: |-
         SiteAdmin
@@ -152,27 +155,27 @@
         /v2
     KAFKA:
       KEYSTORE_SECRET: |-
-        kafka-user-smartvillage
+        smartvillage-kafka
       TRUSTSTORE_SECRET: |-
-        kafka-user-smartvillage
+        smartvillage-kafka-cluster-ca-cert
       BROKERS: |-
-        kafka0.apps-crc.testing:32000
+        smartvillage-kafka-kafka-bootstrap.smartvillage.svc.cluster.local:9093
       GROUP: |-
-        smartvillage-kafka-group
+        smartvillage-kafka
       SECURITY_PROTOCOL: |-
         SSL
       SSL_KEYSTORE_TYPE: |-
         PKCS12
       SSL_KEYSTORE_LOCATION: |-
-        /home/ctate/.local/src/smartabyar-smartvillage/config/user.p12
+        /opt/kafka/keystore/user.p12
       SSL_TRUSTSTORE_TYPE: |-
         PKCS12
       SSL_TRUSTSTORE_LOCATION: |-
-        /home/ctate/.local/src/smartabyar-smartvillage/config/ca.p12
+        /opt/kafka/truststore/ca.p12
     MQTT:
       ENABLED: True
       HOST: |-
-        fiware-broker-mqtt-nodeport.apps-crc.testing
-      PORT: 30083
+        fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
+      PORT: 1883
       IOT_SUBSCRIBE_TOPIC: |-
         iot-subscribe

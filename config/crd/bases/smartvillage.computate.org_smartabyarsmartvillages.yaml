@@ -39,6 +39,9 @@ spec:
             description: Spec defines the desired state of SmartaByarSmartVillage
             type: object
             properties:
+              ENABLE_DEV_NODEPORTS:
+                type: boolean
+                default: False
               WEB_REPLICAS:
                 type: number
                 default: 3
@@ -250,6 +253,9 @@ spec:
                   ADMIN:
                   default: SiteAdmin
                   type: string
+                BICYCLESTEP:
+                  default: SiteAdmin
+                  type: string
                 IOTNODE:
                   default: SiteAdmin
                   type: string
@@ -265,10 +271,22 @@ spec:
                 SIMULATIONREPORT:
                   default: SiteAdmin
                   type: string
+                SITEHTM:
+                  default: SiteAdmin
+                  type: string
                 SITEPAGE:
                   default: SiteAdmin
                   type: string
                 SITEUSER:
+                  default: SiteAdmin
+                  type: string
+                SYSTEMEVENT:
+                  default: SiteAdmin
+                  type: string
+                TIMESTEP:
+                  default: SiteAdmin
+                  type: string
+                TRAFFICFLOWOBSERVED:
                   default: SiteAdmin
                   type: string
                 TRAFFICLIGHT:
@@ -350,25 +368,25 @@ spec:
                   default: smartvillage-kafka-group
                   type: string
                 KEYSTORE_SECRET:
-                  default: kafka-user-smartvillage
+                  default: smartvillage-kafka
                   type: string
                 SECURITY_PROTOCOL:
                   default: SSL
                   type: string
                 SSL_KEYSTORE_LOCATION:
-                  default: /home/ctate/.local/src/smartabyar-smartvillage/config/user.p12
+                  default: /opt/kafka/keystore/user.p12
                   type: string
                 SSL_KEYSTORE_TYPE:
                   default: PKCS12
                   type: string
                 SSL_TRUSTSTORE_LOCATION:
-                  default: /home/ctate/.local/src/smartabyar-smartvillage/config/ca.p12
+                  default: /opt/kafka/truststore/ca.p12
                   type: string
                 SSL_TRUSTSTORE_TYPE:
                   default: PKCS12
                   type: string
                 TRUSTSTORE_SECRET:
-                  default: kafka-user-smartvillage
+                  default: smartvillage-kafka-cluster-ca-cert
                   type: string
 
               MQTT:
@@ -378,13 +396,13 @@ spec:
                   default: true
                   type: boolean
                 HOST:
-                  default: fiware-broker-mqtt-nodeport.apps-crc.testing
+                  default: fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
                   type: string
                 IOT_SUBSCRIBE_TOPIC:
                   default: iot-subscribe
                   type: string
                 PORT:
-                  default: 30083
+                  default: 1883
                   type: number
 
           status:

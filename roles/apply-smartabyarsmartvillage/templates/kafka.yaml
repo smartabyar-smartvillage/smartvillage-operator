@@ -1,0 +1,51 @@
+kind: Kafka
+apiVersion: kafka.strimzi.io/v1beta2
+metadata:
+  name: smartvillage-kafka
+  namespace: {{ ansible_operator_meta.namespace }}
+spec:
+  kafka:
+    config:
+      default.replication.factor: 3
+      min.insync.replicas: 3
+    version: 3.2.3
+    replicas: 3
+    authorization:
+      type: simple
+    listeners:
+      - name: tls
+        port: 9093
+        type: internal
+        tls: true
+        authentication:
+          type: tls
+{% if ENABLE_DEV_NODEPORTS %}
+      - name: external
+        port: 9094
+        tls: true
+        type: nodeport
+        authentication:
+          type: tls
+        configuration:
+          bootstrap:
+            nodePort: 32100
+          brokers:
+            - broker: 0
+              nodePort: 32000
+              advertisedHost: kafka0.apps-crc.testing
+            - broker: 1
+              nodePort: 32001
+              advertisedHost: kafka1.apps-crc.testing
+            - broker: 2
+              nodePort: 32002
+              advertisedHost: kafka2.apps-crc.testing
+{% endif %}
+    storage:
+      type: ephemeral
+  zookeeper:
+    replicas: 3
+    storage:
+      type: ephemeral
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}

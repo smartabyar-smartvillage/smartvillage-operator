@@ -1,0 +1,13 @@
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemisAddress
+metadata:
+  name: fiware-address
+  namespace: fiware
+spec:
+  addressName: fiware-address
+  queueName: fiware-queue
+  routingType: multicast
+  removeFromBrokerOnDelete: false
+  queueConfiguration:
+    enabled: true
+  

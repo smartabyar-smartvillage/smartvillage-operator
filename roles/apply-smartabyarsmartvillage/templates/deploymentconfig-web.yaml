@@ -6,8 +6,8 @@ metadata:
 spec:
   replicas: {{ WEB_REPLICAS }}
   selector:
-    app: "{{ SITE_NAME }}"
-    deploymentconfig: "{{ SITE_NAME }}"
+    app: "{{ SITE_NAME }}-web"
+    deploymentconfig: "{{ SITE_NAME }}-web"
   strategy:
     activeDeadlineSeconds: 21600
     recreateParams:
@@ -17,11 +17,16 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ SITE_NAME }}"
-        deploymentconfig: "{{ SITE_NAME }}"
+        app: "{{ SITE_NAME }}-web"
+        deploymentconfig: "{{ SITE_NAME }}-web"
     spec:
       containers:
         - imagePullPolicy: Always
+          command:
+            - /usr/lib/jvm/java-11-openjdk/bin/java
+            - -cp
+            - .:*
+            - org.computate.smartvillageview.enus.vertx.MainVerticle
           name: "{{ SITE_NAME }}"
           ports:
             - containerPort: 8080
@@ -71,6 +76,8 @@ spec:
               cpu: '{{ SITE.REQUESTS_CPU }}'
           env:
 
+            - name: JAVA_HOME
+              value: /usr/lib/jvm/java-11-openjdk
             - name: SITE_PORT
               value: "8080"
             - name: SITE_BASE_URL
@@ -146,27 +153,27 @@ spec:
             - name: JDBC_HOST
               valueFrom:
                 secretKeyRef:
-                  key: JDBC_HOST
+                  key: host
                   name: {{ DATABASE.SECRET_NAME }}
             - name: JDBC_PORT
               valueFrom:
                 secretKeyRef:
-                  key: JDBC_PORT
+                  key: port
                   name: {{ DATABASE.SECRET_NAME }}
             - name: JDBC_DATABASE
               valueFrom:
                 secretKeyRef:
-                  key: JDBC_DATABASE
+                  key: dbname
                   name: {{ DATABASE.SECRET_NAME }}
             - name: JDBC_USERNAME
               valueFrom:
                 secretKeyRef:
-                  key: JDBC_USERNAME
+                  key: user
                   name: {{ DATABASE.SECRET_NAME }}
             - name: JDBC_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: JDBC_PASSWORD
+                  key: password
                   name: {{ DATABASE.SECRET_NAME }}
 
             - name: SOLR_HOST_NAME
@@ -221,6 +228,8 @@ spec:
               value: '{{ IMPORT_DATA.SitePage.ENABLED }}'
             - name: ENABLE_IMPORT_DATA_SiteHtm
               value: '{{ IMPORT_DATA.SiteHtm.ENABLED }}'
+            - name: ENABLE_IMPORT_DATA_IotNode
+              value: '{{ IMPORT_DATA.IotNode.ENABLED }}'
 
             - name: AUTH_ROLE_ADMIN
               value: '{{ AUTH_ROLE.ADMIN }}'
@@ -310,25 +319,25 @@ spec:
               value: "{{ KAFKA.BROKERS }}"
             - name: "KAFKA_GROUP"
               value: "{{ KAFKA.GROUP }}"
-            - name: "SECURITY_PROTOCOL"
+            - name: "KAFKA_SECURITY_PROTOCOL"
               value: "{{ KAFKA.SECURITY_PROTOCOL }}"
-            - name: "SSL_KEYSTORE_TYPE"
+            - name: "KAFKA_SSL_KEYSTORE_TYPE"
               value: "{{ KAFKA.SSL_KEYSTORE_TYPE }}"
-            - name: "SSL_KEYSTORE_LOCATION"
+            - name: "KAFKA_SSL_KEYSTORE_LOCATION"
               value: "{{ KAFKA.SSL_KEYSTORE_LOCATION }}"
-            - name: "SSL_KEYSTORE_PASSWORD"
+            - name: "KAFKA_SSL_KEYSTORE_PASSWORD"
               valueFrom:
                 secretKeyRef:
                   key: "user.password"
                   name: "{{ KAFKA.KEYSTORE_SECRET }}"
-            - name: "SSL_TRUSTSTORE_TYPE"
+            - name: "KAFKA_SSL_TRUSTSTORE_TYPE"
               value: "{{ KAFKA.SSL_TRUSTSTORE_TYPE }}"
-            - name: "SSL_TRUSTSTORE_PASSWORD"
+            - name: "KAFKA_SSL_TRUSTSTORE_PASSWORD"
               valueFrom:
                 secretKeyRef:
                   key: "ca.password"
                   name: "{{ KAFKA.TRUSTSTORE_SECRET }}"
-            - name: "SSL_TRUSTSTORE_LOCATION"
+            - name: "KAFKA_SSL_TRUSTSTORE_LOCATION"
               value: "{{ KAFKA.SSL_TRUSTSTORE_LOCATION }}"
 
             - name: "MQTT_HOST"
@@ -337,6 +346,22 @@ spec:
               value: "{{ MQTT.PORT }}"
             - name: "MQTT_IOT_SUBSCRIBE_TOPIC"
               value: "{{ MQTT.IOT_SUBSCRIBE_TOPIC }}"
+          volumeMounts:
+            - mountPath: /opt/kafka/keystore
+              name: "{{ KAFKA.KEYSTORE_SECRET }}"
+              readOnly: true
+            - mountPath: /opt/kafka/truststore
+              name: "{{ KAFKA.TRUSTSTORE_SECRET }}"
+              readOnly: true
+      volumes:
+        - name: "{{ KAFKA.KEYSTORE_SECRET }}"
+          secret:
+            defaultMode: 420
+            secretName: "{{ KAFKA.KEYSTORE_SECRET }}"
+        - name: "{{ KAFKA.TRUSTSTORE_SECRET }}"
+          secret:
+            defaultMode: 420
+            secretName: "{{ KAFKA.TRUSTSTORE_SECRET }}"
   triggers:
     - imageChangeParams:
         automatic: true
