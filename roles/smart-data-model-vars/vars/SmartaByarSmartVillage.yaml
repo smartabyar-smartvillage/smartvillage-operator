@@ -7,387 +7,402 @@ description: |
   as the test village, supported by Smarta Byar.
 env:
 
-  ENABLE_DEV_NODEPORTS:
+  enable_dev_nodeports:
     type: boolean
     default: false
-  WEB_REPLICAS:
+  web_replicas:
     type: number
     default: 3
-  WORKER_REPLICAS:
+  worker_replicas:
     type: number
     default: 1
     minimum: 0
     maximum: 1
-  SITE:
+  site:
     type: object
     properties:
-      LIMITS_MEMORY:
+      limits_memory:
         type: string
         default: '1000Mi'
-      LIMITS_CPU:
+      limits_cpu:
         type: string
         default: '2'
-      REQUESTS_MEMORY:
+      requests_memory:
         type: string
         default: '500Mi'
-      REQUESTS_CPU:
+      requests_cpu:
         type: string
         default: '1'
-      NAME:
+      name:
         type: string
         default: smartvillage
-      SECRET_NAME:
+      secret_name:
         type: string
         default: smartvillage
         description: |
           The secret name to store site secrets. 
           If empty, "smartvillage" will be used. 
-      HOST_NAME:
+      host_name:
         type: string
-      ZONE:
+        default: smartvillage.apps-crc.testing
+      zone:
         type: string
         default: "America/New_York"
-      LOCALE:
+      locale:
         type: string
         default: "en-US"
-      INSTANCES:
+      instances:
         type: number
         default: 3
-      STATIC_BASE_URL:
+      static_base_url:
         type: string
         default: "http://localhost:12080/static"
-      TEMPLATE_PATH:
+      template_path:
         type: string
         default: "/home/ctate/.local/src/smartabyar-smartvillage/src/main/resources/templates"
-      FONTAWESOME_KIT:
+      fontawesome_kit:
         type: string
-      WORKER_POOL_SIZE:
+      worker_pool_size:
         type: number
         default: 1
-      ENABLE_ZOOKEEPER_CLUSTER:
+      enable_zookeeper_cluster:
         type: boolean
         default: true
-      SSL_VERIFY:
+      ssl_verify:
         type: boolean
         default: false
-      DEFAULT_MAP_LOCATION:
+      default_map_location:
         type: string
         default: "55.61888,13.548799"
-      DEFAULT_MAP_ZOOM:
+      default_map_zoom:
         type: number
         default: 11
-      VERTX_WARNING_EXCEPTION_SECONDS:
+      vertx_warning_exception_seconds:
         type: number
         default: 60
-      JAVA_OPTS:
+      java_opts:
         type: string
         default: ""
 
-  ZOOKEEPER:
+  zookeeper:
     type: object
     properties:
-      HOST_NAME:
+      host_name:
         type: string
         default: default-solrcloud-zookeeper-client
-      PORT:
+      port:
         type: number
         default: 2181
-      MAX_RETRIES:
+      max_retries:
         type: number
         default: 0
-      BASE_SLEEP_TIME_MILLIS:
+      base_sleep_time_millis:
         type: number
         default: 5000
-      MAX_SLEEP_MILLIS:
+      max_sleep_millis:
         type: number
         default: 5000
-      CONNECTION_TIMEOUT_MILLIS:
+      connection_timeout_millis:
         type: number
         default: 3000
-      SESSION_TIMEOUT_MILLIS:
+      session_timeout_millis:
         type: number
         default: 5000
 
-  SSO:
+  sso:
     type: object
     properties:
-      CREATE:
+      create:
         type: boolean
         default: true
         description: |
           Determines if a new Red Hat SSO cluster will be created. 
-      CLUSTER_NAME:
+      host_name:
+        type: string
+        default: keycloak-sso.apps-crc.testing
+      cluster_name:
         type: string
         default: sso
         description: |
           Red Hat SSO cluster name. 
           If empty, "sso" will be used. 
-      DATABASE_SECRET_NAME:
+      database_secret_name:
         type: string
         default: postgres-pguser-sso
         description: |
           Optional secret name where the SSO secrets are stored. 
           If empty, "postgres-pguser-sso" will be used. 
-      CLIENT_SECRET_NAME:
+      client_secret_name:
         type: string
         default: keycloak-client-secret-smartvillage
         description: |
           Optional secret name where the SSO secrets are stored. 
           If empty, "keycloak-client-secret-smartvillage" will be used. 
 
-  AUTH:
+  auth:
     type: object
     properties:
-      HOST_NAME:
+      host_name:
         type: string
-      PORT:
+      port:
         type: number
         default: 443
-      SSL:
+      ssl:
         type: boolean
         default: true
-      REALM:
+      realm:
         type: string
         default: "SMARTVILLAGE"
-      CLIENT:
+      client:
         type: string
         default: "smartvillage"
-      SECRET: 
+      secret: 
         type: string
-      TOKEN_URI:
+      token_uri:
         type: string
         default: "/auth/realms/SMARTVILLAGE/protocol/openid-connect/token"
 
-  DATABASE:
+  database:
     type: object
     properties:
-      CLUSTER_NAME:
+      cluster_name:
         type: string
         default: postgres
         description: |
           Crunchy Postgres cluster name. 
           If empty, "postgres" will be used. 
-      SECRET_NAME:
+      secret_name:
         type: string
         default: postgres-pguser-smartvillage
         description: |
           Optional secret name where the database secrets are stored. 
           If empty, "postgres-pguser-smartvillage" will be used. 
-      CREATE:
+      create:
         type: boolean
         default: true
         description: |
           Determines if a new Crunchy Postgres cluster will be created. 
   
-  SOLR:
+  solr:
     type: object
     properties:
-      HOST_NAME:
+      host_name:
         type: string
         default: default-solrcloud-common
-      PORT:
+      port:
         type: number
         default: 80
-      SSL:
+      ssl:
         type: boolean
         default: false
-      URL:
+      route:
+        type: object
+        properties:
+          create:
+            type: boolean
+            default: false
+            description: |
+              Whether to create a route for Solr. 
+          host:
+            type: string
+            description: |
+              The Route host for Solr. 
+      url:
         type: string
         default: "https://solr-solr.apps-crc.testing/solr/smartabyar-smartvillage"
-      COLLECTION:
+      collection:
         type: string
         default: "smartvillage"
   
-  EMAIL:
+  email:
     type: object
     properties:
-      ENABLED: 
+      enabled: 
         type: boolean
         default: false
   
   # Enable data import in the site. 
-  IMPORT_DATA:
+  import_data:
     type: object
     properties:
-      ENABLED:
+      enabled:
         type: boolean
         default: true
-      SitePage:
+      sitepage:
         type: object
         properties:
-          ENABLED:
+          enabled:
             type: boolean
             default: true
-      SiteHtm:
+      sitehtm:
         type: object
         properties:
-          ENABLED:
+          enabled:
             type: boolean
             default: true
-      IotNode:
+      iotnode:
         type: object
         properties:
-          ENABLED:
+          enabled:
             type: boolean
             default: false
   
   # The Auth roles required to be an admin in the site. 
-  AUTH_ROLE:
+  auth_role:
     type: object
     properties:
-      ADMIN:
+      admin:
         type: string
         default: 'SiteAdmin'
-      SITEUSER:
+      siteuser:
         type: string
         default: 'SiteAdmin'
-      SITEPAGE:
+      sitepage:
         type: string
         default: 'SiteAdmin'
-      SITEHTM:
+      sitehtm:
         type: string
         default: 'SiteAdmin'
-      IOTNODE:
+      iotnode:
         type: string
         default: 'SiteAdmin'
-      MAPRESULT:
+      mapresult:
         type: string
         default: 'SiteAdmin'
-      IOTNODESTEP:
+      iotnodestep:
         type: string
         default: 'SiteAdmin'
-      VEHICLESTEP:
+      vehiclestep:
         type: string
         default: 'SiteAdmin'
-      PERSONSTEP:
+      personstep:
         type: string
         default: 'SiteAdmin'
-      TRAFFICLIGHT:
+      trafficlight:
         type: string
         default: 'SiteAdmin'
-      TRAFFICLIGHTSTEP:
+      trafficlightstep:
         type: string
         default: 'SiteAdmin'
-      TRAFFICSIMULATION:
+      trafficsimulation:
         type: string
         default: 'SiteAdmin'
-      SIMULATIONREPORT:
+      simulationreport:
         type: string
         default: 'SiteAdmin'
-      SYSTEMEVENT:
+      systemevent:
         type: string
         default: 'SiteAdmin'
-      BICYCLESTEP:
+      bicyclestep:
         type: string
         default: 'SiteAdmin'
-      TIMESTEP:
+      timestep:
         type: string
         default: 'SiteAdmin'
-      TRAFFICFLOWOBSERVED:
+      trafficflowobserved:
         type: string
         default: 'SiteAdmin'
 
-  SUMO:
+  sumo:
     type: object
     properties:
-      EXECUTABLE_PATH:
+      executable_path:
         type: string
         default: /home/ctate/.local/bin/sumo
-      PYTHON_EXECUTABLE_PATH:
+      python_executable_path:
         type: string
         default: /home/ctate/python/bin/python
-      FCD_SYNC_PATH:
+      fcd_sync_path:
         type: string
         default: /home/ctate/.local/share/sumo/data/veberod/fcd
 
-  YGGIO:
+  yggio:
     type: object
     properties:
-      ENABLED:
+      enabled:
         type: boolean
         default: false
-      HOST_NAME:
+      host_name:
         type: string
-        default: 
-      PORT:
-        type: string
+      port:
+        type: integer
         default: 443
-      SSL:
+      ssl:
         type: boolean
         default: true
-      USERNAME: 
+      username: 
         type: string
-      PASSWORD: 
+      password: 
         type: string
-      API_RELATIVE_URI_IotNode:
+      api_relative_uri_iotnode:
         type: string
         default: /api/iotnodes
-      AUTH_LOCAL_URI:
+      auth_local_uri:
         type: string
         default: /api/auth/local
-      USERNAME:
+      username:
         type: string
         default: /v2
   
-  FIWARE:
+  fiware:
     type: object
     properties:
-      SSL:
+      ssl:
         type: boolean
         default: false
-      PORT:
+      port:
         type: number
         default: 80
-      HOST_NAME:
+      host_name:
         type: string
         default: orion-ld-fiware.apps-crc.testing
-      API_URI:
+      api_uri:
         type: string
         default: /v2
   
-  KAFKA:
+  kafka:
     type: object
     properties:
-      KEYSTORE_SECRET:
+      keystore_secret:
         type: string
         default: smartvillage-kafka
-      TRUSTSTORE_SECRET:
+      truststore_secret:
         type: string
         default: smartvillage-kafka-cluster-ca-cert
-      BROKERS:
+      brokers:
         type: string
         default: kafka0.apps-crc.testing:32000
-      GROUP:
+      group:
         type: string
         default: smartvillage-kafka
-      SECURITY_PROTOCOL:
+      security_protocol:
         type: string
         default: SSL
-      SSL_KEYSTORE_TYPE:
+      ssl_keystore_type:
         type: string
         default: PKCS12
-      SSL_KEYSTORE_LOCATION:
+      ssl_keystore_location:
         type: string
         default: /opt/kafka/keystore/user.p12
-      SSL_TRUSTSTORE_TYPE:
+      ssl_truststore_type:
         type: string
         default: PKCS12
-      SSL_TRUSTSTORE_LOCATION:
+      ssl_truststore_location:
         type: string
         default: /opt/kafka/truststore/ca.p12
 
-  MQTT:
+  mqtt:
     type: object
     properties:
-      ENABLED:
+      enabled:
         type: boolean
         default: true
-      HOST:
+      host:
         type: string
         default: fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
-      PORT:
+      port:
         type: number
         default: 1883
-      IOT_SUBSCRIBE_TOPIC:
+      iot_subscribe_topic:
         type: string
         default: iot-subscribe

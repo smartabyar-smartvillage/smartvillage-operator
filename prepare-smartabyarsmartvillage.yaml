@@ -1,0 +1,12 @@
+---
+- name: Setup iotagent-json
+  hosts: localhost
+  connection: local
+  roles:
+    - smart-data-model-vars
+    - prepare-smartabyarsmartvillage
+  vars:
+    ENTITY_TYPE: SmartaByarSmartVillage
+    ansible_operator_meta:
+      name: smartvillage
+      namespace: smartvillage

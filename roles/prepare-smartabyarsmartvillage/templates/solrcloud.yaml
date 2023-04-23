@@ -1,0 +1,32 @@
+apiVersion: solr.apache.org/v1beta1
+kind: SolrCloud
+metadata:
+  name: default
+  namespace: {{ ansible_operator_meta.namespace }}
+spec:
+  replicas: 2
+  busyBoxImage:
+    repository: docker.io/library/busybox
+    tag: 1.36.0-glibc
+  solrImage:
+    repository: docker.io/library/solr
+    tag: 9.1.1
+  dataStorage:
+    persistent:
+      pvcTemplate:
+        spec:
+          resources:
+            requests:
+              storage: 20Gi
+  customSolrKubeOptions:
+    podOptions:
+      serviceAccountName: solr
+      volumes:
+        - name: computate-configset
+          source:
+            configMap:
+              defaultMode: 440
+              name: computate-configset
+          defaultContainerMount:
+              mountPath: /opt/solr/server/solr/configsets/computate/conf
+              name: computate-configset

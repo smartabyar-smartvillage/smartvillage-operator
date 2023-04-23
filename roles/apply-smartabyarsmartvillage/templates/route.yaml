@@ -2,22 +2,22 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: {{ SITE_NAME }}-web
+  name: {{ site_name }}-web
   namespace: {{ ansible_operator_meta.namespace }}
-{% if SITE.HOST_NAME is defined %}
+{% if site.host_name is defined %}
   annotations:
     kubernetes.io/tls-acme: 'true'
-    acme.openshift.io/secret-name: "{{ SITE_NAME }}-certificate"
+    acme.openshift.io/secret-name: "{{ site_name }}-certificate"
 {% endif %}
 spec:
-{% if SITE.HOST_NAME is defined %}
-  host: "{{ SITE.HOST_NAME }}"
+{% if site.host_name is defined %}
+  host: "{{ site.host_name }}"
 {% endif %}
   port:
     targetPort: http
   to:
     kind: Service
-    name: "{{ SITE_NAME }}-web"
+    name: "{{ site_name }}-web"
     weight: 100
   wildcardPolicy: None
 

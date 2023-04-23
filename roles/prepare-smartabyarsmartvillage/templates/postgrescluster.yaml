@@ -24,26 +24,26 @@ spec:
           requests:
             storage: 1Gi
       replicas: 2
-      name: '{{ SITE_NAME }}'
+      name: '{{ site_name }}'
   image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres-gis:ubi8-15.1-3.3-0
   postgresVersion: 15
   openshift: true
   postGISVersion: 3.3.0
   users:
-    - name: {{ SSO.CLUSTER_NAME }}
+    - name: {{ sso.cluster_name }}
       options: "SUPERUSER"
       databases:
-        - {{ SSO.CLUSTER_NAME }}
-    - name: {{ SITE_NAME }}
+        - {{ sso.cluster_name }}
+    - name: {{ site_name }}
       options: "SUPERUSER"
       databases:
-        - {{ SITE_NAME }}
+        - {{ site_name }}
   patroni:
     dynamicConfiguration:
       postgresql:
         pg_hba:
-          - "host {{ SSO.CLUSTER_NAME }} {{ SSO.CLUSTER_NAME }} all md5"
-          - "local {{ SSO.CLUSTER_NAME }} {{ SSO.CLUSTER_NAME }} trust"
-          - "host {{ SITE_NAME }} {{ SITE_NAME }} all md5"
-          - "local {{ SITE_NAME }} {{ SITE_NAME }} trust"
+          - "host {{ sso.cluster_name }} {{ sso.cluster_name }} all md5"
+          - "local {{ sso.cluster_name }} {{ sso.cluster_name }} trust"
+          - "host {{ site_name }} {{ site_name }} all md5"
+          - "local {{ site_name }} {{ site_name }} trust"
         

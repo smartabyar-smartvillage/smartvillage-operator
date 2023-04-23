@@ -1,5 +1,5 @@
 ---
-- name: Setup iotagent-json
+- name: Install a SmartaByarSmartVillage resource to OpenShift
   hosts: localhost
   connection: local
   roles:
@@ -11,171 +11,175 @@
       name: smartvillage
       namespace: smartvillage
 
-    ENABLE_DEV_NODEPORTS: True
-    WEB_REPLICAS: 3
-    WORKER_REPLICAS: 1
-    SITE:
-      LIMITS_MEMORY: |-
+    enable_dev_nodeports: False
+    web_replicas: 3
+    worker_replicas: 1
+    site:
+      limits_memory: |-
         1000Mi
-      LIMITS_CPU: |-
+      limits_cpu: |-
         2
-      REQUESTS_MEMORY: |-
+      requests_memory: |-
         500Mi
-      REQUESTS_CPU: |-
+      requests_cpu: |-
         1
-      NAME: |-
+      name: |-
         smartvillage
-      SECRET_NAME: |-
+      secret_name: |-
         smartvillage
-      ZONE: |-
+      zone: |-
         America/New_York
-      LOCALE: |-
+      locale: |-
         en-US
-      INSTANCES: 3
-      STATIC_BASE_URL: |-
+      instances: 3
+      static_base_url: |-
         http://localhost:12080/static
-      TEMPLATE_PATH: |-
+      template_path: |-
         /home/ctate/.local/src/smartabyar-smartvillage/src/main/resources/templates
-      WORKER_POOL_SIZE: 1
-      ENABLE_ZOOKEEPER_CLUSTER: True
-      SSL_VERIFY: False
-      DEFAULT_MAP_LOCATION: |-
+      worker_pool_size: 1
+      enable_zookeeper_cluster: True
+      ssl_verify: False
+      default_map_location: |-
         55.61888,13.548799
-      DEFAULT_MAP_ZOOM: 11
-      VERTX_WARNING_EXCEPTION_SECONDS: 60
-      JAVA_OPTS: ''
-    ZOOKEEPER:
-      HOST_NAME: |-
+      default_map_zoom: 11
+      vertx_warning_exception_seconds: 60
+      java_opts: |-
+        
+    zookeeper:
+      host_name: |-
         default-solrcloud-zookeeper-client
-      PORT: 2181
-      MAX_RETRIES: 0
-      BASE_SLEEP_TIME_MILLIS: 5000
-      MAX_SLEEP_MILLIS: 5000
-      CONNECTION_TIMEOUT_MILLIS: 3000
-      SESSION_TIMEOUT_MILLIS: 5000
-    SSO:
-      CREATE: True
-      CLUSTER_NAME: |-
+      port: 2181
+      max_retries: 0
+      base_sleep_time_millis: 5000
+      max_sleep_millis: 5000
+      connection_timeout_millis: 3000
+      session_timeout_millis: 5000
+    sso:
+      create: True
+      cluster_name: |-
         sso
-      DATABASE_SECRET_NAME: |-
+      database_secret_name: |-
         postgres-pguser-sso
-      CLIENT_SECRET_NAME: |-
+      client_secret_name: |-
         keycloak-client-secret-smartvillage
-    AUTH:
-      PORT: 443
-      SSL: True
-      REALM: |-
+    auth:
+      port: 443
+      ssl: True
+      realm: |-
         SMARTVILLAGE
-      CLIENT: |-
+      client: |-
         smartvillage
-      TOKEN_URI: |-
+      token_uri: |-
         /auth/realms/SMARTVILLAGE/protocol/openid-connect/token
-    DATABASE:
-      CLUSTER_NAME: |-
+    database:
+      cluster_name: |-
         postgres
-      SECRET_NAME: |-
+      secret_name: |-
         postgres-pguser-smartvillage
-      CREATE: True
-    SOLR:
-      HOST_NAME: |-
+      create: True
+    solr:
+      host_name: |-
         default-solrcloud-common
-      PORT: 80
-      SSL: False
-      URL: |-
+      port: 80
+      ssl: False
+      route:
+        create: False
+      url: |-
         https://solr-solr.apps-crc.testing/solr/smartabyar-smartvillage
-      COLLECTION: |-
+      collection: |-
         smartvillage
-    EMAIL:
-      ENABLED: False
-    IMPORT_DATA:
-      ENABLED: True
-      SitePage:
-        ENABLED: True
-      SiteHtm:
-        ENABLED: True
-      IotNode:
-        ENABLED: False
-    AUTH_ROLE:
-      ADMIN: |-
+    email:
+      enabled: False
+    import_data:
+      enabled: True
+      sitepage:
+        enabled: True
+      sitehtm:
+        enabled: True
+      iotnode:
+        enabled: False
+    auth_role:
+      admin: |-
         SiteAdmin
-      SITEUSER: |-
+      siteuser: |-
         SiteAdmin
-      SITEPAGE: |-
+      sitepage: |-
         SiteAdmin
-      SITEHTM: |-
+      sitehtm: |-
         SiteAdmin
-      IOTNODE: |-
+      iotnode: |-
         SiteAdmin
-      MAPRESULT: |-
+      mapresult: |-
         SiteAdmin
-      IOTNODESTEP: |-
+      iotnodestep: |-
         SiteAdmin
-      VEHICLESTEP: |-
+      vehiclestep: |-
         SiteAdmin
-      PERSONSTEP: |-
+      personstep: |-
         SiteAdmin
-      TRAFFICLIGHT: |-
+      trafficlight: |-
         SiteAdmin
-      TRAFFICLIGHTSTEP: |-
+      trafficlightstep: |-
         SiteAdmin
-      TRAFFICSIMULATION: |-
+      trafficsimulation: |-
         SiteAdmin
-      SIMULATIONREPORT: |-
+      simulationreport: |-
         SiteAdmin
-      SYSTEMEVENT: |-
+      systemevent: |-
         SiteAdmin
-      BICYCLESTEP: |-
+      bicyclestep: |-
         SiteAdmin
-      TIMESTEP: |-
+      timestep: |-
         SiteAdmin
-      TRAFFICFLOWOBSERVED: |-
+      trafficflowobserved: |-
         SiteAdmin
-    SUMO:
-      EXECUTABLE_PATH: |-
+    sumo:
+      executable_path: |-
         /home/ctate/.local/bin/sumo
-      PYTHON_EXECUTABLE_PATH: |-
+      python_executable_path: |-
         /home/ctate/python/bin/python
-      FCD_SYNC_PATH: |-
+      fcd_sync_path: |-
         /home/ctate/.local/share/sumo/data/veberod/fcd
-    YGGIO:
-      ENABLED: false
-      HOST_NAME: 
-      PORT: 443
-      SSL: True
-      API_RELATIVE_URI_IotNode: |-
-        /api/iotnodes
-      AUTH_LOCAL_URI: |-
-        /api/auth/local
-    FIWARE:
-      SSL: False
-      PORT: 80
-      HOST_NAME: |-
-        orion-ld-fiware.apps-crc.testing
-      API_URI: |-
+    yggio:
+      enabled: False
+      port: 443
+      ssl: True
+      username: |-
         /v2
-    KAFKA:
-      KEYSTORE_SECRET: |-
+      api_relative_uri_iotnode: |-
+        /api/iotnodes
+      auth_local_uri: |-
+        /api/auth/local
+    fiware:
+      ssl: False
+      port: 80
+      host_name: |-
+        orion-ld-fiware.apps-crc.testing
+      api_uri: |-
+        /v2
+    kafka:
+      keystore_secret: |-
         smartvillage-kafka
-      TRUSTSTORE_SECRET: |-
+      truststore_secret: |-
         smartvillage-kafka-cluster-ca-cert
-      BROKERS: |-
-        smartvillage-kafka-kafka-bootstrap.smartvillage.svc.cluster.local:9093
-      GROUP: |-
+      brokers: |-
+        kafka0.apps-crc.testing:32000
+      group: |-
         smartvillage-kafka
-      SECURITY_PROTOCOL: |-
+      security_protocol: |-
         SSL
-      SSL_KEYSTORE_TYPE: |-
+      ssl_keystore_type: |-
         PKCS12
-      SSL_KEYSTORE_LOCATION: |-
+      ssl_keystore_location: |-
         /opt/kafka/keystore/user.p12
-      SSL_TRUSTSTORE_TYPE: |-
+      ssl_truststore_type: |-
         PKCS12
-      SSL_TRUSTSTORE_LOCATION: |-
+      ssl_truststore_location: |-
         /opt/kafka/truststore/ca.p12
-    MQTT:
-      ENABLED: True
-      HOST: |-
+    mqtt:
+      enabled: True
+      host: |-
         fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
-      PORT: 1883
-      IOT_SUBSCRIBE_TOPIC: |-
+      port: 1883
+      iot_subscribe_topic: |-
         iot-subscribe

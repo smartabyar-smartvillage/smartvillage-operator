@@ -1,7 +1,7 @@
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
-  name: {{ SITE_NAME }}
+  name: {{ site_name }}
   namespace: {{ ansible_operator_meta.namespace }}
 spec:
   lookupPolicy:

@@ -6,7 +6,7 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: {{ SITE_VOLUME_SIZE }}
-{% if SITE_STORAGE_CLASS_NAME is defined %}
-  storageClassName: "{{ SITE_STORAGE_CLASS_NAME }}"
+      storage: {{ site_volume_size }}
+{% if site_storage_class_name is defined %}
+  storageClassName: "{{ site_storage_class_name }}"
 {% endif %}

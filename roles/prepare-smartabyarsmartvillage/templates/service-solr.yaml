@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: iotagent-json
+  namespace: fiware
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: 7896-http-port
+    port: 7896
+    protocol: TCP
+    targetPort: 8080
+  - name: 4041-north-port
+    port: 4041
+    protocol: TCP
+    targetPort: 4041
+  selector:
+    app: iotagent-json
+    deploymentconfig: iotagent-json
+  sessionAffinity: None
+  type: ClusterIP

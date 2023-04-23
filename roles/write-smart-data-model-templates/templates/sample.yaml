@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/created-by: smartvillage-operator
   name: {{ name | default('sweden-veberod-1-sjobovagen-se') }}
+  namespace: smartvillage
 spec:
   description: |
     {{ MODEL_DESCRIPTION }}

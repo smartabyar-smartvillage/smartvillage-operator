@@ -190,11 +190,11 @@ spec:
 {% if var.default is defined %}
 {% if (var.default | type_debug) == 'AnsibleUnicode' %}
                 default: |
-                  {{ var.default | indent(16, False) }}
+                  {{ var.default | indent(18, False) }}
 {% else %}
 {% if (var.default | type_debug) == 'dict' %}
                 default:
-                  {{ var.default | to_nice_yaml(indent=2) | indent(16, False) }}
+                  {{ var.default | to_nice_yaml(indent=2) | indent(18, False) }}
 {% else %}
                 default: {{ var.default }}
 {% endif %}
@@ -202,7 +202,7 @@ spec:
 {% endif %}
 {% if var.properties is defined %}
                 properties:
-                  {{ var.properties | to_nice_yaml(indent=2) | indent(16, False) }}
+                  {{ var.properties | to_nice_yaml(indent=2) | indent(18, False) }}
 {% endif %}
 {% if var.minimum is defined %}
                 minimum: {{ var.minimum }}

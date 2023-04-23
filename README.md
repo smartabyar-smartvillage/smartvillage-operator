@@ -1,3 +1,18 @@
+
+# Prerequisites
+
+## Install kubernetes.core Ansible Galaxy Collection
+
+```bash
+ansible-galaxy collection install kubernetes.core
+```
+
+### Upgrade kubernetes.core Ansible Galaxy Collection if necessary
+
+```bash
+ansible-galaxy collection install kubernetes.core -U
+```
+
 # How the operator was initialized
 
 ```bash

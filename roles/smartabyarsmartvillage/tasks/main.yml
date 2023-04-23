@@ -1,2 +1,13 @@
 ---
 # tasks file for SmartaByarSmartVillage
+
+- name: Run Ansible role smart-data-model-vars
+  include_role:
+    name: smart-data-model-vars
+  vars:
+    ENTITY_TYPE: SmartaByarSmartVillage
+- name: Run Ansible role apply-smartabyarsmartvillage
+  include_role:
+    name: apply-smartabyarsmartvillage
+  vars:
+    ENTITY_TYPE: SmartaByarSmartVillage
