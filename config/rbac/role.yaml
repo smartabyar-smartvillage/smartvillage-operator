@@ -11,9 +11,12 @@ rules:
       - ""
     resources:
       - secrets
+      - serviceaccounts
+      - configmaps
       - pods
       - pods/exec
       - pods/log
+      - services
     verbs:
       - create
       - delete
@@ -29,6 +32,120 @@ rules:
       - daemonsets
       - replicasets
       - statefulsets
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - apps.openshift.io
+    resources:
+      - deploymentconfigs
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - route.openshift.io
+    resources:
+      - routes
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - image.openshift.io
+    resources:
+      - imagestreams
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - solr.apache.org
+    resources:
+      - solrclouds
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - postgres-operator.crunchydata.com
+    resources:
+      - postgresclusters
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - keycloak.org
+    resources:
+      - keycloakrealms
+      - keycloakclients
+      - keycloakusers
+      - keycloaks
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - kafka.strimzi.io
+    resources:
+      - kafkausers
+      - kafkatopics
+      - kafkas
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - broker.amq.io
+    resources:
+      - activemqartemisaddresses
+      - activemqartemises
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - rbac.authorization.k8s.io
+    resources:
+      - rolebindings
     verbs:
       - create
       - delete

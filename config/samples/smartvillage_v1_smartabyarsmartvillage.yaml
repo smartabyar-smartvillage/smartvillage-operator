@@ -16,10 +16,10 @@ spec:
     to study what social sustainability means by using a digital twin of Veberöd, Sweden 
     as the test village, supported by Smarta Byar.
 
-  enable_dev_nodeports: False
-  web_replicas: 3
-  worker_replicas: 1
   site:
+    enable_dev_nodeports: False
+    web_replicas: 3
+    worker_replicas: 1
     limits_memory: |-
       1000Mi
     limits_cpu: |-
@@ -53,7 +53,7 @@ spec:
     java_opts: |-
       
   zookeeper:
-    host_name: |-
+    service_name: |-
       default-solrcloud-zookeeper-client
     port: 2181
     max_retries: 0
@@ -67,7 +67,7 @@ spec:
       keycloak-sso.apps-crc.testing
     cluster_name: |-
       sso
-    database_secret_name: |-
+    postgres_secret_name: |-
       postgres-pguser-sso
     client_secret_name: |-
       keycloak-client-secret-smartvillage
@@ -80,21 +80,24 @@ spec:
       smartvillage
     token_uri: |-
       /auth/realms/SMARTVILLAGE/protocol/openid-connect/token
-  database:
+  postgres:
+    service_name: |-
+      postgres-primary
+    port: 5432
     cluster_name: |-
       postgres
     secret_name: |-
       postgres-pguser-smartvillage
     create: True
   solr:
-    host_name: |-
+    service_name: |-
       default-solrcloud-common
     port: 80
     ssl: False
     route:
       create: False
-    url: |-
-      https://solr-solr.apps-crc.testing/solr/smartabyar-smartvillage
+      host_name: |-
+        solr.apps-crc.testing
     collection: |-
       smartvillage
   email:
@@ -163,7 +166,7 @@ spec:
     ssl: False
     port: 80
     host_name: |-
-      orion-ld-fiware.apps-crc.testing
+      orion-ld
     api_uri: |-
       /v2
   kafka:
@@ -171,8 +174,9 @@ spec:
       smartvillage-kafka
     truststore_secret: |-
       smartvillage-kafka-cluster-ca-cert
-    brokers: |-
-      kafka0.apps-crc.testing:32000
+    service_name: |-
+      smartvillage-kafka-kafka-bootstrap
+    port: 9093
     group: |-
       smartvillage-kafka
     security_protocol: |-
@@ -187,8 +191,8 @@ spec:
       /opt/kafka/truststore/ca.p12
   mqtt:
     enabled: True
-    host: |-
-      fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
+    service_name: |-
+      fiware-broker-mqtt-0-svc
     port: 1883
     iot_subscribe_topic: |-
       iot-subscribe

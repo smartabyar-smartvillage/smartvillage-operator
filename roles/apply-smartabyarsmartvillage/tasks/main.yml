@@ -1,17 +1,133 @@
 ---
-# Query SmartaByarSmartVillage and set variables
+
+- name: "Query {{ ENTITY_TYPE }}"
+  set_fact:
+    crd: "{{ query('kubernetes.core.k8s', kind=ENTITY_TYPE, resource_name=ansible_operator_meta.name, namespace=ansible_operator_meta.namespace)[0].spec }}"
+  ignore_errors: true
+- name: "Verify {{ ENTITY_TYPE }} exists"
+  fail:
+    msg: |-
+      You need to deploy a {{ ENTITY_TYPE }} to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_smartabyarsmartvillage.yaml
+  when: crd is not defined
+
+- name: "Set {{ ENTITY_TYPE }} facts"
+  set_fact:
+    zookeeper: "{{ crd.zookeeper }}"
+    solr: "{{ crd.solr }}"
+    sso: "{{ crd.sso }}"
+    postgres: "{{ crd.postgres }}"
+    fiware: "{{ crd.fiware }}"
+    kafka: "{{ crd.kafka }}"
+    mqtt: "{{ crd.mqtt }}"
+    site: "{{ crd.site }}"
+    auth: "{{ crd.auth }}"
+    email: "{{ crd.email }}"
+    import_data: "{{ crd.import_data }}"
+    auth_role: "{{ crd.auth_role }}"
+    sumo: "{{ crd.sumo }}"
+    yggio: "{{ crd.yggio }}"
+
+# Install PostgreSQL
+- name: Install {{ site_name }} PostgreSQL cluster on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'postgrescluster.yaml') }}"
+  when: postgres.create
+
+# Install Red Hat SSO
+- name: Query SSO postgres secret
+  set_fact:
+    sso_postgres_secret: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=sso.postgres_secret_name, namespace=ansible_operator_meta.namespace)[0].data }}"
+- name: Install keycloak-db-secret on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'keycloak-db-secret.yaml') }}"
+- name: Install {{ site_name }} Keycloak cluster on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'keycloak.yaml') }}"
+  when: sso.create
+- name: Install {{ site_name }} Keycloak realm on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'keycloakrealm.yaml') }}"
+  when: sso.create
+- name: Install {{ site_name }} Keycloak client on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'keycloakclient.yaml') }}"
+  when: sso.create
+
+# Install Kafka
+- name: Install {{ site_name }} Kafka cluster on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'kafka.yaml') }}"
+- name: Install {{ site_name }} Kafka user on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'kafkauser.yaml') }}"
+  when: sso.create
+- name: Install {{ site_name }} Kafka Topic smartvillage-sumo-run on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'kafkatopic-smartvillage-sumo-run.yaml') }}"
+  when: sso.create
+- name: Install {{ site_name }} Kafka Topic smartvillage-sumo-run-report on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'kafkatopic-smartvillage-sumo-run-report.yaml') }}"
+  when: sso.create
+- name: Install {{ site_name }} Kafka Topic smartvillage-sumo-stop on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'kafkatopic-smartvillage-sumo-stop.yaml') }}"
+  when: sso.create
+
+# Install AMQ Broker
+- name: Install {{ site_name }} AMQ Broker on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'activemqartemis.yaml') }}"
+- name: Install {{ site_name }} AMQ Broker Address on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'activemqartemisaddress.yaml') }}"
+
+# Install Solr
+- name: Install Solr configmap-computate-configset configmap on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'configmap-solr-computate-configset.yaml') }}"
+- name: Install Solr role bindings on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'rolebinding-solr.yaml') }}"
+- name: Install Solr service account on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'serviceaccount-solr.yaml') }}"
+- name: Install Solr Cloud on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'solrcloud.yaml') }}"
+- name: Install Solr route on OpenShift
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'route-solr.yaml') }}"
+
 - name: "Query prerequisite host names"
   set_fact:
-    POSTGRES_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=database.secret_name, namespace=ansible_operator_meta.namespace)[0].data }}"
+    POSTGRES_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=postgres.secret_name, namespace=ansible_operator_meta.namespace)[0].data }}"
   ignore_errors: true
 
 - name: Verify PostgreSQL
   wait_for:
-    host: "{{ POSTGRES_SECRET.host | b64decode }}"
-    port: "{{ POSTGRES_SECRET.port | b64decode }}"
+    host: "{{ postgres.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
+    port: "{{ postgres.port }}"
     state: started
     delay: 0
-    timeout: 1
+    timeout: 5
   register: verify_postgresql
   ignore_errors: yes
 - name: "Verify PostgreSQL is running"
@@ -22,11 +138,11 @@
 
 - name: Verify MQTT
   wait_for:
-    host: "{{ mqtt.host }}"
+    host: "{{ mqtt.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
     port: "{{ mqtt.port }}"
     state: started
     delay: 0
-    timeout: 1
+    timeout: 5
   register: verify_mqtt
   ignore_errors: yes
 - name: "Verify MQTT is running"
@@ -37,11 +153,11 @@
 
 - name: Verify Kafka
   wait_for:
-    host: "{{ kafka.brokers | split(':') | first }}"
-    port: "{{ kafka.brokers | split(':') | last }}"
+    host: "{{ kafka.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
+    port: "{{ kafka.port }}"
     state: started
     delay: 0
-    timeout: 1
+    timeout: 5
   register: verify_kafka
   ignore_errors: yes
 - name: "Verify Kafka is running"
@@ -52,11 +168,11 @@
 
 - name: Verify Zookeeper
   wait_for:
-    host: "{{ zookeeper.host_name }}"
+    host: "{{ zookeeper.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
     port: "{{ zookeeper.port }}"
     state: started
     delay: 0
-    timeout: 1
+    timeout: 5
   register: verify_zookeeper
   ignore_errors: yes
 - name: "Verify Zookeeper is running"
@@ -67,11 +183,11 @@
 
 - name: Verify Solr
   wait_for:
-    host: "{{ solr.host_name }}"
+    host: "{{ solr.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
     port: "{{ solr.port }}"
     state: started
     delay: 0
-    timeout: 1
+    timeout: 5
   register: verify_solr
   ignore_errors: yes
 - name: "Verify Solr is running"
@@ -86,7 +202,7 @@
     port: "443"
     state: started
     delay: 0
-    timeout: 1
+    timeout: 5
   register: verify_sso
   ignore_errors: yes
 - name: "Verify SSO is running"

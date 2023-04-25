@@ -1,0 +1,19 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: postgres-nodeport
+  namespace: {{ ansible_operator_meta.namespace }}
+spec:
+  ports:
+    - name: postgres-nodeport
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+      nodePort: {{ postgres_nodeport }}
+  type: NodePort
+  selector:
+    postgres-operator.crunchydata.com/cluster: postgres
+    postgres-operator.crunchydata.com/data: postgres
+    postgres-operator.crunchydata.com/instance-set: smartvillage
+    postgres-operator.crunchydata.com/patroni: postgres-ha
+    postgres-operator.crunchydata.com/role: master

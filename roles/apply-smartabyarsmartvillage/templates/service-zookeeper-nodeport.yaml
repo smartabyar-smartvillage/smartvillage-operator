@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: zookeeper-nodeport
+  namespace: {{ ansible_operator_meta.namespace }}
+spec:
+  ports:
+    - name: default-solrcloud-zookeeper-client
+      protocol: TCP
+      port: 2181
+      targetPort: 2181
+      nodePort: {{ zookeeper_nodeport }}
+  type: NodePort
+  selector:
+    app: default-solrcloud-zookeeper

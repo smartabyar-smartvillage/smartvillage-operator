@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: fiware-broker-mqtt-nodeport
+  namespace: {{ ansible_operator_meta.namespace }}
+spec:
+  ports:
+    - name: fiware-broker-mqtt
+      protocol: TCP
+      port: 1883
+      targetPort: 1883
+      nodePort: {{ mqtt_nodeport }}
+  type: NodePort
+  selector:
+    ActiveMQArtemis: fiware-broker
+    application: fiware-broker-app

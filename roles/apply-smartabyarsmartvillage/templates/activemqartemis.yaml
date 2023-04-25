@@ -2,7 +2,7 @@ apiVersion: broker.amq.io/v1beta1
 kind: ActiveMQArtemis
 metadata:
   name: fiware-broker
-  namespace: fiware
+  namespace: {{ ansible_operator_meta.namespace }}
 spec:
   acceptors:
     - name: mqtt

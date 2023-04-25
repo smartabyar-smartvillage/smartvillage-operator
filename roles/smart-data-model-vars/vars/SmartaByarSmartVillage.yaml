@@ -7,20 +7,20 @@ description: |
   as the test village, supported by Smarta Byar.
 env:
 
-  enable_dev_nodeports:
-    type: boolean
-    default: false
-  web_replicas:
-    type: number
-    default: 3
-  worker_replicas:
-    type: number
-    default: 1
-    minimum: 0
-    maximum: 1
   site:
     type: object
     properties:
+      enable_dev_nodeports:
+        type: boolean
+        default: false
+      web_replicas:
+        type: number
+        default: 3
+      worker_replicas:
+        type: number
+        default: 1
+        minimum: 0
+        maximum: 1
       limits_memory:
         type: string
         default: '1000Mi'
@@ -87,7 +87,7 @@ env:
   zookeeper:
     type: object
     properties:
-      host_name:
+      service_name:
         type: string
         default: default-solrcloud-zookeeper-client
       port:
@@ -126,7 +126,7 @@ env:
         description: |
           Red Hat SSO cluster name. 
           If empty, "sso" will be used. 
-      database_secret_name:
+      postgres_secret_name:
         type: string
         default: postgres-pguser-sso
         description: |
@@ -162,9 +162,19 @@ env:
         type: string
         default: "/auth/realms/SMARTVILLAGE/protocol/openid-connect/token"
 
-  database:
+  postgres:
     type: object
     properties:
+      service_name:
+        type: string
+        default: postgres-primary
+        description: |
+          The host name to connect to PostgreSQL. 
+      port:
+        type: number
+        default: 5432
+        description: |
+          The port to connect to PostgreSQL. 
       cluster_name:
         type: string
         default: postgres
@@ -175,7 +185,7 @@ env:
         type: string
         default: postgres-pguser-smartvillage
         description: |
-          Optional secret name where the database secrets are stored. 
+          Optional secret name where the postgres secrets are stored. 
           If empty, "postgres-pguser-smartvillage" will be used. 
       create:
         type: boolean
@@ -186,7 +196,7 @@ env:
   solr:
     type: object
     properties:
-      host_name:
+      service_name:
         type: string
         default: default-solrcloud-common
       port:
@@ -203,13 +213,11 @@ env:
             default: false
             description: |
               Whether to create a route for Solr. 
-          host:
+          host_name:
             type: string
+            default: solr.apps-crc.testing
             description: |
               The Route host for Solr. 
-      url:
-        type: string
-        default: "https://solr-solr.apps-crc.testing/solr/smartabyar-smartvillage"
       collection:
         type: string
         default: "smartvillage"
@@ -355,7 +363,7 @@ env:
         default: 80
       host_name:
         type: string
-        default: orion-ld-fiware.apps-crc.testing
+        default: orion-ld
       api_uri:
         type: string
         default: /v2
@@ -369,9 +377,12 @@ env:
       truststore_secret:
         type: string
         default: smartvillage-kafka-cluster-ca-cert
-      brokers:
+      service_name:
         type: string
-        default: kafka0.apps-crc.testing:32000
+        default: smartvillage-kafka-kafka-bootstrap
+      port:
+        type: number
+        default: 9093
       group:
         type: string
         default: smartvillage-kafka
@@ -397,9 +408,9 @@ env:
       enabled:
         type: boolean
         default: true
-      host:
+      service_name:
         type: string
-        default: fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
+        default: fiware-broker-mqtt-0-svc
       port:
         type: number
         default: 1883

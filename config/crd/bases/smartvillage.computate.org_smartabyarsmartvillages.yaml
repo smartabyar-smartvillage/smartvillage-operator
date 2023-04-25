@@ -39,17 +39,6 @@ spec:
             description: Spec defines the desired state of SmartaByarSmartVillage
             type: object
             properties:
-              enable_dev_nodeports:
-                type: boolean
-                default: False
-              web_replicas:
-                type: number
-                default: 3
-              worker_replicas:
-                type: number
-                default: 1
-                minimum: 0
-                maximum: 1
               site:
                 type: object
                 properties:
@@ -59,6 +48,9 @@ spec:
                   default_map_zoom:
                     default: 11
                     type: number
+                  enable_dev_nodeports:
+                    default: false
+                    type: boolean
                   enable_zookeeper_cluster:
                     default: true
                     type: boolean
@@ -108,8 +100,16 @@ spec:
                   vertx_warning_exception_seconds:
                     default: 60
                     type: number
+                  web_replicas:
+                    default: 3
+                    type: number
                   worker_pool_size:
                     default: 1
+                    type: number
+                  worker_replicas:
+                    default: 1
+                    maximum: 1
+                    minimum: 0
                     type: number
                   zone:
                     default: America/New_York
@@ -124,9 +124,6 @@ spec:
                   connection_timeout_millis:
                     default: 3000
                     type: number
-                  host_name:
-                    default: default-solrcloud-zookeeper-client
-                    type: string
                   max_retries:
                     default: 0
                     type: number
@@ -136,6 +133,9 @@ spec:
                   port:
                     default: 2181
                     type: number
+                  service_name:
+                    default: default-solrcloud-zookeeper-client
+                    type: string
                   session_timeout_millis:
                     default: 5000
                     type: number
@@ -156,13 +156,13 @@ spec:
                     default: true
                     description: "Determines if a new Red Hat SSO cluster will be created. \n"
                     type: boolean
-                  database_secret_name:
+                  host_name:
+                    default: keycloak-sso.apps-crc.testing
+                    type: string
+                  postgres_secret_name:
                     default: postgres-pguser-sso
                     description: "Optional secret name where the SSO secrets are stored. \nIf empty,\
                       \ \"postgres-pguser-sso\" will be used. \n"
-                    type: string
-                  host_name:
-                    default: keycloak-sso.apps-crc.testing
                     type: string
 
               auth:
@@ -188,7 +188,7 @@ spec:
                     default: /auth/realms/SMARTVILLAGE/protocol/openid-connect/token
                     type: string
 
-              database:
+              postgres:
                 type: object
                 properties:
                   cluster_name:
@@ -200,10 +200,18 @@ spec:
                     default: true
                     description: "Determines if a new Crunchy Postgres cluster will be created. \n"
                     type: boolean
+                  port:
+                    default: 5432
+                    description: "The port to connect to PostgreSQL. \n"
+                    type: number
                   secret_name:
                     default: postgres-pguser-smartvillage
-                    description: "Optional secret name where the database secrets are stored. \nIf empty,\
+                    description: "Optional secret name where the postgres secrets are stored. \nIf empty,\
                       \ \"postgres-pguser-smartvillage\" will be used. \n"
+                    type: string
+                  service_name:
+                    default: postgres-primary
+                    description: "The host name to connect to PostgreSQL. \n"
                     type: string
 
               solr:
@@ -211,9 +219,6 @@ spec:
                 properties:
                   collection:
                     default: smartvillage
-                    type: string
-                  host_name:
-                    default: default-solrcloud-common
                     type: string
                   port:
                     default: 80
@@ -224,16 +229,17 @@ spec:
                         default: false
                         description: "Whether to create a route for Solr. \n"
                         type: boolean
-                      host:
+                      host_name:
+                        default: solr.apps-crc.testing
                         description: "The Route host for Solr. \n"
                         type: string
                     type: object
+                  service_name:
+                    default: default-solrcloud-common
+                    type: string
                   ssl:
                     default: false
                     type: boolean
-                  url:
-                    default: https://solr-solr.apps-crc.testing/solr/smartabyar-smartvillage
-                    type: string
 
               email:
                 type: object
@@ -368,7 +374,7 @@ spec:
                     default: /v2
                     type: string
                   host_name:
-                    default: orion-ld-fiware.apps-crc.testing
+                    default: orion-ld
                     type: string
                   port:
                     default: 80
@@ -380,17 +386,20 @@ spec:
               kafka:
                 type: object
                 properties:
-                  brokers:
-                    default: kafka0.apps-crc.testing:32000
-                    type: string
                   group:
                     default: smartvillage-kafka
                     type: string
                   keystore_secret:
                     default: smartvillage-kafka
                     type: string
+                  port:
+                    default: 9093
+                    type: number
                   security_protocol:
                     default: SSL
+                    type: string
+                  service_name:
+                    default: smartvillage-kafka-kafka-bootstrap
                     type: string
                   ssl_keystore_location:
                     default: /opt/kafka/keystore/user.p12
@@ -414,15 +423,15 @@ spec:
                   enabled:
                     default: true
                     type: boolean
-                  host:
-                    default: fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
-                    type: string
                   iot_subscribe_topic:
                     default: iot-subscribe
                     type: string
                   port:
                     default: 1883
                     type: number
+                  service_name:
+                    default: fiware-broker-mqtt-0-svc
+                    type: string
 
           status:
             description: Status defines the observed state of SmartaByarSmartVillage

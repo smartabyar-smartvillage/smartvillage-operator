@@ -2,7 +2,7 @@ apiVersion: broker.amq.io/v1beta1
 kind: ActiveMQArtemisAddress
 metadata:
   name: fiware-address
-  namespace: fiware
+  namespace: {{ ansible_operator_meta.namespace }}
 spec:
   addressName: fiware-address
   queueName: fiware-queue

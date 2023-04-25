@@ -19,7 +19,7 @@ spec:
         tls: true
         authentication:
           type: tls
-{% if enable_dev_nodeports %}
+{% if site.enable_dev_nodeports %}
       - name: external
         port: 9094
         tls: true

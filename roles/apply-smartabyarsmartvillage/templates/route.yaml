@@ -19,5 +19,8 @@ spec:
     kind: Service
     name: "{{ site_name }}-web"
     weight: 100
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
   wildcardPolicy: None
 

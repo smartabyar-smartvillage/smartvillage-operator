@@ -4,7 +4,7 @@ metadata:
   name: {{ site_name }}-web
   namespace: {{ ansible_operator_meta.namespace }}
 spec:
-  replicas: {{ web_replicas }}
+  replicas: {{ site.web_replicas }}
   selector:
     app: "{{ site_name }}-web"
     deploymentconfig: "{{ site_name }}-web"
@@ -113,7 +113,7 @@ spec:
               value: "{{ site.java_opts }}"
 
             - name: ZOOKEEPER_HOST_NAME
-              value: "{{ zookeeper.host_name }}"
+              value: "{{ zookeeper.service_name }}"
             - name: ZOOKEEPER_PORT
               value: "{{ zookeeper.port }}"
             - name: ZOOKEEPER_MAX_RETRIES
@@ -140,48 +140,42 @@ spec:
                   key: CLIENT_SECRET
                   name: "{{ sso.client_secret_name }}"
             - name: AUTH_HOST_NAME
-              value: "{{ auth.host_name | default(SSO_ROUTE.host) }}"
+              value: "{{ auth.host_name | default(sso.host_name) }}"
             - name: AUTH_PORT
               value: "{{ auth.port }}"
             - name: AUTH_SSL
               value: "{{ auth.ssl }}"
             - name: AUTH_URL
-              value: "https://{{ auth.host_name | default(SSO_ROUTE.host) }}/auth"
+              value: "https://{{ auth.host_name | default(sso.host_name) }}/auth"
             - name: AUTH_TOKEN_URI
               value: "{{ auth.token_uri }}"
 
             - name: JDBC_HOST
-              valueFrom:
-                secretKeyRef:
-                  key: host
-                  name: {{ database.secret_name }}
+              value: "{{ postgres.service_name }}"
             - name: JDBC_PORT
-              valueFrom:
-                secretKeyRef:
-                  key: port
-                  name: {{ database.secret_name }}
+              value: "{{ postgres.port }}"
             - name: JDBC_DATABASE
               valueFrom:
                 secretKeyRef:
                   key: dbname
-                  name: {{ database.secret_name }}
+                  name: {{ postgres.secret_name }}
             - name: JDBC_USERNAME
               valueFrom:
                 secretKeyRef:
                   key: user
-                  name: {{ database.secret_name }}
+                  name: {{ postgres.secret_name }}
             - name: JDBC_PASSWORD
               valueFrom:
                 secretKeyRef:
                   key: password
-                  name: {{ database.secret_name }}
+                  name: {{ postgres.secret_name }}
 
             - name: SOLR_HOST_NAME
-              value: "{{ solr.host_name }}"
+              value: "{{ solr.service_name }}"
             - name: SOLR_PORT
               value: "{{ solr.port }}"
             - name: SOLR_URL
-              value: "{{ 'https://' if solr.ssl else 'http://' }}{{ solr.host_name }}:{{ solr.port }}/solr/{{ solr.collection }}"
+              value: "{{ 'https://' if solr.ssl else 'http://' }}{{ solr.service_name }}:{{ solr.port }}/solr/{{ solr.collection }}"
             - name: SOLR_COLLECTION
               value: "{{ solr.collection }}"
 {% if email.enabled %}
@@ -316,7 +310,7 @@ spec:
               value: /usr/local/share/sumo/fcd
 
             - name: "KAFKA_BROKERS"
-              value: "{{ kafka.brokers }}"
+              value: "{{ kafka.service_name }}:{{ kafka.port }}"
             - name: "KAFKA_GROUP"
               value: "{{ kafka.group }}"
             - name: "KAFKA_SECURITY_PROTOCOL"
@@ -341,7 +335,7 @@ spec:
               value: "{{ kafka.ssl_truststore_location }}"
 
             - name: "MQTT_HOST"
-              value: "{{ mqtt.host }}"
+              value: "{{ mqtt.service_name }}"
             - name: "MQTT_PORT"
               value: "{{ mqtt.port }}"
             - name: "MQTT_IOT_SUBSCRIBE_TOPIC"
