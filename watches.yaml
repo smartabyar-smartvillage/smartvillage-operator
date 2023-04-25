@@ -12,6 +12,9 @@
   group: smartvillage.computate.org
   kind: SmartaByarSmartVillage
   role: smartabyarsmartvillage
+  finalizer:
+    name: smartvillage.computate.org/smartabyarsmartvillage-finalizer
+    role: delete-smartabyarsmartvillage
 - version: v1
   group: smartvillage.computate.org
   kind: OrionLDContextBroker

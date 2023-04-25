@@ -1,17 +1,12 @@
----
-apiVersion: route.openshift.io/v1
-kind: Route
+{% if site.route.host_name is defined %}
 metadata:
-  name: {{ site_name }}-web
-  namespace: {{ ansible_operator_meta.namespace }}
-{% if site.host_name is defined %}
   annotations:
     kubernetes.io/tls-acme: 'true'
     acme.openshift.io/secret-name: "{{ site_name }}-certificate"
 {% endif %}
 spec:
-{% if site.host_name is defined %}
-  host: "{{ site.host_name }}"
+{% if site.route.host_name is defined %}
+  host: "{{ site.route.host_name | default('') }}"
 {% endif %}
   port:
     targetPort: http
@@ -23,4 +18,3 @@ spec:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
   wildcardPolicy: None
-

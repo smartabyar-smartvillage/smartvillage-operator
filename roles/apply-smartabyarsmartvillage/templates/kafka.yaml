@@ -1,8 +1,3 @@
-kind: Kafka
-apiVersion: kafka.strimzi.io/v1beta2
-metadata:
-  name: smartvillage-kafka
-  namespace: {{ ansible_operator_meta.namespace }}
 spec:
   kafka:
     config:

@@ -1,8 +1,4 @@
-apiVersion: keycloak.org/v1alpha1
-kind: KeycloakClient
 metadata:
-  name: {{ site_name }}
-  namespace: {{ ansible_operator_meta.namespace }}
   labels:
     app: {{ sso.cluster_name }}
     realm: SMARTVILLAGE

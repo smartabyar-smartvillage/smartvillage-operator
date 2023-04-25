@@ -1,0 +1,170 @@
+---
+
+# Remove PostgreSQL
+- name: Remove {{ site_name }} PostgreSQL cluster on OpenShift
+  k8s:
+    state: absent
+    api_version: postgres-operator.crunchydata.com/v1beta1
+    kind: PostgresCluster
+    name: postgres
+    namespace: "{{ ansible_operator_meta.namespace }}"
+
+# Remove Red Hat SSO
+- name: "Remove keycloak-db-secret on OpenShift"
+  k8s:
+    state: absent
+    kind: Secret
+    api_version: v1
+    name: keycloak-db-secret
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove {{ site_name }} Keycloak realm on OpenShift"
+  k8s:
+    state: absent
+    api_version: keycloak.org/v1alpha1
+    kind: KeycloakRealm
+    name: "{{ site_name }}"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove {{ site_name }} Keycloak client on OpenShift"
+  k8s:
+    state: absent
+    api_version: keycloak.org/v1alpha1
+    kind: KeycloakClient
+    name: "{{ site_name }}"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove {{ site_name }} Keycloak cluster on OpenShift"
+  k8s:
+    state: absent
+    api_version: keycloak.org/v1alpha1
+    kind: Keycloak
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    name: "{{ site_name }}"
+
+# Remove Kafka
+- name: "Remove {{ site_name }} Kafka cluster on OpenShift"
+  k8s:
+    state: absent
+    kind: Kafka
+    api_version: kafka.strimzi.io/v1beta2
+    name: smartvillage-kafka
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove {{ site_name }} Kafka user on OpenShift"
+  k8s:
+    state: absent
+    api_version: kafka.strimzi.io/v1beta2
+    kind: KafkaUser
+    name: smartvillage-kafka
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove {{ site_name }} Kafka Topic smartvillage-sumo-run on OpenShift"
+  k8s:
+    state: absent
+    kind: KafkaTopic
+    api_version: kafka.strimzi.io/v1beta2
+    name: smartvillage-sumo-run
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove {{ site_name }} Kafka Topic smartvillage-sumo-run-report on OpenShift"
+  k8s:
+    state: absent
+    kind: KafkaTopic
+    api_version: kafka.strimzi.io/v1beta2
+    name: smartvillage-sumo-run-report
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove {{ site_name }} Kafka Topic smartvillage-sumo-stop on OpenShift"
+  k8s:
+    state: absent
+    kind: KafkaTopic
+    api_version: kafka.strimzi.io/v1beta2
+    name: smartvillage-sumo-stop
+    namespace: "{{ ansible_operator_meta.namespace }}"
+
+# Remove AMQ Broker
+- name: "Remove {{ site_name }} AMQ Broker on OpenShift"
+  k8s:
+    state: absent
+    api_version: broker.amq.io/v1beta1
+    kind: ActiveMQArtemis
+    name: fiware-broker
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove {{ site_name }} AMQ Broker Address on OpenShift"
+  k8s:
+    state: absent
+    api_version: broker.amq.io/v1beta1
+    kind: ActiveMQArtemisAddress
+    name: fiware-address
+    namespace: "{{ ansible_operator_meta.namespace }}"
+
+# Remove Solr
+- name: "Remove Solr configmap-computate-configset configmap on OpenShift"
+  k8s:
+    state: absent
+    api_version: v1
+    kind: ConfigMap
+    name: computate-configset
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove Solr role bindings on OpenShift"
+  k8s:
+    state: absent
+    kind: RoleBinding
+    api_version: rbac.authorization.k8s.io/v1
+    name: "system:openshift:scc:anyuid"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove Solr service account on OpenShift"
+  k8s:
+    state: absent
+    kind: ServiceAccount
+    api_version: v1
+    name: solr
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove Solr Cloud on OpenShift"
+  k8s:
+    state: absent
+    api_version: solr.apache.org/v1beta1
+    kind: SolrCloud
+    name: default
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove Solr route on OpenShift"
+  k8s:
+    state: absent
+    kind: Route
+    api_version: route.openshift.io/v1
+    name: solr
+    namespace: "{{ ansible_operator_meta.namespace }}"
+
+# Remove site
+- name: "Remove {{ site_name }}-web service on OpenShift"
+  k8s:
+    state: absent
+    api_version: v1
+    kind: Service
+    name: "{{ site_name }}-web"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove {{ site_name }}-web route on OpenShift"
+  k8s:
+    state: absent
+    api_version: route.openshift.io/v1
+    kind: Route
+    name: "{{ site_name }}-web"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+
+#- name: "Remove {{ site_name }} secret on OpenShift"
+#  k8s:
+#    state: absent
+#    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove {{ site_name }} image stream on OpenShift"
+  k8s:
+    state: absent
+    api_version: image.openshift.io/v1
+    kind: ImageStream
+    name: "{{ site_name }}"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove {{ site_name }} deployment config on OpenShift"
+  k8s:
+    state: absent
+    api_version: apps.openshift.io/v1
+    kind: DeploymentConfig
+    name: "{{ site_name }}-web"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+#- name: "Remove {{ site_name }} worker persistent volume claims on OpenShift"
+#  k8s:
+#    state: absent
+#    namespace: "{{ ansible_operator_meta.namespace }}"
+#  with_sequence: start=1 end=WORKER_REPLICAS

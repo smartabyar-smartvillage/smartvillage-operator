@@ -1,8 +1,3 @@
-apiVersion: postgres-operator.crunchydata.com/v1beta1
-kind: PostgresCluster
-metadata:
-  name: postgres
-  namespace: {{ ansible_operator_meta.namespace }}
 spec:
   backups:
     pgbackrest:
@@ -30,10 +25,10 @@ spec:
   openshift: true
   postGISVersion: 3.3.0
   users:
-    - name: {{ sso.cluster_name }}
+    - name: {{ sso.cluster_name | default('') }}
       options: "SUPERUSER"
       databases:
-        - {{ sso.cluster_name }}
+        - {{ sso.cluster_name | default('') }}
     - name: {{ site_name }}
       options: "SUPERUSER"
       databases:
@@ -42,8 +37,8 @@ spec:
     dynamicConfiguration:
       postgresql:
         pg_hba:
-          - "host {{ sso.cluster_name }} {{ sso.cluster_name }} all md5"
-          - "local {{ sso.cluster_name }} {{ sso.cluster_name }} trust"
-          - "host {{ site_name }} {{ site_name }} all md5"
-          - "local {{ site_name }} {{ site_name }} trust"
+          - "host {{ sso.cluster_name | default('') }} {{ sso.cluster_name | default('') }} all md5"
+          - "local {{ sso.cluster_name | default('') }} {{ sso.cluster_name | default('') }} trust"
+          - "host {{ site_name | default('') }} {{ site_name | default('') }} all md5"
+          - "local {{ site_name | default('') }} {{ site_name | default('') }} trust"
         

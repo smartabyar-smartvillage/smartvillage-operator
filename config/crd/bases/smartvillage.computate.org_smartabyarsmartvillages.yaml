@@ -83,6 +83,16 @@ spec:
                   requests_memory:
                     default: 500Mi
                     type: string
+                  route:
+                    properties:
+                      create:
+                        default: true
+                        description: "Whether to create a route for the site. \n"
+                        type: boolean
+                      host_name:
+                        description: "The Route host name for the site. \n"
+                        type: string
+                    type: object
                   secret_name:
                     default: smartvillage
                     description: "The secret name to store site secrets. \nIf empty, \"smartvillage\"\
@@ -231,7 +241,7 @@ spec:
                         type: boolean
                       host_name:
                         default: solr.apps-crc.testing
-                        description: "The Route host for Solr. \n"
+                        description: "The Route host name for Solr. \n"
                         type: string
                     type: object
                   service_name:

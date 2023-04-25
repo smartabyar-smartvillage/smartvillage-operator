@@ -1,8 +1,3 @@
-apiVersion: solr.apache.org/v1beta1
-kind: SolrCloud
-metadata:
-  name: default
-  namespace: {{ ansible_operator_meta.namespace }}
 spec:
   replicas: 2
   busyBoxImage:
@@ -20,6 +15,8 @@ spec:
               storage: 20Gi
   customSolrKubeOptions:
     podOptions:
+      podSecurityContext:
+        runAsNonRoot: true
       serviceAccountName: solr
       volumes:
         - name: computate-configset

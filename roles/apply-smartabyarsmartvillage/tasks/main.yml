@@ -28,92 +28,157 @@
     yggio: "{{ crd.yggio }}"
 
 # Install PostgreSQL
+- name: "Install PostgreSQL {{ site_name }}-db-create configmap on OpenShift"
+  k8s:
+    state: present
+    api_version: v1
+    kind: ConfigMap
+    name: "{{ site_name }}-db-create"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'configmap-db-create.yaml') }}"
 - name: Install {{ site_name }} PostgreSQL cluster on OpenShift
   k8s:
     state: present
+    api_version: postgres-operator.crunchydata.com/v1beta1
+    kind: PostgresCluster
+    name: postgres
+    namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'postgrescluster.yaml') }}"
   when: postgres.create
 
 # Install Red Hat SSO
-- name: Query SSO postgres secret
+- name: "Query SSO postgres secret"
   set_fact:
-    sso_postgres_secret: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=sso.postgres_secret_name, namespace=ansible_operator_meta.namespace)[0].data }}"
-- name: Install keycloak-db-secret on OpenShift
+    sso_postgres_secret: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=(sso.postgres_secret_name | default(env.sso.properties.postgres_secret_name.default)), namespace=ansible_operator_meta.namespace)[0].data }}"
+- name: "Install keycloak-db-secret on OpenShift"
   k8s:
     state: present
+    kind: Secret
+    api_version: v1
+    name: keycloak-db-secret
+    namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'keycloak-db-secret.yaml') }}"
-- name: Install {{ site_name }} Keycloak cluster on OpenShift
-  k8s:
-    state: present
-    definition: "{{ lookup('template', 'keycloak.yaml') }}"
   when: sso.create
-- name: Install {{ site_name }} Keycloak realm on OpenShift
+- name: "Install {{ site_name }} Keycloak realm on OpenShift"
   k8s:
     state: present
+    api_version: keycloak.org/v1alpha1
+    kind: KeycloakRealm
+    name: "{{ site_name }}"
+    namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'keycloakrealm.yaml') }}"
   when: sso.create
-- name: Install {{ site_name }} Keycloak client on OpenShift
+- name: "Install {{ site_name }} Keycloak client on OpenShift"
   k8s:
     state: present
+    api_version: keycloak.org/v1alpha1
+    kind: KeycloakClient
+    name: "{{ site_name }}"
+    namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'keycloakclient.yaml') }}"
+  when: sso.create
+- name: "Install {{ site_name }} Keycloak cluster on OpenShift"
+  k8s:
+    state: present
+    api_version: keycloak.org/v1alpha1
+    kind: Keycloak
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    name: sso
+    definition: "{{ lookup('template', 'keycloak.yaml') }}"
   when: sso.create
 
 # Install Kafka
-- name: Install {{ site_name }} Kafka cluster on OpenShift
+- name: "Install {{ site_name }} Kafka cluster on OpenShift"
   k8s:
     state: present
+    kind: Kafka
+    api_version: kafka.strimzi.io/v1beta2
+    name: smartvillage-kafka
+    namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'kafka.yaml') }}"
-- name: Install {{ site_name }} Kafka user on OpenShift
+- name: "Install {{ site_name }} Kafka user on OpenShift"
   k8s:
     state: present
+    api_version: kafka.strimzi.io/v1beta2
+    kind: KafkaUser
+    name: smartvillage-kafka
+    namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'kafkauser.yaml') }}"
-  when: sso.create
-- name: Install {{ site_name }} Kafka Topic smartvillage-sumo-run on OpenShift
+- name: "Install {{ site_name }} Kafka Topic smartvillage-sumo-run on OpenShift"
   k8s:
     state: present
+    kind: KafkaTopic
+    api_version: kafka.strimzi.io/v1beta2
+    name: smartvillage-sumo-run
+    namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'kafkatopic-smartvillage-sumo-run.yaml') }}"
-  when: sso.create
-- name: Install {{ site_name }} Kafka Topic smartvillage-sumo-run-report on OpenShift
+- name: "Install {{ site_name }} Kafka Topic smartvillage-sumo-run-report on OpenShift"
   k8s:
     state: present
+    kind: KafkaTopic
+    api_version: kafka.strimzi.io/v1beta2
+    name: smartvillage-sumo-run-report
+    namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'kafkatopic-smartvillage-sumo-run-report.yaml') }}"
-  when: sso.create
-- name: Install {{ site_name }} Kafka Topic smartvillage-sumo-stop on OpenShift
+- name: "Install {{ site_name }} Kafka Topic smartvillage-sumo-stop on OpenShift"
   k8s:
     state: present
+    kind: KafkaTopic
+    api_version: kafka.strimzi.io/v1beta2
+    name: smartvillage-sumo-stop
+    namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'kafkatopic-smartvillage-sumo-stop.yaml') }}"
-  when: sso.create
 
 # Install AMQ Broker
-- name: Install {{ site_name }} AMQ Broker on OpenShift
+- name: "Install {{ site_name }} AMQ Broker on OpenShift"
   k8s:
     state: present
+    api_version: broker.amq.io/v1beta1
+    kind: ActiveMQArtemis
+    name: fiware-broker
+    namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'activemqartemis.yaml') }}"
-- name: Install {{ site_name }} AMQ Broker Address on OpenShift
+- name: "Install {{ site_name }} AMQ Broker Address on OpenShift"
   k8s:
     state: present
+    api_version: broker.amq.io/v1beta1
+    kind: ActiveMQArtemisAddress
+    name: fiware-address
+    namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'activemqartemisaddress.yaml') }}"
 
 # Install Solr
-- name: Install Solr configmap-computate-configset configmap on OpenShift
+- name: "Install Solr configmap-computate-configset configmap on OpenShift"
   k8s:
     state: present
+    api_version: v1
+    kind: ConfigMap
+    name: computate-configset
+    namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'configmap-solr-computate-configset.yaml') }}"
-- name: Install Solr role bindings on OpenShift
+- name: "Install Solr service account on OpenShift"
   k8s:
     state: present
-    definition: "{{ lookup('template', 'rolebinding-solr.yaml') }}"
-- name: Install Solr service account on OpenShift
-  k8s:
-    state: present
+    kind: ServiceAccount
+    api_version: v1
+    name: solr
+    namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'serviceaccount-solr.yaml') }}"
-- name: Install Solr Cloud on OpenShift
+- name: "Install Solr Cloud on OpenShift"
   k8s:
     state: present
+    api_version: solr.apache.org/v1beta1
+    kind: SolrCloud
+    name: default
+    namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'solrcloud.yaml') }}"
-- name: Install Solr route on OpenShift
+- name: "Install Solr route on OpenShift"
   k8s:
     state: present
+    kind: Route
+    api_version: route.openshift.io/v1
+    name: solr
+    namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'route-solr.yaml') }}"
 
 - name: "Query prerequisite host names"
@@ -121,7 +186,7 @@
     POSTGRES_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=postgres.secret_name, namespace=ansible_operator_meta.namespace)[0].data }}"
   ignore_errors: true
 
-- name: Verify PostgreSQL
+- name: "Verify PostgreSQL"
   wait_for:
     host: "{{ postgres.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
     port: "{{ postgres.port }}"
@@ -136,7 +201,7 @@
       The PostgreSQL service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
   when: verify_postgresql.failed
 
-- name: Verify MQTT
+- name: "Verify MQTT"
   wait_for:
     host: "{{ mqtt.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
     port: "{{ mqtt.port }}"
@@ -151,7 +216,7 @@
       The MQTT service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
   when: verify_mqtt.failed
 
-- name: Verify Kafka
+- name: "Verify Kafka"
   wait_for:
     host: "{{ kafka.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
     port: "{{ kafka.port }}"
@@ -166,7 +231,7 @@
       The Kafka service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
   when: verify_kafka.failed
 
-- name: Verify Zookeeper
+- name: "Verify Zookeeper"
   wait_for:
     host: "{{ zookeeper.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
     port: "{{ zookeeper.port }}"
@@ -181,7 +246,7 @@
       The Zookeeper service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
   when: verify_zookeeper.failed
 
-- name: Verify Solr
+- name: "Verify Solr"
   wait_for:
     host: "{{ solr.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
     port: "{{ solr.port }}"
@@ -196,7 +261,7 @@
       The Solr service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
   when: verify_solr.failed
 
-- name: Verify SSO
+- name: "Verify SSO"
   wait_for:
     host: "{{ sso.host_name }}"
     port: "443"
@@ -211,37 +276,79 @@
       The SSO service https://{{ sso.host_name }} was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
   when: verify_sso.failed
 
-- name: Install {{ site_name }}-web service on OpenShift
-  k8s:
-    state: present
-    definition: "{{ lookup('template', 'service-web.yaml') }}"
-- name: Install {{ site_name }}-web route on OpenShift
-  k8s:
-    state: present
-    definition: "{{ lookup('template', 'route.yaml') }}"
 
-- name: Query site host name
+- name: Upload computate configset to solr
+  kubernetes.core.k8s_exec:
+    pod: default-solrcloud-0
+    command: >-
+      /opt/solr/bin/solr zk upconfig -n computate -d /opt/solr/server/solr/configsets/computate -z '{{ zookeeper.service_name }}:{{ zookeeper.port }}'
+    namespace: "{{ ansible_operator_meta.namespace }}"
+  register: create_configset
+
+- name: Create Solr collection
+  kubernetes.core.k8s_exec:
+    pod: default-solrcloud-0
+    command: >-
+      /opt/solr/bin/solr create_collection -c {{ solr.collection }} -n computate
+    namespace: "{{ ansible_operator_meta.namespace }}"
+  register: create_collection
+  ignore_errors: True
+- name: Test create_collection success
+  fail:
+    msg: "{{ command_status }}"
+  when: create_collection.failed and create_collection is not search("already exists")
+
+# Install site
+- name: "Install {{ site_name }}-web service on OpenShift"
+  k8s:
+    state: present
+    api_version: v1
+    kind: Service
+    name: "{{ site_name }}-web"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'service-web.yaml') }}"
+- name: "Install {{ site_name }}-web route on OpenShift"
+  k8s:
+    state: present
+    api_version: route.openshift.io/v1
+    kind: Route
+    name: "{{ site_name }}-web"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'route.yaml') }}"
+  when: site.route.create
+
+- name: "Query site host name"
   set_fact:
-    site_host_name: "{{ query('kubernetes.core.k8s', kind='Route', api_version='route.openshift.io/v1', resource_name=(site_name + '-web'), namespace=ansible_operator_meta.namespace)[0].spec.host }}"
-- name: Set static base URL
+    site_host_name: "{{ query('kubernetes.core.k8s', kind='Route', api_version='route.openshift.io/v1', resource_name=(site_name + '-web'), namespace=ansible_operator_meta.namespace)[0].spec.route.host_name | default('') }}"
+- name: "Set static base URL"
   set_fact:
     site_base_url: "https://{{ site_host_name }}"
     static_base_url: "{{ site.static_base_url | default('https://' + site_host_name + '/static') }}"
 
-#- name: Install {{ site_name }} secret on OpenShift
+#- name: "Install {{ site_name }} secret on OpenShift"
 #  k8s:
 #    state: present
+#    namespace: "{{ ansible_operator_meta.namespace }}"
 #    definition: "{{ lookup('template', 'secret.yaml') }}"
-- name: Install {{ site_name }} image stream on OpenShift
+- name: "Install {{ site_name }} image stream on OpenShift"
   k8s:
     state: present
+    api_version: image.openshift.io/v1
+    kind: ImageStream
+    name: "{{ site_name }}"
+    namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'imagestream.yaml') }}"
-- name: Install {{ site_name }} deployment config on OpenShift
+- name: "Install {{ site_name }} deployment config on OpenShift"
   k8s:
     state: present
+    api_version: apps.openshift.io/v1
+    kind: DeploymentConfig
+    name: "{{ site_name }}-web"
+    namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'deploymentconfig-web.yaml') }}"
-#- name: Install {{ site_name }} worker persistent volume claims on OpenShift
+#- name: "Install {{ site_name }} worker persistent volume claims on OpenShift"
 #  k8s:
 #    state: present
+#    namespace: "{{ ansible_operator_meta.namespace }}"
 #    definition: "{{ lookup('template', 'persistentvolumeclaim.yaml') }}"
 #  with_sequence: start=1 end=WORKER_REPLICAS

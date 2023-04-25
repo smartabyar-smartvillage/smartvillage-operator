@@ -1,0 +1,12 @@
+---
+- name: Remove SmartaByarSmartVillage resources from OpenShift
+  hosts: localhost
+  connection: local
+  roles:
+#    - smart-data-model-vars
+    - delete-smartabyarsmartvillage
+  vars:
+    ENTITY_TYPE: SmartaByarSmartVillage
+    ansible_operator_meta:
+      name: smartvillage
+      namespace: smartvillage

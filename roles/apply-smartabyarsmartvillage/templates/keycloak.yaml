@@ -1,8 +1,4 @@
-apiVersion: keycloak.org/v1alpha1
-kind: Keycloak
 metadata:
-  name: {{ sso.cluster_name }}
-  namespace: {{ ansible_operator_meta.namespace }}
   labels:
     app: {{ sso.cluster_name }}
 spec:

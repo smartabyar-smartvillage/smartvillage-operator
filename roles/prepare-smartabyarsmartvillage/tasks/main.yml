@@ -26,125 +26,17 @@
     auth_role: "{{ crd.auth_role }}"
     sumo: "{{ crd.sumo }}"
     yggio: "{{ crd.yggio }}"
-#- name: Create Solr collection
-#  kubernetes.core.k8s_exec:
-#    pod: default-solrcloud-0
-#    command: >-
-#      /opt/solr/bin/solr create_collection -c {{ solr.collection }} -n computate
-#    namespace: ansible_operator_meta.namespace
-#    container: solrcloud-node
-#  register: command_status
-#  ignore_errors: True
-#- name: Test create_collection success
-#  fail:
-#    msg: "{{ command_status }}"
-#  when: command_status.failed and command_status is not search("already exists")
 
-# Add or remove nodeports
-- name: "{{ 'Add' if site.enable_dev_nodeports else 'Remove' }} postgres-nodeport service on OpenShift"
-  k8s:
-    state: "{{ 'present' if site.enable_dev_nodeports else 'absent' }}"
-    definition: "{{ lookup('template', 'service-postgres-nodeport.yaml') }}"
-- name: "{{ 'Add' if site.enable_dev_nodeports else 'Remove' }} fiware-broker-mqtt-nodeport service on OpenShift"
-  k8s:
-    state: "{{ 'present' if site.enable_dev_nodeports else 'absent' }}"
-    definition: "{{ lookup('template', 'service-fiware-broker-mqtt-nodeport.yaml') }}"
-- name: "{{ 'Add' if site.enable_dev_nodeports else 'Remove' }} zookeeper-nodeport service on OpenShift"
-  k8s:
-    state: "{{ 'present' if site.enable_dev_nodeports else 'absent' }}"
-    definition: "{{ lookup('template', 'service-zookeeper-nodeport.yaml') }}"
-- name: "{{ 'Add' if (site.enable_dev_nodeports or solr.route.create) else 'Remove' }} solr route on OpenShift"
-  k8s:
-    state: "{{ 'present' if (site.enable_dev_nodeports or solr.route.create) else 'absent' }}"
-    definition: "{{ lookup('template', 'route-solr.yaml') }}"
-
-- name: Verify PostgreSQL
-  wait_for:
-    host: "{{ postgres_nodeport_hostname if site.enable_dev_nodeports else postgres.host_name }}"
-    port: "{{ postgres_nodeport if site.enable_dev_nodeports else postgres.port }}"
-    state: started
-    delay: 0
-    timeout: 1
-  register: verify_postgresql
-  ignore_errors: yes
-- name: "Verify PostgreSQL is running"
+- name: Create Solr collection
+  kubernetes.core.k8s_exec:
+    pod: default-solrcloud-0
+    command: >-
+      /opt/solr/bin/solr create_collection -c {{ solr.collection }} -n computate
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    container: solrcloud-node
+  register: command_status
+  ignore_errors: True
+- name: Test create_collection success
   fail:
-    msg: |-
-      The PostgreSQL service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
-  when: verify_postgresql.failed
-
-- name: Verify MQTT
-  wait_for:
-    host: "{{ mqtt_nodeport_hostname if site.enable_dev_nodeports else mqtt.host_name }}"
-    port: "{{ mqtt_nodeport if site.enable_dev_nodeports else mqtt.port }}"
-    state: started
-    delay: 0
-    timeout: 1
-  register: verify_mqtt
-  ignore_errors: yes
-- name: "Verify MQTT is running"
-  fail:
-    msg: |-
-      The MQTT service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
-  when: verify_mqtt.failed
-
-- name: Verify Kafka
-  wait_for:
-    host: "{{ kafka_nodeport_hostname if site.enable_dev_nodeports else kafka.host_name }}"
-    port: "{{ kafka_nodeport if site.enable_dev_nodeports else kafka.port }}"
-    state: started
-    delay: 0
-    timeout: 1
-  register: verify_kafka
-  ignore_errors: yes
-- name: "Verify Kafka is running"
-  fail:
-    msg: |-
-      The Kafka service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
-  when: verify_kafka.failed
-
-- name: Verify Zookeeper
-  wait_for:
-    host: "{{ zookeeper_nodeport_hostname if site.enable_dev_nodeports else zookeeper.host_name }}"
-    port: "{{ zookeeper_nodeport if site.enable_dev_nodeports else zookeeper.port }}"
-    state: started
-    delay: 0
-    timeout: 1
-  register: verify_zookeeper
-  ignore_errors: yes
-- name: "Verify Zookeeper is running"
-  fail:
-    msg: |-
-      The Zookeeper service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
-  when: verify_zookeeper.failed
-
-- name: Verify Solr
-  wait_for:
-    host: "{{ solr.route.host_name if site.enable_dev_nodeports else solr.host_name }}"
-    port: "{{ solr_nodeport if site.enable_dev_nodeports else solr.port }}"
-    state: started
-    delay: 0
-    timeout: 1
-  register: verify_solr
-  ignore_errors: yes
-- name: "Verify Solr is running"
-  fail:
-    msg: |-
-      The Solr service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
-  when: verify_solr.failed
-
-- name: Verify SSO
-  wait_for:
-    host: "{{ sso.host_name }}"
-    port: "443"
-    state: started
-    delay: 0
-    timeout: 1
-  register: verify_sso
-  ignore_errors: yes
-- name: "Verify SSO is running"
-  fail:
-    msg: |-
-      The SSO service https://{{ sso.host_name }} was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
-  when: verify_sso.failed
-    
+    msg: "{{ command_status }}"
+  when: command_status.failed and command_status is not search("already exists")

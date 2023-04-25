@@ -83,6 +83,18 @@ env:
       java_opts:
         type: string
         default: ""
+      route:
+        type: object
+        properties:
+          create:
+            type: boolean
+            default: true
+            description: |
+              Whether to create a route for the site. 
+          host_name:
+            type: string
+            description: |
+              The Route host name for the site. 
 
   zookeeper:
     type: object
@@ -217,7 +229,7 @@ env:
             type: string
             default: solr.apps-crc.testing
             description: |
-              The Route host for Solr. 
+              The Route host name for Solr. 
       collection:
         type: string
         default: "smartvillage"

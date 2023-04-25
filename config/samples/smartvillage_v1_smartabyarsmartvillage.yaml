@@ -52,6 +52,8 @@ spec:
     vertx_warning_exception_seconds: 60
     java_opts: |-
       
+    route:
+      create: True
   zookeeper:
     service_name: |-
       default-solrcloud-zookeeper-client
