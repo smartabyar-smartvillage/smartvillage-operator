@@ -5,4 +5,5 @@ resources:
 - bases/smartvillage.computate.org_trafficflowobserveds.yaml
 - bases/smartvillage.computate.org_smarttrafficlights.yaml
 - bases/smartvillage.computate.org_smartabyarsmartvillages.yaml
+- bases/smartvillage.computate.org_orionldcontextbrokers.yaml
 #+kubebuilder:scaffold:crdkustomizeresource

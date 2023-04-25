@@ -12,4 +12,8 @@
   group: smartvillage.computate.org
   kind: SmartaByarSmartVillage
   role: smartabyarsmartvillage
+- version: v1
+  group: smartvillage.computate.org
+  kind: OrionLDContextBroker
+  role: orionldcontextbroker
 #+kubebuilder:scaffold:watch
