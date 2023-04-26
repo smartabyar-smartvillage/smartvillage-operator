@@ -277,13 +277,22 @@
   when: verify_sso.failed
 
 
+- name: "Query postgres pod"
+  set_fact:
+    postgres_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector='postgres-operator.crunchydata.com/cluster=postgres,postgres-operator.crunchydata.com/data=postgres,postgres-operator.crunchydata.com/instance-set=smartvillage,postgres-operator.crunchydata.com/patroni=postgres-ha,postgres-operator.crunchydata.com/role=master', namespace=ansible_operator_meta.namespace)[0].metadata.name }}"
+- name: Run create database scripts on PostgreSQL
+  kubernetes.core.k8s_exec:
+    pod: "{{ postgres_pod_name }}"
+    command: >-
+      bash -c 'curl https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage/main/src/main/resources/sql/db-create.sql | psql -U smartvillage smartvillage'
+    namespace: "{{ ansible_operator_meta.namespace }}"
+
 - name: Upload computate configset to solr
   kubernetes.core.k8s_exec:
     pod: default-solrcloud-0
     command: >-
       /opt/solr/bin/solr zk upconfig -n computate -d /opt/solr/server/solr/configsets/computate -z '{{ zookeeper.service_name }}:{{ zookeeper.port }}'
     namespace: "{{ ansible_operator_meta.namespace }}"
-  register: create_configset
 
 - name: Create Solr collection
   kubernetes.core.k8s_exec:

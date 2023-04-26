@@ -1,5 +1,5 @@
 data:
-  db-create.txt: |
+  db-create.sql: |
     
     CREATE TABLE IF NOT EXISTS TrafficSimulation();
     ALTER TABLE TrafficSimulation ADD COLUMN IF NOT EXISTS paramPedestrianQueueThresholdWestEast decimal;
