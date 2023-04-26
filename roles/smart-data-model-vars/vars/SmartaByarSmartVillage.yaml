@@ -10,6 +10,11 @@ env:
   site:
     type: object
     properties:
+      create:
+        type: boolean
+        default: true
+        description: |
+          Determines if a Smarta Byar Smart Village site will be created. 
       enable_dev_nodeports:
         type: boolean
         default: false
@@ -23,10 +28,10 @@ env:
         maximum: 1
       limits_memory:
         type: string
-        default: '1000Mi'
+        default: '1Gi'
       limits_cpu:
         type: string
-        default: '2'
+        default: '1'
       requests_memory:
         type: string
         default: '500Mi'
@@ -119,6 +124,24 @@ env:
       session_timeout_millis:
         type: number
         default: 5000
+      limits:
+        type: object
+        properties:
+          memory:
+            type: string
+            default: '500Mi'
+          cpu:
+            type: string
+            default: '500m'
+      requests:
+        type: object
+        properties:
+          memory:
+            type: string
+            default: '200Mi'
+          cpu:
+            type: string
+            default: '200m'
 
   sso:
     type: object
@@ -176,6 +199,11 @@ env:
   postgres:
     type: object
     properties:
+      create:
+        type: boolean
+        default: true
+        description: |
+          Determines if a new Crunchy Postgres cluster will be created. 
       service_name:
         type: string
         default: postgres-primary
@@ -198,15 +226,33 @@ env:
         description: |
           Optional secret name where the postgres secrets are stored. 
           If empty, "postgres-pguser-smartvillage" will be used. 
-      create:
-        type: boolean
-        default: true
-        description: |
-          Determines if a new Crunchy Postgres cluster will be created. 
+      limits:
+        type: object
+        properties:
+          memory:
+            type: string
+            default: '500Mi'
+          cpu:
+            type: string
+            default: '500m'
+      requests:
+        type: object
+        properties:
+          memory:
+            type: string
+            default: '200Mi'
+          cpu:
+            type: string
+            default: '200m'
   
   solr:
     type: object
     properties:
+      create:
+        type: boolean
+        default: true
+        description: |
+          Determines if a new Apache Solr cluster will be created. 
       service_name:
         type: string
         default: default-solrcloud-common
@@ -232,6 +278,24 @@ env:
       collection:
         type: string
         default: "smartvillage"
+      limits:
+        type: object
+        properties:
+          memory:
+            type: string
+            default: '1Gi'
+          cpu:
+            type: string
+            default: '1'
+      requests:
+        type: object
+        properties:
+          memory:
+            type: string
+            default: '200Mi'
+          cpu:
+            type: string
+            default: '200m'
   
   email:
     type: object
@@ -373,6 +437,11 @@ env:
   kafka:
     type: object
     properties:
+      create:
+        type: boolean
+        default: true
+        description: |
+          Determines if a new Apache Kafka cluster will be created. 
       keystore_secret:
         type: string
         default: smartvillage-kafka
@@ -403,10 +472,33 @@ env:
       ssl_truststore_location:
         type: string
         default: /opt/kafka/truststore/ca.p12
+      limits:
+        type: object
+        properties:
+          memory:
+            type: string
+            default: '500Mi'
+          cpu:
+            type: string
+            default: '500m'
+      requests:
+        type: object
+        properties:
+          memory:
+            type: string
+            default: '200Mi'
+          cpu:
+            type: string
+            default: '200m'
 
   mqtt:
     type: object
     properties:
+      create:
+        type: boolean
+        default: true
+        description: |
+          Determines if a new MQTT AMQ Broker will be created. 
       enabled:
         type: boolean
         default: true

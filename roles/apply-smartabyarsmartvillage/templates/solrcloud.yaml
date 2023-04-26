@@ -18,6 +18,13 @@ spec:
       podSecurityContext:
         runAsNonRoot: true
       serviceAccountName: solr
+      resources:
+        limits:
+          memory: '{{ solr.limits.memory }}'
+          cpu: '{{ solr.limits.cpu }}'
+        requests:
+          memory: '{{ solr.requests.memory }}'
+          cpu: '{{ solr.requests.cpu }}'
       volumes:
         - name: computate-configset
           source:
@@ -27,3 +34,14 @@ spec:
           defaultContainerMount:
               mountPath: /opt/solr/server/solr/configsets/computate/conf
               name: computate-configset
+  zookeeperRef:
+    provided:
+      replicas: 2
+      zookeeperPodPolicy:
+        resources:
+          limits:
+            memory: '{{ zookeeper.limits.memory }}'
+            cpu: '{{ zookeeper.limits.cpu }}'
+          requests:
+            memory: '{{ zookeeper.requests.memory }}'
+            cpu: '{{ zookeeper.requests.cpu }}'

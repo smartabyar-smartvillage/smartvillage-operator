@@ -2,6 +2,39 @@ spec:
   backups:
     pgbackrest:
       image: registry.developers.crunchydata.com/crunchydata/crunchy-pgbackrest:ubi8-2.41-2
+      jobs:
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+      repoHost:
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+      sidecars:
+        pgbackrest:
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+        pgbackrestConfig:
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
       repos:
       - name: repo1
         volume:
@@ -10,16 +43,32 @@ spec:
             - "ReadWriteOnce"
             resources:
               requests:
-                storage: 1Gi
+                storage: 500Mi
   instances:
     - dataVolumeClaimSpec:
         accessModes:
           - ReadWriteOnce
         resources:
           requests:
-            storage: 1Gi
+            storage: 500Mi
       replicas: 2
       name: '{{ site_name }}'
+      resources:
+        limits:
+          memory: '{{ postgres.limits.memory }}'
+          cpu: '{{ postgres.limits.cpu }}'
+        requests:
+          memory: '{{ postgres.requests.memory }}'
+          cpu: '{{ postgres.requests.cpu }}'
+      sidecars:
+        replicaCertCopy:
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
   image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres-gis:ubi8-15.1-3.3-0
   postgresVersion: 15
   openshift: true

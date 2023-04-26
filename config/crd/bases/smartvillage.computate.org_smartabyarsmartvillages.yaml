@@ -42,6 +42,10 @@ spec:
               site:
                 type: object
                 properties:
+                  create:
+                    default: true
+                    description: "Determines if a Smarta Byar Smart Village site will be created. \n"
+                    type: boolean
                   default_map_location:
                     default: 55.61888,13.548799
                     type: string
@@ -66,10 +70,10 @@ spec:
                     default: ''
                     type: string
                   limits_cpu:
-                    default: '2'
+                    default: '1'
                     type: string
                   limits_memory:
-                    default: 1000Mi
+                    default: 1Gi
                     type: string
                   locale:
                     default: en-US
@@ -133,6 +137,15 @@ spec:
                   connection_timeout_millis:
                     default: 3000
                     type: number
+                  limits:
+                    properties:
+                      cpu:
+                        default: 500m
+                        type: string
+                      memory:
+                        default: 500Mi
+                        type: string
+                    type: object
                   max_retries:
                     default: 0
                     type: number
@@ -142,6 +155,15 @@ spec:
                   port:
                     default: 2181
                     type: number
+                  requests:
+                    properties:
+                      cpu:
+                        default: 200m
+                        type: string
+                      memory:
+                        default: 200Mi
+                        type: string
+                    type: object
                   service_name:
                     default: default-solrcloud-zookeeper-client
                     type: string
@@ -209,10 +231,28 @@ spec:
                     default: true
                     description: "Determines if a new Crunchy Postgres cluster will be created. \n"
                     type: boolean
+                  limits:
+                    properties:
+                      cpu:
+                        default: 500m
+                        type: string
+                      memory:
+                        default: 500Mi
+                        type: string
+                    type: object
                   port:
                     default: 5432
                     description: "The port to connect to PostgreSQL. \n"
                     type: number
+                  requests:
+                    properties:
+                      cpu:
+                        default: 200m
+                        type: string
+                      memory:
+                        default: 200Mi
+                        type: string
+                    type: object
                   secret_name:
                     default: postgres-pguser-smartvillage
                     description: "Optional secret name where the postgres secrets are stored. \nIf empty,\
@@ -229,9 +269,31 @@ spec:
                   collection:
                     default: smartvillage
                     type: string
+                  create:
+                    default: true
+                    description: "Determines if a new Apache Solr cluster will be created. \n"
+                    type: boolean
+                  limits:
+                    properties:
+                      cpu:
+                        default: '1'
+                        type: string
+                      memory:
+                        default: 1Gi
+                        type: string
+                    type: object
                   port:
                     default: 80
                     type: number
+                  requests:
+                    properties:
+                      cpu:
+                        default: 200m
+                        type: string
+                      memory:
+                        default: 200Mi
+                        type: string
+                    type: object
                   route:
                     properties:
                       create:
@@ -387,15 +449,37 @@ spec:
               kafka:
                 type: object
                 properties:
+                  create:
+                    default: true
+                    description: "Determines if a new Apache Kafka cluster will be created. \n"
+                    type: boolean
                   group:
                     default: smartvillage-kafka
                     type: string
                   keystore_secret:
                     default: smartvillage-kafka
                     type: string
+                  limits:
+                    properties:
+                      cpu:
+                        default: 500m
+                        type: string
+                      memory:
+                        default: 500Mi
+                        type: string
+                    type: object
                   port:
                     default: 9093
                     type: number
+                  requests:
+                    properties:
+                      cpu:
+                        default: 200m
+                        type: string
+                      memory:
+                        default: 200Mi
+                        type: string
+                    type: object
                   security_protocol:
                     default: SSL
                     type: string
@@ -421,6 +505,10 @@ spec:
               mqtt:
                 type: object
                 properties:
+                  create:
+                    default: true
+                    description: "Determines if a new MQTT AMQ Broker will be created. \n"
+                    type: boolean
                   enabled:
                     default: true
                     type: boolean

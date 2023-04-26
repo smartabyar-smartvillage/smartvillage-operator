@@ -19,6 +19,12 @@ ansible-galaxy collection install kubernetes.core -U
 operator-sdk init --plugins=ansible --domain computate.org
 ```
 
+# Build and deploy the operator to an OpenShift environment
+```bash
+oc login ...
+make docker-build docker-push deploy
+```
+
 ## Initialize TrafficFlowObserved model
 
 ```bash
@@ -40,13 +46,6 @@ operator-sdk create api --group smartvillage --version v1 --kind SmartTrafficLig
 ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=SmartTrafficLight
 ```
 
-## Initialize SmartaByarSmartVillage model
-
-```bash
-operator-sdk create api --group smartvillage --version v1 --kind SmartaByarSmartVillage --generate-role
-ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=SmartaByarSmartVillage
-```
-
 ## Initialize OrionLDContextBroker model
 
 ```bash
@@ -54,9 +53,22 @@ operator-sdk create api --group smartvillage --version v1 --kind OrionLDContextB
 ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=OrionLDContextBroker
 ```
 
-# Build and deploy the operator to an OpenShift environment
+## Initialize SmartaByarSmartVillage model
+
 ```bash
-oc login ...
-make docker-build docker-push deploy
+operator-sdk create api --group smartvillage --version v1 --kind SmartaByarSmartVillage --generate-role
+ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=SmartaByarSmartVillage
 ```
 
+Create a keycloak-client-secret-smartvillage secret on OpenShift
+
+```yaml
+kind: Secret
+apiVersion: v1
+metadata:
+  name: keycloak-client-secret-smartvillage
+stringData:
+  CLIENT_ID: smartvillage
+  CLIENT_SECRET: ...
+type: Opaque
+```

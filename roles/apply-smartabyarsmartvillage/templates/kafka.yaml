@@ -7,6 +7,13 @@ spec:
     replicas: 3
     authorization:
       type: simple
+    resources:
+      limits:
+        memory: '{{ zookeeper.limits.memory }}'
+        cpu: '{{ zookeeper.limits.cpu }}'
+      requests:
+        memory: '{{ zookeeper.requests.memory }}'
+        cpu: '{{ zookeeper.requests.cpu }}'
     listeners:
       - name: tls
         port: 9093
@@ -41,6 +48,13 @@ spec:
     replicas: 3
     storage:
       type: ephemeral
+    resources:
+      limits:
+        memory: '{{ zookeeper.limits.memory }}'
+        cpu: '{{ zookeeper.limits.cpu }}'
+      requests:
+        memory: '{{ zookeeper.requests.memory }}'
+        cpu: '{{ zookeeper.requests.cpu }}'
   entityOperator:
     topicOperator: {}
     userOperator: {}
