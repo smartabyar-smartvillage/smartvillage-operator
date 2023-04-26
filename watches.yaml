@@ -18,5 +18,5 @@
 - version: v1
   group: smartvillage.computate.org
   kind: OrionLDContextBroker
-  role: orionldcontextbroker
+  role: apply-orionldcontextbroker
 #+kubebuilder:scaffold:watch

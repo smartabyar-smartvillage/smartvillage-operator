@@ -1,0 +1,28 @@
+metadata:
+  labels:
+    app.kubernetes.io/instance: orion-ld
+    app.kubernetes.io/name: orion-ld
+    app.kubernetes.io/version: 1.0.1
+    helm.sh/chart: orion-ld-1.0.2
+data:
+  config.yml: |
+    metrics:
+    - name: orionld
+      help: Example of sub-level value scrapes from a json
+      path: '{.counters}'
+      type: object
+      values:
+        jsonRequests: '{.jsonRequests}'
+        queries: '{.queries}'
+        updates: '{.updates}'
+        subscriptions: '{.subscriptions}'
+        registrationRequest: '{.registrationRequest}'
+        registrations: '{.registrations}'
+        unsubscriptions: '{.unsubscriptions}'
+        notificationsReceived: '{.notificationsReceived}'
+        notificationsSent: '{.notificationsSent}'
+        individualContextEntity: '{.individualContextEntity}'
+        allContextEntitiesRequests: '{.allContextEntitiesRequests}'
+        versionRequests: '{.versionRequests}'
+        statisticsRequests: '{.statisticsRequests}'
+        invalidRequests: '{.invalidRequests}'

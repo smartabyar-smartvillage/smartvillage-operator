@@ -1,8 +1,14 @@
 ---
-- name: Clone marinera chart repo
-  ansible.builtin.git:
-    repo: https://github.com/FIWARE-Ops/marinera.git
-    dest: /tmp/marinera
+
+#- name: "Query {{ ENTITY_TYPE }}"
+#  set_fact:
+#    crd: "{{ query('kubernetes.core.k8s', kind=ENTITY_TYPE, resource_name=ansible_operator_meta.name, namespace=ansible_operator_meta.namespace)[0].spec }}"
+#  ignore_errors: true
+#- name: "Verify {{ ENTITY_TYPE }} exists"
+#  fail:
+#    msg: |-
+#      You need to deploy a {{ ENTITY_TYPE }} to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_smartabyarsmartvillage.yaml
+#  when: crd is not defined
 
 - name: Add bitnami chart repo
   kubernetes.core.helm_repository:
@@ -58,13 +64,58 @@
     release_namespace: "{{ ansible_operator_meta.namespace }}"
     release_state: present
 
-#- name: Add FIWARE Marinera orion-ld helm chart
-#  kubernetes.core.helm:
-#    name: orion-ld
-#    chart_ref: /tmp/marinera/fiware-platform
-#    set_values:
-#      - value: orion-ld.broker.db.hosts=["mongodb-orion"]
-#      - value: orion-ld.deployment.replicaCount=1
-#      - value: orion-ld.route.enabled=true
-#    release_namespace: ansible_operator_meta.namespace
-#    release_state: present
+- name: "Query MongoDB pod"
+  set_fact:
+    mongodb_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector='app.kubernetes.io/component=mongodb,app.kubernetes.io/instance=mongodb-orion,app.kubernetes.io/name=mongodb-orion', namespace=ansible_operator_meta.namespace)[0].metadata.name }}"
+    
+- name: Run create database scripts on MongoDB
+  kubernetes.core.k8s_exec:
+    pod: "{{ mongodb_pod_name }}"
+    command: >-
+      sh -c 'mongo -u "$MONGODB_ROOT_USER" -p "$MONGODB_ROOT_PASSWORD" --eval '"'"'
+      db = db.getSiblingDB("orion");
+      db.createUser({ user: "root", pwd: "'"'"'"$MONGODB_ROOT_PASSWORD"'"'"'", roles: [{ role: "dbOwner", db: "orion"}]}); 
+      '"'"''
+    namespace: "{{ ansible_operator_meta.namespace }}"
+  register: create_user
+  ignore_errors: True
+- name: Test create_user success
+  fail:
+    msg: "{{ command_status }}"
+  when: create_user.failed and create_user is not search("already exists")
+
+- name: "Query MongoDB secret"
+  set_fact:
+    mongodb_root_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='mongodb-orion', namespace=ansible_operator_meta.namespace)[0].data['mongodb-root-password'] | b64decode }}"
+- name: "Install orion-ld secret on OpenShift"
+  k8s:
+    state: present
+    kind: Secret
+    api_version: v1
+    name: orion-ld
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'secret-orion-ld.yaml') }}"
+- name: "Install orion-ld-json-exporter-config configmap on OpenShift"
+  k8s:
+    state: present
+    api_version: v1
+    kind: ConfigMap
+    name: "orion-ld-json-exporter-config"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'configmap-orion-ld-json-exporter-config.yaml') }}"
+- name: "Install orion-ld service on OpenShift"
+  k8s:
+    state: present
+    api_version: v1
+    kind: Service
+    name: "orion-ld"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'service-orion-ld.yaml') }}"
+- name: "Install orion-ld deployment on OpenShift"
+  k8s:
+    state: present
+    api_version: apps/v1
+    kind: Deployment
+    name: "orion-ld"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'deployment-orion-ld.yaml') }}"

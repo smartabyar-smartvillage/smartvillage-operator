@@ -1,0 +1,16 @@
+metadata:
+  labels:
+    app.kubernetes.io/instance: orion-ld
+    app.kubernetes.io/name: orion-ld
+    app.kubernetes.io/version: 1.0.1
+    helm.sh/chart: orion-ld-1.0.2
+spec:
+  ports:
+    - name: http
+      port: 1026
+      protocol: TCP
+      targetPort: 1026
+  selector:
+    app.kubernetes.io/instance: orion-ld
+    app.kubernetes.io/name: orion-ld
+  type: ClusterIP

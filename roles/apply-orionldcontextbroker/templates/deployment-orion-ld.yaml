@@ -1,0 +1,104 @@
+metadata:
+  labels:
+    app.kubernetes.io/instance: demo-orion-ld
+    app.kubernetes.io/name: orion-ld
+    app.kubernetes.io/version: 1.0.1
+    helm.sh/chart: orion-ld-1.0.2
+spec:
+  replicas: 2
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: orion-ld
+      app.kubernetes.io/name: orion-ld
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: orion-ld
+        app.kubernetes.io/name: orion-ld
+        app.kubernetes.io/version: 1.0.1
+        helm.sh/chart: orion-ld-1.0.2
+        marinera/component: core
+        marinera/platform: fiware
+        marinera/product: orion-ld
+        marinera/subcomponent: broker
+    spec:
+      containers:
+        - args:
+            - '-lmtmp'
+          env:
+            - name: ORIONLD_PORT
+              value: '1026'
+            - name: ORIONLD_SOCKET_SERVICE
+              value: 'TRUE'
+            - name: ORIONLD_SOCKET_SERVICE_PORT
+              value: '1027'
+            - name: ORIONLD_DISABLE_FILE_LOG
+              value: 'TRUE'
+            - name: ORIONLD_CACHED_CONTEXT_DIRECTORY
+              value: /opt/orion/ldcontexts
+            - name: ORIONLD_SUBCACHE_IVAL
+              value: '1'
+            - name: ORIONLD_MONGO_HOST
+              value: >-
+                mongodb-orion
+            - name: ORIONLD_MONGO_DB
+              value: orion
+            - name: ORIONLD_MONGO_USER
+              value: root
+            - name: ORIONLD_MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: dbPassword
+                  name: orion-ld
+            - name: ORIONLD_DISABLE_METRICS
+              value: 'TRUE'
+            - name: ORIONLD_STAT_COUNTERS
+              value: 'TRUE'
+            - name: ORIONLD_LOG_LEVEL
+              value: INFO
+            - name: ORIONLD_TROE
+              value: 'FALSE'
+            - name: ORIONLD_TROE_USER
+              value: user
+            - name: ORIONLD_TROE_PWD
+              value: password
+            - name: ORIONLD_TROE_HOST
+              value: postgres
+            - name: ORIONLD_TROE_PORT
+              value: '5432'
+          image: 'quay.io/fiware/orion-ld:1.0.1'
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 1027
+            timeoutSeconds: 30
+          name: orion-ld
+          ports:
+            - containerPort: 1026
+              name: http
+              protocol: TCP
+          readinessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 1027
+            timeoutSeconds: 30
+          resources:
+            limits:
+              cpu: 250m
+              memory: 1Gi
+            requests:
+              cpu: 10m
+              memory: 50Mi
+      serviceAccountName: default
+      volumes: null
