@@ -24,7 +24,62 @@
     name: mongodb-orion
     chart_ref: bitnami/mongodb
     chart_version: 12.1.31
-    release_values:
+#    release_values:
+#      nameOverride: "mongodb-orion"
+#      fullnameOverride: "mongodb-orion"
+#      architecture: replicaset
+#      podSecurityContext:
+#        enabled: false
+#      containerSecurityContext:
+#        enabled: false
+#      resources:
+#        limits:
+#          memory: 3Gi
+#        requests:
+#          cpu: 50m
+#          memory: 300Mi
+#      persistence:
+#        enabled: true
+#        size: 8Gi
+#      readinessProbe:
+#        timeoutSeconds: 60
+#      arbiter:
+#        podSecurityContext:
+#          enabled: false
+#        containerSecurityContext:
+#          enabled: false
+#        podLabels:
+#          marinera/platform: fiware
+#          marinera/component: core
+#          marinera/subcomponent: persistence
+#          marinera/product: mongodb
+#        resources:
+#          limits:
+#            memory: 1.5Gi
+#          requests:
+#            cpu: 50m
+#            memory: 300Mi
+#        readinessProbe:
+#          timeoutSeconds: 60
+#      systemLogVerbosity: 1
+#      podLabels:
+#        marinera/platform: fiware
+#        marinera/component: core
+#        marinera/subcomponent: persistence
+#        marinera/product: mongodb
+#      metrics:
+#        enabled: true
+#        serviceMonitor:
+#          enabled: true
+#        resources:
+#          limits:
+#            memory: 1Gi
+#          requests:
+#            cpu: 50m
+#            memory: 50Mi
+#        readinessProbe:
+#          timeoutSeconds: 60
+    set_values:
       - value: nameOverride=mongodb-orion
       - value: fullnameOverride=mongodb-orion
       - value: architecture=standalone

@@ -61,7 +61,7 @@ spec:
             - name: ORIONLD_STAT_COUNTERS
               value: 'TRUE'
             - name: ORIONLD_LOG_LEVEL
-              value: "{{ orionld.log_level }}
+              value: "{{ orionld.log_level }}"
             - name: ORIONLD_TROE
               value: 'FALSE'
             - name: ORIONLD_TROE_USER
