@@ -5,10 +5,11 @@ spec:
     deploymentconfig: "{{ site_name }}-web"
   strategy:
     activeDeadlineSeconds: 21600
-    recreateParams:
-      timeoutSeconds: 600
     resources: {}
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
   template:
     metadata:
       labels:
