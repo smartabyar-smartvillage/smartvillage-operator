@@ -328,7 +328,7 @@
 
 - name: "Query site host name"
   set_fact:
-    site_host_name: "{{ query('kubernetes.core.k8s', kind='Route', api_version='route.openshift.io/v1', resource_name=(site_name + '-web'), namespace=ansible_operator_meta.namespace)[0].spec.route.host_name | default('') }}"
+    site_host_name: "{{ query('kubernetes.core.k8s', kind='Route', api_version='route.openshift.io/v1', resource_name=(site_name + '-web'), namespace=ansible_operator_meta.namespace)[0].spec.host | default(site.host_name) }}"
 - name: "Set static base URL"
   set_fact:
     site_base_url: "https://{{ site_host_name }}"

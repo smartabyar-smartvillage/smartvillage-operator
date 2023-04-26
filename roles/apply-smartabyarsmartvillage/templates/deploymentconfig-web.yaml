@@ -6,8 +6,8 @@ spec:
   strategy:
     activeDeadlineSeconds: 21600
     resources: {}
-    type: RollingUpdate
-    rollingUpdate:
+    type: Rolling
+    rollingParams:
       maxUnavailable: 25%
       maxSurge: 25%
   template:
@@ -81,7 +81,7 @@ spec:
             - name: STATIC_BASE_URL
               value: "{{ static_base_url }}"
             - name: STATIC_PATH
-              value: "/usr/local/src/smartabyar-smartvillage/src/main/resources/webroot"
+              value: "/usr/local/src/smartabyar-smartvillage-static"
             - name: SITE_ZONE
               value: "{{ site.zone }}"
             - name: SITE_LOCALE
@@ -105,6 +105,11 @@ spec:
                   fieldPath: status.podIP
             - name: CLUSTER_PUBLIC_HOST_NAME
               value: "{{ site_name }}.{{ ansible_operator_meta.namespace }}.svc"
+            - name: "FONTAWESOME_KIT"
+              valueFrom:
+                secretKeyRef:
+                  key: "FONTAWESOME_KIT"
+                  name: "{{ site.secret_name }}"
             - name: JAVA_OPTS
               value: "{{ site.java_opts }}"
 
@@ -281,15 +286,9 @@ spec:
                   key: "YGGIO_SSL"
                   name: "{{ site.secret_name }}"
             - name: "YGGIO_API_RELATIVE_URI_IotNode"
-              valueFrom:
-                secretKeyRef:
-                  key: "YGGIO_API_RELATIVE_URI_IotNode"
-                  name: "{{ site.secret_name }}"
+              value: "{{ yggio.api_relative_uri_iotnode }}"
             - name: "YGGIO_AUTH_LOCAL_URI"
-              valueFrom:
-                secretKeyRef:
-                  key: "YGGIO_AUTH_LOCAL_URI"
-                  name: "{{ site.secret_name }}"
+              value: "{{ yggio.auth_local_uri }}"
             - name: "YGGIO_USERNAME"
               valueFrom:
                 secretKeyRef:

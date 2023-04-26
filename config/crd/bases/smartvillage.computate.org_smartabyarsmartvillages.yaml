@@ -102,7 +102,6 @@ spec:
                     default: false
                     type: boolean
                   static_base_url:
-                    default: http://localhost:12080/static
                     type: string
                   template_path:
                     default: /home/ctate/.local/src/smartabyar-smartvillage/src/main/resources/templates
@@ -257,6 +256,11 @@ spec:
                   enabled:
                     default: false
                     type: boolean
+                  secret_name:
+                    default: smartvillage
+                    description: "The secret name to store SMTP email secrets. \nIf empty, \"smartvillage\"\
+                      \ will be used. \n"
+                    type: string
 
               import_data:
                 type: object
@@ -363,19 +367,6 @@ spec:
                   enabled:
                     default: false
                     type: boolean
-                  host_name:
-                    type: string
-                  password:
-                    type: string
-                  port:
-                    default: 443
-                    type: integer
-                  ssl:
-                    default: true
-                    type: boolean
-                  username:
-                    default: /v2
-                    type: string
 
               fiware:
                 type: object

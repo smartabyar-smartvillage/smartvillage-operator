@@ -39,8 +39,6 @@ spec:
     locale: |-
       en-US
     instances: 3
-    static_base_url: |-
-      http://localhost:12080/static
     template_path: |-
       /home/ctate/.local/src/smartabyar-smartvillage/src/main/resources/templates
     worker_pool_size: 1
@@ -104,6 +102,8 @@ spec:
       smartvillage
   email:
     enabled: False
+    secret_name: |-
+      smartvillage
   import_data:
     enabled: True
     sitepage:
@@ -156,10 +156,6 @@ spec:
       /home/ctate/.local/share/sumo/data/veberod/fcd
   yggio:
     enabled: False
-    port: 443
-    ssl: True
-    username: |-
-      /v2
     api_relative_uri_iotnode: |-
       /api/iotnodes
     auth_local_uri: |-

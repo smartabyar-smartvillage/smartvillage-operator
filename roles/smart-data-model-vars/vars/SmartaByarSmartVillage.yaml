@@ -56,7 +56,6 @@ env:
         default: 3
       static_base_url:
         type: string
-        default: "http://localhost:12080/static"
       template_path:
         type: string
         default: "/home/ctate/.local/src/smartabyar-smartvillage/src/main/resources/templates"
@@ -240,6 +239,12 @@ env:
       enabled: 
         type: boolean
         default: false
+      secret_name:
+        type: string
+        default: smartvillage
+        description: |
+          The secret name to store SMTP email secrets. 
+          If empty, "smartvillage" will be used. 
   
   # Enable data import in the site. 
   import_data:
@@ -342,28 +347,13 @@ env:
       enabled:
         type: boolean
         default: false
-      host_name:
-        type: string
-      port:
-        type: integer
-        default: 443
-      ssl:
-        type: boolean
-        default: true
-      username: 
-        type: string
-      password: 
-        type: string
       api_relative_uri_iotnode:
         type: string
         default: /api/iotnodes
       auth_local_uri:
         type: string
         default: /api/auth/local
-      username:
-        type: string
-        default: /v2
-  
+
   fiware:
     type: object
     properties:
