@@ -1,0 +1,12 @@
+---
+- name: Remove a OrionLDContextBroker resource to OpenShift
+  hosts: localhost
+  connection: local
+  roles:
+    - smart-data-model-vars
+    - delete-orionldcontextbroker
+  vars:
+    ENTITY_TYPE: OrionLDContextBroker
+    ansible_operator_meta:
+      name: smartvillage
+      namespace: smartvillage

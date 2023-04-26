@@ -1,26 +1,30 @@
 ---
 
-#- name: "Query {{ ENTITY_TYPE }}"
-#  set_fact:
-#    crd: "{{ query('kubernetes.core.k8s', kind=ENTITY_TYPE, resource_name=ansible_operator_meta.name, namespace=ansible_operator_meta.namespace)[0].spec }}"
-#  ignore_errors: true
-#- name: "Verify {{ ENTITY_TYPE }} exists"
-#  fail:
-#    msg: |-
-#      You need to deploy a {{ ENTITY_TYPE }} to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_smartabyarsmartvillage.yaml
-#  when: crd is not defined
+- name: "Query {{ ENTITY_TYPE }}"
+  set_fact:
+    crd: "{{ query('kubernetes.core.k8s', kind=ENTITY_TYPE, resource_name=ansible_operator_meta.name, namespace=ansible_operator_meta.namespace)[0].spec }}"
+  ignore_errors: true
+- name: "Verify {{ ENTITY_TYPE }} exists"
+  fail:
+    msg: |-
+      You need to deploy a {{ ENTITY_TYPE }} to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_smartabyarsmartvillage.yaml
+  when: crd is not defined
+
+- name: "Set {{ ENTITY_TYPE }} facts"
+  set_fact:
+    orionld: "{{ crd.orionld }}"
 
 - name: Add bitnami chart repo
   kubernetes.core.helm_repository:
     name: bitnami
     repo_url: https://charts.bitnami.com/bitnami
 
-- name: Add FIWARE Marinera mongodb helm chart
+- name: Install FIWARE Marinera mongodb helm chart
   kubernetes.core.helm:
     name: mongodb-orion
     chart_ref: bitnami/mongodb
     chart_version: 12.1.31
-    set_values:
+    release_values:
       - value: nameOverride=mongodb-orion
       - value: fullnameOverride=mongodb-orion
       - value: architecture=standalone

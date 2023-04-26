@@ -15,7 +15,12 @@ spec:
   - name: v1
     schema:
       openAPIV3Schema:
-        description: OrionLDContextBroker is the Schema for the orionldcontextbrokers API
+        description: |
+          OrionLDContextBroker is the Schema for the orionldcontextbrokers API
+          Orion-LD is a Context Broker and CEF building block for context data management which supports both the NGSI-LD and the NGSI-v2 APIs. 
+          It is currently a fork of the original Orion Context Broker extending support to add NGSI-LD and linked data concepts. 
+          Orion-LD follows the ETSI specification for NGSI-LD and has been tested to be a stable and fast NGSI-LD broker with close compliance to the version 1.3.1 of the NGSI-LD API specification.
+
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -32,7 +37,42 @@ spec:
           spec:
             description: Spec defines the desired state of OrionLDContextBroker
             type: object
-            x-kubernetes-preserve-unknown-fields: true
+            properties:
+              orionld:
+                type: object
+                properties:
+                  limits:
+                    properties:
+                      cpu:
+                        default: 250m
+                        type: string
+                      memory:
+                        default: 1Gi
+                        type: string
+                    type: object
+                  log_level:
+                    default: INFO
+                    description: "The level of logs to report in the pod logs. \n"
+                    enum:
+                    - DEBUG
+                    - INFO
+                    - WARN
+                    - ERROR
+                    type: string
+                  replicas:
+                    default: 2
+                    description: "The number of Orion-LD pods to run. \n"
+                    type: number
+                  requests:
+                    properties:
+                      cpu:
+                        default: 10m
+                        type: string
+                      memory:
+                        default: 50Mi
+                        type: string
+                    type: object
+
           status:
             description: Status defines the observed state of OrionLDContextBroker
             type: object

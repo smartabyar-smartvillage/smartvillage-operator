@@ -19,4 +19,7 @@
   group: smartvillage.computate.org
   kind: OrionLDContextBroker
   role: apply-orionldcontextbroker
+  finalizer:
+    name: smartvillage.computate.org/orionldcontextbroker-finalizer
+    role: delete-orionldcontextbroker
 #+kubebuilder:scaffold:watch

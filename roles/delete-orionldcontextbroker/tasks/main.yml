@@ -1,0 +1,38 @@
+---
+
+- name: Remove FIWARE Marinera mongodb helm chart
+  kubernetes.core.helm:
+    name: mongodb-orion
+    chart_ref: bitnami/mongodb
+    chart_version: 12.1.31
+    release_namespace: "{{ ansible_operator_meta.namespace }}"
+    release_state: absent
+
+- name: "Remove orion-ld secret on OpenShift"
+  k8s:
+    state: absent
+    kind: Secret
+    api_version: v1
+    name: orion-ld
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove orion-ld-json-exporter-config configmap on OpenShift"
+  k8s:
+    state: absent
+    api_version: v1
+    kind: ConfigMap
+    name: "orion-ld-json-exporter-config"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove orion-ld service on OpenShift"
+  k8s:
+    state: absent
+    api_version: v1
+    kind: Service
+    name: "orion-ld"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove orion-ld deployment on OpenShift"
+  k8s:
+    state: absent
+    api_version: apps/v1
+    kind: Deployment
+    name: "orion-ld"
+    namespace: "{{ ansible_operator_meta.namespace }}"
