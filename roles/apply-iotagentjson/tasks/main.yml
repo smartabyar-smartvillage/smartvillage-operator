@@ -1,0 +1,56 @@
+---
+
+- name: "Query {{ ENTITY_TYPE }}"
+  set_fact:
+    crd: "{{ query('kubernetes.core.k8s', kind=ENTITY_TYPE, resource_name=ansible_operator_meta.name, namespace=ansible_operator_meta.namespace)[0].spec }}"
+  ignore_errors: true
+- name: "Verify {{ ENTITY_TYPE }} exists"
+  fail:
+    msg: |-
+      You need to deploy a {{ ENTITY_TYPE }} to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_smartabyarsmartvillage.yaml
+  when: crd is not defined
+
+- name: "Set {{ ENTITY_TYPE }} facts"
+  set_fact:
+    iotagent: "{{ crd.iotagent }}"
+    orionld: "{{ crd.orionld }}"
+    mqtt: "{{ crd.mqtt }}"
+
+- name: "Query MongoDB pod"
+  set_fact:
+    mongodb_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector='app.kubernetes.io/component=mongodb,app.kubernetes.io/instance=mongodb-orion,app.kubernetes.io/name=mongodb-orion', namespace=ansible_operator_meta.namespace)[0].metadata.name }}"
+    
+- name: Run create database scripts on MongoDB
+  kubernetes.core.k8s_exec:
+    pod: "{{ mongodb_pod_name }}"
+    command: >-
+      sh -c 'mongo -u "$MONGODB_ROOT_USER" -p "$MONGODB_ROOT_PASSWORD" --eval '"'"'
+      {{ MONGODB_CREATE_USER_COMMAND_iotagentjson | indent(6, false) }}
+      {{ MONGODB_CREATE_COLLECTIONS_COMMAND_iotagentjson | indent(6, false) }}
+      '"'"''
+    namespace: "{{ ansible_operator_meta.namespace }}"
+  register: create_user
+  ignore_errors: True
+- debug:
+    var: create_user
+- name: Test create_user success
+  fail:
+    msg: "{{ command_status }}"
+  when: create_user.failed and create_user is not search("already exists")
+
+- name: "Install iotagent-json service on OpenShift"
+  k8s:
+    state: present
+    api_version: v1
+    kind: Service
+    name: "iotagent-json"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'service-iotagent-json.yaml') }}"
+- name: "Install iotagent-json deployment on OpenShift"
+  k8s:
+    state: present
+    api_version: apps/v1
+    kind: Deployment
+    name: "iotagent-json"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'deployment-iotagent-json.yaml') }}"

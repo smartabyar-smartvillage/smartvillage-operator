@@ -223,4 +223,21 @@ rules:
       - patch
       - update
       - watch
+  ##
+  ## Rules for smartvillage.computate.org/v1, Kind: IoTAgentJson
+  ##
+  - apiGroups:
+      - smartvillage.computate.org
+    resources:
+      - iotagentjsons
+      - iotagentjsons/status
+      - iotagentjsons/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
 #+kubebuilder:scaffold:rules

@@ -6,4 +6,5 @@ resources:
 - bases/smartvillage.computate.org_smarttrafficlights.yaml
 - bases/smartvillage.computate.org_smartabyarsmartvillages.yaml
 - bases/smartvillage.computate.org_orionldcontextbrokers.yaml
+- bases/smartvillage.computate.org_iotagentjsons.yaml
 #+kubebuilder:scaffold:crdkustomizeresource

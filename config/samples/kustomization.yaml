@@ -4,4 +4,5 @@ resources:
 - smartvillage_v1_smarttrafficlight.yaml
 - smartvillage_v1_smartabyarsmartvillage.yaml
 - smartvillage_v1_orionldcontextbroker.yaml
+- smartvillage_v1_iotagentjson.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples

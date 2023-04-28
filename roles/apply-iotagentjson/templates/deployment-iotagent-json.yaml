@@ -1,0 +1,104 @@
+metadata:
+  labels:
+    app.kubernetes.io/instance: demo-iotagent-json
+    app.kubernetes.io/name: iotagent-json
+    app.kubernetes.io/version: 1.0.1
+spec:
+  replicas: {{ iotagent.replicas }}
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: iotagent-json
+      app.kubernetes.io/name: iotagent-json
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: iotagent-json
+        app.kubernetes.io/name: iotagent-json
+        app.kubernetes.io/version: 1.0.1
+        marinera/component: core
+        marinera/platform: fiware
+        marinera/product: iotagent-json
+    spec:
+      containers:
+        - env:
+            - name: IOTA_CB_HOST
+              value: '{{ orionld.service_name }}'
+            - name: IOTA_CB_PORT
+              value: '{{ iotagent.http_port }}'
+            - name: IOTA_NORTH_PORT
+              value: '{{ iotagent.north_port }}'
+            - name: IOTA_REGISTRY_TYPE
+              value: 'mongodb'
+            - name: IOTA_LOG_LEVEL
+              value: '{{ iotagent.log_level }}'
+            - name: IOTA_TIMESTAMP
+              value: 'true'
+            - name: IOTA_CB_NGSI_VERSION
+              value: 'v2'
+            - name: IOTA_AUTOCAST
+              value: 'true'
+            - name: IOTA_MONGO_HOST
+              value: >-
+                mongodb-orion
+            - name: IOTA_MONGO_PORT
+              value: '27017'
+            - name: IOTA_MONGO_USER
+              value: 'root'
+            - name: IOTA_MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: orion-ld
+                  key: dbPassword
+            - name: IOTA_MONGO_DB
+              value: 'iotagentjson'
+            - name: IOTA_HTTP_PORT
+              value: '7896'
+            - name: IOTA_PROVIDER_URL
+              value: 'http://{{ iotagent.service_name }}:{{ iotagent.north_port }}'
+  
+            - name: IOTA_MQTT_DISABLED
+              value: 'false'
+            - name: IOTA_MQTT_HOST
+              value: '{{ mqtt.service_name }}'
+            - name: IOTA_MQTT_PORT
+              value: '{{ mqtt.port }}'
+            - name: IOTA_MQTT_REJECT_UNAUTHORIZED
+              value: 'false'
+            - name: IOTA_AMQP_DISABLED
+              value: 'true'
+          image: 'docker.io/fiware/iotagent-json:1.26.0'
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 1027
+            timeoutSeconds: 30
+          name: iotagent-json
+          ports:
+            - containerPort: {{ iotagent.http_port }}
+              name: http
+              protocol: TCP
+          readinessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 1027
+            timeoutSeconds: 30
+          resources:
+            limits:
+              cpu: '{{ iotagent.limits.cpu }}'
+              memory: '{{ iotagent.limits.memory }}'
+            requests:
+              cpu: '{{ iotagent.requests.cpu }}'
+              memory: '{{ iotagent.requests.memory }}'
+      serviceAccountName: default
+      volumes: null

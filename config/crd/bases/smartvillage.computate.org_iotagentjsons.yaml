@@ -1,0 +1,112 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: iotagentjsons.smartvillage.computate.org
+spec:
+  group: smartvillage.computate.org
+  names:
+    kind: IoTAgentJson
+    listKind: IoTAgentJsonList
+    plural: iotagentjsons
+    singular: iotagentjson
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: |
+          IoTAgentJson is the Schema for the iotagentjsons API
+          An Internet of Things Agent for a JSON based protocol (with AMQP, HTTP and MQTT transports). 
+          This IoT Agent is designed to be a bridge between JSON and the NGSI interface of a context broker. 
+
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: Spec defines the desired state of IoTAgentJson
+            type: object
+            properties:
+              mqtt:
+                type: object
+                properties:
+                  port:
+                    default: 1883
+                    type: number
+                  service_name:
+                    default: fiware-broker-mqtt-0-svc
+                    type: string
+
+              orionld:
+                type: object
+                properties:
+                  port:
+                    default: 1026
+                    type: number
+                  service_name:
+                    default: orion-ld
+                    type: string
+
+              iotagent:
+                type: object
+                properties:
+                  http_port:
+                    default: 7896
+                    type: number
+                  limits:
+                    properties:
+                      cpu:
+                        default: 250m
+                        type: string
+                      memory:
+                        default: 1Gi
+                        type: string
+                    type: object
+                  log_level:
+                    default: INFO
+                    description: "The level of logs to report in the pod logs. \n"
+                    enum:
+                    - DEBUG
+                    - INFO
+                    - WARN
+                    - ERROR
+                    type: string
+                  north_port:
+                    default: 4041
+                    type: number
+                  replicas:
+                    default: 2
+                    description: "The number of Orion-LD pods to run. \n"
+                    type: number
+                  requests:
+                    properties:
+                      cpu:
+                        default: 10m
+                        type: string
+                      memory:
+                        default: 50Mi
+                        type: string
+                    type: object
+                  service_name:
+                    default: iotagent-json
+                    type: string
+
+          status:
+            description: Status defines the observed state of IoTAgentJson
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

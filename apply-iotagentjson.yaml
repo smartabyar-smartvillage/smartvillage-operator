@@ -1,0 +1,12 @@
+---
+- name: Install a IoTAgentJson resource to OpenShift
+  hosts: localhost
+  connection: local
+  roles:
+    - smart-data-model-vars
+    - apply-iotagentjson
+  vars:
+    ENTITY_TYPE: IoTAgentJson
+    ansible_operator_meta:
+      name: smartvillage
+      namespace: smartvillage

@@ -7,9 +7,9 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 1026
+      port: {{ orionld.port }}
       protocol: TCP
-      targetPort: 1026
+      targetPort: {{ orionld.port }}
   selector:
     app.kubernetes.io/instance: orion-ld
     app.kubernetes.io/name: orion-ld

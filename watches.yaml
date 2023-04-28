@@ -22,4 +22,8 @@
   finalizer:
     name: smartvillage.computate.org/orionldcontextbroker-finalizer
     role: delete-orionldcontextbroker
+- version: v1
+  group: smartvillage.computate.org
+  kind: IoTAgentJson
+  role: iotagentjson
 #+kubebuilder:scaffold:watch

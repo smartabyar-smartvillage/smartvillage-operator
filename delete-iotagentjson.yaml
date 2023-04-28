@@ -1,0 +1,12 @@
+---
+- name: Remove a IoTAgentJson resource to OpenShift
+  hosts: localhost
+  connection: local
+  roles:
+    - smart-data-model-vars
+    - delete-iotagentjson
+  vars:
+    ENTITY_TYPE: IoTAgentJson
+    ansible_operator_meta:
+      name: smartvillage
+      namespace: smartvillage

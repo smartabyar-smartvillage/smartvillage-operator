@@ -1,0 +1,19 @@
+metadata:
+  labels:
+    app.kubernetes.io/instance: iotagent-json
+    app.kubernetes.io/name: iotagent-json
+    app.kubernetes.io/version: 1.0.1
+spec:
+  ports:
+    - name: http
+      port: {{ iotagent.http_port }}
+      protocol: TCP
+      targetPort: 8080
+    - name: north
+      port: {{ iotagent.north_port }}
+      protocol: TCP
+      targetPort: {{ iotagent.north_port }}
+  selector:
+    app.kubernetes.io/instance: iotagent-json
+    app.kubernetes.io/name: iotagent-json
+  type: ClusterIP

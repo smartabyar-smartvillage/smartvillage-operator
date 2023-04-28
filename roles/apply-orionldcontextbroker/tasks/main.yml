@@ -167,7 +167,7 @@
     state: present
     api_version: v1
     kind: Service
-    name: "orion-ld"
+    name: "{{ orionld.service_name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'service-orion-ld.yaml') }}"
 - name: "Install orion-ld deployment on OpenShift"

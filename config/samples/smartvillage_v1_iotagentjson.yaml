@@ -1,0 +1,41 @@
+apiVersion: smartvillage.computate.org/v1
+kind: IoTAgentJson
+metadata:
+  labels:
+    app.kubernetes.io/name: iotagentjson
+    app.kubernetes.io/instance: iotagentjson-sample
+    app.kubernetes.io/part-of: smartvillage-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: smartvillage-operator
+  name: smartvillage
+spec:
+  description: |
+    An Internet of Things Agent for a JSON based protocol (with AMQP, HTTP and MQTT transports). 
+    This IoT Agent is designed to be a bridge between JSON and the NGSI interface of a context broker. 
+
+  mqtt:
+    service_name: |-
+      fiware-broker-mqtt-0-svc
+    port: 1883
+  orionld:
+    service_name: |-
+      orion-ld
+    port: 1026
+  iotagent:
+    http_port: 7896
+    north_port: 4041
+    service_name: |-
+      iotagent-json
+    log_level: |-
+      INFO
+    replicas: 2
+    limits:
+      cpu: |-
+        250m
+      memory: |-
+        1Gi
+    requests:
+      cpu: |-
+        10m
+      memory: |-
+        50Mi

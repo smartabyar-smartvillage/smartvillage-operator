@@ -33,7 +33,7 @@ spec:
             - '-lmtmp'
           env:
             - name: ORIONLD_PORT
-              value: '1026'
+              value: '{{ orionld.port }}'
             - name: ORIONLD_SOCKET_SERVICE
               value: 'TRUE'
             - name: ORIONLD_SOCKET_SERVICE_PORT
