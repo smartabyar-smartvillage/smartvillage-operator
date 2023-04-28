@@ -27,6 +27,31 @@
     sumo: "{{ crd.sumo }}"
     yggio: "{{ crd.yggio }}"
 
+- name: "Install postgres-nodeport NodePort service on OpenShift"
+  k8s:
+    state: "{{ 'present' if site.enable_dev_nodeports and postgres.create else 'absent' }}"
+    api_version: v1
+    kind: Service
+    name: "postgres-nodeport"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'service-postgres-nodeport.yaml') }}"
+- name: "Install zookeeper-nodeport NodePort service on OpenShift"
+  k8s:
+    state: "{{ 'present' if site.enable_dev_nodeports and postgres.create else 'absent' }}"
+    api_version: v1
+    kind: Service
+    name: "zookeeper-nodeport"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'service-zookeeper-nodeport.yaml') }}"
+- name: "Install fiware-broker-mqtt-nodeport NodePort service on OpenShift"
+  k8s:
+    state: "{{ 'present' if site.enable_dev_nodeports and postgres.create else 'absent' }}"
+    api_version: v1
+    kind: Service
+    name: "fiware-broker-mqtt-nodeport"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'service-fiware-broker-mqtt-nodeport.yaml') }}"
+
 # Install PostgreSQL
 - name: "Install PostgreSQL {{ site_name }}-db-create configmap on OpenShift"
   k8s:
