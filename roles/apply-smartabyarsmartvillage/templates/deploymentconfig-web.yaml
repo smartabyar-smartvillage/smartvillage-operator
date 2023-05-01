@@ -65,11 +65,11 @@ spec:
             failureThreshold: 20
           resources:
             limits:
-              memory: '{{ site.limits_memory }}'
-              cpu: '{{ site.limits_cpu }}'
+              memory: '{{ site.web_resources.limits.memory }}'
+              cpu: '{{ site.web_resources.limits.cpu }}'
             requests:
-              memory: '{{ site.requests_memory }}'
-              cpu: '{{ site.requests_cpu }}'
+              memory: '{{ site.web_resources.limits.memory }}'
+              cpu: '{{ site.web_resources.limits.cpu }}'
           env:
 
             - name: JAVA_HOME
@@ -217,14 +217,6 @@ spec:
                   key: EMAIL_USERNAME
                   name: "{{ email.secret_name }}"
 {% endif %}
-            - name: ENABLE_IMPORT_DATA
-              value: "{{ import_data.enabled }}"
-            - name: ENABLE_IMPORT_DATA_SitePage
-              value: '{{ import_data.sitepage.enabled }}'
-            - name: ENABLE_IMPORT_DATA_SiteHtm
-              value: '{{ import_data.sitehtm.enabled }}'
-            - name: ENABLE_IMPORT_DATA_IotNode
-              value: '{{ import_data.iotnode.enabled }}'
 
             - name: AUTH_ROLE_ADMIN
               value: '{{ auth_role.admin }}'

@@ -59,6 +59,9 @@ spec:
                     - WARN
                     - ERROR
                     type: string
+                  port:
+                    default: 1026
+                    type: number
                   replicas:
                     default: 2
                     description: "The number of Orion-LD pods to run. \n"
@@ -72,6 +75,9 @@ spec:
                         default: 50Mi
                         type: string
                     type: object
+                  service_name:
+                    default: orion-ld
+                    type: string
 
           status:
             description: Status defines the observed state of OrionLDContextBroker

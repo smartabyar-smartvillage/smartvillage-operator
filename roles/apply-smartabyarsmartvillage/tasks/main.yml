@@ -215,12 +215,12 @@
     timeout: 5
   register: verify_postgresql
   ignore_errors: yes
-  when: postgres.create
+  when: verify_connections and postgres.create
 - name: "Verify PostgreSQL is running"
   fail:
     msg: |-
       The PostgreSQL service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
-  when: postgres.create and verify_postgresql.failed
+  when: verify_connections and postgres.create and verify_postgresql.failed
 
 - name: "Verify MQTT"
   wait_for:
@@ -231,12 +231,12 @@
     timeout: 5
   register: verify_mqtt
   ignore_errors: yes
-  when: mqtt.create
+  when: verify_connections and mqtt.create
 - name: "Verify MQTT is running"
   fail:
     msg: |-
       The MQTT service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
-  when: mqtt.create and verify_mqtt.failed
+  when: verify_connections and mqtt.create and verify_mqtt.failed
 
 - name: "Verify Kafka"
   wait_for:
@@ -247,12 +247,12 @@
     timeout: 5
   register: verify_kafka
   ignore_errors: yes
-  when: kafka.create
+  when: verify_connections and kafka.create
 - name: "Verify Kafka is running"
   fail:
     msg: |-
       The Kafka service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
-  when: kafka.create and verify_kafka.failed
+  when: verify_connections and kafka.create and verify_kafka.failed
 
 - name: "Verify Zookeeper"
   wait_for:
@@ -263,12 +263,12 @@
     timeout: 5
   register: verify_zookeeper
   ignore_errors: yes
-  when: solr.create
+  when: verify_connections and solr.create
 - name: "Verify Zookeeper is running"
   fail:
     msg: |-
       The Zookeeper service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
-  when: solr.create and verify_zookeeper.failed
+  when: verify_connections and solr.create and verify_zookeeper.failed
 
 - name: "Verify Solr"
   wait_for:
@@ -279,12 +279,12 @@
     timeout: 5
   register: verify_solr
   ignore_errors: yes
-  when: solr.create
+  when: verify_connections and solr.create
 - name: "Verify Solr is running"
   fail:
     msg: |-
       The Solr service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
-  when: solr.create and verify_solr.failed
+  when: verify_connections and solr.create and verify_solr.failed
 
 - name: "Verify SSO"
   wait_for:
@@ -295,12 +295,12 @@
     timeout: 5
   register: verify_sso
   ignore_errors: yes
-  when: sso.create
+  when: verify_connections and sso.create
 - name: "Verify SSO is running"
   fail:
     msg: |-
       The SSO service https://{{ sso.host_name }} was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
-  when: sso.create and verify_sso.failed
+  when: verify_connections and sso.create and verify_sso.failed
 
 
 - name: "Query postgres pod"
@@ -314,6 +314,7 @@
       bash -c 'curl https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage/main/src/main/resources/sql/db-create.sql | psql -U smartvillage smartvillage'
     namespace: "{{ ansible_operator_meta.namespace }}"
   when: postgres.create
+  changed_when: false
 
 - name: Upload computate configset to solr
   kubernetes.core.k8s_exec:
@@ -322,6 +323,7 @@
       /opt/solr/bin/solr zk upconfig -n computate -d /opt/solr/server/solr/configsets/computate -z '{{ zookeeper.service_name }}:{{ zookeeper.port }}'
     namespace: "{{ ansible_operator_meta.namespace }}"
   when: solr.create
+  changed_when: false
 
 - name: Create Solr collection
   kubernetes.core.k8s_exec:
@@ -332,6 +334,7 @@
   register: create_collection
   ignore_errors: True
   when: solr.create
+  changed_when: create_collection is not search("already exists")
 - name: Test create_collection success
   fail:
     msg: "{{ command_status }}"
@@ -346,6 +349,14 @@
     name: "{{ site_name }}-web"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'service-web.yaml') }}"
+- name: "Install {{ site_name }}-worker service on OpenShift"
+  k8s:
+    state: "{{ 'present' if site.create else 'absent' }}"
+    api_version: v1
+    kind: Service
+    name: "{{ site_name }}-worker"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'service-worker.yaml') }}"
 - name: "Install {{ site_name }}-web route on OpenShift"
   k8s:
     state: "{{ 'present' if site.create else 'absent' }}"
@@ -376,7 +387,23 @@
     name: "{{ site_name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'imagestream.yaml') }}"
-- name: "Install {{ site_name }} deployment config on OpenShift"
+- name: "Install {{ site_name }}-sumo image stream on OpenShift"
+  k8s:
+    state: "{{ 'present' if site.create else 'absent' }}"
+    api_version: image.openshift.io/v1
+    kind: ImageStream
+    name: "{{ site_name }}-sumo"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'imagestream-sumo.yaml') }}"
+- name: "Install {{ site_name }} image stream on OpenShift"
+  k8s:
+    state: "{{ 'present' if site.create else 'absent' }}"
+    api_version: image.openshift.io/v1
+    kind: ImageStream
+    name: "{{ site_name }}"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'imagestream.yaml') }}"
+- name: "Install {{ site_name }}-web deployment config on OpenShift"
   k8s:
     state: "{{ 'present' if site.create else 'absent' }}"
     api_version: apps.openshift.io/v1
@@ -384,6 +411,22 @@
     name: "{{ site_name }}-web"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'deploymentconfig-web.yaml') }}"
+- name: "Install {{ site_name }}-worker deployment config on OpenShift"
+  k8s:
+    state: "{{ 'present' if site.create else 'absent' }}"
+    api_version: apps.openshift.io/v1
+    kind: DeploymentConfig
+    name: "{{ site_name }}-worker"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'deploymentconfig-worker.yaml') }}"
+- name: "Install {{ site_name }}-sumo deployment config on OpenShift"
+  k8s:
+    state: "{{ 'present' if site.create else 'absent' }}"
+    api_version: apps.openshift.io/v1
+    kind: DeploymentConfig
+    name: "{{ site_name }}-sumo"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'deploymentconfig-sumo.yaml') }}"
 #- name: "Install {{ site_name }} worker persistent volume claims on OpenShift"
 #  k8s:
 #    state: "{{ 'present' if site.create else 'absent' }}"

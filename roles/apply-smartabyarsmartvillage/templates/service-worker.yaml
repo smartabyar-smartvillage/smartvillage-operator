@@ -12,6 +12,6 @@ spec:
       protocol: TCP
       targetPort: 8081
   selector:
-    app: "{{ site_name }}"
+    app: "{{ site_name }}-worker"
   sessionAffinity: None
   type: ClusterIP

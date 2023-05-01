@@ -26,18 +26,48 @@ env:
         default: 1
         minimum: 0
         maximum: 1
-      limits_memory:
-        type: string
-        default: '1Gi'
-      limits_cpu:
-        type: string
-        default: '1'
-      requests_memory:
-        type: string
-        default: '500Mi'
-      requests_cpu:
-        type: string
-        default: '1'
+      web_resources:
+        type: object
+        properties:
+          limits:
+            type: object
+            properties:
+              cpu:
+                type: string
+                default: 1m
+              memory:
+                type: string
+                default: 1Gi
+          requests:
+            type: object
+            properties:
+              cpu:
+                type: string
+                default: 400m
+              memory:
+                type: string
+                default: 500Mi
+      worker_resources:
+        type: object
+        properties:
+          limits:
+            type: object
+            properties:
+              cpu:
+                type: string
+                default: 1m
+              memory:
+                type: string
+                default: 1Gi
+          requests:
+            type: object
+            properties:
+              cpu:
+                type: string
+                default: 400m
+              memory:
+                type: string
+                default: 500Mi
       name:
         type: string
         default: smartvillage
@@ -335,6 +365,18 @@ env:
           enabled:
             type: boolean
             default: false
+      vehiclestep:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+            default: false
+      timestep:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+            default: false
   
   # The Auth roles required to be an admin in the site. 
   auth_role:
@@ -395,6 +437,32 @@ env:
   sumo:
     type: object
     properties:
+      replicas:
+        type: number
+        default: 1
+        minimum: 0
+        maximum: 1
+      resources:
+        type: object
+        properties:
+          limits:
+            type: object
+            properties:
+              cpu:
+                type: string
+                default: 1m
+              memory:
+                type: string
+                default: 1Gi
+          requests:
+            type: object
+            properties:
+              cpu:
+                type: string
+                default: 400m
+              memory:
+                type: string
+                default: 500Mi
       executable_path:
         type: string
         default: /home/ctate/.local/bin/sumo
@@ -466,12 +534,21 @@ env:
       ssl_keystore_location:
         type: string
         default: /opt/kafka/keystore/user.p12
+      ssl_user_crt_location:
+        type: string
+        default: /opt/kafka/keystore/user.crt
+      ssl_user_key_location:
+        type: string
+        default: /opt/kafka/keystore/user.key
       ssl_truststore_type:
         type: string
         default: PKCS12
       ssl_truststore_location:
         type: string
         default: /opt/kafka/truststore/ca.p12
+      ssl_ca_crt_location:
+        type: string
+        default: /opt/kafka/truststore/ca.crt
       limits:
         type: object
         properties:

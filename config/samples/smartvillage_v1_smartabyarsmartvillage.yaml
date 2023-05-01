@@ -8,7 +8,6 @@ metadata:
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/created-by: smartvillage-operator
   name: smartvillage
-  namespace: smartvillage
 spec:
   description: |
     Red Hat Global Social Innovation Program is partnering with Boston University and Smarta Byar 
@@ -21,14 +20,8 @@ spec:
     enable_dev_nodeports: False
     web_replicas: 3
     worker_replicas: 1
-    limits_memory: |-
-      1Gi
-    limits_cpu: |-
-      1
-    requests_memory: |-
-      500Mi
-    requests_cpu: |-
-      1
+    web_resources:
+    worker_resources:
     name: |-
       smartvillage
     secret_name: |-
@@ -144,6 +137,10 @@ spec:
       enabled: True
     iotnode:
       enabled: False
+    vehiclestep:
+      enabled: False
+    timestep:
+      enabled: False
   auth_role:
     admin: |-
       SiteAdmin
@@ -180,6 +177,8 @@ spec:
     trafficflowobserved: |-
       SiteAdmin
   sumo:
+    replicas: 1
+    resources:
     executable_path: |-
       /home/ctate/.local/bin/sumo
     python_executable_path: |-
@@ -216,10 +215,16 @@ spec:
       PKCS12
     ssl_keystore_location: |-
       /opt/kafka/keystore/user.p12
+    ssl_user_crt_location: |-
+      /opt/kafka/keystore/user.crt
+    ssl_user_key_location: |-
+      /opt/kafka/keystore/user.key
     ssl_truststore_type: |-
       PKCS12
     ssl_truststore_location: |-
       /opt/kafka/truststore/ca.p12
+    ssl_ca_crt_location: |-
+      /opt/kafka/truststore/ca.crt
     limits:
       memory: |-
         500Mi

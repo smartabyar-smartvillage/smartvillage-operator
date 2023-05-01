@@ -69,23 +69,11 @@ spec:
                   java_opts:
                     default: ''
                     type: string
-                  limits_cpu:
-                    default: '1'
-                    type: string
-                  limits_memory:
-                    default: 1Gi
-                    type: string
                   locale:
                     default: en-US
                     type: string
                   name:
                     default: smartvillage
-                    type: string
-                  requests_cpu:
-                    default: '1'
-                    type: string
-                  requests_memory:
-                    default: 500Mi
                     type: string
                   route:
                     properties:
@@ -116,6 +104,27 @@ spec:
                   web_replicas:
                     default: 3
                     type: number
+                  web_resources:
+                    properties:
+                      limits:
+                        properties:
+                          cpu:
+                            default: 1m
+                            type: string
+                          memory:
+                            default: 1Gi
+                            type: string
+                        type: object
+                      requests:
+                        properties:
+                          cpu:
+                            default: 400m
+                            type: string
+                          memory:
+                            default: 500Mi
+                            type: string
+                        type: object
+                    type: object
                   worker_pool_size:
                     default: 1
                     type: number
@@ -124,6 +133,27 @@ spec:
                     maximum: 1
                     minimum: 0
                     type: number
+                  worker_resources:
+                    properties:
+                      limits:
+                        properties:
+                          cpu:
+                            default: 1m
+                            type: string
+                          memory:
+                            default: 1Gi
+                            type: string
+                        type: object
+                      requests:
+                        properties:
+                          cpu:
+                            default: 400m
+                            type: string
+                          memory:
+                            default: 500Mi
+                            type: string
+                        type: object
+                    type: object
                   zone:
                     default: America/New_York
                     type: string
@@ -348,6 +378,18 @@ spec:
                         default: true
                         type: boolean
                     type: object
+                  timestep:
+                    properties:
+                      enabled:
+                        default: false
+                        type: boolean
+                    type: object
+                  vehiclestep:
+                    properties:
+                      enabled:
+                        default: false
+                        type: boolean
+                    type: object
 
               auth_role:
                 type: object
@@ -416,6 +458,32 @@ spec:
                   python_executable_path:
                     default: /home/ctate/python/bin/python
                     type: string
+                  replicas:
+                    default: 1
+                    maximum: 1
+                    minimum: 0
+                    type: number
+                  resources:
+                    properties:
+                      limits:
+                        properties:
+                          cpu:
+                            default: 1m
+                            type: string
+                          memory:
+                            default: 1Gi
+                            type: string
+                        type: object
+                      requests:
+                        properties:
+                          cpu:
+                            default: 400m
+                            type: string
+                          memory:
+                            default: 500Mi
+                            type: string
+                        type: object
+                    type: object
 
               yggio:
                 type: object
@@ -486,6 +554,9 @@ spec:
                   service_name:
                     default: smartvillage-kafka-kafka-bootstrap
                     type: string
+                  ssl_ca_crt_location:
+                    default: /opt/kafka/truststore/ca.crt
+                    type: string
                   ssl_keystore_location:
                     default: /opt/kafka/keystore/user.p12
                     type: string
@@ -497,6 +568,12 @@ spec:
                     type: string
                   ssl_truststore_type:
                     default: PKCS12
+                    type: string
+                  ssl_user_crt_location:
+                    default: /opt/kafka/keystore/user.crt
+                    type: string
+                  ssl_user_key_location:
+                    default: /opt/kafka/keystore/user.key
                     type: string
                   truststore_secret:
                     default: smartvillage-kafka-cluster-ca-cert

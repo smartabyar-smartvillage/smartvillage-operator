@@ -79,7 +79,7 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             tcpSocket:
-              port: 1027
+              port: 7896
             timeoutSeconds: 30
           name: iotagent-json
           ports:
@@ -91,14 +91,14 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             tcpSocket:
-              port: 1027
+              port: 7896
             timeoutSeconds: 30
           resources:
             limits:
-              cpu: '{{ iotagent.limits.cpu }}'
-              memory: '{{ iotagent.limits.memory }}'
+              cpu: '{{ iotagent.resources.limits.cpu }}'
+              memory: '{{ iotagent.resources.limits.memory }}'
             requests:
-              cpu: '{{ iotagent.requests.cpu }}'
-              memory: '{{ iotagent.requests.memory }}'
+              cpu: '{{ iotagent.resources.requests.cpu }}'
+              memory: '{{ iotagent.resources.requests.memory }}'
       serviceAccountName: default
       volumes: null

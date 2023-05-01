@@ -31,6 +31,7 @@
     namespace: "{{ ansible_operator_meta.namespace }}"
   register: create_user
   ignore_errors: True
+  changed_when: false
 - debug:
     var: create_user
 - name: Test create_user success

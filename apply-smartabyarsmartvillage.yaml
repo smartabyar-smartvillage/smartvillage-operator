@@ -10,3 +10,4 @@
     ansible_operator_meta:
       name: smartvillage
       namespace: smartvillage
+    verify_connections: false

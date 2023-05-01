@@ -1,0 +1,96 @@
+spec:
+  replicas: {{ site.web_replicas }}
+  selector:
+    app: "{{ site_name }}-sumo"
+    deploymentconfig: "{{ site_name }}-sumo"
+  strategy:
+    activeDeadlineSeconds: 21600
+    recreateParams:
+      timeoutSeconds: 600
+    resources: {}
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: "{{ site_name }}-sumo"
+        deploymentconfig: "{{ site_name }}-sumo"
+    spec:
+      containers:
+        - imagePullPolicy: Always
+          name: smartvillage-traffic-light-controller-sumo
+          ports:
+            - containerPort: 8081
+              name: http
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8081
+              scheme: "HTTP"
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 20
+            successThreshold: 1
+            failureThreshold: 20
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8081
+              scheme: "HTTP"
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 20
+            successThreshold: 1
+            failureThreshold: 20
+          resources:
+            limits:
+              memory: '{{ sumo.resources.limits.memory }}'
+              cpu: '{{ sumo.resources.limits.cpu }}'
+            requests:
+              memory: '{{ sumo.resources.limits.memory }}'
+              cpu: '{{ sumo.resources.limits.cpu }}'
+          env:
+
+            - name: "KAFKA_BROKERS"
+              value: "{{ kafka.service_name }}:{{ kafka.port }}"
+            - name: "KAFKA_GROUP"
+              value: "{{ kafka.group }}"
+            - name: "KAFKA_SECURITY_PROTOCOL"
+              value: "{{ kafka.security_protocol }}"
+            - name: "KAFKA_SSL_CAFILE"
+              value: "{{ kafka.ssl_ca_crt_location }}"
+            - name: "KAFKA_SSL_CERTFILE"
+              value: "{{ kafka.ssl_user_crt_location }}"
+            - name: "KAFKA_SSL_KEYFILE"
+              value: "{{ kafka.ssl_user_key_location }}"
+            - name: KAFKA_TOPIC_SUMO_RUN
+              value: smartvillage-sumo-run
+            - name: KAFKA_TOPIC_SUMO_RUN_REPORT
+              value: smartvillage-sumo-run-report
+          volumeMounts:
+            - mountPath: /opt/kafka/keystore
+              name: "{{ kafka.keystore_secret }}"
+              readOnly: true
+            - mountPath: /opt/kafka/truststore
+              name: "{{ kafka.truststore_secret }}"
+              readOnly: true
+      volumes:
+        - name: "{{ kafka.keystore_secret }}"
+          secret:
+            defaultMode: 420
+            secretName: "{{ kafka.keystore_secret }}"
+        - name: "{{ kafka.truststore_secret }}"
+          secret:
+            defaultMode: 420
+            secretName: "{{ kafka.truststore_secret }}"
+  triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - smartvillage-traffic-light-controller-sumo
+        from:
+          kind: ImageStreamTag
+          name: '{{ site_name }}-sumo:latest'
+          namespace: "{{ ansible_operator_meta.namespace }}"
+      type: ImageChange
+    - type: ConfigChange

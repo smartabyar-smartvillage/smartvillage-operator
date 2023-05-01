@@ -1,0 +1,13 @@
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - name: latest
+      annotations: null
+      from:
+        kind: DockerImage
+        name: 'quay.io/computateorg/smartvillage-traffic-light-controller-sumo:computate-api'
+      importPolicy:
+        scheduled: true
+      referencePolicy:
+        type: Source

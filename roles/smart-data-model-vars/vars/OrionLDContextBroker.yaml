@@ -29,21 +29,24 @@ env:
         default: 2
         description: |
           The number of Orion-LD pods to run. 
-      limits:
+      resources:
         type: object
         properties:
-          cpu:
-            type: string
-            default: 250m
-          memory:
-            type: string
-            default: 1Gi
-      requests:
-        type: object
-        properties:
-          cpu:
-            type: string
-            default: 10m
-          memory:
-            type: string
-            default: 50Mi
+          limits:
+            type: object
+            properties:
+              cpu:
+                type: string
+                default: 250m
+              memory:
+                type: string
+                default: 1Gi
+          requests:
+            type: object
+            properties:
+              cpu:
+                type: string
+                default: 10m
+              memory:
+                type: string
+                default: 50Mi

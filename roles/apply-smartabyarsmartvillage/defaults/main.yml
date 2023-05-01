@@ -3,6 +3,8 @@ site_name: "{{ site.name | default('smartvillage') }}"
 operator_state: "present"
 ENTITY_TYPE: SmartaByarSmartVillage
 
+verify_connections: true
+
 postgres_nodeport: 30432
 postgres_nodeport_hostname: postgres.apps-crc.testing
 

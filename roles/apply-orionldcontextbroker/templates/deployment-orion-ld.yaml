@@ -95,10 +95,10 @@ spec:
             timeoutSeconds: 30
           resources:
             limits:
-              cpu: '{{ orionld.limits.cpu }}'
-              memory: '{{ orionld.limits.memory }}'
+              cpu: '{{ orionld.resources.limits.cpu }}'
+              memory: '{{ orionld.resources.limits.memory }}'
             requests:
-              cpu: '{{ orionld.requests.cpu }}'
-              memory: '{{ orionld.requests.memory }}'
+              cpu: '{{ orionld.resources.requests.cpu }}'
+              memory: '{{ orionld.resources.requests.memory }}'
       serviceAccountName: default
       volumes: null
