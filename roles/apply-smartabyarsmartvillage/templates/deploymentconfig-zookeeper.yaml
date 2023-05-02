@@ -1,0 +1,88 @@
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: zookeeper
+spec:
+  strategy:
+    type: Recreate
+    recreateParams:
+      timeoutSeconds: 600
+    resources: {}
+    activeDeadlineSeconds: 21600
+  triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - zookeeper
+        from:
+          kind: ImageStreamTag
+          name: 'zookeeper:3.6.1'
+    - type: ConfigChange
+  replicas: 1
+  revisionHistoryLimit: 10
+  test: false
+  selector:
+    app: zookeeper
+    deploymentConfig: zookeeper
+  template:
+    metadata:
+      name: zookeeper
+      creationTimestamp: null
+      labels:
+        app: zookeeper
+        application: zookeeper
+        deploymentConfig: zookeeper
+    spec:
+      volumes:
+        - name: volume-zookeeper-data
+          persistentVolumeClaim:
+            claimName: zookeeper
+        - name: volume-zookeeper-conf
+          configMap:
+            name: zookeeper
+            defaultMode: 440
+      containers:
+        - name: zookeeper
+          resources:
+            limits:
+              memory: '{{ zookeeper.resources.limits.memory }}'
+              cpu: '{{ zookeeper.resources.limits.cpu }}'
+            requests:
+              memory: '{{ zookeeper.resources.requests.memory }}'
+              cpu: '{{ zookeeper.resources.requests.cpu }}'
+          readinessProbe:
+            exec:
+              command:
+                - /conf/zookeeper_healthcheck.sh
+            initialDelaySeconds: 15
+            timeoutSeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          terminationMessagePath: /dev/termination-log
+          livenessProbe:
+            exec:
+              command:
+                - /conf/zookeeper_healthcheck.sh
+            initialDelaySeconds: 15
+            timeoutSeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          ports:
+            - name: client-port
+              containerPort: 2181
+              protocol: TCP
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: volume-zookeeper-data
+              mountPath: /data
+            - name: volume-zookeeper-conf
+              mountPath: /conf
+          terminationMessagePolicy: File
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler

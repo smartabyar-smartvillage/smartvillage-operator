@@ -67,11 +67,11 @@ spec:
 {% if var1.default is defined %}
 {% if (var1.default | type_debug) == 'AnsibleUnicode' %}
   {{ key1 }}: |-
-    {{ var1.default | indent(6, False) }}
+    {{ var1.default | indent(4, False) }}
 {% else %}
 {% if (var1.default | type_debug) in ['dict', 'list'] %}
   {{ key1 }}:
-    {{ var1.default | to_nice_yaml(indent=2) | indent(6, False) }}
+    {{ var1.default | to_nice_yaml(indent=2) | indent(4, False) }}
 {% else %}
   {{ key1 }}: {{ var1.default }}
 {% endif %}
@@ -87,7 +87,7 @@ spec:
 {% else %}
 {% if (var2.default | type_debug) in ['dict', 'list'] %}
     {{ key2 }}:
-      {{ var2.default | to_nice_yaml(indent=2) | indent(8, False) }}
+      {{ var2.default | to_nice_yaml(indent=2) | indent(6, False) }}
 {% else %}
     {{ key2 }}: {{ var2.default }}
 {% endif %}
@@ -99,15 +99,33 @@ spec:
 {% if var3.default is defined %}
 {% if (var3.default | type_debug) == 'AnsibleUnicode' %}
       {{ key3 }}: |-
-        {{ var3.default | indent(6, False) }}
+        {{ var3.default | indent(8, False) }}
 {% else %}
 {% if (var3.default | type_debug) in ['dict', 'list'] %}
       {{ key3 }}:
-        {{ var3.default | to_nice_yaml(indent=2) | indent(10, False) }}
+        {{ var3.default | to_nice_yaml(indent=2) | indent(8, False) }}
 {% else %}
       {{ key3 }}: {{ var3.default }}
 {% endif %}
 {% endif %}
+{% endif %}
+{% if var3.properties is defined %}
+      {{ key3 }}:
+{% for key4, var4 in var3.properties.items() %}
+{% if var4.default is defined %}
+{% if (var4.default | type_debug) == 'AnsibleUnicode' %}
+        {{ key4 }}: |-
+          {{ var4.default | indent(10, False) }}
+{% else %}
+{% if (var4.default | type_debug) in ['dict', 'list'] %}
+        {{ key4 }}:
+          {{ var4.default | to_nice_yaml(indent=2) | indent(10, False) }}
+{% else %}
+        {{ key4 }}: {{ var4.default }}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endfor %}
 {% endif %}
 {% endfor %}
 {% endif %}

@@ -167,15 +167,10 @@ spec:
                   connection_timeout_millis:
                     default: 3000
                     type: number
-                  limits:
-                    properties:
-                      cpu:
-                        default: 500m
-                        type: string
-                      memory:
-                        default: 500Mi
-                        type: string
-                    type: object
+                  create:
+                    default: true
+                    description: "Determines if a new Zookeeper cluster will be created. \n"
+                    type: boolean
                   max_retries:
                     default: 0
                     type: number
@@ -185,21 +180,36 @@ spec:
                   port:
                     default: 2181
                     type: number
-                  requests:
+                  resources:
                     properties:
-                      cpu:
-                        default: 200m
-                        type: string
-                      memory:
-                        default: 200Mi
-                        type: string
+                      limits:
+                        properties:
+                          cpu:
+                            default: 500m
+                            type: string
+                          memory:
+                            default: 500Mi
+                            type: string
+                        type: object
+                      requests:
+                        properties:
+                          cpu:
+                            default: 200m
+                            type: string
+                          memory:
+                            default: 200Mi
+                            type: string
+                        type: object
                     type: object
                   service_name:
-                    default: default-solrcloud-zookeeper-client
+                    default: zookeeper
                     type: string
                   session_timeout_millis:
                     default: 5000
                     type: number
+                  volume_size:
+                    default: 1Gi
+                    type: string
 
               sso:
                 type: object
@@ -261,27 +271,30 @@ spec:
                     default: true
                     description: "Determines if a new Crunchy Postgres cluster will be created. \n"
                     type: boolean
-                  limits:
-                    properties:
-                      cpu:
-                        default: 500m
-                        type: string
-                      memory:
-                        default: 500Mi
-                        type: string
-                    type: object
                   port:
                     default: 5432
                     description: "The port to connect to PostgreSQL. \n"
                     type: number
-                  requests:
+                  resources:
                     properties:
-                      cpu:
-                        default: 200m
-                        type: string
-                      memory:
-                        default: 200Mi
-                        type: string
+                      limits:
+                        properties:
+                          cpu:
+                            default: 500m
+                            type: string
+                          memory:
+                            default: 500Mi
+                            type: string
+                        type: object
+                      requests:
+                        properties:
+                          cpu:
+                            default: 200m
+                            type: string
+                          memory:
+                            default: 200Mi
+                            type: string
+                        type: object
                     type: object
                   secret_name:
                     default: postgres-pguser-smartvillage
@@ -303,26 +316,29 @@ spec:
                     default: true
                     description: "Determines if a new Apache Solr cluster will be created. \n"
                     type: boolean
-                  limits:
-                    properties:
-                      cpu:
-                        default: '1'
-                        type: string
-                      memory:
-                        default: 1Gi
-                        type: string
-                    type: object
                   port:
                     default: 80
                     type: number
-                  requests:
+                  resources:
                     properties:
-                      cpu:
-                        default: 200m
-                        type: string
-                      memory:
-                        default: 200Mi
-                        type: string
+                      limits:
+                        properties:
+                          cpu:
+                            default: '1'
+                            type: string
+                          memory:
+                            default: 1Gi
+                            type: string
+                        type: object
+                      requests:
+                        properties:
+                          cpu:
+                            default: 200m
+                            type: string
+                          memory:
+                            default: 200Mi
+                            type: string
+                        type: object
                     type: object
                   route:
                     properties:
@@ -379,6 +395,12 @@ spec:
                         type: boolean
                     type: object
                   timestep:
+                    properties:
+                      enabled:
+                        default: false
+                        type: boolean
+                    type: object
+                  trafficsimulation:
                     properties:
                       enabled:
                         default: false
@@ -527,26 +549,29 @@ spec:
                   keystore_secret:
                     default: smartvillage-kafka
                     type: string
-                  limits:
-                    properties:
-                      cpu:
-                        default: 500m
-                        type: string
-                      memory:
-                        default: 500Mi
-                        type: string
-                    type: object
                   port:
                     default: 9093
                     type: number
-                  requests:
+                  resources:
                     properties:
-                      cpu:
-                        default: 200m
-                        type: string
-                      memory:
-                        default: 200Mi
-                        type: string
+                      limits:
+                        properties:
+                          cpu:
+                            default: 500m
+                            type: string
+                          memory:
+                            default: 500Mi
+                            type: string
+                        type: object
+                      requests:
+                        properties:
+                          cpu:
+                            default: 200m
+                            type: string
+                          memory:
+                            default: 200Mi
+                            type: string
+                        type: object
                     type: object
                   security_protocol:
                     default: SSL

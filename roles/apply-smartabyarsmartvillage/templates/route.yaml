@@ -12,7 +12,7 @@ spec:
     targetPort: http
   to:
     kind: Service
-    name: "{{ site_name }}-web"
+    name: "{{ site_name }}"
     weight: 100
   tls:
     termination: edge

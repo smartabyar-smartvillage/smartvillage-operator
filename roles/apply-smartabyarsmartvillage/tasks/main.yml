@@ -167,6 +167,48 @@
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'activemqartemisaddress.yaml') }}"
 
+# Install Zookeeper
+- name: "Install Zookeeper image stream on OpenShift"
+  k8s:
+    state: "{{ 'present' if zookeeper.create else 'absent' }}"
+    kind: ImageStream
+    api_version: image.openshift.io/v1
+    name: zookeeper
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'imagestream-zookeeper.yaml') }}"
+- name: "Install Zookeeper persistent volume claim on OpenShift"
+  k8s:
+    state: "{{ 'present' if zookeeper.create else 'absent' }}"
+    kind: PersistentVolumeClaim
+    api_version: v1
+    name: zookeeper
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'persistentvolumeclaim-zookeeper.yaml') }}"
+- name: "Install Zookeeper config map on OpenShift"
+  k8s:
+    state: "{{ 'present' if zookeeper.create else 'absent' }}"
+    kind: ConfigMap
+    api_version: v1
+    name: zookeeper
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'configmap-zookeeper.yaml') }}"
+- name: "Install Zookeeper deployment config on OpenShift"
+  k8s:
+    state: "{{ 'present' if zookeeper.create else 'absent' }}"
+    kind: ConfigMap
+    api_version: v1
+    name: zookeeper
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'deploymentconfig-zookeeper.yaml') }}"
+- name: "Install Zookeeper service on OpenShift"
+  k8s:
+    state: "{{ 'present' if zookeeper.create else 'absent' }}"
+    kind: Service
+    api_version: v1
+    name: zookeeper
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'service-zookeeper.yaml') }}"
+
 # Install Solr
 - name: "Install Solr configmap-computate-configset configmap on OpenShift"
   k8s:

@@ -55,11 +55,11 @@ spec:
       name: '{{ site_name }}'
       resources:
         limits:
-          memory: '{{ postgres.limits.memory }}'
-          cpu: '{{ postgres.limits.cpu }}'
+          memory: '{{ postgres.resources.limits.memory }}'
+          cpu: '{{ postgres.resources.limits.cpu }}'
         requests:
-          memory: '{{ postgres.requests.memory }}'
-          cpu: '{{ postgres.requests.cpu }}'
+          memory: '{{ postgres.resources.requests.memory }}'
+          cpu: '{{ postgres.resources.requests.cpu }}'
       sidecars:
         replicaCertCopy:
           resources:

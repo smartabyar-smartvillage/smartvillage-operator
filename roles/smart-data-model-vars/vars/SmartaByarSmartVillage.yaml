@@ -133,9 +133,17 @@ env:
   zookeeper:
     type: object
     properties:
+      create:
+        type: boolean
+        default: true
+        description: |
+          Determines if a new Zookeeper cluster will be created. 
+      volume_size:
+        type: string
+        default: '1Gi'
       service_name:
         type: string
-        default: default-solrcloud-zookeeper-client
+        default: zookeeper
       port:
         type: number
         default: 2181
@@ -154,24 +162,27 @@ env:
       session_timeout_millis:
         type: number
         default: 5000
-      limits:
+      resources:
         type: object
         properties:
-          memory:
-            type: string
-            default: '500Mi'
-          cpu:
-            type: string
-            default: '500m'
-      requests:
-        type: object
-        properties:
-          memory:
-            type: string
-            default: '200Mi'
-          cpu:
-            type: string
-            default: '200m'
+          limits:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '500Mi'
+              cpu:
+                type: string
+                default: '500m'
+          requests:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '200Mi'
+              cpu:
+                type: string
+                default: '200m'
 
   sso:
     type: object
@@ -256,24 +267,27 @@ env:
         description: |
           Optional secret name where the postgres secrets are stored. 
           If empty, "postgres-pguser-smartvillage" will be used. 
-      limits:
+      resources:
         type: object
         properties:
-          memory:
-            type: string
-            default: '500Mi'
-          cpu:
-            type: string
-            default: '500m'
-      requests:
-        type: object
-        properties:
-          memory:
-            type: string
-            default: '200Mi'
-          cpu:
-            type: string
-            default: '200m'
+          limits:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '500Mi'
+              cpu:
+                type: string
+                default: '500m'
+          requests:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '200Mi'
+              cpu:
+                type: string
+                default: '200m'
   
   solr:
     type: object
@@ -308,24 +322,27 @@ env:
       collection:
         type: string
         default: "smartvillage"
-      limits:
+      resources:
         type: object
         properties:
-          memory:
-            type: string
-            default: '1Gi'
-          cpu:
-            type: string
-            default: '1'
-      requests:
-        type: object
-        properties:
-          memory:
-            type: string
-            default: '200Mi'
-          cpu:
-            type: string
-            default: '200m'
+          limits:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '1Gi'
+              cpu:
+                type: string
+                default: '1'
+          requests:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '200Mi'
+              cpu:
+                type: string
+                default: '200m'
   
   email:
     type: object
@@ -372,6 +389,12 @@ env:
             type: boolean
             default: false
       timestep:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+            default: false
+      trafficsimulation:
         type: object
         properties:
           enabled:
@@ -549,24 +572,27 @@ env:
       ssl_ca_crt_location:
         type: string
         default: /opt/kafka/truststore/ca.crt
-      limits:
+      resources:
         type: object
         properties:
-          memory:
-            type: string
-            default: '500Mi'
-          cpu:
-            type: string
-            default: '500m'
-      requests:
-        type: object
-        properties:
-          memory:
-            type: string
-            default: '200Mi'
-          cpu:
-            type: string
-            default: '200m'
+          limits:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '500Mi'
+              cpu:
+                type: string
+                default: '500m'
+          requests:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '200Mi'
+              cpu:
+                type: string
+                default: '200m'
 
   mqtt:
     type: object

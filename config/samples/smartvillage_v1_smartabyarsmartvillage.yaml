@@ -21,7 +21,27 @@ spec:
     web_replicas: 3
     worker_replicas: 1
     web_resources:
+      limits:
+        cpu: |-
+          1m
+        memory: |-
+          1Gi
+      requests:
+        cpu: |-
+          400m
+        memory: |-
+          500Mi
     worker_resources:
+      limits:
+        cpu: |-
+          1m
+        memory: |-
+          1Gi
+      requests:
+        cpu: |-
+          400m
+        memory: |-
+          500Mi
     name: |-
       smartvillage
     secret_name: |-
@@ -47,24 +67,28 @@ spec:
     route:
       create: True
   zookeeper:
+    create: True
+    volume_size: |-
+      1Gi
     service_name: |-
-      default-solrcloud-zookeeper-client
+      zookeeper
     port: 2181
     max_retries: 0
     base_sleep_time_millis: 5000
     max_sleep_millis: 5000
     connection_timeout_millis: 3000
     session_timeout_millis: 5000
-    limits:
-      memory: |-
-        500Mi
-      cpu: |-
-        500m
-    requests:
-      memory: |-
-        200Mi
-      cpu: |-
-        200m
+    resources:
+      limits:
+        memory: |-
+          500Mi
+        cpu: |-
+          500m
+      requests:
+        memory: |-
+          200Mi
+        cpu: |-
+          200m
   sso:
     create: True
     host_name: |-
@@ -93,16 +117,17 @@ spec:
       postgres
     secret_name: |-
       postgres-pguser-smartvillage
-    limits:
-      memory: |-
-        500Mi
-      cpu: |-
-        500m
-    requests:
-      memory: |-
-        200Mi
-      cpu: |-
-        200m
+    resources:
+      limits:
+        memory: |-
+          500Mi
+        cpu: |-
+          500m
+      requests:
+        memory: |-
+          200Mi
+        cpu: |-
+          200m
   solr:
     create: True
     service_name: |-
@@ -115,16 +140,17 @@ spec:
         solr.apps-crc.testing
     collection: |-
       smartvillage
-    limits:
-      memory: |-
-        1Gi
-      cpu: |-
-        1
-    requests:
-      memory: |-
-        200Mi
-      cpu: |-
-        200m
+    resources:
+      limits:
+        memory: |-
+          1Gi
+        cpu: |-
+          1
+      requests:
+        memory: |-
+          200Mi
+        cpu: |-
+          200m
   email:
     enabled: False
     secret_name: |-
@@ -140,6 +166,8 @@ spec:
     vehiclestep:
       enabled: False
     timestep:
+      enabled: False
+    trafficsimulation:
       enabled: False
   auth_role:
     admin: |-
@@ -179,6 +207,16 @@ spec:
   sumo:
     replicas: 1
     resources:
+      limits:
+        cpu: |-
+          1m
+        memory: |-
+          1Gi
+      requests:
+        cpu: |-
+          400m
+        memory: |-
+          500Mi
     executable_path: |-
       /home/ctate/.local/bin/sumo
     python_executable_path: |-
@@ -225,16 +263,17 @@ spec:
       /opt/kafka/truststore/ca.p12
     ssl_ca_crt_location: |-
       /opt/kafka/truststore/ca.crt
-    limits:
-      memory: |-
-        500Mi
-      cpu: |-
-        500m
-    requests:
-      memory: |-
-        200Mi
-      cpu: |-
-        200m
+    resources:
+      limits:
+        memory: |-
+          500Mi
+        cpu: |-
+          500m
+      requests:
+        memory: |-
+          200Mi
+        cpu: |-
+          200m
   mqtt:
     create: True
     enabled: True

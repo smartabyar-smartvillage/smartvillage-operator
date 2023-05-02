@@ -1,7 +1,7 @@
 spec:
   replicas: {{ site.web_replicas }}
   selector:
-    app: "{{ site_name }}-web"
+    app: "{{ site_name }}"
     deploymentconfig: "{{ site_name }}-web"
   strategy:
     activeDeadlineSeconds: 21600
@@ -13,7 +13,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ site_name }}-web"
+        app: "{{ site_name }}"
         deploymentconfig: "{{ site_name }}-web"
     spec:
       containers:
@@ -74,6 +74,8 @@ spec:
 
             - name: JAVA_HOME
               value: /usr/lib/jvm/java-11-openjdk
+            - name: ENABLE_ZOOKEEPER_CLUSTER
+              value: "true"
             - name: SITE_PORT
               value: "8080"
             - name: SITE_BASE_URL
@@ -94,7 +96,7 @@ spec:
               value: "8081"
             - name: WORKER_POOL_SIZE
               value: "{{ site.worker_pool_size }}"
-            - name: DYNAMIC_PAGE_PATH
+            - name: DYNAMIC_PAGE_PATHS
               value: '["/usr/local/src/smartabyar-smartvillage/page"]'
             - name: VERTX_WARNING_EXCEPTION_SECONDS
               value: "{{ site.vertx_warning_exception_seconds }}"
@@ -104,7 +106,7 @@ spec:
                   apiVersion: v1
                   fieldPath: status.podIP
             - name: CLUSTER_PUBLIC_HOST_NAME
-              value: "{{ site_name }}.{{ ansible_operator_meta.namespace }}.svc"
+              value: "{{ site_name }}-web.{{ ansible_operator_meta.namespace }}.svc"
             - name: "FONTAWESOME_KIT"
               valueFrom:
                 secretKeyRef:
@@ -217,6 +219,9 @@ spec:
                   key: EMAIL_USERNAME
                   name: "{{ email.secret_name }}"
 {% endif %}
+
+            - name: ENABLE_IMPORT_DATA
+              value: "false"
 
             - name: AUTH_ROLE_ADMIN
               value: '{{ auth_role.admin }}'

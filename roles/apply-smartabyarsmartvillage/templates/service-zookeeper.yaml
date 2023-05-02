@@ -1,0 +1,12 @@
+spec:
+  ports:
+    - protocol: TCP
+      port: 2181
+      targetPort: 2181
+  internalTrafficPolicy: Cluster
+  type: ClusterIP
+  ipFamilyPolicy: SingleStack
+  sessionAffinity: None
+  selector:
+    app: zookeeper
+    deploymentConfig: zookeeper

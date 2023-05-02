@@ -5,10 +5,11 @@ spec:
     deploymentconfig: "{{ site_name }}-sumo"
   strategy:
     activeDeadlineSeconds: 21600
-    recreateParams:
-      timeoutSeconds: 600
     resources: {}
-    type: Recreate
+    type: Rolling
+    rollingParams:
+      maxUnavailable: 25%
+      maxSurge: 25%
   template:
     metadata:
       labels:

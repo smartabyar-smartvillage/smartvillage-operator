@@ -1,19 +1,18 @@
 spec:
   replicas: 1
   selector:
-    app: "{{ site_name }}-worker"
+    app: "{{ site_name }}"
     deploymentconfig: "{{ site_name }}-worker"
   strategy:
     activeDeadlineSeconds: 21600
+    recreateParams:
+      timeoutSeconds: 600
     resources: {}
-    type: Rolling
-    rollingParams:
-      maxUnavailable: 25%
-      maxSurge: 25%
+    type: Recreate
   template:
     metadata:
       labels:
-        app: "{{ site_name }}-worker"
+        app: "{{ site_name }}"
         deploymentconfig: "{{ site_name }}-worker"
     spec:
       containers:
@@ -74,6 +73,8 @@ spec:
 
             - name: JAVA_HOME
               value: /usr/lib/jvm/java-11-openjdk
+            - name: ENABLE_ZOOKEEPER_CLUSTER
+              value: "true"
             - name: SITE_PORT
               value: "8080"
             - name: SITE_BASE_URL
@@ -94,7 +95,7 @@ spec:
               value: "8081"
             - name: WORKER_POOL_SIZE
               value: "1"
-            - name: DYNAMIC_PAGE_PATH
+            - name: DYNAMIC_PAGE_PATHS
               value: '["/usr/local/src/smartabyar-smartvillage/page"]'
             - name: VERTX_WARNING_EXCEPTION_SECONDS
               value: "{{ site.vertx_warning_exception_seconds }}"
@@ -104,7 +105,7 @@ spec:
                   apiVersion: v1
                   fieldPath: status.podIP
             - name: CLUSTER_PUBLIC_HOST_NAME
-              value: "{{ site_name }}.{{ ansible_operator_meta.namespace }}.svc"
+              value: "{{ site_name }}-worker.{{ ansible_operator_meta.namespace }}.svc"
             - name: "FONTAWESOME_KIT"
               valueFrom:
                 secretKeyRef:
@@ -229,6 +230,8 @@ spec:
               value: '{{ import_data.vehiclestep.enabled }}'
             - name: ENABLE_IMPORT_DATA_TimeStep
               value: '{{ import_data.timestep.enabled }}'
+            - name: ENABLE_IMPORT_DATA_TrafficSimulation
+              value: '{{ import_data.trafficsimulation.enabled }}'
 
             - name: AUTH_ROLE_ADMIN
               value: '{{ auth_role.admin }}'
