@@ -12,6 +12,6 @@ notification:
   http:
     url: https://www.computate.org/test
   attrs:
-{% for key, attribute in attributes.items() %}
-    - "{{ spec.attributes[key].name | default(key) }}"
+{% for key, attribute in smart_data_model.attributes.items() %}
+    - "{{ smart_data_model.attributes[key].name | default(key) }}"
 {% endfor %}

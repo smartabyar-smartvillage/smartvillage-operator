@@ -1,8 +1,3 @@
-kind: Service
-apiVersion: v1
-metadata:
-  name: fiware-broker-mqtt-nodeport
-  namespace: {{ ansible_operator_meta.namespace }}
 spec:
   ports:
     - name: fiware-broker-mqtt

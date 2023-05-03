@@ -7,7 +7,9 @@
     - apply-smartabyarsmartvillage
   vars:
     ENTITY_TYPE: SmartaByarSmartVillage
+    ansible_operator_meta_name: smartvillage
+    ansible_operator_meta_namespace: smartvillage
     ansible_operator_meta:
-      name: smartvillage
-      namespace: smartvillage
+      name: "{{ ansible_operator_meta_name }}"
+      namespace: "{{ ansible_operator_meta_namespace }}"
     verify_connections: false

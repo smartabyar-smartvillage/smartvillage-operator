@@ -9,11 +9,11 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ service_group.cb_host }}/v2/entities/{{ ENTITY_NAME | urlencode }}?options=keyValues"
+    url: "{{ values.context_broker.host }}/v2/entities/{{ ENTITY_NAME | urlencode }}?options=keyValues"
     method: GET
     headers:
-      Fiware-Service: "{{ fiware.service | lower }}"
-      Fiware-ServicePath: "{{ fiware.service_path }}"
+      Fiware-Service: "{{ values.fiware.service | lower }}"
+      Fiware-ServicePath: "{{ values.fiware.service_path }}"
     return_content: true
     status_code: 
       - 200
@@ -40,7 +40,7 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ SITE_BASE_URL }}{{ smartabyar_smartvillage.import_api_uri }}"
+    url: "{{ SITE_BASE_URL }}{{ values.smartabyar_smartvillage.import_api_uri }}"
     method: PUT
     headers:
       Content-Type: "application/json"

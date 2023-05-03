@@ -10,10 +10,6 @@
       You need to deploy a {{ ENTITY_TYPE }} to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_smartabyarsmartvillage.yaml
   when: crd is not defined
 
-- name: "Set {{ ENTITY_TYPE }} facts"
-  set_fact:
-    orionld: "{{ crd.orionld }}"
-
 - name: Add bitnami chart repo
   kubernetes.core.helm_repository:
     name: bitnami
@@ -115,7 +111,7 @@
     state: present
     api_version: v1
     kind: Service
-    name: "{{ orionld.service_name }}"
+    name: "{{ values.orionld.service_name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'service-orion-ld.yaml') }}"
 - name: "Install orion-ld deployment on OpenShift"
@@ -126,3 +122,11 @@
     name: "orion-ld"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'deployment-orion-ld.yaml') }}"
+- name: "Install Orion-LD route on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.orionld.route.create else 'absent' }}"
+    kind: Route
+    api_version: route.openshift.io/v1
+    name: orion-ld
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'route-orion-ld.yaml') }}"

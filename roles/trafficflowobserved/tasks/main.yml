@@ -1,18 +1,12 @@
 ---
 # tasks file for TrafficFlowObserved
-
 - name: Run Ansible role smart-data-model-vars
   include_role:
     name: smart-data-model-vars
-- name: DEBUG STUFF
-  debug:
-    var: hostvars[inventory_hostname]
-- name: Run Ansible role iotagent-json-service-group
+  vars:
+    ENTITY_TYPE: TrafficFlowObserved
+- name: Run Ansible role apply-trafficflowobserved
   include_role:
-    name: iotagent-json-service-group
-- name: Run Ansible role iotagent-json-device
-  include_role:
-    name: iotagent-json-device
-- name: Run Ansible role iotagent-json-subscription
-  include_role:
-    name: iotagent-json-subscription
+    name: apply-trafficflowobserved
+  vars:
+    ENTITY_TYPE: TrafficFlowObserved

@@ -26,16 +26,19 @@ spec:
     north_port: 4041
     service_name: |-
       iotagent-json
+    route:
+      create: False
     log_level: |-
       INFO
     replicas: 2
-    limits:
-      cpu: |-
-        250m
-      memory: |-
-        1Gi
-    requests:
-      cpu: |-
-        10m
-      memory: |-
-        50Mi
+    resources:
+      limits:
+        cpu: |-
+          250m
+        memory: |-
+          1Gi
+      requests:
+        cpu: |-
+          10m
+        memory: |-
+          50Mi

@@ -1,6 +1,6 @@
 spec:
-{% if solr.route.host is defined %}
-  host: {{ solr.route.host_name }}
+{% if values.solr.route.host is defined %}
+  host: {{ values.solr.route.host_name }}
 {% endif %}
   to:
     kind: Service

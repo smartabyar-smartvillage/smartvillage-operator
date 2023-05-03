@@ -3,7 +3,7 @@ name: smartvillage
 description: |
   An Internet of Things Agent for a JSON based protocol (with AMQP, HTTP and MQTT transports). 
   This IoT Agent is designed to be a bridge between JSON and the NGSI interface of a context broker. 
-env:
+schema:
   mqtt:
     type: object
     properties:
@@ -34,6 +34,18 @@ env:
       service_name:
         type: string
         default: iotagent-json
+      route:
+        type: object
+        properties:
+          create:
+            type: boolean
+            default: false
+            description: |
+              Whether to create a route for iotagent-json. 
+          host:
+            type: string
+            description: |
+              The Route host name for iotagent-json. 
       log_level:
         type: string
         default: INFO

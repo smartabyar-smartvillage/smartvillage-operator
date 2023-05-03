@@ -4,21 +4,25 @@
   group: smartvillage.computate.org
   kind: TrafficFlowObserved
   role: trafficflowobserved
+  watchDependentResources: false
 - version: v1
   group: smartvillage.computate.org
   kind: SmartTrafficLight
   role: smarttrafficlight
+  watchDependentResources: false
 - version: v1
   group: smartvillage.computate.org
   kind: SmartaByarSmartVillage
   role: smartabyarsmartvillage
+  watchDependentResources: false
   finalizer:
     name: smartvillage.computate.org/smartabyarsmartvillage-finalizer
     role: delete-smartabyarsmartvillage
 - version: v1
   group: smartvillage.computate.org
   kind: OrionLDContextBroker
-  role: apply-orionldcontextbroker
+  role: orionldcontextbroker
+  watchDependentResources: false
   finalizer:
     name: smartvillage.computate.org/orionldcontextbroker-finalizer
     role: delete-orionldcontextbroker
@@ -26,4 +30,5 @@
   group: smartvillage.computate.org
   kind: IoTAgentJson
   role: iotagentjson
+  watchDependentResources: false
 #+kubebuilder:scaffold:watch

@@ -1,0 +1,23 @@
+values:
+  mqtt:
+    service_name: "{{ crd.mqtt.service_name | default(schema | community.general.json_query('mqtt.properties.service_name.default')) }}"
+    port: "{{ crd.mqtt.port | default(schema | community.general.json_query('mqtt.properties.port.default')) }}"
+  orionld:
+    service_name: "{{ crd.orionld.service_name | default(schema | community.general.json_query('orionld.properties.service_name.default')) }}"
+    port: "{{ crd.orionld.port | default(schema | community.general.json_query('orionld.properties.port.default')) }}"
+  iotagent:
+    http_port: "{{ crd.iotagent.http_port | default(schema | community.general.json_query('iotagent.properties.http_port.default')) }}"
+    north_port: "{{ crd.iotagent.north_port | default(schema | community.general.json_query('iotagent.properties.north_port.default')) }}"
+    service_name: "{{ crd.iotagent.service_name | default(schema | community.general.json_query('iotagent.properties.service_name.default')) }}"
+    route:
+      create: "{{ crd.iotagent.route.create | default(schema | community.general.json_query('iotagent.properties.route.properties.create.default')) }}"
+      host: "{{ crd.iotagent.route.host | default('') }}"
+    log_level: "{{ crd.iotagent.log_level | default(schema | community.general.json_query('iotagent.properties.log_level.default')) }}"
+    replicas: "{{ crd.iotagent.replicas | default(schema | community.general.json_query('iotagent.properties.replicas.default')) }}"
+    resources:
+      limits:
+        cpu: "{{ crd.iotagent.resources.limits.cpu | default(schema | community.general.json_query('iotagent.properties.resources.properties.limits.properties.cpu.default')) }}"
+        memory: "{{ crd.iotagent.resources.limits.memory | default(schema | community.general.json_query('iotagent.properties.resources.properties.limits.properties.memory.default')) }}"
+      requests:
+        cpu: "{{ crd.iotagent.resources.requests.cpu | default(schema | community.general.json_query('iotagent.properties.resources.properties.requests.properties.cpu.default')) }}"
+        memory: "{{ crd.iotagent.resources.requests.memory | default(schema | community.general.json_query('iotagent.properties.resources.properties.requests.properties.memory.default')) }}"

@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/version: 1.0.1
     helm.sh/chart: orion-ld-1.0.2
 spec:
-  replicas: {{ orionld.replicas }}
+  replicas: {{ values.orionld.replicas }}
   revisionHistoryLimit: 3
   selector:
     matchLabels:
@@ -33,7 +33,7 @@ spec:
             - '-lmtmp'
           env:
             - name: ORIONLD_PORT
-              value: '{{ orionld.port }}'
+              value: '{{ values.orionld.port }}'
             - name: ORIONLD_SOCKET_SERVICE
               value: 'TRUE'
             - name: ORIONLD_SOCKET_SERVICE_PORT
@@ -61,7 +61,7 @@ spec:
             - name: ORIONLD_STAT_COUNTERS
               value: 'TRUE'
             - name: ORIONLD_LOG_LEVEL
-              value: "{{ orionld.log_level }}"
+              value: "{{ values.orionld.log_level }}"
             - name: ORIONLD_TROE
               value: 'FALSE'
             - name: ORIONLD_TROE_USER
@@ -95,10 +95,10 @@ spec:
             timeoutSeconds: 30
           resources:
             limits:
-              cpu: '{{ orionld.resources.limits.cpu }}'
-              memory: '{{ orionld.resources.limits.memory }}'
+              cpu: '{{ values.orionld.resources.limits.cpu }}'
+              memory: '{{ values.orionld.resources.limits.memory }}'
             requests:
-              cpu: '{{ orionld.resources.requests.cpu }}'
-              memory: '{{ orionld.resources.requests.memory }}'
+              cpu: '{{ values.orionld.resources.requests.cpu }}'
+              memory: '{{ values.orionld.resources.requests.memory }}'
       serviceAccountName: default
       volumes: null

@@ -1,0 +1,48 @@
+values:
+{% if smart_data_model.attributes is defined %}
+  attributes:
+{% for key, attribute in smart_data_model.attributes.items() %}
+{% if attribute.default is defined %}
+{% if (attribute.default | type_debug) == 'AnsibleUnicode' %}
+    {{ key }}: |
+      {{ attribute.default | indent(6, False) }}{% else %}
+{% if (attribute.default | type_debug) == 'dict' %}
+    {{ key }}:
+      {{ attribute.default | to_nice_yaml(indent=2) | indent(6, False) }}{% else %}
+    {{ key }}: {{ attribute.default }}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if schema is defined %}
+{% for key1, var1 in schema.items() %}
+{% if var1.properties is not defined %}
+  {{ key1 }}: "\{\{ crd.{{ key1 }} | default({% if var1.default is defined %}schema | community.general.json_query('{{ key1 }}.default'){% else %}''{% endif %}) \}\}"
+{% endif %}
+{% if var1.properties is defined %}
+  {{ key1 }}:
+{% for key2, var2 in var1.properties.items() %}
+{% if var2.properties is not defined %}
+    {{ key2 }}: "\{\{ crd.{{ key1 }}.{{ key2 }} | default({% if var2.default is defined %}schema | community.general.json_query('{{ key1 }}.properties.{{ key2 }}.default'){% else %}''{% endif %}) \}\}"
+{% endif %}
+{% if var2.properties is defined %}
+    {{ key2 }}:
+{% for key3, var3 in var2.properties.items() %}
+{% if var3.properties is not defined %}
+      {{ key3 }}: "\{\{ crd.{{ key1 }}.{{ key2 }}.{{ key3 }} | default({% if var3.default is defined %}schema | community.general.json_query('{{ key1 }}.properties.{{ key2 }}.properties.{{ key3 }}.default'){% else %}''{% endif %}) \}\}"
+{% endif %}
+{% if var3.properties is defined %}
+      {{ key3 }}:
+{% for key4, var4 in var3.properties.items() %}
+{% if var4.properties is not defined %}
+        {{ key4 }}: "\{\{ crd.{{ key1 }}.{{ key2 }}.{{ key3 }}.{{ key4 }} | default({% if var4.default is defined %}schema | community.general.json_query('{{ key1 }}.properties.{{ key2 }}.properties.{{ key3 }}.properties.{{ key4 }}.default'){% else %}''{% endif %}) \}\}"
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}

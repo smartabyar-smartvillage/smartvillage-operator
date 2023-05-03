@@ -1,2 +1,12 @@
 ---
 # tasks file for IoTAgentJson
+- name: Run Ansible role smart-data-model-vars
+  include_role:
+    name: smart-data-model-vars
+  vars:
+    ENTITY_TYPE: IoTAgentJson
+- name: Run Ansible role apply-iotagentjson
+  include_role:
+    name: apply-iotagentjson
+  vars:
+    ENTITY_TYPE: IoTAgentJson

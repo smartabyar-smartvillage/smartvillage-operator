@@ -1,0 +1,183 @@
+values:
+  site:
+    create: "{{ crd.site.create | default(schema | community.general.json_query('site.properties.create.default')) }}"
+    enable_dev_nodeports: "{{ crd.site.enable_dev_nodeports | default(schema | community.general.json_query('site.properties.enable_dev_nodeports.default')) }}"
+    web_replicas: "{{ crd.site.web_replicas | default(schema | community.general.json_query('site.properties.web_replicas.default')) }}"
+    worker_replicas: "{{ crd.site.worker_replicas | default(schema | community.general.json_query('site.properties.worker_replicas.default')) }}"
+    web_resources:
+      limits:
+        cpu: "{{ crd.site.web_resources.limits.cpu | default(schema | community.general.json_query('site.properties.web_resources.properties.limits.properties.cpu.default')) }}"
+        memory: "{{ crd.site.web_resources.limits.memory | default(schema | community.general.json_query('site.properties.web_resources.properties.limits.properties.memory.default')) }}"
+      requests:
+        cpu: "{{ crd.site.web_resources.requests.cpu | default(schema | community.general.json_query('site.properties.web_resources.properties.requests.properties.cpu.default')) }}"
+        memory: "{{ crd.site.web_resources.requests.memory | default(schema | community.general.json_query('site.properties.web_resources.properties.requests.properties.memory.default')) }}"
+    worker_resources:
+      limits:
+        cpu: "{{ crd.site.worker_resources.limits.cpu | default(schema | community.general.json_query('site.properties.worker_resources.properties.limits.properties.cpu.default')) }}"
+        memory: "{{ crd.site.worker_resources.limits.memory | default(schema | community.general.json_query('site.properties.worker_resources.properties.limits.properties.memory.default')) }}"
+      requests:
+        cpu: "{{ crd.site.worker_resources.requests.cpu | default(schema | community.general.json_query('site.properties.worker_resources.properties.requests.properties.cpu.default')) }}"
+        memory: "{{ crd.site.worker_resources.requests.memory | default(schema | community.general.json_query('site.properties.worker_resources.properties.requests.properties.memory.default')) }}"
+    name: "{{ crd.site.name | default(schema | community.general.json_query('site.properties.name.default')) }}"
+    secret_name: "{{ crd.site.secret_name | default(schema | community.general.json_query('site.properties.secret_name.default')) }}"
+    host_name: "{{ crd.site.host_name | default(schema | community.general.json_query('site.properties.host_name.default')) }}"
+    zone: "{{ crd.site.zone | default(schema | community.general.json_query('site.properties.zone.default')) }}"
+    locale: "{{ crd.site.locale | default(schema | community.general.json_query('site.properties.locale.default')) }}"
+    instances: "{{ crd.site.instances | default(schema | community.general.json_query('site.properties.instances.default')) }}"
+    static_base_url: "{{ crd.site.static_base_url | default('') }}"
+    template_path: "{{ crd.site.template_path | default(schema | community.general.json_query('site.properties.template_path.default')) }}"
+    fontawesome_kit: "{{ crd.site.fontawesome_kit | default('') }}"
+    worker_pool_size: "{{ crd.site.worker_pool_size | default(schema | community.general.json_query('site.properties.worker_pool_size.default')) }}"
+    enable_zookeeper_cluster: "{{ crd.site.enable_zookeeper_cluster | default(schema | community.general.json_query('site.properties.enable_zookeeper_cluster.default')) }}"
+    ssl_verify: "{{ crd.site.ssl_verify | default(schema | community.general.json_query('site.properties.ssl_verify.default')) }}"
+    default_map_location: "{{ crd.site.default_map_location | default(schema | community.general.json_query('site.properties.default_map_location.default')) }}"
+    default_map_zoom: "{{ crd.site.default_map_zoom | default(schema | community.general.json_query('site.properties.default_map_zoom.default')) }}"
+    vertx_warning_exception_seconds: "{{ crd.site.vertx_warning_exception_seconds | default(schema | community.general.json_query('site.properties.vertx_warning_exception_seconds.default')) }}"
+    java_opts: "{{ crd.site.java_opts | default(schema | community.general.json_query('site.properties.java_opts.default')) }}"
+    route:
+      create: "{{ crd.site.route.create | default(schema | community.general.json_query('site.properties.route.properties.create.default')) }}"
+      host_name: "{{ crd.site.route.host_name | default('') }}"
+  zookeeper:
+    create: "{{ crd.zookeeper.create | default(schema | community.general.json_query('zookeeper.properties.create.default')) }}"
+    volume_size: "{{ crd.zookeeper.volume_size | default(schema | community.general.json_query('zookeeper.properties.volume_size.default')) }}"
+    service_name: "{{ crd.zookeeper.service_name | default(schema | community.general.json_query('zookeeper.properties.service_name.default')) }}"
+    port: "{{ crd.zookeeper.port | default(schema | community.general.json_query('zookeeper.properties.port.default')) }}"
+    max_retries: "{{ crd.zookeeper.max_retries | default(schema | community.general.json_query('zookeeper.properties.max_retries.default')) }}"
+    base_sleep_time_millis: "{{ crd.zookeeper.base_sleep_time_millis | default(schema | community.general.json_query('zookeeper.properties.base_sleep_time_millis.default')) }}"
+    max_sleep_millis: "{{ crd.zookeeper.max_sleep_millis | default(schema | community.general.json_query('zookeeper.properties.max_sleep_millis.default')) }}"
+    connection_timeout_millis: "{{ crd.zookeeper.connection_timeout_millis | default(schema | community.general.json_query('zookeeper.properties.connection_timeout_millis.default')) }}"
+    session_timeout_millis: "{{ crd.zookeeper.session_timeout_millis | default(schema | community.general.json_query('zookeeper.properties.session_timeout_millis.default')) }}"
+    resources:
+      limits:
+        memory: "{{ crd.zookeeper.resources.limits.memory | default(schema | community.general.json_query('zookeeper.properties.resources.properties.limits.properties.memory.default')) }}"
+        cpu: "{{ crd.zookeeper.resources.limits.cpu | default(schema | community.general.json_query('zookeeper.properties.resources.properties.limits.properties.cpu.default')) }}"
+      requests:
+        memory: "{{ crd.zookeeper.resources.requests.memory | default(schema | community.general.json_query('zookeeper.properties.resources.properties.requests.properties.memory.default')) }}"
+        cpu: "{{ crd.zookeeper.resources.requests.cpu | default(schema | community.general.json_query('zookeeper.properties.resources.properties.requests.properties.cpu.default')) }}"
+  sso:
+    create: "{{ crd.sso.create | default(schema | community.general.json_query('sso.properties.create.default')) }}"
+    host_name: "{{ crd.sso.host_name | default(schema | community.general.json_query('sso.properties.host_name.default')) }}"
+    cluster_name: "{{ crd.sso.cluster_name | default(schema | community.general.json_query('sso.properties.cluster_name.default')) }}"
+    postgres_secret_name: "{{ crd.sso.postgres_secret_name | default(schema | community.general.json_query('sso.properties.postgres_secret_name.default')) }}"
+    client_secret_name: "{{ crd.sso.client_secret_name | default(schema | community.general.json_query('sso.properties.client_secret_name.default')) }}"
+  auth:
+    host_name: "{{ crd.auth.host_name | default('') }}"
+    port: "{{ crd.auth.port | default(schema | community.general.json_query('auth.properties.port.default')) }}"
+    ssl: "{{ crd.auth.ssl | default(schema | community.general.json_query('auth.properties.ssl.default')) }}"
+    realm: "{{ crd.auth.realm | default(schema | community.general.json_query('auth.properties.realm.default')) }}"
+    client: "{{ crd.auth.client | default(schema | community.general.json_query('auth.properties.client.default')) }}"
+    secret: "{{ crd.auth.secret | default('') }}"
+    token_uri: "{{ crd.auth.token_uri | default(schema | community.general.json_query('auth.properties.token_uri.default')) }}"
+  postgres:
+    create: "{{ crd.postgres.create | default(schema | community.general.json_query('postgres.properties.create.default')) }}"
+    service_name: "{{ crd.postgres.service_name | default(schema | community.general.json_query('postgres.properties.service_name.default')) }}"
+    port: "{{ crd.postgres.port | default(schema | community.general.json_query('postgres.properties.port.default')) }}"
+    cluster_name: "{{ crd.postgres.cluster_name | default(schema | community.general.json_query('postgres.properties.cluster_name.default')) }}"
+    secret_name: "{{ crd.postgres.secret_name | default(schema | community.general.json_query('postgres.properties.secret_name.default')) }}"
+    resources:
+      limits:
+        memory: "{{ crd.postgres.resources.limits.memory | default(schema | community.general.json_query('postgres.properties.resources.properties.limits.properties.memory.default')) }}"
+        cpu: "{{ crd.postgres.resources.limits.cpu | default(schema | community.general.json_query('postgres.properties.resources.properties.limits.properties.cpu.default')) }}"
+      requests:
+        memory: "{{ crd.postgres.resources.requests.memory | default(schema | community.general.json_query('postgres.properties.resources.properties.requests.properties.memory.default')) }}"
+        cpu: "{{ crd.postgres.resources.requests.cpu | default(schema | community.general.json_query('postgres.properties.resources.properties.requests.properties.cpu.default')) }}"
+  solr:
+    create: "{{ crd.solr.create | default(schema | community.general.json_query('solr.properties.create.default')) }}"
+    service_name: "{{ crd.solr.service_name | default(schema | community.general.json_query('solr.properties.service_name.default')) }}"
+    port: "{{ crd.solr.port | default(schema | community.general.json_query('solr.properties.port.default')) }}"
+    ssl: "{{ crd.solr.ssl | default(schema | community.general.json_query('solr.properties.ssl.default')) }}"
+    route:
+      create: "{{ crd.solr.route.create | default(schema | community.general.json_query('solr.properties.route.properties.create.default')) }}"
+      host_name: "{{ crd.solr.route.host_name | default(schema | community.general.json_query('solr.properties.route.properties.host_name.default')) }}"
+    collection: "{{ crd.solr.collection | default(schema | community.general.json_query('solr.properties.collection.default')) }}"
+    resources:
+      limits:
+        memory: "{{ crd.solr.resources.limits.memory | default(schema | community.general.json_query('solr.properties.resources.properties.limits.properties.memory.default')) }}"
+        cpu: "{{ crd.solr.resources.limits.cpu | default(schema | community.general.json_query('solr.properties.resources.properties.limits.properties.cpu.default')) }}"
+      requests:
+        memory: "{{ crd.solr.resources.requests.memory | default(schema | community.general.json_query('solr.properties.resources.properties.requests.properties.memory.default')) }}"
+        cpu: "{{ crd.solr.resources.requests.cpu | default(schema | community.general.json_query('solr.properties.resources.properties.requests.properties.cpu.default')) }}"
+  email:
+    enabled: "{{ crd.email.enabled | default(schema | community.general.json_query('email.properties.enabled.default')) }}"
+    secret_name: "{{ crd.email.secret_name | default(schema | community.general.json_query('email.properties.secret_name.default')) }}"
+  import_data:
+    enabled: "{{ crd.import_data.enabled | default(schema | community.general.json_query('import_data.properties.enabled.default')) }}"
+    sitepage:
+      enabled: "{{ crd.import_data.sitepage.enabled | default(schema | community.general.json_query('import_data.properties.sitepage.properties.enabled.default')) }}"
+    sitehtm:
+      enabled: "{{ crd.import_data.sitehtm.enabled | default(schema | community.general.json_query('import_data.properties.sitehtm.properties.enabled.default')) }}"
+    iotnode:
+      enabled: "{{ crd.import_data.iotnode.enabled | default(schema | community.general.json_query('import_data.properties.iotnode.properties.enabled.default')) }}"
+    vehiclestep:
+      enabled: "{{ crd.import_data.vehiclestep.enabled | default(schema | community.general.json_query('import_data.properties.vehiclestep.properties.enabled.default')) }}"
+    timestep:
+      enabled: "{{ crd.import_data.timestep.enabled | default(schema | community.general.json_query('import_data.properties.timestep.properties.enabled.default')) }}"
+    trafficsimulation:
+      enabled: "{{ crd.import_data.trafficsimulation.enabled | default(schema | community.general.json_query('import_data.properties.trafficsimulation.properties.enabled.default')) }}"
+  auth_role:
+    admin: "{{ crd.auth_role.admin | default(schema | community.general.json_query('auth_role.properties.admin.default')) }}"
+    siteuser: "{{ crd.auth_role.siteuser | default(schema | community.general.json_query('auth_role.properties.siteuser.default')) }}"
+    sitepage: "{{ crd.auth_role.sitepage | default(schema | community.general.json_query('auth_role.properties.sitepage.default')) }}"
+    sitehtm: "{{ crd.auth_role.sitehtm | default(schema | community.general.json_query('auth_role.properties.sitehtm.default')) }}"
+    iotnode: "{{ crd.auth_role.iotnode | default(schema | community.general.json_query('auth_role.properties.iotnode.default')) }}"
+    mapresult: "{{ crd.auth_role.mapresult | default(schema | community.general.json_query('auth_role.properties.mapresult.default')) }}"
+    iotnodestep: "{{ crd.auth_role.iotnodestep | default(schema | community.general.json_query('auth_role.properties.iotnodestep.default')) }}"
+    vehiclestep: "{{ crd.auth_role.vehiclestep | default(schema | community.general.json_query('auth_role.properties.vehiclestep.default')) }}"
+    personstep: "{{ crd.auth_role.personstep | default(schema | community.general.json_query('auth_role.properties.personstep.default')) }}"
+    trafficlight: "{{ crd.auth_role.trafficlight | default(schema | community.general.json_query('auth_role.properties.trafficlight.default')) }}"
+    trafficlightstep: "{{ crd.auth_role.trafficlightstep | default(schema | community.general.json_query('auth_role.properties.trafficlightstep.default')) }}"
+    trafficsimulation: "{{ crd.auth_role.trafficsimulation | default(schema | community.general.json_query('auth_role.properties.trafficsimulation.default')) }}"
+    simulationreport: "{{ crd.auth_role.simulationreport | default(schema | community.general.json_query('auth_role.properties.simulationreport.default')) }}"
+    systemevent: "{{ crd.auth_role.systemevent | default(schema | community.general.json_query('auth_role.properties.systemevent.default')) }}"
+    bicyclestep: "{{ crd.auth_role.bicyclestep | default(schema | community.general.json_query('auth_role.properties.bicyclestep.default')) }}"
+    timestep: "{{ crd.auth_role.timestep | default(schema | community.general.json_query('auth_role.properties.timestep.default')) }}"
+    trafficflowobserved: "{{ crd.auth_role.trafficflowobserved | default(schema | community.general.json_query('auth_role.properties.trafficflowobserved.default')) }}"
+  sumo:
+    replicas: "{{ crd.sumo.replicas | default(schema | community.general.json_query('sumo.properties.replicas.default')) }}"
+    resources:
+      limits:
+        cpu: "{{ crd.sumo.resources.limits.cpu | default(schema | community.general.json_query('sumo.properties.resources.properties.limits.properties.cpu.default')) }}"
+        memory: "{{ crd.sumo.resources.limits.memory | default(schema | community.general.json_query('sumo.properties.resources.properties.limits.properties.memory.default')) }}"
+      requests:
+        cpu: "{{ crd.sumo.resources.requests.cpu | default(schema | community.general.json_query('sumo.properties.resources.properties.requests.properties.cpu.default')) }}"
+        memory: "{{ crd.sumo.resources.requests.memory | default(schema | community.general.json_query('sumo.properties.resources.properties.requests.properties.memory.default')) }}"
+    executable_path: "{{ crd.sumo.executable_path | default(schema | community.general.json_query('sumo.properties.executable_path.default')) }}"
+    python_executable_path: "{{ crd.sumo.python_executable_path | default(schema | community.general.json_query('sumo.properties.python_executable_path.default')) }}"
+    fcd_sync_path: "{{ crd.sumo.fcd_sync_path | default(schema | community.general.json_query('sumo.properties.fcd_sync_path.default')) }}"
+  yggio:
+    enabled: "{{ crd.yggio.enabled | default(schema | community.general.json_query('yggio.properties.enabled.default')) }}"
+    api_relative_uri_iotnode: "{{ crd.yggio.api_relative_uri_iotnode | default(schema | community.general.json_query('yggio.properties.api_relative_uri_iotnode.default')) }}"
+    auth_local_uri: "{{ crd.yggio.auth_local_uri | default(schema | community.general.json_query('yggio.properties.auth_local_uri.default')) }}"
+  fiware:
+    ssl: "{{ crd.fiware.ssl | default(schema | community.general.json_query('fiware.properties.ssl.default')) }}"
+    port: "{{ crd.fiware.port | default(schema | community.general.json_query('fiware.properties.port.default')) }}"
+    host_name: "{{ crd.fiware.host_name | default(schema | community.general.json_query('fiware.properties.host_name.default')) }}"
+    api_uri: "{{ crd.fiware.api_uri | default(schema | community.general.json_query('fiware.properties.api_uri.default')) }}"
+  kafka:
+    create: "{{ crd.kafka.create | default(schema | community.general.json_query('kafka.properties.create.default')) }}"
+    keystore_secret: "{{ crd.kafka.keystore_secret | default(schema | community.general.json_query('kafka.properties.keystore_secret.default')) }}"
+    truststore_secret: "{{ crd.kafka.truststore_secret | default(schema | community.general.json_query('kafka.properties.truststore_secret.default')) }}"
+    service_name: "{{ crd.kafka.service_name | default(schema | community.general.json_query('kafka.properties.service_name.default')) }}"
+    port: "{{ crd.kafka.port | default(schema | community.general.json_query('kafka.properties.port.default')) }}"
+    group: "{{ crd.kafka.group | default(schema | community.general.json_query('kafka.properties.group.default')) }}"
+    security_protocol: "{{ crd.kafka.security_protocol | default(schema | community.general.json_query('kafka.properties.security_protocol.default')) }}"
+    ssl_keystore_type: "{{ crd.kafka.ssl_keystore_type | default(schema | community.general.json_query('kafka.properties.ssl_keystore_type.default')) }}"
+    ssl_keystore_location: "{{ crd.kafka.ssl_keystore_location | default(schema | community.general.json_query('kafka.properties.ssl_keystore_location.default')) }}"
+    ssl_user_crt_location: "{{ crd.kafka.ssl_user_crt_location | default(schema | community.general.json_query('kafka.properties.ssl_user_crt_location.default')) }}"
+    ssl_user_key_location: "{{ crd.kafka.ssl_user_key_location | default(schema | community.general.json_query('kafka.properties.ssl_user_key_location.default')) }}"
+    ssl_truststore_type: "{{ crd.kafka.ssl_truststore_type | default(schema | community.general.json_query('kafka.properties.ssl_truststore_type.default')) }}"
+    ssl_truststore_location: "{{ crd.kafka.ssl_truststore_location | default(schema | community.general.json_query('kafka.properties.ssl_truststore_location.default')) }}"
+    ssl_ca_crt_location: "{{ crd.kafka.ssl_ca_crt_location | default(schema | community.general.json_query('kafka.properties.ssl_ca_crt_location.default')) }}"
+    resources:
+      limits:
+        memory: "{{ crd.kafka.resources.limits.memory | default(schema | community.general.json_query('kafka.properties.resources.properties.limits.properties.memory.default')) }}"
+        cpu: "{{ crd.kafka.resources.limits.cpu | default(schema | community.general.json_query('kafka.properties.resources.properties.limits.properties.cpu.default')) }}"
+      requests:
+        memory: "{{ crd.kafka.resources.requests.memory | default(schema | community.general.json_query('kafka.properties.resources.properties.requests.properties.memory.default')) }}"
+        cpu: "{{ crd.kafka.resources.requests.cpu | default(schema | community.general.json_query('kafka.properties.resources.properties.requests.properties.cpu.default')) }}"
+  mqtt:
+    create: "{{ crd.mqtt.create | default(schema | community.general.json_query('mqtt.properties.create.default')) }}"
+    enabled: "{{ crd.mqtt.enabled | default(schema | community.general.json_query('mqtt.properties.enabled.default')) }}"
+    service_name: "{{ crd.mqtt.service_name | default(schema | community.general.json_query('mqtt.properties.service_name.default')) }}"
+    port: "{{ crd.mqtt.port | default(schema | community.general.json_query('mqtt.properties.port.default')) }}"
+    iot_subscribe_topic: "{{ crd.mqtt.iot_subscribe_topic | default(schema | community.general.json_query('mqtt.properties.iot_subscribe_topic.default')) }}"

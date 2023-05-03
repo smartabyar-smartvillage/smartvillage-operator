@@ -1,0 +1,11 @@
+spec:
+{% if values.orionld.route.host is defined %}
+  host: {{ values.orionld.route.host }}
+{% endif %}
+  to:
+    kind: Service
+    name: orion-ld
+    weight: 100
+  port:
+    targetPort: http
+  wildcardPolicy: None

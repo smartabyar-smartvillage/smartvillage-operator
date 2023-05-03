@@ -1,11 +1,11 @@
 ---
-apikey: "{{ service_group.apikey }}"
-cbHost: "{{ service_group.cb_host }}"
-entity_type: "{{ENTITY_TYPE }}"
-resource: "{{ service_group.resource }}"
+apikey: "{{ values.service_group.apikey }}"
+cbHost: "{{ values.context_broker.base_url }}"
+entity_type: "{{ ENTITY_TYPE }}"
+resource: "{{ values.service_group.resource }}"
 attributes:
-{% for key, attribute in attributes.items() %}
+{% for key, attribute in smart_data_model.attributes.items() %}
   - object_id: {{ key }}
-    name: {{ spec.attributes[key].name | default(key) }}
-    type: {{ spec.attributes[key].type }}
+    name: {{ smart_data_model.attributes[key].name | default(key) }}
+    type: {{ smart_data_model.attributes[key].type }}
 {% endfor %}

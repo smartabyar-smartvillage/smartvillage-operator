@@ -1,0 +1,11 @@
+spec:
+{% if values.iotagent.route.host is defined %}
+  host: {{ values.iotagent.route.host }}
+{% endif %}
+  to:
+    kind: Service
+    name: iotagent-json
+    weight: 100
+  port:
+    targetPort: north
+  wildcardPolicy: None

@@ -20,11 +20,11 @@ spec:
       serviceAccountName: solr
       resources:
         limits:
-          memory: '{{ solr.resources.limits.memory }}'
-          cpu: '{{ solr.resources.limits.cpu }}'
+          memory: '{{ values.solr.resources.limits.memory }}'
+          cpu: '{{ values.solr.resources.limits.cpu }}'
         requests:
-          memory: '{{ solr.resources.requests.memory }}'
-          cpu: '{{ solr.resources.requests.cpu }}'
+          memory: '{{ values.solr.resources.requests.memory }}'
+          cpu: '{{ values.solr.resources.requests.cpu }}'
       volumes:
         - name: computate-configset
           source:
@@ -40,8 +40,8 @@ spec:
       zookeeperPodPolicy:
         resources:
           limits:
-            memory: '{{ zookeeper.resources.limits.memory }}'
-            cpu: '{{ zookeeper.resources.limits.cpu }}'
+            memory: '{{ values.zookeeper.resources.limits.memory }}'
+            cpu: '{{ values.zookeeper.resources.limits.cpu }}'
           requests:
-            memory: '{{ zookeeper.resources.requests.memory }}'
-            cpu: '{{ zookeeper.resources.requests.cpu }}'
+            memory: '{{ values.zookeeper.resources.requests.memory }}'
+            cpu: '{{ values.zookeeper.resources.requests.cpu }}'

@@ -55,11 +55,11 @@ spec:
       name: '{{ site_name }}'
       resources:
         limits:
-          memory: '{{ postgres.resources.limits.memory }}'
-          cpu: '{{ postgres.resources.limits.cpu }}'
+          memory: '{{ values.postgres.resources.limits.memory }}'
+          cpu: '{{ values.postgres.resources.limits.cpu }}'
         requests:
-          memory: '{{ postgres.resources.requests.memory }}'
-          cpu: '{{ postgres.resources.requests.cpu }}'
+          memory: '{{ values.postgres.resources.requests.memory }}'
+          cpu: '{{ values.postgres.resources.requests.cpu }}'
       sidecars:
         replicaCertCopy:
           resources:
@@ -74,10 +74,10 @@ spec:
   openshift: true
   postGISVersion: 3.3.0
   users:
-    - name: {{ sso.cluster_name | default('') }}
+    - name: {{ values.sso.cluster_name | default('') }}
       options: "SUPERUSER"
       databases:
-        - {{ sso.cluster_name | default('') }}
+        - {{ values.sso.cluster_name | default('') }}
     - name: {{ site_name }}
       options: "SUPERUSER"
       databases:
@@ -86,8 +86,8 @@ spec:
     dynamicConfiguration:
       postgresql:
         pg_hba:
-          - "host {{ sso.cluster_name | default('') }} {{ sso.cluster_name | default('') }} all md5"
-          - "local {{ sso.cluster_name | default('') }} {{ sso.cluster_name | default('') }} trust"
+          - "host {{ values.sso.cluster_name | default('') }} {{ values.sso.cluster_name | default('') }} all md5"
+          - "local {{ values.sso.cluster_name | default('') }} {{ values.sso.cluster_name | default('') }} trust"
           - "host {{ site_name | default('') }} {{ site_name | default('') }} all md5"
           - "local {{ site_name | default('') }} {{ site_name | default('') }} trust"
         

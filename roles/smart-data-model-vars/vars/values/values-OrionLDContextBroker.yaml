@@ -1,0 +1,16 @@
+values:
+  orionld:
+    service_name: "{{ crd.orionld.service_name | default(schema | community.general.json_query('orionld.properties.service_name.default')) }}"
+    route:
+      create: "{{ crd.orionld.route.create | default(schema | community.general.json_query('orionld.properties.route.properties.create.default')) }}"
+      host: "{{ crd.orionld.route.host | default('') }}"
+    port: "{{ crd.orionld.port | default(schema | community.general.json_query('orionld.properties.port.default')) }}"
+    log_level: "{{ crd.orionld.log_level | default(schema | community.general.json_query('orionld.properties.log_level.default')) }}"
+    replicas: "{{ crd.orionld.replicas | default(schema | community.general.json_query('orionld.properties.replicas.default')) }}"
+    resources:
+      limits:
+        cpu: "{{ crd.orionld.resources.limits.cpu | default(schema | community.general.json_query('orionld.properties.resources.properties.limits.properties.cpu.default')) }}"
+        memory: "{{ crd.orionld.resources.limits.memory | default(schema | community.general.json_query('orionld.properties.resources.properties.limits.properties.memory.default')) }}"
+      requests:
+        cpu: "{{ crd.orionld.resources.requests.cpu | default(schema | community.general.json_query('orionld.properties.resources.properties.requests.properties.cpu.default')) }}"
+        memory: "{{ crd.orionld.resources.requests.memory | default(schema | community.general.json_query('orionld.properties.resources.properties.requests.properties.memory.default')) }}"

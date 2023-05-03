@@ -1,11 +1,11 @@
 ---
-device_id: "{{ device.id }}"
+device_id: "{{ values.device.id }}"
 entity_name: "{{ ENTITY_NAME }}"
 entity_type: "{{ENTITY_TYPE }}"
-transport: "{{ device.transport }}"
+transport: "{{ values.device.transport }}"
 attributes:
-{% for key, attribute in attributes.items() %}
+{% for key, attribute in smart_data_model.attributes.items() %}
   - object_id: {{ key }}
-    name: {{ spec.attributes[key].name | default(key) }}
-    type: {{ spec.attributes[key].type }}
+    name: {{ smart_data_model.attributes[key].name | default(key) }}
+    type: {{ smart_data_model.attributes[key].type }}
 {% endfor %}

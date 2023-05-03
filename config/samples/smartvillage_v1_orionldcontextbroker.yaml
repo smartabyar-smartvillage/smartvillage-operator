@@ -17,17 +17,20 @@ spec:
   orionld:
     service_name: |-
       orion-ld
+    route:
+      create: False
     port: 1026
     log_level: |-
       INFO
     replicas: 2
-    limits:
-      cpu: |-
-        250m
-      memory: |-
-        1Gi
-    requests:
-      cpu: |-
-        10m
-      memory: |-
-        50Mi
+    resources:
+      limits:
+        cpu: |-
+          250m
+        memory: |-
+          1Gi
+      requests:
+        cpu: |-
+          10m
+        memory: |-
+          50Mi

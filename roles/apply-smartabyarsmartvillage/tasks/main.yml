@@ -10,26 +10,9 @@
       You need to deploy a {{ ENTITY_TYPE }} to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_smartabyarsmartvillage.yaml
   when: crd is not defined
 
-- name: "Set {{ ENTITY_TYPE }} facts"
-  set_fact:
-    zookeeper: "{{ crd.zookeeper }}"
-    solr: "{{ crd.solr }}"
-    sso: "{{ crd.sso }}"
-    postgres: "{{ crd.postgres }}"
-    fiware: "{{ crd.fiware }}"
-    kafka: "{{ crd.kafka }}"
-    mqtt: "{{ crd.mqtt }}"
-    site: "{{ crd.site }}"
-    auth: "{{ crd.auth }}"
-    email: "{{ crd.email }}"
-    import_data: "{{ crd.import_data }}"
-    auth_role: "{{ crd.auth_role }}"
-    sumo: "{{ crd.sumo }}"
-    yggio: "{{ crd.yggio }}"
-
 - name: "Install postgres-nodeport NodePort service on OpenShift"
   k8s:
-    state: "{{ 'present' if site.enable_dev_nodeports and postgres.create else 'absent' }}"
+    state: "{{ 'present' if values.site.enable_dev_nodeports and values.postgres.create else 'absent' }}"
     api_version: v1
     kind: Service
     name: "postgres-nodeport"
@@ -37,7 +20,7 @@
     definition: "{{ lookup('template', 'service-postgres-nodeport.yaml') }}"
 - name: "Install zookeeper-nodeport NodePort service on OpenShift"
   k8s:
-    state: "{{ 'present' if site.enable_dev_nodeports and postgres.create else 'absent' }}"
+    state: "{{ 'present' if values.site.enable_dev_nodeports and values.postgres.create else 'absent' }}"
     api_version: v1
     kind: Service
     name: "zookeeper-nodeport"
@@ -45,7 +28,7 @@
     definition: "{{ lookup('template', 'service-zookeeper-nodeport.yaml') }}"
 - name: "Install fiware-broker-mqtt-nodeport NodePort service on OpenShift"
   k8s:
-    state: "{{ 'present' if site.enable_dev_nodeports and postgres.create else 'absent' }}"
+    state: "{{ 'present' if values.site.enable_dev_nodeports and values.postgres.create else 'absent' }}"
     api_version: v1
     kind: Service
     name: "fiware-broker-mqtt-nodeport"
@@ -55,7 +38,7 @@
 # Install PostgreSQL
 - name: "Install PostgreSQL {{ site_name }}-db-create configmap on OpenShift"
   k8s:
-    state: "{{ 'present' if postgres.create else 'absent' }}"
+    state: "{{ 'present' if values.postgres.create else 'absent' }}"
     api_version: v1
     kind: ConfigMap
     name: "{{ site_name }}-db-create"
@@ -63,7 +46,7 @@
     definition: "{{ lookup('template', 'configmap-db-create.yaml') }}"
 - name: Install {{ site_name }} PostgreSQL cluster on OpenShift
   k8s:
-    state: "{{ 'present' if postgres.create else 'absent' }}"
+    state: "{{ 'present' if values.postgres.create else 'absent' }}"
     api_version: postgres-operator.crunchydata.com/v1beta1
     kind: PostgresCluster
     name: postgres
@@ -73,10 +56,10 @@
 # Install Red Hat SSO
 - name: "Query SSO postgres secret"
   set_fact:
-    sso_postgres_secret: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=(sso.postgres_secret_name | default(env.sso.properties.postgres_secret_name.default)), namespace=ansible_operator_meta.namespace)[0].data }}"
+    sso_postgres_secret: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=(sso.postgres_secret_name | default(schema.sso.properties.postgres_secret_name.default)), namespace=ansible_operator_meta.namespace)[0].data }}"
 - name: "Install keycloak-db-secret on OpenShift"
   k8s:
-    state: "{{ 'present' if sso.create else 'absent' }}"
+    state: "{{ 'present' if values.sso.create else 'absent' }}"
     kind: Secret
     api_version: v1
     name: keycloak-db-secret
@@ -84,7 +67,7 @@
     definition: "{{ lookup('template', 'keycloak-db-secret.yaml') }}"
 - name: "Install {{ site_name }} Keycloak realm on OpenShift"
   k8s:
-    state: "{{ 'present' if sso.create else 'absent' }}"
+    state: "{{ 'present' if values.sso.create else 'absent' }}"
     api_version: keycloak.org/v1alpha1
     kind: KeycloakRealm
     name: "{{ site_name }}"
@@ -92,7 +75,7 @@
     definition: "{{ lookup('template', 'keycloakrealm.yaml') }}"
 - name: "Install {{ site_name }} Keycloak client on OpenShift"
   k8s:
-    state: "{{ 'present' if sso.create else 'absent' }}"
+    state: "{{ 'present' if values.sso.create else 'absent' }}"
     api_version: keycloak.org/v1alpha1
     kind: KeycloakClient
     name: "{{ site_name }}"
@@ -100,7 +83,7 @@
     definition: "{{ lookup('template', 'keycloakclient.yaml') }}"
 - name: "Install {{ site_name }} Keycloak cluster on OpenShift"
   k8s:
-    state: "{{ 'present' if sso.create else 'absent' }}"
+    state: "{{ 'present' if values.sso.create else 'absent' }}"
     api_version: keycloak.org/v1alpha1
     kind: Keycloak
     namespace: "{{ ansible_operator_meta.namespace }}"
@@ -110,7 +93,7 @@
 # Install Kafka
 - name: "Install {{ site_name }} Kafka cluster on OpenShift"
   k8s:
-    state: "{{ 'present' if kafka.create else 'absent' }}"
+    state: "{{ 'present' if values.kafka.create else 'absent' }}"
     kind: Kafka
     api_version: kafka.strimzi.io/v1beta2
     name: smartvillage-kafka
@@ -118,7 +101,7 @@
     definition: "{{ lookup('template', 'kafka.yaml') }}"
 - name: "Install {{ site_name }} Kafka user on OpenShift"
   k8s:
-    state: "{{ 'present' if kafka.create else 'absent' }}"
+    state: "{{ 'present' if values.kafka.create else 'absent' }}"
     api_version: kafka.strimzi.io/v1beta2
     kind: KafkaUser
     name: smartvillage-kafka
@@ -126,7 +109,7 @@
     definition: "{{ lookup('template', 'kafkauser.yaml') }}"
 - name: "Install {{ site_name }} Kafka Topic smartvillage-sumo-run on OpenShift"
   k8s:
-    state: "{{ 'present' if kafka.create else 'absent' }}"
+    state: "{{ 'present' if values.kafka.create else 'absent' }}"
     kind: KafkaTopic
     api_version: kafka.strimzi.io/v1beta2
     name: smartvillage-sumo-run
@@ -134,7 +117,7 @@
     definition: "{{ lookup('template', 'kafkatopic-smartvillage-sumo-run.yaml') }}"
 - name: "Install {{ site_name }} Kafka Topic smartvillage-sumo-run-report on OpenShift"
   k8s:
-    state: "{{ 'present' if kafka.create else 'absent' }}"
+    state: "{{ 'present' if values.kafka.create else 'absent' }}"
     kind: KafkaTopic
     api_version: kafka.strimzi.io/v1beta2
     name: smartvillage-sumo-run-report
@@ -142,7 +125,7 @@
     definition: "{{ lookup('template', 'kafkatopic-smartvillage-sumo-run-report.yaml') }}"
 - name: "Install {{ site_name }} Kafka Topic smartvillage-sumo-stop on OpenShift"
   k8s:
-    state: "{{ 'present' if kafka.create else 'absent' }}"
+    state: "{{ 'present' if values.kafka.create else 'absent' }}"
     kind: KafkaTopic
     api_version: kafka.strimzi.io/v1beta2
     name: smartvillage-sumo-stop
@@ -152,7 +135,7 @@
 # Install AMQ Broker
 - name: "Install {{ site_name }} AMQ Broker on OpenShift"
   k8s:
-    state: "{{ 'present' if mqtt.create else 'absent' }}"
+    state: "{{ 'present' if values.mqtt.create else 'absent' }}"
     api_version: broker.amq.io/v1beta1
     kind: ActiveMQArtemis
     name: fiware-broker
@@ -160,7 +143,7 @@
     definition: "{{ lookup('template', 'activemqartemis.yaml') }}"
 - name: "Install {{ site_name }} AMQ Broker Address on OpenShift"
   k8s:
-    state: "{{ 'present' if mqtt.create else 'absent' }}"
+    state: "{{ 'present' if values.mqtt.create else 'absent' }}"
     api_version: broker.amq.io/v1beta1
     kind: ActiveMQArtemisAddress
     name: fiware-address
@@ -170,7 +153,7 @@
 # Install Zookeeper
 - name: "Install Zookeeper image stream on OpenShift"
   k8s:
-    state: "{{ 'present' if zookeeper.create else 'absent' }}"
+    state: "{{ 'present' if values.zookeeper.create else 'absent' }}"
     kind: ImageStream
     api_version: image.openshift.io/v1
     name: zookeeper
@@ -178,7 +161,7 @@
     definition: "{{ lookup('template', 'imagestream-zookeeper.yaml') }}"
 - name: "Install Zookeeper persistent volume claim on OpenShift"
   k8s:
-    state: "{{ 'present' if zookeeper.create else 'absent' }}"
+    state: "{{ 'present' if values.zookeeper.create else 'absent' }}"
     kind: PersistentVolumeClaim
     api_version: v1
     name: zookeeper
@@ -186,7 +169,7 @@
     definition: "{{ lookup('template', 'persistentvolumeclaim-zookeeper.yaml') }}"
 - name: "Install Zookeeper config map on OpenShift"
   k8s:
-    state: "{{ 'present' if zookeeper.create else 'absent' }}"
+    state: "{{ 'present' if values.zookeeper.create else 'absent' }}"
     kind: ConfigMap
     api_version: v1
     name: zookeeper
@@ -194,7 +177,7 @@
     definition: "{{ lookup('template', 'configmap-zookeeper.yaml') }}"
 - name: "Install Zookeeper deployment config on OpenShift"
   k8s:
-    state: "{{ 'present' if zookeeper.create else 'absent' }}"
+    state: "{{ 'present' if values.zookeeper.create else 'absent' }}"
     kind: ConfigMap
     api_version: v1
     name: zookeeper
@@ -202,7 +185,7 @@
     definition: "{{ lookup('template', 'deploymentconfig-zookeeper.yaml') }}"
 - name: "Install Zookeeper service on OpenShift"
   k8s:
-    state: "{{ 'present' if zookeeper.create else 'absent' }}"
+    state: "{{ 'present' if values.zookeeper.create else 'absent' }}"
     kind: Service
     api_version: v1
     name: zookeeper
@@ -212,7 +195,7 @@
 # Install Solr
 - name: "Install Solr configmap-computate-configset configmap on OpenShift"
   k8s:
-    state: "{{ 'present' if solr.create else 'absent' }}"
+    state: "{{ 'present' if values.solr.create else 'absent' }}"
     api_version: v1
     kind: ConfigMap
     name: computate-configset
@@ -220,7 +203,7 @@
     definition: "{{ lookup('template', 'configmap-solr-computate-configset.yaml') }}"
 - name: "Install Solr service account on OpenShift"
   k8s:
-    state: "{{ 'present' if solr.create else 'absent' }}"
+    state: "{{ 'present' if values.solr.create else 'absent' }}"
     kind: ServiceAccount
     api_version: v1
     name: solr
@@ -228,7 +211,7 @@
     definition: "{{ lookup('template', 'serviceaccount-solr.yaml') }}"
 - name: "Install Solr Cloud on OpenShift"
   k8s:
-    state: "{{ 'present' if solr.create else 'absent' }}"
+    state: "{{ 'present' if values.solr.create else 'absent' }}"
     api_version: solr.apache.org/v1beta1
     kind: SolrCloud
     name: default
@@ -236,7 +219,7 @@
     definition: "{{ lookup('template', 'solrcloud.yaml') }}"
 - name: "Install Solr route on OpenShift"
   k8s:
-    state: "{{ 'present' if solr.create else 'absent' }}"
+    state: "{{ 'present' if values.solr.create else 'absent' }}"
     kind: Route
     api_version: route.openshift.io/v1
     name: solr
@@ -245,19 +228,19 @@
 
 - name: "Query prerequisite host names"
   set_fact:
-    POSTGRES_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=postgres.secret_name, namespace=ansible_operator_meta.namespace)[0].data }}"
+    POSTGRES_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.postgres.secret_name, namespace=ansible_operator_meta.namespace)[0].data }}"
   ignore_errors: true
 
 - name: "Verify PostgreSQL"
   wait_for:
-    host: "{{ postgres.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
-    port: "{{ postgres.port }}"
+    host: "{{ values.postgres.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
+    port: "{{ values.postgres.port }}"
     state: started
     delay: 0
     timeout: 5
   register: verify_postgresql
   ignore_errors: yes
-  when: verify_connections and postgres.create
+  when: verify_connections and values.postgres.create
 - name: "Verify PostgreSQL is running"
   fail:
     msg: |-
@@ -266,14 +249,14 @@
 
 - name: "Verify MQTT"
   wait_for:
-    host: "{{ mqtt.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
-    port: "{{ mqtt.port }}"
+    host: "{{ values.mqtt.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
+    port: "{{ values.mqtt.port }}"
     state: started
     delay: 0
     timeout: 5
   register: verify_mqtt
   ignore_errors: yes
-  when: verify_connections and mqtt.create
+  when: verify_connections and values.mqtt.create
 - name: "Verify MQTT is running"
   fail:
     msg: |-
@@ -282,14 +265,14 @@
 
 - name: "Verify Kafka"
   wait_for:
-    host: "{{ kafka.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
-    port: "{{ kafka.port }}"
+    host: "{{ values.kafka.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
+    port: "{{ values.kafka.port }}"
     state: started
     delay: 0
     timeout: 5
   register: verify_kafka
   ignore_errors: yes
-  when: verify_connections and kafka.create
+  when: verify_connections and values.kafka.create
 - name: "Verify Kafka is running"
   fail:
     msg: |-
@@ -298,14 +281,14 @@
 
 - name: "Verify Zookeeper"
   wait_for:
-    host: "{{ zookeeper.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
-    port: "{{ zookeeper.port }}"
+    host: "{{ values.zookeeper.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
+    port: "{{ values.zookeeper.port }}"
     state: started
     delay: 0
     timeout: 5
   register: verify_zookeeper
   ignore_errors: yes
-  when: verify_connections and solr.create
+  when: verify_connections and values.solr.create
 - name: "Verify Zookeeper is running"
   fail:
     msg: |-
@@ -314,14 +297,14 @@
 
 - name: "Verify Solr"
   wait_for:
-    host: "{{ solr.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
-    port: "{{ solr.port }}"
+    host: "{{ values.solr.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
+    port: "{{ values.solr.port }}"
     state: started
     delay: 0
     timeout: 5
   register: verify_solr
   ignore_errors: yes
-  when: verify_connections and solr.create
+  when: verify_connections and values.solr.create
 - name: "Verify Solr is running"
   fail:
     msg: |-
@@ -330,14 +313,14 @@
 
 - name: "Verify SSO"
   wait_for:
-    host: "{{ sso.host_name }}"
+    host: "{{ values.sso.host_name }}"
     port: "443"
     state: started
     delay: 0
     timeout: 5
   register: verify_sso
   ignore_errors: yes
-  when: verify_connections and sso.create
+  when: verify_connections and values.sso.create
 - name: "Verify SSO is running"
   fail:
     msg: |-
@@ -348,44 +331,44 @@
 - name: "Query postgres pod"
   set_fact:
     postgres_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector='postgres-operator.crunchydata.com/cluster=postgres,postgres-operator.crunchydata.com/data=postgres,postgres-operator.crunchydata.com/instance-set=smartvillage,postgres-operator.crunchydata.com/patroni=postgres-ha,postgres-operator.crunchydata.com/role=master', namespace=ansible_operator_meta.namespace)[0].metadata.name }}"
-  when: postgres.create
+  when: values.postgres.create
 - name: Run create database scripts on PostgreSQL
   kubernetes.core.k8s_exec:
     pod: "{{ postgres_pod_name }}"
     command: >-
       bash -c 'curl https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage/main/src/main/resources/sql/db-create.sql | psql -U smartvillage smartvillage'
     namespace: "{{ ansible_operator_meta.namespace }}"
-  when: postgres.create
+  when: values.postgres.create
   changed_when: false
 
 - name: Upload computate configset to solr
   kubernetes.core.k8s_exec:
     pod: default-solrcloud-0
     command: >-
-      /opt/solr/bin/solr zk upconfig -n computate -d /opt/solr/server/solr/configsets/computate -z '{{ zookeeper.service_name }}:{{ zookeeper.port }}'
+      /opt/solr/bin/solr zk upconfig -n computate -d /opt/solr/server/solr/configsets/computate -z '{{ values.zookeeper.service_name }}:{{ values.zookeeper.port }}'
     namespace: "{{ ansible_operator_meta.namespace }}"
-  when: solr.create
+  when: values.solr.create
   changed_when: false
 
 - name: Create Solr collection
   kubernetes.core.k8s_exec:
     pod: default-solrcloud-0
     command: >-
-      /opt/solr/bin/solr create_collection -c {{ solr.collection }} -n computate
+      /opt/solr/bin/solr create_collection -c {{ values.solr.collection }} -n computate
     namespace: "{{ ansible_operator_meta.namespace }}"
   register: create_collection
   ignore_errors: True
-  when: solr.create
+  when: values.solr.create
   changed_when: create_collection is not search("already exists")
 - name: Test create_collection success
   fail:
     msg: "{{ command_status }}"
-  when: solr.create and create_collection.failed and create_collection is not search("already exists")
+  when: values.solr.create and create_collection.failed and create_collection is not search("already exists")
 
 # Install site
 - name: "Install {{ site_name }}-web service on OpenShift"
   k8s:
-    state: "{{ 'present' if site.create else 'absent' }}"
+    state: "{{ 'present' if values.site.create else 'absent' }}"
     api_version: v1
     kind: Service
     name: "{{ site_name }}-web"
@@ -393,7 +376,7 @@
     definition: "{{ lookup('template', 'service-web.yaml') }}"
 - name: "Install {{ site_name }}-worker service on OpenShift"
   k8s:
-    state: "{{ 'present' if site.create else 'absent' }}"
+    state: "{{ 'present' if values.site.create else 'absent' }}"
     api_version: v1
     kind: Service
     name: "{{ site_name }}-worker"
@@ -401,7 +384,7 @@
     definition: "{{ lookup('template', 'service-worker.yaml') }}"
 - name: "Install {{ site_name }}-web route on OpenShift"
   k8s:
-    state: "{{ 'present' if site.create else 'absent' }}"
+    state: "{{ 'present' if values.site.create else 'absent' }}"
     api_version: route.openshift.io/v1
     kind: Route
     name: "{{ site_name }}-web"
@@ -410,11 +393,11 @@
 
 - name: "Query site host name"
   set_fact:
-    site_host_name: "{{ query('kubernetes.core.k8s', kind='Route', api_version='route.openshift.io/v1', resource_name=(site_name + '-web'), namespace=ansible_operator_meta.namespace)[0].spec.host | default(site.host_name) }}"
+    site_host_name: "{{ query('kubernetes.core.k8s', kind='Route', api_version='route.openshift.io/v1', resource_name=(site_name + '-web'), namespace=ansible_operator_meta.namespace)[0].spec.host | default(values.site.host_name) }}"
 - name: "Set static base URL"
   set_fact:
     site_base_url: "https://{{ site_host_name }}"
-    static_base_url: "{{ site.static_base_url | default('https://' + site_host_name + '/static') }}"
+    static_base_url: "{{ values.site.static_base_url | default('https://' + site_host_name + '/static') }}"
 
 #- name: "Install {{ site_name }} secret on OpenShift"
 #  k8s:
@@ -423,7 +406,7 @@
 #    definition: "{{ lookup('template', 'secret.yaml') }}"
 - name: "Install {{ site_name }} image stream on OpenShift"
   k8s:
-    state: "{{ 'present' if site.create else 'absent' }}"
+    state: "{{ 'present' if values.site.create else 'absent' }}"
     api_version: image.openshift.io/v1
     kind: ImageStream
     name: "{{ site_name }}"
@@ -431,7 +414,7 @@
     definition: "{{ lookup('template', 'imagestream.yaml') }}"
 - name: "Install {{ site_name }}-sumo image stream on OpenShift"
   k8s:
-    state: "{{ 'present' if site.create else 'absent' }}"
+    state: "{{ 'present' if values.site.create else 'absent' }}"
     api_version: image.openshift.io/v1
     kind: ImageStream
     name: "{{ site_name }}-sumo"
@@ -439,7 +422,7 @@
     definition: "{{ lookup('template', 'imagestream-sumo.yaml') }}"
 - name: "Install {{ site_name }} image stream on OpenShift"
   k8s:
-    state: "{{ 'present' if site.create else 'absent' }}"
+    state: "{{ 'present' if values.site.create else 'absent' }}"
     api_version: image.openshift.io/v1
     kind: ImageStream
     name: "{{ site_name }}"
@@ -447,7 +430,7 @@
     definition: "{{ lookup('template', 'imagestream.yaml') }}"
 - name: "Install {{ site_name }}-web deployment config on OpenShift"
   k8s:
-    state: "{{ 'present' if site.create else 'absent' }}"
+    state: "{{ 'present' if values.site.create else 'absent' }}"
     api_version: apps.openshift.io/v1
     kind: DeploymentConfig
     name: "{{ site_name }}-web"
@@ -455,7 +438,7 @@
     definition: "{{ lookup('template', 'deploymentconfig-web.yaml') }}"
 - name: "Install {{ site_name }}-worker deployment config on OpenShift"
   k8s:
-    state: "{{ 'present' if site.create else 'absent' }}"
+    state: "{{ 'present' if values.site.create else 'absent' }}"
     api_version: apps.openshift.io/v1
     kind: DeploymentConfig
     name: "{{ site_name }}-worker"
@@ -463,7 +446,7 @@
     definition: "{{ lookup('template', 'deploymentconfig-worker.yaml') }}"
 - name: "Install {{ site_name }}-sumo deployment config on OpenShift"
   k8s:
-    state: "{{ 'present' if site.create else 'absent' }}"
+    state: "{{ 'present' if values.site.create else 'absent' }}"
     api_version: apps.openshift.io/v1
     kind: DeploymentConfig
     name: "{{ site_name }}-sumo"

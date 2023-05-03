@@ -1,12 +1,12 @@
-{% if site.route.host_name is defined %}
+{% if values.site.route.host_name is defined %}
 metadata:
   annotations:
     kubernetes.io/tls-acme: 'true'
     acme.openshift.io/secret-name: "{{ site_name }}-certificate"
 {% endif %}
 spec:
-{% if site.route.host_name is defined %}
-  host: "{{ site.route.host_name | default('') }}"
+{% if values.site.route.host_name is defined %}
+  host: "{{ values.site.route.host_name | default('') }}"
 {% endif %}
   port:
     targetPort: http

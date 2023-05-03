@@ -47,9 +47,9 @@ spec:
     enabled: {{ spec.alternate_model.enabled }}
     id: {{ spec.alternate_model.id }}
 {% endif %}
-{% if spec.attributes is defined %}
+{% if smart_data_model.attributes is defined %}
   attributes:
-{% for key, attribute in spec.attributes.items() %}
+{% for key, attribute in smart_data_model.attributes.items() %}
 {% if attribute.default is defined %}
 {% if (attribute.default | type_debug) == 'AnsibleUnicode' %}
     {{ key }}: |
@@ -62,8 +62,8 @@ spec:
 {% endif %}
 {% endfor %}
 {% endif %}
-{% if env is defined %}
-{% for key1, var1 in env.items() %}
+{% if schema is defined %}
+{% for key1, var1 in schema.items() %}
 {% if var1.default is defined %}
 {% if (var1.default | type_debug) == 'AnsibleUnicode' %}
   {{ key1 }}: |-

@@ -63,15 +63,6 @@ spec:
                   http_port:
                     default: 7896
                     type: number
-                  limits:
-                    properties:
-                      cpu:
-                        default: 250m
-                        type: string
-                      memory:
-                        default: 1Gi
-                        type: string
-                    type: object
                   log_level:
                     default: INFO
                     description: "The level of logs to report in the pod logs. \n"
@@ -88,13 +79,35 @@ spec:
                     default: 2
                     description: "The number of Orion-LD pods to run. \n"
                     type: number
-                  requests:
+                  resources:
                     properties:
-                      cpu:
-                        default: 10m
-                        type: string
-                      memory:
-                        default: 50Mi
+                      limits:
+                        properties:
+                          cpu:
+                            default: 250m
+                            type: string
+                          memory:
+                            default: 1Gi
+                            type: string
+                        type: object
+                      requests:
+                        properties:
+                          cpu:
+                            default: 10m
+                            type: string
+                          memory:
+                            default: 50Mi
+                            type: string
+                        type: object
+                    type: object
+                  route:
+                    properties:
+                      create:
+                        default: false
+                        description: "Whether to create a route for iotagent-json. \n"
+                        type: boolean
+                      host:
+                        description: "The Route host name for iotagent-json. \n"
                         type: string
                     type: object
                   service_name:

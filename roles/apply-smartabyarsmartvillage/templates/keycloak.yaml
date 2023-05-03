@@ -1,6 +1,6 @@
 metadata:
   labels:
-    app: {{ sso.cluster_name }}
+    app: {{ values.sso.cluster_name }}
 spec:
   instances: 1
   externalAccess:

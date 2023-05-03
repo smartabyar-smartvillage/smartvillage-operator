@@ -1,0 +1,14 @@
+---
+- name: Setup iotagent-json
+  hosts: localhost
+  connection: local
+  roles:
+    - smart-data-model-vars
+    - apply-trafficflowobserved
+  vars:
+    ENTITY_TYPE: TrafficFlowObserved
+    ansible_operator_meta_name: sweden-veberod-1-sjobovagen-se
+    ansible_operator_meta_namespace: smartvillage
+    ansible_operator_meta:
+      name: "{{ ansible_operator_meta_name }}"
+      namespace: "{{ ansible_operator_meta_namespace }}"

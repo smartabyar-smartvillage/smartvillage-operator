@@ -46,11 +46,11 @@ spec:
         - name: zookeeper
           resources:
             limits:
-              memory: '{{ zookeeper.resources.limits.memory }}'
-              cpu: '{{ zookeeper.resources.limits.cpu }}'
+              memory: '{{ values.zookeeper.resources.limits.memory }}'
+              cpu: '{{ values.zookeeper.resources.limits.cpu }}'
             requests:
-              memory: '{{ zookeeper.resources.requests.memory }}'
-              cpu: '{{ zookeeper.resources.requests.cpu }}'
+              memory: '{{ values.zookeeper.resources.requests.memory }}'
+              cpu: '{{ values.zookeeper.resources.requests.cpu }}'
           readinessProbe:
             exec:
               command:

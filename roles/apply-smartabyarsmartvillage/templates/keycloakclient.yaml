@@ -1,12 +1,12 @@
 metadata:
   labels:
-    app: {{ sso.cluster_name }}
+    app: {{ values.sso.cluster_name }}
     realm: SMARTVILLAGE
     client: smartvillage
 spec:
   realmSelector:
      matchLabels:
-      app: {{ sso.cluster_name }}
+      app: {{ values.sso.cluster_name }}
       realm: SMARTVILLAGE
   client:
     id: smartvillage

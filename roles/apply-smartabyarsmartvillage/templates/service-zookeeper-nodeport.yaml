@@ -1,8 +1,3 @@
-kind: Service
-apiVersion: v1
-metadata:
-  name: zookeeper-nodeport
-  namespace: {{ ansible_operator_meta.namespace }}
 spec:
   ports:
     - name: default-solrcloud-zookeeper-client

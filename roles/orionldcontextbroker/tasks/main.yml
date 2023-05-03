@@ -1,2 +1,12 @@
 ---
 # tasks file for OrionLDContextBroker
+- name: Run Ansible role smart-data-model-vars
+  include_role:
+    name: smart-data-model-vars
+  vars:
+    ENTITY_TYPE: OrionLDContextBroker
+- name: Run Ansible role apply-orionldcontextbroker
+  include_role:
+    name: apply-orionldcontextbroker
+  vars:
+    ENTITY_TYPE: OrionLDContextBroker

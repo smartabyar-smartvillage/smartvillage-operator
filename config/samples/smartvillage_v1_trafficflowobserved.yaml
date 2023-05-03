@@ -1,4 +1,3 @@
----
 apiVersion: smartvillage.computate.org/v1
 kind: TrafficFlowObserved
 metadata:
@@ -8,39 +7,56 @@ metadata:
     app.kubernetes.io/part-of: smartvillage-operator
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/created-by: smartvillage-operator
-  name: 'sweden-veberod-1-sjobovagen-se'
+  name: sweden-veberod-1-sjobovagen-se
 spec:
   description: |
     An observation of traffic flow conditions at a certain place and time.
-  fiware:
-    service: smarttrafficlights
-    service_path: /Sweden/Veberod/CityCenter
-  iot_agent:
-    iot_host: http://iotagent-json-north-fiware.apps-crc.testing
-  service_group:
-    cb_host: http://orion-ld-fiware.apps-crc.testing
-    resource: /iot/json
-    apikey: VeberodIntersection1
-  device:
-    transport: MQTT
-    id: Sjobovagen-SE
-    mqtt_host: fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
-    mqtt_port: 1883
-    mqtt_subscription_topic: iot/subscribe
-  smartabyar_smartvillage:
-    enabled: True
-    auth_secret_name: keycloak-client-secret-smartvillage
-    auth_token_url: https://keycloak-sso.apps-crc.testing/realms/SMARTVILLAGE/protocol/openid-connect/token
-    site_base_url: https://smartvillage.apps-crc.testing
-    smart_model_api: /api/traffic-flow-observed
-  alternate_model:
-    enabled: True
-    id: sumo
   attributes:
     address:
       addressCountry: Sweden
       addressLocality: Veberöd
       streetAddress: Sjöbovägen
-    areaServed: |
+    area_served: |
       96027913#0 96027913#2 30186293 311389510#1
-    averageGapDistance: 1
+    average_gap_distance: 1  iot_agent:
+    service_name: |-
+      iotagent-json
+  context_broker:
+    service_name: |-
+      orion-ld
+  fiware:
+    service: |-
+      smarttrafficlights
+    service_path: |-
+      /Sweden/Veberod/CityCenter
+  service_group:
+    resource: |-
+      /iot/json
+    apikey: |-
+      VeberodIntersection1
+  device:
+    transport: |-
+      MQTT
+    id: |-
+      Sjobovagen-SE
+    mqtt_host: |-
+      fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
+    mqtt_port: 1883
+    mqtt_subscription_topic: |-
+      iot/subscribe
+  smartabyar_smartvillage:
+    enabled: True
+    auth_secret_name: |-
+      keycloak-client-secret-smartvillage
+    auth_token_url: |-
+      https://keycloak-sso.apps-crc.testing/realms/SMARTVILLAGE/protocol/openid-connect/token
+    site_base_url: |-
+      https://smartvillage.apps-crc.testing
+    smart_model_api: |-
+      /api/traffic-flow-observed
+  alternate_model:
+    enabled: True
+    id: |-
+      sumo
+    name: |-
+      SUMO

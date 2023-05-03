@@ -1,6 +1,6 @@
 metadata:
   labels:
-    app: {{ sso.cluster_name }}
+    app: {{ values.sso.cluster_name }}
     realm: SMARTVILLAGE
 spec:
   realm:
@@ -229,4 +229,4 @@ spec:
       - smartvillage
   instanceSelector:
     matchLabels:
-      app: {{ sso.cluster_name }}
+      app: {{ values.sso.cluster_name }}

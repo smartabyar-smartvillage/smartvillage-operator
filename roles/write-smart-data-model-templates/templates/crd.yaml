@@ -149,7 +149,7 @@ spec:
                 properties:
                   object_id:
                     type: string
-{% for key, attribute in spec.attributes.items() %}
+{% for key, attribute in smart_data_model.attributes.items() %}
                   {{ key }}:
                     type: {{ attribute.type }}
 {% if attribute.default is defined %}
@@ -183,8 +183,8 @@ spec:
                       {{ MODEL_SPEC[ ENTITY_TYPE ].properties[key].properties | to_nice_yaml(indent=2) | indent(22, False) }}{% endif %}
 {% endfor %}
 {% endif %}
-{% if env is defined %}
-{% for key, var in env.items() %}
+{% if schema is defined %}
+{% for key, var in schema.items() %}
               {{ key }}:
                 type: {{ var.type }}
 {% if var.default is defined %}

@@ -1,5 +1,5 @@
 spec:
-  replicas: {{ site.web_replicas }}
+  replicas: {{ values.site.web_replicas }}
   selector:
     app: "{{ site_name }}-sumo"
     deploymentconfig: "{{ site_name }}-sumo"
@@ -45,45 +45,45 @@ spec:
             failureThreshold: 20
           resources:
             limits:
-              memory: '{{ sumo.resources.limits.memory }}'
-              cpu: '{{ sumo.resources.limits.cpu }}'
+              memory: '{{ values.sumo.resources.limits.memory }}'
+              cpu: '{{ values.sumo.resources.limits.cpu }}'
             requests:
-              memory: '{{ sumo.resources.limits.memory }}'
-              cpu: '{{ sumo.resources.limits.cpu }}'
+              memory: '{{ values.sumo.resources.limits.memory }}'
+              cpu: '{{ values.sumo.resources.limits.cpu }}'
           env:
 
             - name: "KAFKA_BROKERS"
-              value: "{{ kafka.service_name }}:{{ kafka.port }}"
+              value: "{{ values.kafka.service_name }}:{{ values.kafka.port }}"
             - name: "KAFKA_GROUP"
-              value: "{{ kafka.group }}"
+              value: "{{ values.kafka.group }}"
             - name: "KAFKA_SECURITY_PROTOCOL"
-              value: "{{ kafka.security_protocol }}"
+              value: "{{ values.kafka.security_protocol }}"
             - name: "KAFKA_SSL_CAFILE"
-              value: "{{ kafka.ssl_ca_crt_location }}"
+              value: "{{ values.kafka.ssl_ca_crt_location }}"
             - name: "KAFKA_SSL_CERTFILE"
-              value: "{{ kafka.ssl_user_crt_location }}"
+              value: "{{ values.kafka.ssl_user_crt_location }}"
             - name: "KAFKA_SSL_KEYFILE"
-              value: "{{ kafka.ssl_user_key_location }}"
+              value: "{{ values.kafka.ssl_user_key_location }}"
             - name: KAFKA_TOPIC_SUMO_RUN
               value: smartvillage-sumo-run
             - name: KAFKA_TOPIC_SUMO_RUN_REPORT
               value: smartvillage-sumo-run-report
           volumeMounts:
             - mountPath: /opt/kafka/keystore
-              name: "{{ kafka.keystore_secret }}"
+              name: "{{ values.kafka.keystore_secret }}"
               readOnly: true
             - mountPath: /opt/kafka/truststore
-              name: "{{ kafka.truststore_secret }}"
+              name: "{{ values.kafka.truststore_secret }}"
               readOnly: true
       volumes:
-        - name: "{{ kafka.keystore_secret }}"
+        - name: "{{ values.kafka.keystore_secret }}"
           secret:
             defaultMode: 420
-            secretName: "{{ kafka.keystore_secret }}"
-        - name: "{{ kafka.truststore_secret }}"
+            secretName: "{{ values.kafka.keystore_secret }}"
+        - name: "{{ values.kafka.truststore_secret }}"
           secret:
             defaultMode: 420
-            secretName: "{{ kafka.truststore_secret }}"
+            secretName: "{{ values.kafka.truststore_secret }}"
   triggers:
     - imageChangeParams:
         automatic: true

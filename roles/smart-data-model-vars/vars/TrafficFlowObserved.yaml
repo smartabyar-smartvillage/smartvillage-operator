@@ -2,32 +2,91 @@
 MODEL_NAME: TrafficFlowObserved
 SUBMODULE_SHORT_NAME: Transportation
 DOMAIN_NAME: Smart Cities
-spec:
+schema:
+
   iot_agent:
-    iot_host: http://iotagent-json-north-fiware.apps-crc.testing
+    type: object
+    properties:
+      service_name:
+        type: string
+        default: iotagent-json
+      base_url:
+        type: string
+  context_broker:
+    type: object
+    properties:
+      service_name:
+        type: string
+        default: orion-ld
+      base_url:
+        type: string
   fiware:
-    service: smarttrafficlights
-    service_path: /Sweden/Veberod/CityCenter
+    type: object
+    properties:
+      service:
+        type: string
+        default: smarttrafficlights
+      service_path:
+        type: string
+        default: /Sweden/Veberod/CityCenter
   service_group:
-    cb_host: 'http://orion-ld-fiware.apps-crc.testing'
-    resource: /iot/json
-    apikey: VeberodIntersection1
+    type: object
+    properties:
+      resource:
+        type: string
+        default: /iot/json
+      apikey:
+        type: string
+        default: VeberodIntersection1
   device:
-    transport: MQTT
-    id: 'Sjobovagen-SE'
-    mqtt_host: fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
-    mqtt_port: 1883
-    mqtt_subscription_topic: iot/subscribe
+    type: object
+    properties:
+      transport:
+        type: string
+        default: MQTT
+      id:
+        type: string
+        default: 'Sjobovagen-SE'
+      mqtt_host:
+        type: string
+        default: fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
+      mqtt_port:
+        type: number
+        default: 1883
+      mqtt_subscription_topic:
+        type: string
+        default: iot/subscribe
   smartabyar_smartvillage:
-    enabled: true
-    auth_secret_name: keycloak-client-secret-smartvillage
-    auth_token_url: https://keycloak-sso.apps-crc.testing/realms/SMARTVILLAGE/protocol/openid-connect/token
-    site_base_url: https://smartvillage.apps-crc.testing
-    smart_model_api: /api/traffic-flow-observed
+    type: object
+    properties:
+      enabled:
+        type: boolean
+        default: true
+      auth_secret_name:
+        type: string
+        default: keycloak-client-secret-smartvillage
+      auth_token_url:
+        type: string
+        default: https://keycloak-sso.apps-crc.testing/realms/SMARTVILLAGE/protocol/openid-connect/token
+      site_base_url:
+        type: string
+        default: https://smartvillage.apps-crc.testing
+      smart_model_api:
+        type: string
+        default: /api/traffic-flow-observed
   alternate_model:
-    enabled: true
-    id: sumo
-    name: SUMO
+    type: object
+    properties:
+      enabled:
+        type: boolean
+        default: true
+      id:
+        type: string
+        default: sumo
+      name:
+        type: string
+        default: SUMO
+smart_data_model:
   attributes:
     address:
       name: address

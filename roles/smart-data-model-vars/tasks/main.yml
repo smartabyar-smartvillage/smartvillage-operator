@@ -5,6 +5,10 @@
       The ENTITY_TYPE var is not defined. 
       Try running again like this: ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=TrafficFlowObserved
   when: ENTITY_TYPE is not defined
-- name: "Load {{ ENTITY_TYPE }} smart data model specific vars"
+- name: "Load {{ ENTITY_TYPE }} smart data model specific schema"
   ansible.builtin.include_vars:
     file: "{{ ENTITY_TYPE }}.yaml"
+- name: "Load {{ ENTITY_TYPE }} smart data model specific values"
+  ansible.builtin.include_vars:
+    file: "values/values-{{ ENTITY_TYPE }}.yaml"
+  ignore_errors: true

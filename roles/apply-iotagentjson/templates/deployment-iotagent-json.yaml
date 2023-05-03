@@ -4,7 +4,7 @@ metadata:
     app.kubernetes.io/name: iotagent-json
     app.kubernetes.io/version: 1.0.1
 spec:
-  replicas: {{ iotagent.replicas }}
+  replicas: {{ values.iotagent.replicas }}
   revisionHistoryLimit: 3
   selector:
     matchLabels:
@@ -28,15 +28,15 @@ spec:
       containers:
         - env:
             - name: IOTA_CB_HOST
-              value: '{{ orionld.service_name }}'
+              value: '{{ values.orionld.service_name }}'
             - name: IOTA_CB_PORT
-              value: '{{ iotagent.http_port }}'
+              value: '{{ values.iotagent.http_port }}'
             - name: IOTA_NORTH_PORT
-              value: '{{ iotagent.north_port }}'
+              value: '{{ values.iotagent.north_port }}'
             - name: IOTA_REGISTRY_TYPE
               value: 'mongodb'
             - name: IOTA_LOG_LEVEL
-              value: '{{ iotagent.log_level }}'
+              value: '{{ values.iotagent.log_level }}'
             - name: IOTA_TIMESTAMP
               value: 'true'
             - name: IOTA_CB_NGSI_VERSION
@@ -60,14 +60,14 @@ spec:
             - name: IOTA_HTTP_PORT
               value: '7896'
             - name: IOTA_PROVIDER_URL
-              value: 'http://{{ iotagent.service_name }}:{{ iotagent.north_port }}'
+              value: 'http://{{ values.iotagent.service_name }}:{{ values.iotagent.north_port }}'
   
             - name: IOTA_MQTT_DISABLED
               value: 'false'
             - name: IOTA_MQTT_HOST
-              value: '{{ mqtt.service_name }}'
+              value: '{{ values.mqtt.service_name }}'
             - name: IOTA_MQTT_PORT
-              value: '{{ mqtt.port }}'
+              value: '{{ values.mqtt.port }}'
             - name: IOTA_MQTT_REJECT_UNAUTHORIZED
               value: 'false'
             - name: IOTA_AMQP_DISABLED
@@ -83,7 +83,7 @@ spec:
             timeoutSeconds: 30
           name: iotagent-json
           ports:
-            - containerPort: {{ iotagent.http_port }}
+            - containerPort: {{ values.iotagent.http_port }}
               name: http
               protocol: TCP
           readinessProbe:
@@ -95,10 +95,10 @@ spec:
             timeoutSeconds: 30
           resources:
             limits:
-              cpu: '{{ iotagent.resources.limits.cpu }}'
-              memory: '{{ iotagent.resources.limits.memory }}'
+              cpu: '{{ values.iotagent.resources.limits.cpu }}'
+              memory: '{{ values.iotagent.resources.limits.memory }}'
             requests:
-              cpu: '{{ iotagent.resources.requests.cpu }}'
-              memory: '{{ iotagent.resources.requests.memory }}'
+              cpu: '{{ values.iotagent.resources.requests.cpu }}'
+              memory: '{{ values.iotagent.resources.requests.memory }}'
       serviceAccountName: default
       volumes: null

@@ -9,11 +9,11 @@ spec:
       type: simple
     resources:
       limits:
-        memory: '{{ kafka.resources.limits.memory }}'
-        cpu: '{{ kafka.resources.limits.cpu }}'
+        memory: '{{ values.kafka.resources.limits.memory }}'
+        cpu: '{{ values.kafka.resources.limits.cpu }}'
       requests:
-        memory: '{{ kafka.resources.requests.memory }}'
-        cpu: '{{ kafka.resources.requests.cpu }}'
+        memory: '{{ values.kafka.resources.requests.memory }}'
+        cpu: '{{ values.kafka.resources.requests.cpu }}'
     listeners:
       - name: tls
         port: 9093
@@ -21,7 +21,7 @@ spec:
         tls: true
         authentication:
           type: tls
-{% if site.enable_dev_nodeports %}
+{% if values.site.enable_dev_nodeports %}
       - name: external
         port: 9094
         tls: true
@@ -50,11 +50,11 @@ spec:
       type: ephemeral
     resources:
       limits:
-        memory: '{{ zookeeper.resources.limits.memory }}'
-        cpu: '{{ zookeeper.resources.limits.cpu }}'
+        memory: '{{ values.zookeeper.resources.limits.memory }}'
+        cpu: '{{ values.zookeeper.resources.limits.cpu }}'
       requests:
-        memory: '{{ zookeeper.resources.requests.memory }}'
-        cpu: '{{ zookeeper.resources.requests.cpu }}'
+        memory: '{{ values.zookeeper.resources.requests.memory }}'
+        cpu: '{{ values.zookeeper.resources.requests.cpu }}'
   entityOperator:
     topicOperator: {}
     userOperator: {}

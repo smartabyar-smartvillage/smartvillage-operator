@@ -10,12 +10,6 @@
       You need to deploy a {{ ENTITY_TYPE }} to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_smartabyarsmartvillage.yaml
   when: crd is not defined
 
-- name: "Set {{ ENTITY_TYPE }} facts"
-  set_fact:
-    iotagent: "{{ crd.iotagent }}"
-    orionld: "{{ crd.orionld }}"
-    mqtt: "{{ crd.mqtt }}"
-
 - name: "Query MongoDB pod"
   set_fact:
     mongodb_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector='app.kubernetes.io/component=mongodb,app.kubernetes.io/instance=mongodb-orion,app.kubernetes.io/name=mongodb-orion', namespace=ansible_operator_meta.namespace)[0].metadata.name }}"
@@ -55,3 +49,11 @@
     name: "iotagent-json"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'deployment-iotagent-json.yaml') }}"
+- name: "Install iotagent-json route on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.iotagent.route.create else 'absent' }}"
+    kind: Route
+    api_version: route.openshift.io/v1
+    name: iotagent-json
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'route-iotagent-json.yaml') }}"
