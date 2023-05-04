@@ -1,7 +1,7 @@
 spec:
   replicas: 1
   selector:
-    app: "{{ site_name }}"
+    app: "smartabyar-smartvillage-web"
     deploymentconfig: "{{ site_name }}-worker"
   strategy:
     activeDeadlineSeconds: 21600
@@ -12,7 +12,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ site_name }}"
+        app: "smartabyar-smartvillage-web"
         deploymentconfig: "{{ site_name }}-worker"
     spec:
       containers:
@@ -105,7 +105,7 @@ spec:
                   apiVersion: v1
                   fieldPath: status.podIP
             - name: CLUSTER_PUBLIC_HOST_NAME
-              value: "{{ site_name }}.{{ ansible_operator_meta.namespace }}.svc"
+              value: "smartabyar-smartvillage-web.{{ ansible_operator_meta.namespace }}.svc"
             - name: "FONTAWESOME_KIT"
               valueFrom:
                 secretKeyRef:
@@ -233,6 +233,11 @@ spec:
             - name: ENABLE_IMPORT_DATA_TrafficSimulation
               value: '{{ values.import_data.trafficsimulation.enabled }}'
 
+            - name: IMPORT_DATA_PERIOD_SitePage
+              value: '{{ values.import_data.sitepage.period }}'
+            - name: IMPORT_DATA_START_TIME_SitePage
+              value: '{{ values.import_data.sitepage.start_time }}'
+
             - name: AUTH_ROLE_ADMIN
               value: '{{ values.auth_role.admin }}'
             - name: AUTH_ROLE_REQUIRED_SiteUser
@@ -257,6 +262,8 @@ spec:
               value: '{{ values.auth_role.timestep }}'
             - name: AUTH_ROLE_REQUIRED_TrafficSimulation
               value: '{{ values.auth_role.trafficsimulation }}'
+            - name: AUTH_ROLE_REQUIRED_SimulationReport
+              value: '{{ values.auth_role.simulationreport }}'
             - name: AUTH_ROLE_REQUIRED_TrafficFlowObserved
               value: '{{ values.auth_role.trafficflowobserved }}'
             - name: AUTH_ROLE_REQUIRED_TrafficLight

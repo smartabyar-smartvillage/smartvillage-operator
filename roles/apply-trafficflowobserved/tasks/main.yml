@@ -20,7 +20,7 @@
   when: values.iot_agent.base_url == ''
 - name: "Configure iot_agent_base_url"
   set_fact:
-    iot_agent_base_url: "http://{{ values.iot_agent.service_name }}:{{ iot_agent_port }}"
+    iot_agent_base_url: "http://{{ values.iot_agent.service_name }}.{{ ansible_operator_meta.namespace }}.svc:{{ iot_agent_port }}"
   when: values.iot_agent.base_url == ''
 - name: "Configure iot_agent_base_url"
   set_fact:
@@ -40,7 +40,7 @@
   when: values.context_broker.base_url == ''
 - name: "Configure context_broker_base_url"
   set_fact:
-    context_broker_base_url: "http://{{ values.context_broker.service_name }}:{{ context_broker_port }}"
+    context_broker_base_url: "http://{{ values.context_broker.service_name }}.{{ ansible_operator_meta.namespace }}.svc:{{ context_broker_port }}"
   when: values.context_broker.base_url == ''
 - name: "Configure iot_agent_base_url"
   set_fact:

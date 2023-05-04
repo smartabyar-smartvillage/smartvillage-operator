@@ -30,7 +30,7 @@ spec:
             - name: IOTA_CB_HOST
               value: '{{ values.orionld.service_name }}'
             - name: IOTA_CB_PORT
-              value: '{{ values.iotagent.http_port }}'
+              value: '{{ values.orionld.port }}'
             - name: IOTA_NORTH_PORT
               value: '{{ values.iotagent.north_port }}'
             - name: IOTA_REGISTRY_TYPE

@@ -1,7 +1,7 @@
 spec:
   replicas: {{ values.site.web_replicas }}
   selector:
-    app: "{{ site_name }}"
+    app: "smartabyar-smartvillage-web"
     deploymentconfig: "{{ site_name }}-web"
   strategy:
     activeDeadlineSeconds: 21600
@@ -13,7 +13,7 @@ spec:
   template:
     metadata:
       labels:
-        app: "{{ site_name }}"
+        app: "smartabyar-smartvillage-web"
         deploymentconfig: "{{ site_name }}-web"
     spec:
       containers:
@@ -106,7 +106,7 @@ spec:
                   apiVersion: v1
                   fieldPath: status.podIP
             - name: CLUSTER_PUBLIC_HOST_NAME
-              value: "{{ site_name }}.{{ ansible_operator_meta.namespace }}.svc"
+              value: "smartabyar-smartvillage-web.{{ ansible_operator_meta.namespace }}.svc"
             - name: "FONTAWESOME_KIT"
               valueFrom:
                 secretKeyRef:

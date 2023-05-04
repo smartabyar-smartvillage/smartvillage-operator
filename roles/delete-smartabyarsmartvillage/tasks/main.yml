@@ -24,6 +24,7 @@
     kind: KeycloakRealm
     name: "{{ site_name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 - name: "Remove {{ site_name }} Keycloak client on OpenShift"
   k8s:
     state: absent
@@ -31,6 +32,7 @@
     kind: KeycloakClient
     name: "{{ site_name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 - name: "Remove {{ site_name }} Keycloak cluster on OpenShift"
   k8s:
     state: absent
@@ -38,6 +40,7 @@
     kind: Keycloak
     namespace: "{{ ansible_operator_meta.namespace }}"
     name: "{{ site_name }}"
+  ignore_errors: true
 
 # Remove Kafka
 - name: "Remove {{ site_name }} Kafka cluster on OpenShift"

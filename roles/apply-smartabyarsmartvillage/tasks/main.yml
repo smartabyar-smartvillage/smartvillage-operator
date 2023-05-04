@@ -56,7 +56,7 @@
 # Install Red Hat SSO
 - name: "Query SSO postgres secret"
   set_fact:
-    sso_postgres_secret: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=(sso.postgres_secret_name | default(schema.sso.properties.postgres_secret_name.default)), namespace=ansible_operator_meta.namespace)[0].data }}"
+    sso_postgres_secret: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=(values.sso.postgres_secret_name | default(schema.sso.properties.postgres_secret_name.default, true)), namespace=ansible_operator_meta.namespace)[0].data }}"
 - name: "Install keycloak-db-secret on OpenShift"
   k8s:
     state: "{{ 'present' if values.sso.create else 'absent' }}"
@@ -73,6 +73,7 @@
     name: "{{ site_name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'keycloakrealm.yaml') }}"
+  when: values.sso.create
 - name: "Install {{ site_name }} Keycloak client on OpenShift"
   k8s:
     state: "{{ 'present' if values.sso.create else 'absent' }}"
@@ -81,6 +82,7 @@
     name: "{{ site_name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'keycloakclient.yaml') }}"
+  when: values.sso.create
 - name: "Install {{ site_name }} Keycloak cluster on OpenShift"
   k8s:
     state: "{{ 'present' if values.sso.create else 'absent' }}"
@@ -89,6 +91,7 @@
     namespace: "{{ ansible_operator_meta.namespace }}"
     name: sso
     definition: "{{ lookup('template', 'keycloak.yaml') }}"
+  when: values.sso.create
 
 # Install Kafka
 - name: "Install {{ site_name }} Kafka cluster on OpenShift"
@@ -193,6 +196,26 @@
     definition: "{{ lookup('template', 'service-zookeeper.yaml') }}"
 
 # Install Solr
+
+#- name: Add Solr chart repo
+#  kubernetes.core.helm_repository:
+#    name: solr
+#    repo_url: https://solr.apache.org/charts
+#  changed_when: false
+#- name: Install Solr helm chart
+#  kubernetes.core.helm:
+#    name: solr-operator
+#    chart_ref: solr/solr-operator
+#    chart_version: v0.6.0
+#    set_values:
+#      - value: serviceAccount.create=true
+#      - value: serviceAccount.name=solr
+#      - value: podOptions.serviceAccountName=solr
+#    release_namespace: "{{ ansible_operator_meta.namespace }}"
+#    release_state: present
+#  changed_when: false
+#  ignore_errors: true
+
 - name: "Install Solr configmap-computate-configset configmap on OpenShift"
   k8s:
     state: "{{ 'present' if values.solr.create else 'absent' }}"
@@ -201,14 +224,14 @@
     name: computate-configset
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'configmap-solr-computate-configset.yaml') }}"
-- name: "Install Solr service account on OpenShift"
-  k8s:
-    state: "{{ 'present' if values.solr.create else 'absent' }}"
-    kind: ServiceAccount
-    api_version: v1
-    name: solr
-    namespace: "{{ ansible_operator_meta.namespace }}"
-    definition: "{{ lookup('template', 'serviceaccount-solr.yaml') }}"
+#- name: "Install Solr service account on OpenShift"
+#  k8s:
+#    state: "{{ 'present' if values.solr.create else 'absent' }}"
+#    kind: ServiceAccount
+#    api_version: v1
+#    name: solr
+#    namespace: "{{ ansible_operator_meta.namespace }}"
+#    definition: "{{ lookup('template', 'serviceaccount-solr.yaml') }}"
 - name: "Install Solr Cloud on OpenShift"
   k8s:
     state: "{{ 'present' if values.solr.create else 'absent' }}"
@@ -345,10 +368,13 @@
   kubernetes.core.k8s_exec:
     pod: default-solrcloud-0
     command: >-
-      /opt/solr/bin/solr zk upconfig -n computate -d /opt/solr/server/solr/configsets/computate -z '{{ values.zookeeper.service_name }}:{{ values.zookeeper.port }}'
+      /opt/solr/bin/solr zk upconfig -n computate -d /opt/solr/server/solr/configsets/computate -z 'default-solrcloud-zookeeper-client:2181'
     namespace: "{{ ansible_operator_meta.namespace }}"
   when: values.solr.create
+  register: solr_upconfig
   changed_when: false
+- debug:
+    var: solr_upconfig
 
 - name: Create Solr collection
   kubernetes.core.k8s_exec:
@@ -371,17 +397,9 @@
     state: "{{ 'present' if values.site.create else 'absent' }}"
     api_version: v1
     kind: Service
-    name: "{{ site_name }}-web"
+    name: "smartabyar-smartvillage-web"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'service-web.yaml') }}"
-- name: "Install {{ site_name }}-worker service on OpenShift"
-  k8s:
-    state: "{{ 'present' if values.site.create else 'absent' }}"
-    api_version: v1
-    kind: Service
-    name: "{{ site_name }}-worker"
-    namespace: "{{ ansible_operator_meta.namespace }}"
-    definition: "{{ lookup('template', 'service-worker.yaml') }}"
 - name: "Install {{ site_name }}-web route on OpenShift"
   k8s:
     state: "{{ 'present' if values.site.create else 'absent' }}"
@@ -389,7 +407,7 @@
     kind: Route
     name: "{{ site_name }}-web"
     namespace: "{{ ansible_operator_meta.namespace }}"
-    definition: "{{ lookup('template', 'route.yaml') }}"
+    definition: "{{ lookup('template', 'route-web.yaml') }}"
 
 - name: "Query site host name"
   set_fact:
@@ -397,7 +415,7 @@
 - name: "Set static base URL"
   set_fact:
     site_base_url: "https://{{ site_host_name }}"
-    static_base_url: "{{ values.site.static_base_url | default('https://' + site_host_name + '/static') }}"
+    static_base_url: "{{ values.site.static_base_url | default('https://' + site_host_name + '/static', true) }}"
 
 #- name: "Install {{ site_name }} secret on OpenShift"
 #  k8s:

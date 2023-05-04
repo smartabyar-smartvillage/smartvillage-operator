@@ -48,8 +48,8 @@ spec:
               memory: '{{ values.sumo.resources.limits.memory }}'
               cpu: '{{ values.sumo.resources.limits.cpu }}'
             requests:
-              memory: '{{ values.sumo.resources.limits.memory }}'
-              cpu: '{{ values.sumo.resources.limits.cpu }}'
+              memory: '{{ values.sumo.resources.requests.memory }}'
+              cpu: '{{ values.sumo.resources.requests.cpu }}'
           env:
 
             - name: "KAFKA_BROKERS"
@@ -68,6 +68,10 @@ spec:
               value: smartvillage-sumo-run
             - name: KAFKA_TOPIC_SUMO_RUN_REPORT
               value: smartvillage-sumo-run-report
+            - name: ZOOKEEPER_HOST_NAME
+              value: zookeeper
+            - name: ZOOKEEPER_PORT
+              value: '2181'
           volumeMounts:
             - mountPath: /opt/kafka/keystore
               name: "{{ values.kafka.keystore_secret }}"

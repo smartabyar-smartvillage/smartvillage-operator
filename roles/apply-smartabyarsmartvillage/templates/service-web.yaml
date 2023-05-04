@@ -9,6 +9,6 @@ spec:
       protocol: TCP
       targetPort: 8081
   selector:
-    app: "{{ site_name }}-web"
+    app: "smartabyar-smartvillage-web"
   sessionAffinity: None
   type: ClusterIP

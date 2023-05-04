@@ -3,12 +3,12 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ crd.context_broker.base_url }}/v2/subscriptions"
+    url: "{{ values.context_broker.base_url }}/v2/subscriptions"
     method: POST
     headers:
       Content-Type: "application/json"
-      Fiware-Service: "{{ crd.fiware.service | lower }}"
-      Fiware-ServicePath: "{{ crd.fiware.service_path }}"
+      Fiware-Service: "{{ values.fiware.service | lower }}"
+      Fiware-ServicePath: "{{ values.fiware.service_path }}"
     body_format: json
     body: "{{ SUBSCRIPTION_BODY }}"
     return_content: true
@@ -20,16 +20,16 @@
   ignore_errors: true
 - debug:
     var: CREATE_SUBSCRIPTION
-- name: "Update the {{ crd.subscription.apikey }} subscription"
+- name: "Update the {{ values.subscription.apikey }} subscription"
   connection: local
   uri:
     timeout: 90
-    url: "{{ crd.iot_agent.base_url }}/v2/subscriptions/{{ ENTITY_NAME | urlencode }}"
+    url: "{{ values.iot_agent.base_url }}/v2/subscriptions/{{ ENTITY_NAME | urlencode }}"
     method: PATCH
     headers:
       Content-Type: "application/json"
-      Fiware-Service: "{{ crd.fiware.service }}"
-      Fiware-ServicePath: "{{ crd.fiware.service_path }}"
+      Fiware-Service: "{{ values.fiware.service }}"
+      Fiware-ServicePath: "{{ values.fiware.service_path }}"
       Cache-Control: no-cache
     body_format: json
     body: "{{ SUBSCRIPTION_BODY }}"
