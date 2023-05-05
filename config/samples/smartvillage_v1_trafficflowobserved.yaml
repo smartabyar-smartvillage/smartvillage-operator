@@ -16,9 +16,14 @@ spec:
       addressCountry: Sweden
       addressLocality: Veberöd
       streetAddress: Sjöbovägen
+
     area_served: |
       96027913#0 96027913#2 30186293 311389510#1
-    average_gap_distance: 1  iot_agent:
+
+    average_gap_distance: 1
+    type: |
+      TrafficFlowObserved
+  iotagent:
     service_name: |-
       iotagent-json
   context_broker:
@@ -49,11 +54,11 @@ spec:
     auth_secret_name: |-
       keycloak-client-secret-smartvillage
     auth_token_url: |-
-      https://keycloak-sso.apps-crc.testing/realms/SMARTVILLAGE/protocol/openid-connect/token
+      https://keycloak-sso.apps-crc.testing/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
     site_base_url: |-
-      https://smartvillage.apps-crc.testing
+      https://smartvillage-web-smartvillage.apps-crc.testing
     smart_model_api: |-
-      /api/traffic-flow-observed
+      /api/traffic-flow-observed-import
   alternate_model:
     enabled: True
     id: |-

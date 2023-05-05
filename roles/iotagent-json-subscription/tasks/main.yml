@@ -24,7 +24,7 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ values.iot_agent.base_url }}/v2/subscriptions/{{ ENTITY_NAME | urlencode }}"
+    url: "{{ values.iotagent.base_url }}/v2/subscriptions/{{ ENTITY_NAME | urlencode }}"
     method: PATCH
     headers:
       Content-Type: "application/json"

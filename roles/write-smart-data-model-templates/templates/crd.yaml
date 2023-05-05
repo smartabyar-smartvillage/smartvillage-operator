@@ -59,13 +59,13 @@ spec:
                       10 maximum scope levels in a path. 
                       50 maximum characters in each level, only alphanum and underscore allowed. 
 {% endif %}
-{% if spec.iot_agent is defined %}
-              iot_agent:
+{% if spec.iotagent is defined %}
+              iotagent:
                 type: object
                 properties:
                   iot_host:
                     type: string
-                    default: {{ spec.iot_agent.iot_host }}
+                    default: {{ spec.iotagent.iot_host }}
 {% endif %}
 {% if spec.service_group is defined %}
               service_group:
@@ -155,10 +155,12 @@ spec:
 {% if attribute.default is defined %}
 {% if (attribute.default | type_debug) == 'AnsibleUnicode' %}
                     default: |
-                      {{ attribute.default | indent(22, False) }}{% else %}
+                      {{ attribute.default | indent(22, False) }}
+{% else %}
 {% if (attribute.default | type_debug) == 'dict' %}
                     default:
-                      {{ attribute.default | to_nice_yaml(indent=2) | indent(22, False) }}{% else %}
+                      {{ attribute.default | to_nice_yaml(indent=2) | indent(22, False) }}
+{% else %}
                     default: {{ attribute.default }}
 {% endif %}
 {% endif %}
@@ -180,7 +182,8 @@ spec:
 {% endif %}
 {% if MODEL_SPEC[ ENTITY_TYPE ].properties[key].properties is defined %}
                     properties:
-                      {{ MODEL_SPEC[ ENTITY_TYPE ].properties[key].properties | to_nice_yaml(indent=2) | indent(22, False) }}{% endif %}
+                      {{ MODEL_SPEC[ ENTITY_TYPE ].properties[key].properties | to_nice_yaml(indent=2) | indent(22, False) }}
+{% endif %}
 {% endfor %}
 {% endif %}
 {% if schema is defined %}

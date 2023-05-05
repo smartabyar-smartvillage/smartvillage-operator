@@ -1,15 +1,15 @@
 ---
 - name: Get auth secrets
   set_fact:
-    CLIENT_ID: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=smartabyar_smartvillage.auth_secret_name, namespace=ansible_operator_meta.namespace, validate_certs=false)[0].data.CLIENT_ID | b64decode }}"
-    CLIENT_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=smartabyar_smartvillage.auth_secret_name, namespace=ansible_operator_meta.namespace, validate_certs=false)[0].data.CLIENT_SECRET | b64decode }}"
+    CLIENT_ID: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.smartabyar_smartvillage.auth_secret_name, namespace=ansible_operator_meta.namespace, validate_certs=false)[0].data.CLIENT_ID | b64decode }}"
+    CLIENT_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.smartabyar_smartvillage.auth_secret_name, namespace=ansible_operator_meta.namespace, validate_certs=false)[0].data.CLIENT_SECRET | b64decode }}"
 - debug:
     var: CLIENT_SECRET
 - name: "Get the entity from the context broker"
   connection: local
   uri:
     timeout: 90
-    url: "{{ values.context_broker.host }}/v2/entities/{{ ENTITY_NAME | urlencode }}?options=keyValues"
+    url: "{{ values.context_broker.base_url }}/v2/entities/{{ ENTITY_NAME | urlencode }}?options=keyValues"
     method: GET
     headers:
       Fiware-Service: "{{ values.fiware.service | lower }}"
@@ -23,7 +23,7 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ AUTH_TOKEN_URL }}"
+    url: "{{ values.smartabyar_smartvillage.auth_token_url }}"
     method: POST
     body_format: form-urlencoded
     body:
@@ -40,7 +40,7 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ SITE_BASE_URL }}{{ values.smartabyar_smartvillage.import_api_uri }}"
+    url: "{{ values.smartabyar_smartvillage.site_base_url }}{{ values.smartabyar_smartvillage.smart_model_api }}"
     method: PUT
     headers:
       Content-Type: "application/json"

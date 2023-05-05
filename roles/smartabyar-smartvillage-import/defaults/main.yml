@@ -1,3 +1,2 @@
 ---
-AUTH_TOKEN_URL: "{{ smartabyar_smartvillage.auth_token_url }}"
-SITE_BASE_URL: "{{ smartabyar_smartvillage.site_base_url }}"
+ENTITY_NAME: "urn:ngsi-ld:{{ ENTITY_TYPE }}:{{ values.device.id }}"

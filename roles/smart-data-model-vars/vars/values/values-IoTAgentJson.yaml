@@ -1,4 +1,5 @@
 values:
+
   mqtt:
     service_name: "{{ crd.mqtt.service_name | default(schema | community.general.json_query('mqtt.properties.service_name.default')) }}"
     port: "{{ crd.mqtt.port | default(schema | community.general.json_query('mqtt.properties.port.default')) }}"

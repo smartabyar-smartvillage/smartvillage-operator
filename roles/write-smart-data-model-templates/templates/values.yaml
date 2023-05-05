@@ -5,16 +5,19 @@ values:
 {% if attribute.default is defined %}
 {% if (attribute.default | type_debug) == 'AnsibleUnicode' %}
     {{ key }}: |
-      {{ attribute.default | indent(6, False) }}{% else %}
+      {{ attribute.default | indent(6, False) }}
+{% else %}
 {% if (attribute.default | type_debug) == 'dict' %}
     {{ key }}:
-      {{ attribute.default | to_nice_yaml(indent=2) | indent(6, False) }}{% else %}
+      {{ attribute.default | to_nice_yaml(indent=2) | indent(6, False) }}
+{% else %}
     {{ key }}: {{ attribute.default }}
 {% endif %}
 {% endif %}
 {% endif %}
 {% endfor %}
 {% endif %}
+
 {% if schema is defined %}
 {% for key1, var1 in schema.items() %}
 {% if var1.properties is not defined %}

@@ -35,7 +35,7 @@ spec:
             description: Spec defines the desired state of TrafficFlowObserved
             type: object
             properties:
-              iot_agent:
+              iotagent:
                 type: object
                 properties:
                   base_url:
@@ -99,16 +99,16 @@ spec:
                     default: keycloak-client-secret-smartvillage
                     type: string
                   auth_token_url:
-                    default: https://keycloak-sso.apps-crc.testing/realms/SMARTVILLAGE/protocol/openid-connect/token
+                    default: https://keycloak-sso.apps-crc.testing/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
                     type: string
                   enabled:
                     default: true
                     type: boolean
                   site_base_url:
-                    default: https://smartvillage.apps-crc.testing
+                    default: https://smartvillage-web-smartvillage.apps-crc.testing
                     type: string
                   smart_model_api:
-                    default: /api/traffic-flow-observed
+                    default: /api/traffic-flow-observed-import
                     type: string
 
               alternate_model:

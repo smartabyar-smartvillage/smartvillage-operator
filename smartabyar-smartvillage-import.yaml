@@ -10,7 +10,7 @@
     ansible_operator_meta:
       name: sweden-veberod-1-sjobovagen-se
       namespace: smart-village-view
-    iot_agent:
+    iotagent:
       iot_host: http://iotagent-json-north-fiware.apps-crc.testing
     fiware:
       service: smarttrafficlights
@@ -25,7 +25,7 @@
     smartabyar_smartvillage:
       enabled: true
       auth_secret_name: keycloak-client-secret-smartvillage
-      auth_token_url: https://keycloak-sso.apps-crc.testing/realms/SMARTVILLAGE/protocol/openid-connect/token
+      auth_token_url: https://keycloak-sso.apps-crc.testing/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
       site_base_url: https://smartvillage.apps-crc.testing
       import_api_uri: /api/traffic-flow-observed-import
     sumo:

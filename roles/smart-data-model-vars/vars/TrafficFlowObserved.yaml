@@ -4,7 +4,7 @@ SUBMODULE_SHORT_NAME: Transportation
 DOMAIN_NAME: Smart Cities
 schema:
 
-  iot_agent:
+  iotagent:
     type: object
     properties:
       service_name:
@@ -67,13 +67,13 @@ schema:
         default: keycloak-client-secret-smartvillage
       auth_token_url:
         type: string
-        default: https://keycloak-sso.apps-crc.testing/realms/SMARTVILLAGE/protocol/openid-connect/token
+        default: https://keycloak-sso.apps-crc.testing/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
       site_base_url:
         type: string
-        default: https://smartvillage.apps-crc.testing
+        default: https://smartvillage-web-smartvillage.apps-crc.testing
       smart_model_api:
         type: string
-        default: /api/traffic-flow-observed
+        default: /api/traffic-flow-observed-import
   alternate_model:
     type: object
     properties:
@@ -144,69 +144,146 @@ smart_data_model:
         Exact interpretation varies by model. 
         For the default model Krauss this is based on the net space between leader back and follower front).
       alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
+      minimum: 0
     average_vehicle_length:
       name: averageVehicleLength
       type: string
+      description: |
+        Average length of the vehicles transiting during the observation period
+      alternate_name: length
+      alternate_description: |
+        The vehicle's netto-length (length) (in m)
+      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
+      minimum: 0
     average_vehicle_speed:
       name: averageVehicleSpeed
       type: string
+      description: |
+        Average speed of the vehicles transiting during the observation period
+      alternate_name: speed
+      alternate_description: |
+        speed to be kept while driving between startPos and endPos. This turns the stop into a waypoint.
+      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
+      minimum: 0
     congested:
       name: congested
       type: boolean
+      description: |
+        Flags whether there was a traffic congestion during the observation period in the referred lane. The absence of this attribute means no traffic congestion
     data_provider:
       name: dataProvider
       type: string
+      description: |
+        A sequence of characters identifying the provider of the harmonised data entity.
     date_created:
       name: dateCreated
       type: string
+      description: |
+        Entity creation timestamp. This will usually be allocated by the storage platform.
     date_modified:
       name: dateModified
       type: string
+      description: |
+        Timestamp of the last modification of the entity. This will usually be allocated by the storage platform.
     date_observed:
       name: dateObserved
       type: string
+      description: |
+        The date and time of this observation in ISO8601 UTC format. It can be represented by an specific time instant or by an ISO8601 interval. As a workaround for the lack of support of Orion Context Broker for datetime intervals, it can be used two separate attributes: `dateObservedFrom`, `dateObservedTo`. [DateTime](https://schema.org/DateTime) or an ISO8601 interval represented as [Text](https://schema.org/Text)
     date_observed_from:
       name: dateObservedFrom
       type: string
+      description: |
+        Observation period start date and time. See `dateObserved`
     date_observed_to:
       name: dateObservedTo
       type: string
+      description: |
+        Observation period end date and time. See `dateObserved`
     description:
       name: description
       type: string
+      description: |
+        A description of this item
     intensity:
       name: intensity
       type: string
+      description: |
+        Total number of vehicles detected during this observation period
+      alternate_name: number
+      alternate_description: |
+        total number of vehicles, equally spaced
+      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
+      minimum: 0
     lane_direction:
       name: laneDirection
       type: string
+      description: |
+        Usual direction of travel in the lane referred by this observation. This attribute is useful when the observation is not referencing any road segment, allowing to know the direction of travel of the traffic flow observed. Enum:forward, backward''. See RoadSegment for a description of the semantics of these values.
     lane_id:
       name: laneId
       type: string
+      description: |
+        Lane identifier. Lane identification is done using the conventions defined by RoadSegment entity which are based on [OpenStreetMap](http://wiki.openstreetmap.org/wiki/Forward_%26_backward,_left_%26_right).
+      alternate_name: lane
+      alternate_description: |
+        the lane id takes the form <edge_id>_<lane_index>. the edge has to be part of the corresponding route. If the edge supports opposite direciton driving, the lane index may use values beyond the lane indices of the stop edge to define stops on the opposite side.
+      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
+    location:
+      name: name
+      type: object
+      description: |
+        Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon
     name:
       name: name
       type: string
     occupancy:
       name: occupancy
-      type: string
+      type: number
+      description: |
+        Fraction of the observation time where a vehicle has been occupying the observed lane
     owner:
       name: owner
-      type: object
+      type: array
+      description: |
+        A List containing a JSON encoded sequence of characters referencing the unique Ids of the owner(s)
     ref_road_segment:
       name: refRoadSegment
       type: string
+      description: |
+        Concerned road segment on which the observation has been made. Reference to an entity of type RoadSegment
     reversed_lane:
       name: reversedLane
       type: boolean
+      description: |
+        Flags whether traffic in the lane was reversed during the observation period. The absence of this attribute means no lane reversion
     see_also:
       name: seeAlso
-      type: object
+      type: array
+      description: |
+        list of uri pointing to additional resources about the item
     source:
       name: source
       type: string
+      description: |
+        A sequence of characters giving the original source of the entity data as a URL. Recommended to be the fully qualified domain name of the source provider, or the URL to the source object.
+    type:
+      name: source
+      type: string
+      description: |
+        NGSI Entity type. It has to be TrafficFlowObserved
+      default: TrafficFlowObserved
     vehicle_sub_type:
       name: vehicleSubType
       type: string
+      description: |
+        It allows to specify a sub type of `vehicleType`, eg if the `vehicleType` is set to `Lorry` the `vehicleSubType` may be `OGV1` or `OGV2` to convey more information about the exact type of vehicle.
     vehicle_type:
       name: vehicleType
       type: string
+      description: |
+        Type of vehicle from the point of view of its structural characteristics. Enum:agriculturalVehicle, bicycle, bus, minibus, car, caravan, tram, tanker, carWithCaravan, carWithTrailer, lorry, moped, motorcycle, motorcycleWithSideCar, motorscooter, trailer, van, constructionOrMaintenanceVehicle, trolley, binTrolley, sweepingMachine, cleaningTrolley
+      alternate_name: vClass
+      alternate_description: |
+        An abstract vehicle class (see below). By default vehicles represent regular passenger cars.
+      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html

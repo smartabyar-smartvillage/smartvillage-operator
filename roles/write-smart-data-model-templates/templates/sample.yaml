@@ -16,9 +16,9 @@ spec:
     service: {{ spec.fiware.service }}
     service_path: {{ spec.fiware.service_path }}
 {% endif %}
-{% if spec.iot_agent is defined %}
-  iot_agent:
-    iot_host: {{ spec.iot_agent.iot_host }}
+{% if spec.iotagent is defined %}
+  iotagent:
+    iot_host: {{ spec.iotagent.iot_host }}
 {% endif %}
 {% if spec.service_group is defined %}
   service_group:
@@ -53,11 +53,14 @@ spec:
 {% if attribute.default is defined %}
 {% if (attribute.default | type_debug) == 'AnsibleUnicode' %}
     {{ key }}: |
-      {{ attribute.default | indent(6, False) }}{% else %}
+      {{ attribute.default | indent(6, False) }}
+{% else %}
 {% if (attribute.default | type_debug) == 'dict' %}
     {{ key }}:
-      {{ attribute.default | to_nice_yaml(indent=2) | indent(6, False) }}{% else %}
-    {{ key }}: {{ attribute.default }}{% endif %}
+      {{ attribute.default | to_nice_yaml(indent=2) | indent(6, False) }}
+{% else %}
+    {{ key }}: {{ attribute.default }}
+{% endif %}
 {% endif %}
 {% endif %}
 {% endfor %}

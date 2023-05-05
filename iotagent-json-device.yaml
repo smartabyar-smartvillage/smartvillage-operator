@@ -7,7 +7,7 @@
     - iotagent-json-device
   vars:
     ENTITY_TYPE: TrafficFlowObserved
-    iot_agent:
+    iotagent:
       iot_host: http://iotagent-json-north-fiware.apps-crc.testing
     fiware:
       service: 

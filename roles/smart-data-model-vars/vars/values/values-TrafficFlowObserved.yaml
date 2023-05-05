@@ -4,12 +4,17 @@ values:
       addressCountry: Sweden
       addressLocality: Veberöd
       streetAddress: Sjöbovägen
+
     area_served: |
       96027913#0 96027913#2 30186293 311389510#1
+
     average_gap_distance: 1
-  iot_agent:
-    service_name: "{{ crd.iot_agent.service_name | default(schema | community.general.json_query('iot_agent.properties.service_name.default')) }}"
-    base_url: "{{ crd.iot_agent.base_url | default('') }}"
+    type: |
+      TrafficFlowObserved
+
+  iotagent:
+    service_name: "{{ crd.iotagent.service_name | default(schema | community.general.json_query('iotagent.properties.service_name.default')) }}"
+    base_url: "{{ crd.iotagent.base_url | default('') }}"
   context_broker:
     service_name: "{{ crd.context_broker.service_name | default(schema | community.general.json_query('context_broker.properties.service_name.default')) }}"
     base_url: "{{ crd.context_broker.base_url | default('') }}"
