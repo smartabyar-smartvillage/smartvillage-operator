@@ -159,6 +159,10 @@ spec:
     enabled: True
     sitepage:
       enabled: True
+      period: |-
+        2 minutes
+      start_time: |-
+        00:00:00 [America/New_York]
     sitehtm:
       enabled: True
     iotnode:

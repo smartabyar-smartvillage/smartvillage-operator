@@ -104,6 +104,8 @@ values:
     enabled: "{{ crd.import_data.enabled | default(schema | community.general.json_query('import_data.properties.enabled.default')) }}"
     sitepage:
       enabled: "{{ crd.import_data.sitepage.enabled | default(schema | community.general.json_query('import_data.properties.sitepage.properties.enabled.default')) }}"
+      period: "{{ crd.import_data.sitepage.period | default(schema | community.general.json_query('import_data.properties.sitepage.properties.period.default')) }}"
+      start_time: "{{ crd.import_data.sitepage.start_time | default(schema | community.general.json_query('import_data.properties.sitepage.properties.start_time.default')) }}"
     sitehtm:
       enabled: "{{ crd.import_data.sitehtm.enabled | default(schema | community.general.json_query('import_data.properties.sitehtm.properties.enabled.default')) }}"
     iotnode:

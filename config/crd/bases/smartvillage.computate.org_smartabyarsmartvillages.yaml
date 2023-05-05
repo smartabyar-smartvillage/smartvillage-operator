@@ -393,6 +393,12 @@ spec:
                       enabled:
                         default: true
                         type: boolean
+                      period:
+                        default: 2 minutes
+                        type: string
+                      start_time:
+                        default: 00:00:00 [America/New_York]
+                        type: string
                     type: object
                   timestep:
                     properties:
