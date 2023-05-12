@@ -8,6 +8,7 @@
     kind: PostgresCluster
     name: postgres
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 
 # Remove Red Hat SSO
 - name: "Remove keycloak-db-secret on OpenShift"
@@ -17,6 +18,7 @@
     api_version: v1
     name: keycloak-db-secret
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 - name: "Remove {{ site_name }} Keycloak realm on OpenShift"
   k8s:
     state: absent
@@ -50,6 +52,7 @@
     api_version: kafka.strimzi.io/v1beta2
     name: smartvillage-kafka
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 - name: "Remove {{ site_name }} Kafka user on OpenShift"
   k8s:
     state: absent
@@ -57,6 +60,7 @@
     kind: KafkaUser
     name: smartvillage-kafka
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 - name: "Remove {{ site_name }} Kafka Topic smartvillage-sumo-run on OpenShift"
   k8s:
     state: absent
@@ -64,6 +68,7 @@
     api_version: kafka.strimzi.io/v1beta2
     name: smartvillage-sumo-run
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 - name: "Remove {{ site_name }} Kafka Topic smartvillage-sumo-run-report on OpenShift"
   k8s:
     state: absent
@@ -71,6 +76,7 @@
     api_version: kafka.strimzi.io/v1beta2
     name: smartvillage-sumo-run-report
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 - name: "Remove {{ site_name }} Kafka Topic smartvillage-sumo-stop on OpenShift"
   k8s:
     state: absent
@@ -78,6 +84,7 @@
     api_version: kafka.strimzi.io/v1beta2
     name: smartvillage-sumo-stop
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 
 # Remove AMQ Broker
 - name: "Remove {{ site_name }} AMQ Broker on OpenShift"
@@ -87,6 +94,7 @@
     kind: ActiveMQArtemis
     name: fiware-broker
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 - name: "Remove {{ site_name }} AMQ Broker Address on OpenShift"
   k8s:
     state: absent
@@ -94,6 +102,7 @@
     kind: ActiveMQArtemisAddress
     name: fiware-address
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 
 # Remove Solr
 - name: "Remove Solr configmap-computate-configset configmap on OpenShift"
@@ -103,6 +112,7 @@
     kind: ConfigMap
     name: computate-configset
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 - name: "Remove Solr role bindings on OpenShift"
   k8s:
     state: absent
@@ -110,6 +120,7 @@
     api_version: rbac.authorization.k8s.io/v1
     name: "system:openshift:scc:anyuid"
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 - name: "Remove Solr service account on OpenShift"
   k8s:
     state: absent
@@ -117,6 +128,7 @@
     api_version: v1
     name: solr
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 - name: "Remove Solr Cloud on OpenShift"
   k8s:
     state: absent
@@ -124,6 +136,7 @@
     kind: SolrCloud
     name: default
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 - name: "Remove Solr route on OpenShift"
   k8s:
     state: absent
@@ -131,6 +144,7 @@
     api_version: route.openshift.io/v1
     name: solr
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 
 # Remove site
 - name: "Remove {{ site_name }}-web service on OpenShift"
@@ -140,6 +154,7 @@
     kind: Service
     name: "{{ site_name }}-web"
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 - name: "Remove {{ site_name }}-web route on OpenShift"
   k8s:
     state: absent
@@ -147,6 +162,7 @@
     kind: Route
     name: "{{ site_name }}-web"
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 
 #- name: "Remove {{ site_name }} secret on OpenShift"
 #  k8s:
@@ -159,6 +175,7 @@
     kind: ImageStream
     name: "{{ site_name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 - name: "Remove {{ site_name }} deployment config on OpenShift"
   k8s:
     state: absent
@@ -166,6 +183,7 @@
     kind: DeploymentConfig
     name: "{{ site_name }}-web"
     namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
 #- name: "Remove {{ site_name }} worker persistent volume claims on OpenShift"
 #  k8s:
 #    state: absent

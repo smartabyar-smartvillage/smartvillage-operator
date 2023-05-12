@@ -115,7 +115,7 @@ spec:
               value: "{{ values.site.java_opts }}"
 
             - name: ZOOKEEPER_HOST_NAME
-              value: "{{ values.zookeeper.service_name }}"
+              value: "{{ values.zookeeper.mqtt_service_name }}"
             - name: ZOOKEEPER_PORT
               value: "{{ values.zookeeper.port }}"
             - name: ZOOKEEPER_MAX_RETRIES
@@ -344,11 +344,11 @@ spec:
               value: "{{ values.kafka.ssl_truststore_location }}"
 
             - name: "MQTT_HOST"
-              value: "{{ values.mqtt.service_name }}"
+              value: "{{ values.amq_broker.service_name }}"
             - name: "MQTT_PORT"
-              value: "{{ values.mqtt.port }}"
+              value: "{{ values.amq_broker.mqtt_port }}"
             - name: "MQTT_IOT_SUBSCRIBE_TOPIC"
-              value: "{{ values.mqtt.iot_subscribe_topic }}"
+              value: "{{ values.amq_broker.iot_subscribe_topic }}"
           volumeMounts:
             - mountPath: /opt/kafka/keystore
               name: "{{ values.kafka.keystore_secret }}"

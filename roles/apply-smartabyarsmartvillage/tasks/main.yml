@@ -173,6 +173,7 @@
     name: zookeeper
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'imagestream-zookeeper.yaml') }}"
+  when: values.zookeeper.create
 - name: "Install Zookeeper persistent volume claim on OpenShift"
   k8s:
     state: "{{ 'present' if values.zookeeper.create else 'absent' }}"
@@ -181,6 +182,7 @@
     name: zookeeper
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'persistentvolumeclaim-zookeeper.yaml') }}"
+  when: values.zookeeper.create
 - name: "Install Zookeeper config map on OpenShift"
   k8s:
     state: "{{ 'present' if values.zookeeper.create else 'absent' }}"
@@ -189,6 +191,7 @@
     name: zookeeper
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'configmap-zookeeper.yaml') }}"
+  when: values.zookeeper.create
 - name: "Install Zookeeper deployment config on OpenShift"
   k8s:
     state: "{{ 'present' if values.zookeeper.create else 'absent' }}"
@@ -197,6 +200,7 @@
     name: zookeeper
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'deploymentconfig-zookeeper.yaml') }}"
+  when: values.zookeeper.create
 - name: "Install Zookeeper service on OpenShift"
   k8s:
     state: "{{ 'present' if values.zookeeper.create else 'absent' }}"
@@ -205,6 +209,7 @@
     name: zookeeper
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'service-zookeeper.yaml') }}"
+  when: values.zookeeper.create
 
 # Install Solr
 
@@ -235,6 +240,7 @@
     name: computate-configset
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'configmap-solr-computate-configset.yaml') }}"
+  when: values.solr.create
 #- name: "Install Solr service account on OpenShift"
 #  k8s:
 #    state: "{{ 'present' if values.solr.create else 'absent' }}"
@@ -251,6 +257,7 @@
     name: default
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'solrcloud.yaml') }}"
+  when: values.solr.create
 - name: "Install Solr route on OpenShift"
   k8s:
     state: "{{ 'present' if values.solr.create else 'absent' }}"
@@ -259,6 +266,7 @@
     name: solr
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'route-solr.yaml') }}"
+  when: values.solr.create
 
 - name: "Query prerequisite host names"
   set_fact:
@@ -283,19 +291,19 @@
 
 - name: "Verify MQTT"
   wait_for:
-    host: "{{ values.mqtt.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
-    port: "{{ values.mqtt.port }}"
+    host: "{{ values.amq_broker.mqtt_service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
+    port: "{{ values.amq_broker.mqtt_port }}"
     state: started
     delay: 0
     timeout: 5
   register: verify_mqtt
   ignore_errors: yes
-  when: verify_connections and values.mqtt.create
+  when: verify_connections and values.amq_broker.create
 - name: "Verify MQTT is running"
   fail:
     msg: |-
       The MQTT service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
-  when: verify_connections and mqtt.create and verify_mqtt.failed
+  when: verify_connections and amq_broker.create and verify_mqtt.failed
 
 - name: "Verify Kafka"
   wait_for:
@@ -411,6 +419,7 @@
     name: "smartabyar-smartvillage-web"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'service-web.yaml') }}"
+  when: values.site.create
 - name: "Install {{ site_name }}-web route on OpenShift"
   k8s:
     state: "{{ 'present' if values.site.create else 'absent' }}"
@@ -419,6 +428,7 @@
     name: "{{ site_name }}-web"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'route-web.yaml') }}"
+  when: values.site.create
 
 - name: "Query site host name"
   set_fact:
@@ -441,6 +451,7 @@
     name: "{{ site_name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'imagestream.yaml') }}"
+  when: values.site.create
 - name: "Install {{ site_name }}-sumo image stream on OpenShift"
   k8s:
     state: "{{ 'present' if values.site.create else 'absent' }}"
@@ -449,6 +460,7 @@
     name: "{{ site_name }}-sumo"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'imagestream-sumo.yaml') }}"
+  when: values.site.create
 - name: "Install {{ site_name }} image stream on OpenShift"
   k8s:
     state: "{{ 'present' if values.site.create else 'absent' }}"
@@ -457,6 +469,7 @@
     name: "{{ site_name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'imagestream.yaml') }}"
+  when: values.site.create
 - name: "Install {{ site_name }}-web deployment config on OpenShift"
   k8s:
     state: "{{ 'present' if values.site.create else 'absent' }}"
@@ -465,6 +478,7 @@
     name: "{{ site_name }}-web"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'deploymentconfig-web.yaml') }}"
+  when: values.site.create
 - name: "Install {{ site_name }}-worker deployment config on OpenShift"
   k8s:
     state: "{{ 'present' if values.site.create else 'absent' }}"
@@ -473,6 +487,7 @@
     name: "{{ site_name }}-worker"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'deploymentconfig-worker.yaml') }}"
+  when: values.site.create
 - name: "Install {{ site_name }}-sumo deployment config on OpenShift"
   k8s:
     state: "{{ 'present' if values.site.create else 'absent' }}"
@@ -481,6 +496,7 @@
     name: "{{ site_name }}-sumo"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'deploymentconfig-sumo.yaml') }}"
+  when: values.site.create
 #- name: "Install {{ site_name }} worker persistent volume claims on OpenShift"
 #  k8s:
 #    state: "{{ 'present' if site.create else 'absent' }}"
