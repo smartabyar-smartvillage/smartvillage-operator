@@ -610,12 +610,18 @@ spec:
                     default: smartvillage-kafka-cluster-ca-cert
                     type: string
 
-              mqtt:
+              amq_broker:
                 type: object
                 properties:
+                  amqp_port:
+                    default: 1883
+                    type: number
+                  amqp_service_name:
+                    default: fiware-broker-mqtt-0-svc
+                    type: string
                   create:
                     default: true
-                    description: "Determines if a new MQTT AMQ Broker will be created. \n"
+                    description: "Determines if a new MQTT and AMQP AMQ Broker will be created. \n"
                     type: boolean
                   enabled:
                     default: true
@@ -623,10 +629,10 @@ spec:
                   iot_subscribe_topic:
                     default: iot-subscribe
                     type: string
-                  port:
+                  mqtt_port:
                     default: 1883
                     type: number
-                  service_name:
+                  mqtt_service_name:
                     default: fiware-broker-mqtt-0-svc
                     type: string
 

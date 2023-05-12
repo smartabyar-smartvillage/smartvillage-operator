@@ -278,11 +278,14 @@ spec:
           200Mi
         cpu: |-
           200m
-  mqtt:
+  amq_broker:
     create: True
     enabled: True
-    service_name: |-
+    mqtt_service_name: |-
       fiware-broker-mqtt-0-svc
-    port: 1883
+    mqtt_port: 1883
+    amqp_service_name: |-
+      fiware-broker-mqtt-0-svc
+    amqp_port: 1883
     iot_subscribe_topic: |-
       iot-subscribe
