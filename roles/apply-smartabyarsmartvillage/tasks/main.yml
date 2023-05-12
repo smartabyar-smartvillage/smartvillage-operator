@@ -52,6 +52,7 @@
     name: postgres
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'postgrescluster.yaml') }}"
+  when: values.postgres.create
 
 # Install Red Hat SSO
 - name: "Query SSO postgres secret"
@@ -138,7 +139,7 @@
 # Install AMQ Broker
 - name: "Install {{ site_name }} AMQ Broker on OpenShift"
   k8s:
-    state: "{{ 'present' if values.mqtt.create else 'absent' }}"
+    state: "{{ 'present' if values.amq_broker.create else 'absent' }}"
     api_version: broker.amq.io/v1beta1
     kind: ActiveMQArtemis
     name: fiware-broker
@@ -146,7 +147,7 @@
     definition: "{{ lookup('template', 'activemqartemis.yaml') }}"
 - name: "Install {{ site_name }} AMQ Broker Address on OpenShift"
   k8s:
-    state: "{{ 'present' if values.mqtt.create else 'absent' }}"
+    state: "{{ 'present' if values.amq_broker.create else 'absent' }}"
     api_version: broker.amq.io/v1beta1
     kind: ActiveMQArtemisAddress
     name: fiware-address

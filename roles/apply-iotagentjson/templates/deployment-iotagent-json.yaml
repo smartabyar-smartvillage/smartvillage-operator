@@ -65,9 +65,9 @@ spec:
             - name: IOTA_MQTT_DISABLED
               value: 'false'
             - name: IOTA_MQTT_HOST
-              value: '{{ values.mqtt.service_name }}'
+              value: '{{ values.amq_broker.mqtt_service_name }}'
             - name: IOTA_MQTT_PORT
-              value: '{{ values.mqtt.port }}'
+              value: '{{ values.amq_broker.mqtt_port }}'
             - name: IOTA_MQTT_REJECT_UNAUTHORIZED
               value: 'false'
             - name: IOTA_AMQP_DISABLED

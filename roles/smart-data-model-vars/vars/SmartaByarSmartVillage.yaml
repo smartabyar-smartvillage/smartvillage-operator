@@ -600,21 +600,27 @@ schema:
                 type: string
                 default: '200m'
 
-  mqtt:
+  amq_broker:
     type: object
     properties:
       create:
         type: boolean
         default: true
         description: |
-          Determines if a new MQTT AMQ Broker will be created. 
+          Determines if a new MQTT and AMQP AMQ Broker will be created. 
       enabled:
         type: boolean
         default: true
-      service_name:
+      mqtt_service_name:
         type: string
         default: fiware-broker-mqtt-0-svc
-      port:
+      mqtt_port:
+        type: number
+        default: 1883
+      amqp_service_name:
+        type: string
+        default: fiware-broker-mqtt-0-svc
+      amqp_port:
         type: number
         default: 1883
       iot_subscribe_topic:
