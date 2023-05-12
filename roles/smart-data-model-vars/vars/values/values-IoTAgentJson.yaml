@@ -1,8 +1,8 @@
 values:
 
-  mqtt:
-    service_name: "{{ crd.mqtt.service_name | default(schema | community.general.json_query('mqtt.properties.service_name.default')) }}"
-    port: "{{ crd.mqtt.port | default(schema | community.general.json_query('mqtt.properties.port.default')) }}"
+  amq_broker:
+    mqtt_service_name: "{{ crd.amq_broker.mqtt_service_name | default(schema | community.general.json_query('amq_broker.properties.mqtt_service_name.default')) }}"
+    mqtt_port: "{{ crd.amq_broker.mqtt_port | default(schema | community.general.json_query('amq_broker.properties.mqtt_port.default')) }}"
   orionld:
     service_name: "{{ crd.orionld.service_name | default(schema | community.general.json_query('orionld.properties.service_name.default')) }}"
     port: "{{ crd.orionld.port | default(schema | community.general.json_query('orionld.properties.port.default')) }}"

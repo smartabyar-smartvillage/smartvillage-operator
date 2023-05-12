@@ -37,13 +37,13 @@ spec:
             description: Spec defines the desired state of IoTAgentJson
             type: object
             properties:
-              mqtt:
+              amq_broker:
                 type: object
                 properties:
-                  port:
+                  mqtt_port:
                     default: 1883
                     type: number
-                  service_name:
+                  mqtt_service_name:
                     default: fiware-broker-mqtt-0-svc
                     type: string
 

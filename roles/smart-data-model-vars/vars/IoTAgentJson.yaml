@@ -4,13 +4,13 @@ description: |
   An Internet of Things Agent for a JSON based protocol (with AMQP, HTTP and MQTT transports). 
   This IoT Agent is designed to be a bridge between JSON and the NGSI interface of a context broker. 
 schema:
-  mqtt:
+  amq_broker:
     type: object
     properties:
-      service_name:
+      mqtt_service_name:
         type: string
         default: fiware-broker-mqtt-0-svc
-      port:
+      mqtt_port:
         type: number
         default: 1883
   orionld:
