@@ -44,6 +44,7 @@
     name: "{{ site_name }}-db-create"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'configmap-db-create.yaml') }}"
+  when: values.postgres.create
 - name: Install {{ site_name }} PostgreSQL cluster on OpenShift
   k8s:
     state: "{{ 'present' if values.postgres.create else 'absent' }}"
@@ -58,6 +59,7 @@
 - name: "Query SSO postgres secret"
   set_fact:
     sso_postgres_secret: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=(values.sso.postgres_secret_name | default(schema.sso.properties.postgres_secret_name.default, true)), namespace=ansible_operator_meta.namespace)[0].data }}"
+  when: values.sso.create
 - name: "Install keycloak-db-secret on OpenShift"
   k8s:
     state: "{{ 'present' if values.sso.create else 'absent' }}"
@@ -66,6 +68,7 @@
     name: keycloak-db-secret
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'keycloak-db-secret.yaml') }}"
+  when: values.sso.create
 - name: "Install {{ site_name }} Keycloak realm on OpenShift"
   k8s:
     state: "{{ 'present' if values.sso.create else 'absent' }}"
@@ -103,6 +106,7 @@
     name: smartvillage-kafka
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'kafka.yaml') }}"
+  when: values.kafka.create
 - name: "Install {{ site_name }} Kafka user on OpenShift"
   k8s:
     state: "{{ 'present' if values.kafka.create else 'absent' }}"
@@ -111,6 +115,7 @@
     name: smartvillage-kafka
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'kafkauser.yaml') }}"
+  when: values.kafka.create
 - name: "Install {{ site_name }} Kafka Topic smartvillage-sumo-run on OpenShift"
   k8s:
     state: "{{ 'present' if values.kafka.create else 'absent' }}"
@@ -119,6 +124,7 @@
     name: smartvillage-sumo-run
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'kafkatopic-smartvillage-sumo-run.yaml') }}"
+  when: values.kafka.create
 - name: "Install {{ site_name }} Kafka Topic smartvillage-sumo-run-report on OpenShift"
   k8s:
     state: "{{ 'present' if values.kafka.create else 'absent' }}"
@@ -127,6 +133,7 @@
     name: smartvillage-sumo-run-report
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'kafkatopic-smartvillage-sumo-run-report.yaml') }}"
+  when: values.kafka.create
 - name: "Install {{ site_name }} Kafka Topic smartvillage-sumo-stop on OpenShift"
   k8s:
     state: "{{ 'present' if values.kafka.create else 'absent' }}"
@@ -135,6 +142,7 @@
     name: smartvillage-sumo-stop
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'kafkatopic-smartvillage-sumo-stop.yaml') }}"
+  when: values.kafka.create
 
 # Install AMQ Broker
 - name: "Install {{ site_name }} AMQ Broker on OpenShift"
@@ -145,6 +153,7 @@
     name: fiware-broker
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'activemqartemis.yaml') }}"
+  when: values.amq_broker.create
 - name: "Install {{ site_name }} AMQ Broker Address on OpenShift"
   k8s:
     state: "{{ 'present' if values.amq_broker.create else 'absent' }}"
@@ -153,6 +162,7 @@
     name: fiware-address
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'activemqartemisaddress.yaml') }}"
+  when: values.amq_broker.create
 
 # Install Zookeeper
 - name: "Install Zookeeper image stream on OpenShift"
