@@ -165,15 +165,6 @@
   when: values.amq_broker.create
 
 # Install Zookeeper
-- name: "Install Zookeeper image stream on OpenShift"
-  k8s:
-    state: "{{ 'present' if values.zookeeper.create else 'absent' }}"
-    kind: ImageStream
-    api_version: image.openshift.io/v1
-    name: zookeeper
-    namespace: "{{ ansible_operator_meta.namespace }}"
-    definition: "{{ lookup('template', 'imagestream-zookeeper.yaml') }}"
-  when: values.zookeeper.create
 - name: "Install Zookeeper persistent volume claim on OpenShift"
   k8s:
     state: "{{ 'present' if values.zookeeper.create else 'absent' }}"
@@ -192,14 +183,14 @@
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'configmap-zookeeper.yaml') }}"
   when: values.zookeeper.create
-- name: "Install Zookeeper deployment config on OpenShift"
+- name: "Install Zookeeper deployment on OpenShift"
   k8s:
     state: "{{ 'present' if values.zookeeper.create else 'absent' }}"
     kind: ConfigMap
     api_version: v1
     name: zookeeper
     namespace: "{{ ansible_operator_meta.namespace }}"
-    definition: "{{ lookup('template', 'deploymentconfig-zookeeper.yaml') }}"
+    definition: "{{ lookup('template', 'deployment-zookeeper.yaml') }}"
   when: values.zookeeper.create
 - name: "Install Zookeeper service on OpenShift"
   k8s:
@@ -443,6 +434,7 @@
 #    state: "{{ 'present' if site.create else 'absent' }}"
 #    namespace: "{{ ansible_operator_meta.namespace }}"
 #    definition: "{{ lookup('template', 'secret.yaml') }}"
+<<<<<<< HEAD
 - name: "Install {{ site_name }} image stream on OpenShift"
   k8s:
     state: "{{ 'present' if values.site.create else 'absent' }}"
@@ -470,32 +462,32 @@
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'imagestream.yaml') }}"
   when: values.site.create
-- name: "Install {{ site_name }}-web deployment config on OpenShift"
+- name: "Install {{ site_name }}-web deployment on OpenShift"
   k8s:
     state: "{{ 'present' if values.site.create else 'absent' }}"
-    api_version: apps.openshift.io/v1
-    kind: DeploymentConfig
+    api_version: apps/v1
+    kind: Deployment
     name: "{{ site_name }}-web"
     namespace: "{{ ansible_operator_meta.namespace }}"
-    definition: "{{ lookup('template', 'deploymentconfig-web.yaml') }}"
+    definition: "{{ lookup('template', 'deployment-web.yaml') }}"
   when: values.site.create
-- name: "Install {{ site_name }}-worker deployment config on OpenShift"
+- name: "Install {{ site_name }}-worker deployment on OpenShift"
   k8s:
     state: "{{ 'present' if values.site.create else 'absent' }}"
-    api_version: apps.openshift.io/v1
-    kind: DeploymentConfig
+    api_version: apps/v1
+    kind: Deployment
     name: "{{ site_name }}-worker"
     namespace: "{{ ansible_operator_meta.namespace }}"
-    definition: "{{ lookup('template', 'deploymentconfig-worker.yaml') }}"
+    definition: "{{ lookup('template', 'deployment-worker.yaml') }}"
   when: values.site.create
-- name: "Install {{ site_name }}-sumo deployment config on OpenShift"
+- name: "Install {{ site_name }}-sumo deployment on OpenShift"
   k8s:
     state: "{{ 'present' if values.site.create else 'absent' }}"
-    api_version: apps.openshift.io/v1
-    kind: DeploymentConfig
+    api_version: apps/v1
+    kind: Deployment
     name: "{{ site_name }}-sumo"
     namespace: "{{ ansible_operator_meta.namespace }}"
-    definition: "{{ lookup('template', 'deploymentconfig-sumo.yaml') }}"
+    definition: "{{ lookup('template', 'deployment-sumo.yaml') }}"
   when: values.site.create
 #- name: "Install {{ site_name }} worker persistent volume claims on OpenShift"
 #  k8s:

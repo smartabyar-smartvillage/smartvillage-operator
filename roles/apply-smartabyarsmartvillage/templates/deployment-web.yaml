@@ -1,15 +1,14 @@
 spec:
   replicas: {{ values.site.web_replicas }}
   selector:
-    app: "smartabyar-smartvillage-web"
-    deploymentconfig: "{{ site_name }}-web"
+    matchLabels:
+      app: "smartabyar-smartvillage-web"
+      deploymentconfig: "{{ site_name }}-web"
   strategy:
-    activeDeadlineSeconds: 21600
-    resources: {}
-    type: Rolling
-    rollingParams:
-      maxUnavailable: 25%
+    rollingUpdate:
       maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -17,13 +16,14 @@ spec:
         deploymentconfig: "{{ site_name }}-web"
     spec:
       containers:
-        - imagePullPolicy: Always
+        - name: "{{ site_name }}"
+          imagePullPolicy: Always
+          image: 'quay.io/computateorg/smartabyar-smartvillage:latest'
           command:
             - /usr/lib/jvm/java-11-openjdk/bin/java
             - -cp
             - .:*
             - org.computate.smartvillageview.enus.vertx.MainVerticle
-          name: "{{ site_name }}"
           ports:
             - containerPort: 8080
               name: http
@@ -348,14 +348,3 @@ spec:
           secret:
             defaultMode: 420
             secretName: "{{ values.kafka.truststore_secret }}"
-  triggers:
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-          - {{ site_name }}
-        from:
-          kind: ImageStreamTag
-          name: '{{ site_name }}:latest'
-          namespace: "{{ ansible_operator_meta.namespace }}"
-      type: ImageChange
-    - type: ConfigChange
