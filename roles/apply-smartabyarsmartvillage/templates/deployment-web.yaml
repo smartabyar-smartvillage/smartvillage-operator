@@ -1,28 +1,29 @@
 spec:
-  replicas: 1
+  replicas: {{ values.site.web_replicas }}
   selector:
-    app: "smartabyar-smartvillage-web"
-    deploymentconfig: "{{ site_name }}-worker"
+    matchLabels:
+      app: "smartabyar-smartvillage-web"
+      deploymentconfig: "{{ site_name }}-web"
   strategy:
-    activeDeadlineSeconds: 21600
-    recreateParams:
-      timeoutSeconds: 600
-    resources: {}
-    type: Recreate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
       labels:
         app: "smartabyar-smartvillage-web"
-        deploymentconfig: "{{ site_name }}-worker"
+        deploymentconfig: "{{ site_name }}-web"
     spec:
       containers:
-        - imagePullPolicy: Always
+        - name: "{{ site_name }}"
+          imagePullPolicy: Always
+          image: 'quay.io/computateorg/smartabyar-smartvillage:latest'
           command:
             - /usr/lib/jvm/java-11-openjdk/bin/java
             - -cp
             - .:*
             - org.computate.smartvillageview.enus.vertx.MainVerticle
-          name: "{{ site_name }}"
           ports:
             - containerPort: 8080
               name: http
@@ -64,11 +65,11 @@ spec:
             failureThreshold: 20
           resources:
             limits:
-              memory: '{{ values.site.worker_resources.limits.memory }}'
-              cpu: '{{ values.site.worker_resources.limits.cpu }}'
+              memory: '{{ values.site.web_resources.limits.memory }}'
+              cpu: '{{ values.site.web_resources.limits.cpu }}'
             requests:
-              memory: '{{ values.site.worker_resources.limits.memory }}'
-              cpu: '{{ values.site.worker_resources.limits.cpu }}'
+              memory: '{{ values.site.web_resources.limits.memory }}'
+              cpu: '{{ values.site.web_resources.limits.cpu }}'
           env:
 
             - name: JAVA_HOME
@@ -88,13 +89,13 @@ spec:
             - name: SITE_LOCALE
               value: "{{ values.site.locale }}"
             - name: SITE_INSTANCES
-              value: "1"
+              value: "{{ values.site.instances }}"
             - name: OPENSHIFT_SERVICE
               value: "{{ site_name }}"
             - name: CLUSTER_PORT
               value: "8081"
             - name: WORKER_POOL_SIZE
-              value: "1"
+              value: "{{ values.site.worker_pool_size }}"
             - name: DYNAMIC_PAGE_PATHS
               value: '["/usr/local/src/smartabyar-smartvillage/page"]'
             - name: VERTX_WARNING_EXCEPTION_SECONDS
@@ -218,25 +219,9 @@ spec:
                   key: EMAIL_USERNAME
                   name: "{{ values.email.secret_name }}"
 {% endif %}
-            - name: ENABLE_IMPORT_DATA
-              value: "{{ values.import_data.enabled }}"
-            - name: ENABLE_IMPORT_DATA_SitePage
-              value: '{{ values.import_data.sitepage.enabled }}'
-            - name: ENABLE_IMPORT_DATA_SiteHtm
-              value: '{{ values.import_data.sitehtm.enabled }}'
-            - name: ENABLE_IMPORT_DATA_IotNode
-              value: '{{ values.import_data.iotnode.enabled }}'
-            - name: ENABLE_IMPORT_DATA_VehicleStep
-              value: '{{ values.import_data.vehiclestep.enabled }}'
-            - name: ENABLE_IMPORT_DATA_TimeStep
-              value: '{{ values.import_data.timestep.enabled }}'
-            - name: ENABLE_IMPORT_DATA_TrafficSimulation
-              value: '{{ values.import_data.trafficsimulation.enabled }}'
 
-            - name: IMPORT_DATA_PERIOD_SitePage
-              value: '{{ values.import_data.sitepage.period }}'
-            - name: IMPORT_DATA_START_TIME_SitePage
-              value: '{{ values.import_data.sitepage.start_time }}'
+            - name: ENABLE_IMPORT_DATA
+              value: "false"
 
             - name: AUTH_ROLE_ADMIN
               value: '{{ values.auth_role.admin }}'
@@ -262,8 +247,6 @@ spec:
               value: '{{ values.auth_role.timestep }}'
             - name: AUTH_ROLE_REQUIRED_TrafficSimulation
               value: '{{ values.auth_role.trafficsimulation }}'
-            - name: AUTH_ROLE_REQUIRED_SimulationReport
-              value: '{{ values.auth_role.simulationreport }}'
             - name: AUTH_ROLE_REQUIRED_TrafficFlowObserved
               value: '{{ values.auth_role.trafficflowobserved }}'
             - name: AUTH_ROLE_REQUIRED_TrafficLight
@@ -365,14 +348,3 @@ spec:
           secret:
             defaultMode: 420
             secretName: "{{ values.kafka.truststore_secret }}"
-  triggers:
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-          - {{ site_name }}
-        from:
-          kind: ImageStreamTag
-          name: '{{ site_name }}:latest'
-          namespace: "{{ ansible_operator_meta.namespace }}"
-      type: ImageChange
-    - type: ConfigChange

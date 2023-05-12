@@ -1,15 +1,14 @@
 spec:
   replicas: {{ values.site.web_replicas }}
   selector:
-    app: "{{ site_name }}-sumo"
-    deploymentconfig: "{{ site_name }}-sumo"
+    matchLabels:
+      app: "{{ site_name }}-sumo"
+      deploymentconfig: "{{ site_name }}-sumo"
   strategy:
-    activeDeadlineSeconds: 21600
-    resources: {}
-    type: Rolling
-    rollingParams:
-      maxUnavailable: 25%
+    rollingUpdate:
       maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -17,8 +16,9 @@ spec:
         deploymentconfig: "{{ site_name }}-sumo"
     spec:
       containers:
-        - imagePullPolicy: Always
-          name: smartvillage-traffic-light-controller-sumo
+        - name: smartvillage-traffic-light-controller-sumo
+          imagePullPolicy: IfNotPresent
+          image: 'quay.io/computateorg/smartvillage-traffic-light-controller-sumo:computate-api'
           ports:
             - containerPort: 8081
               name: http
@@ -88,14 +88,3 @@ spec:
           secret:
             defaultMode: 420
             secretName: "{{ values.kafka.truststore_secret }}"
-  triggers:
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-          - smartvillage-traffic-light-controller-sumo
-        from:
-          kind: ImageStreamTag
-          name: '{{ site_name }}-sumo:latest'
-          namespace: "{{ ansible_operator_meta.namespace }}"
-      type: ImageChange
-    - type: ConfigChange
