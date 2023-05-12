@@ -258,6 +258,7 @@
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'route-solr.yaml') }}"
   when: values.solr.create
+  ignore_errors: true
 
 - name: "Query prerequisite host names"
   set_fact:
@@ -434,7 +435,6 @@
 #    state: "{{ 'present' if site.create else 'absent' }}"
 #    namespace: "{{ ansible_operator_meta.namespace }}"
 #    definition: "{{ lookup('template', 'secret.yaml') }}"
-<<<<<<< HEAD
 - name: "Install {{ site_name }} image stream on OpenShift"
   k8s:
     state: "{{ 'present' if values.site.create else 'absent' }}"

@@ -130,3 +130,4 @@
     name: orion-ld
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'route-orion-ld.yaml') }}"
+  ignore_errors: true

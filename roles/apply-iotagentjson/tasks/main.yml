@@ -57,3 +57,5 @@
     name: iotagent-json
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'route-iotagent-json.yaml') }}"
+  ignore_errors: true
+
