@@ -65,6 +65,7 @@
     release_namespace: "{{ ansible_operator_meta.namespace }}"
     release_state: present
   changed_when: false
+  ignore_errors: true
 
 - name: "Query MongoDB pod"
   set_fact:

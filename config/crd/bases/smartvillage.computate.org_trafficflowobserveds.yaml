@@ -88,6 +88,9 @@ spec:
                   mqtt_subscription_topic:
                     default: iot/subscribe
                     type: string
+                  subscription_url:
+                    default: http://orionld-smartvillage-sync:8080
+                    type: string
                   transport:
                     default: MQTT
                     type: string

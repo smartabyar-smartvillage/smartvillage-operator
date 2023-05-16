@@ -20,6 +20,7 @@ schema:
         default: orion-ld
       base_url:
         type: string
+        default: http://orion-ld-smartvillage.apps-crc.testing
   fiware:
     type: object
     properties:
@@ -56,6 +57,9 @@ schema:
       mqtt_subscription_topic:
         type: string
         default: iot/subscribe
+      subscription_url:
+        type: string
+        default: "http://orionld-smartvillage-sync:8080"
   smartabyar_smartvillage:
     type: object
     properties:

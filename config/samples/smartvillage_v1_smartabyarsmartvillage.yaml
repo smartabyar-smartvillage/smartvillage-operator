@@ -285,7 +285,7 @@ spec:
       fiware-broker-mqtt-0-svc
     mqtt_port: 1883
     amqp_service_name: |-
-      fiware-broker-mqtt-0-svc
-    amqp_port: 1883
+      fiware-broker-amqp-0-svc
+    amqp_port: 5672
     iot_subscribe_topic: |-
       iot-subscribe

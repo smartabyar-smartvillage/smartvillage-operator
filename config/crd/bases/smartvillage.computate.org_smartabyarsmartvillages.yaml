@@ -614,10 +614,10 @@ spec:
                 type: object
                 properties:
                   amqp_port:
-                    default: 1883
+                    default: 5672
                     type: number
                   amqp_service_name:
-                    default: fiware-broker-mqtt-0-svc
+                    default: fiware-broker-amqp-0-svc
                     type: string
                   create:
                     default: true

@@ -1,13 +1,38 @@
 ---
 
-- debug:
-    msg: "{{ lookup('template', 'TrafficFlowObserved1.json') }}"
+- name: "Query {{ ENTITY_TYPE }}"
+  set_fact:
+    crd: "{{ query('kubernetes.core.k8s', kind=ENTITY_TYPE, resource_name=ansible_operator_meta.name, namespace=ansible_operator_meta.namespace)[0].spec }}"
+  ignore_errors: true
+- name: "Verify {{ ENTITY_TYPE }} exists"
+  fail:
+    msg: |-
+      You need to deploy a {{ ENTITY_TYPE }} to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_smartabyarsmartvillage.yaml
+  when: crd is not defined
+
 - name: Publish message on MQTT topic to {{ DEVICE1_BODY.device_id }} device
   community.general.mqtt:
-    server: fiware-broker-mqtt-0-svc-rte-fiware.apps-crc.testing
-    port: 80
+    server: fiware-broker-mqtt-nodeport.apps-crc.testing
+    port: 30083
     topic: "/{{ SERVICE1_BODY.apikey }}/{{ DEVICE1_BODY.device_id }}/attrs"
 #    payload: "{{ lookup('template', 'TrafficFlowObserved1.json') | from_json | combine({ 'id': omit }) | combine({ 'type': omit }) | to_json }}"
-    payload: '{"intensity":222}'
+    payload: '{"intensity":"228"}'
     qos: 0
+- name: "Query the context broker"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ values.context_broker.base_url }}/v2/entities"
+    method: GET
+    headers:
+      Fiware-Service: "{{ values.fiware.service }}"
+      Fiware-ServicePath: "{{ values.fiware.service_path }}"
+      Cache-Control: no-cache
+    return_content: true
+    validate_certs: false
+    status_code: 
+      - 200
+  register: CB_ENTITY_AFTER
+- debug:
+    var: CB_ENTITY_AFTER
 

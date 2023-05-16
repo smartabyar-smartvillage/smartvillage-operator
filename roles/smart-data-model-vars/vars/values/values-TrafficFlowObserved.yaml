@@ -30,6 +30,7 @@ values:
     mqtt_host: "{{ crd.device.mqtt_host | default(schema | community.general.json_query('device.properties.mqtt_host.default')) }}"
     mqtt_port: "{{ crd.device.mqtt_port | default(schema | community.general.json_query('device.properties.mqtt_port.default')) }}"
     mqtt_subscription_topic: "{{ crd.device.mqtt_subscription_topic | default(schema | community.general.json_query('device.properties.mqtt_subscription_topic.default')) }}"
+    subscription_url: "{{ crd.device.subscription_url | default(schema | community.general.json_query('device.properties.subscription_url.default')) }}"
   smartabyar_smartvillage:
     enabled: "{{ crd.smartabyar_smartvillage.enabled | default(schema | community.general.json_query('smartabyar_smartvillage.properties.enabled.default')) }}"
     auth_secret_name: "{{ crd.smartabyar_smartvillage.auth_secret_name | default(schema | community.general.json_query('smartabyar_smartvillage.properties.auth_secret_name.default')) }}"

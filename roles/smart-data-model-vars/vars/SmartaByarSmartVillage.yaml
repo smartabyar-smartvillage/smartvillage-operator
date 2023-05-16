@@ -619,10 +619,10 @@ schema:
         default: 1883
       amqp_service_name:
         type: string
-        default: fiware-broker-mqtt-0-svc
+        default: fiware-broker-amqp-0-svc
       amqp_port:
         type: number
-        default: 1883
+        default: 5672
       iot_subscribe_topic:
         type: string
         default: iot-subscribe

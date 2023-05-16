@@ -3,8 +3,6 @@
   set_fact:
     CLIENT_ID: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.smartabyar_smartvillage.auth_secret_name, namespace=ansible_operator_meta.namespace, validate_certs=false)[0].data.CLIENT_ID | b64decode }}"
     CLIENT_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.smartabyar_smartvillage.auth_secret_name, namespace=ansible_operator_meta.namespace, validate_certs=false)[0].data.CLIENT_SECRET | b64decode }}"
-- debug:
-    var: CLIENT_SECRET
 - name: "Get the entity from the context broker"
   connection: local
   uri:

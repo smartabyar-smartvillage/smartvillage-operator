@@ -421,6 +421,15 @@
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'route-web.yaml') }}"
   when: values.site.create
+- name: "Install {{ site_name }}-orionld-sync service on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.site.create else 'absent' }}"
+    api_version: v1
+    kind: Service
+    name: "orionld-smartvillage-sync"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'service-orionld-sync.yaml') }}"
+  when: values.site.create
 
 - name: "Query site host name"
   set_fact:
@@ -435,33 +444,6 @@
 #    state: "{{ 'present' if site.create else 'absent' }}"
 #    namespace: "{{ ansible_operator_meta.namespace }}"
 #    definition: "{{ lookup('template', 'secret.yaml') }}"
-- name: "Install {{ site_name }} image stream on OpenShift"
-  k8s:
-    state: "{{ 'present' if values.site.create else 'absent' }}"
-    api_version: image.openshift.io/v1
-    kind: ImageStream
-    name: "{{ site_name }}"
-    namespace: "{{ ansible_operator_meta.namespace }}"
-    definition: "{{ lookup('template', 'imagestream.yaml') }}"
-  when: values.site.create
-- name: "Install {{ site_name }}-sumo image stream on OpenShift"
-  k8s:
-    state: "{{ 'present' if values.site.create else 'absent' }}"
-    api_version: image.openshift.io/v1
-    kind: ImageStream
-    name: "{{ site_name }}-sumo"
-    namespace: "{{ ansible_operator_meta.namespace }}"
-    definition: "{{ lookup('template', 'imagestream-sumo.yaml') }}"
-  when: values.site.create
-- name: "Install {{ site_name }} image stream on OpenShift"
-  k8s:
-    state: "{{ 'present' if values.site.create else 'absent' }}"
-    api_version: image.openshift.io/v1
-    kind: ImageStream
-    name: "{{ site_name }}"
-    namespace: "{{ ansible_operator_meta.namespace }}"
-    definition: "{{ lookup('template', 'imagestream.yaml') }}"
-  when: values.site.create
 - name: "Install {{ site_name }}-web deployment on OpenShift"
   k8s:
     state: "{{ 'present' if values.site.create else 'absent' }}"
@@ -488,6 +470,15 @@
     name: "{{ site_name }}-sumo"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'deployment-sumo.yaml') }}"
+  when: values.site.create
+- name: "Install {{ site_name }}-orionld-sync deployment on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.site.create else 'absent' }}"
+    api_version: apps/v1
+    kind: Deployment
+    name: "orionld-smartvillage-sync"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'deployment-orionld-sync.yaml') }}"
   when: values.site.create
 #- name: "Install {{ site_name }} worker persistent volume claims on OpenShift"
 #  k8s:

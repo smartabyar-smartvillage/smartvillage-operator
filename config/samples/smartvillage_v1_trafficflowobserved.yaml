@@ -49,6 +49,8 @@ spec:
     mqtt_port: 1883
     mqtt_subscription_topic: |-
       iot/subscribe
+    subscription_url: |-
+      http://orionld-smartvillage-sync:8080
   smartabyar_smartvillage:
     enabled: True
     auth_secret_name: |-

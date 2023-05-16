@@ -1,6 +1,7 @@
 ---
+ENTITY_TYPE: TrafficFlowObserved
 SERVICE1_BODY:
-  apikey: apikeyTrafficFlowObserved
+  apikey: VeberodIntersection1
   cbHost: http://orion-ld-fiware.apps-crc.testing
   entity_type: TrafficFlowObserved
   resource: /iot/TrafficFlowObserved
@@ -9,7 +10,7 @@ SERVICE1_BODY:
       name: intensity
       type: integer
 DEVICE1_BODY:
-  device_id: ansible_test1
+  device_id: Sjobovagen-SE
   entity_name: TrafficFlowObserved
   entity_type: TrafficFlowObserved
   attributes:
