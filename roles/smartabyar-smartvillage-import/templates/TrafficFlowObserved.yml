@@ -1,2 +1,5 @@
 list:
-  {{ [ CONTEXT_BROKER_ENTITY.json ] | to_yaml }}
+  - id: "{{ CONTEXT_BROKER_ENTITY.id }}"
+    inheritPk: "{{ CONTEXT_BROKER_ENTITY.id }}"
+    type: "{{ CONTEXT_BROKER_ENTITY.type }}"
+    saves: [ "id", "inheritPk", "type" ]

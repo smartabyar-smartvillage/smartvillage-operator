@@ -58,7 +58,14 @@ spec:
               value: "{{ values.auth.port }}"
             - name: AUTH_SSL
               value: "{{ values.auth.ssl }}"
-            - name: AUTH_URL
-              value: "https://{{ values.auth.host_name | default(values.sso.host_name) }}/auth"
             - name: AUTH_TOKEN_URI
               value: "{{ values.auth.token_uri }}"
+
+            - name: SSL_VERIFY
+              value: "false"
+            - name: SMARTVILLAGE_HOST_NAME
+              value: "{{ site_host_name }}"
+            - name: SMARTVILLAGE_PORT
+              value: "443"
+            - name: SMARTVILLAGE_SSL
+              value: "true"

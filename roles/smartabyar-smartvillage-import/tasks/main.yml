@@ -16,7 +16,12 @@
     status_code: 
       - 200
       - 201
-  register: CONTEXT_BROKER_ENTITY
+  register: CONTEXT_BROKER_ENTITIES
+- name: Set CONTEXT_BROKER_ENTITY
+  set_fact:
+    CONTEXT_BROKER_ENTITY: "{{ CONTEXT_BROKER_ENTITIES.json }}"
+- debug:
+    var: CONTEXT_BROKER_ENTITY
 - name: Get site access token
   connection: local
   uri:
@@ -38,7 +43,7 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ values.smartabyar_smartvillage.site_base_url }}{{ values.smartabyar_smartvillage.smart_model_api }}"
+    url: "{{ values.smartabyar_smartvillage.site_base_url }}{{ values.smartabyar_smartvillage.smart_model_api }}?softCommit=true"
     method: PUT
     headers:
       Content-Type: "application/json"

@@ -1,4 +1,26 @@
 ---
+- name: "Get the {{ ENTITY_NAME }} subscription"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ values.context_broker.base_url }}/v2/subscriptions"
+    method: GET
+    headers:
+      Fiware-Service: "{{ values.fiware.service | lower }}"
+      Fiware-ServicePath: "{{ values.fiware.service_path }}"
+    validate_certs: false
+    status_code: 
+      - 200
+      - 201
+  register: GET_SUBSCRIPTION
+  ignore_errors: true
+- name: "Get subscription {{ ENTITY_NAME }}"
+  set_fact:
+    SUBSCRIPTION: "{{ GET_SUBSCRIPTION.json | json_query(QUERY) | first | default('') }}"
+  vars: 
+    QUERY: "[?(subject.entities[?id=='{{ ENTITY_NAME }}'])]"
+- debug:
+    var: SUBSCRIPTION
 - name: "Provision the {{ ENTITY_NAME }} subscription"
   connection: local
   uri:
@@ -18,31 +40,7 @@
       - 201
   register: CREATE_SUBSCRIPTION
   ignore_errors: true
-- debug:
-    var: CREATE_SUBSCRIPTION
-- name: "Update the {{ values.subscription.apikey }} subscription"
-  connection: local
-  uri:
-    timeout: 90
-    url: "{{ values.iotagent.base_url }}/v2/subscriptions/{{ ENTITY_NAME | urlencode }}"
-    method: PATCH
-    headers:
-      Content-Type: "application/json"
-      Fiware-Service: "{{ values.fiware.service }}"
-      Fiware-ServicePath: "{{ values.fiware.service_path }}"
-      Cache-Control: no-cache
-    body_format: json
-    body: "{{ SUBSCRIPTION_BODY }}"
-    return_content: true
-    validate_certs: false
-    status_code: 
-      - 204
-  register: UPDATE_SUBSCRIPTION
-  ignore_errors: true
-  when: CREATE_SUBSCRIPTION.failed
-- debug:
-    msg: "{{ UPDATE_SUBSCRIPTION }}"
-  when: CREATE_SUBSCRIPTION.failed
+  when: SUBSCRIPTION is not defined or SUBSCRIPTION == ''
 - fail:
-    msg: "{{ UPDATE_SUBSCRIPTION }}"
-  when: CREATE_SUBSCRIPTION.failed and UPDATE_SUBSCRIPTION.failed
+    msg: "Failed to create subscription"
+  when: CREATE_SUBSCRIPTION is defined and CREATE_SUBSCRIPTION.failed is defined and CREATE_SUBSCRIPTION.failed

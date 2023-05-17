@@ -16,7 +16,7 @@
     port: 30083
     topic: "/{{ SERVICE1_BODY.apikey }}/{{ DEVICE1_BODY.device_id }}/attrs"
 #    payload: "{{ lookup('template', 'TrafficFlowObserved1.json') | from_json | combine({ 'id': omit }) | combine({ 'type': omit }) | to_json }}"
-    payload: '{"intensity":"228"}'
+    payload: '{"intensity":"232"}'
     qos: 0
 - name: "Query the context broker"
   connection: local
