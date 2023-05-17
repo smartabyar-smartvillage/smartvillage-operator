@@ -29,6 +29,8 @@ spec:
   context_broker:
     service_name: |-
       orion-ld
+    base_url: |-
+      http://orion-ld-smartvillage.apps-crc.testing
   fiware:
     service: |-
       smarttrafficlights

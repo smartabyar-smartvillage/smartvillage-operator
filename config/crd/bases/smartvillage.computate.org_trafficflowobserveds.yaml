@@ -48,6 +48,7 @@ spec:
                 type: object
                 properties:
                   base_url:
+                    default: http://orion-ld-smartvillage.apps-crc.testing
                     type: string
                   service_name:
                     default: orion-ld
