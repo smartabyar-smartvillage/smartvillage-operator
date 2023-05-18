@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - strimzi-cluster-operator/
+  - strimzi-cluster-operator-leader-election/
+  - strimzi-cluster-operator-watched/
+  - strimzi-cluster-operator-entity-operator-delegation/
+  - strimzi-cluster-operator-kafka-broker-delegation/
+  - strimzi-cluster-operator-kafka-client-delegation/
