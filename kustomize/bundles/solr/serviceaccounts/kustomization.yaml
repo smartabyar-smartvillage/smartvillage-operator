@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - solr/
+  - zookeeper-operator/
+  - solr-operator-zookeeper-operator-post-install-upgrade/
+  - solr-operator-zookeeper-operator-pre-delete/

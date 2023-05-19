@@ -2,15 +2,23 @@
 
 - name: "Query {{ ENTITY_TYPE }}"
   set_fact:
+    crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
+  ignore_errors: true
+  when: crd_path is defined
+- name: "Query {{ ENTITY_TYPE }}"
+  set_fact:
     crd: "{{ query('kubernetes.core.k8s', kind=ENTITY_TYPE, resource_name=ansible_operator_meta.name, namespace=ansible_operator_meta.namespace)[0].spec }}"
   ignore_errors: true
+  when: crd_path is not defined
 - name: "Verify {{ ENTITY_TYPE }} exists"
   fail:
     msg: |-
       You need to deploy a {{ ENTITY_TYPE }} to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_smartabyarsmartvillage.yaml
   when: crd is not defined
+- debug:
+    var: crd
 
-- name: "Install postgres-nodeport NodePort service on OpenShift"
+- name: "{{ 'Install' if values.site.enable_dev_nodeports else 'Skip' }} postgres-nodeport NodePort service on OpenShift"
   k8s:
     state: "{{ 'present' if values.site.enable_dev_nodeports and values.postgres.create else 'absent' }}"
     api_version: v1
@@ -18,7 +26,7 @@
     name: "postgres-nodeport"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'service-postgres-nodeport.yaml') }}"
-- name: "Install zookeeper-nodeport NodePort service on OpenShift"
+- name: "{{ 'Install' if values.site.enable_dev_nodeports else 'Skip' }} zookeeper-nodeport NodePort service on OpenShift"
   k8s:
     state: "{{ 'present' if values.site.enable_dev_nodeports and values.postgres.create else 'absent' }}"
     api_version: v1
@@ -26,7 +34,7 @@
     name: "zookeeper-nodeport"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'service-zookeeper-nodeport.yaml') }}"
-- name: "Install fiware-broker-mqtt-nodeport NodePort service on OpenShift"
+- name: "{{ 'Install' if values.site.enable_dev_nodeports else 'Skip' }} fiware-broker-mqtt-nodeport NodePort service on OpenShift"
   k8s:
     state: "{{ 'present' if values.site.enable_dev_nodeports and values.postgres.create else 'absent' }}"
     api_version: v1
@@ -186,8 +194,8 @@
 - name: "Install Zookeeper deployment on OpenShift"
   k8s:
     state: "{{ 'present' if values.zookeeper.create else 'absent' }}"
-    kind: ConfigMap
-    api_version: v1
+    kind: Deployment
+    api_version: apps/v1
     name: zookeeper
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'deployment-zookeeper.yaml') }}"
@@ -209,6 +217,7 @@
 #    name: solr
 #    repo_url: https://solr.apache.org/charts
 #  changed_when: false
+#  when: values.solr.create
 #- name: Install Solr helm chart
 #  kubernetes.core.helm:
 #    name: solr-operator
@@ -220,8 +229,10 @@
 #      - value: podOptions.serviceAccountName=solr
 #    release_namespace: "{{ ansible_operator_meta.namespace }}"
 #    release_state: present
+#    skip_crds: true
 #  changed_when: false
 #  ignore_errors: true
+#  when: values.solr.create
 
 - name: "Install Solr configmap-computate-configset configmap on OpenShift"
   k8s:

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: solr-operator-zookeeper-operator-post-install-upgrade
+  annotations:
+      "helm.sh/hook": post-install, post-upgrade
+      "helm.sh/hook-weight": "1"
+      "helm.sh/hook-delete-policy": hook-succeeded, before-hook-creation, hook-failed
+data:
+  validations.sh: |
+    #!/bin/sh
+    set -e
+    sleep 30
+
+    if [ -z "$(kubectl api-resources | grep ZookeeperCluster)" ]; then
+        exit 1
+    fi
