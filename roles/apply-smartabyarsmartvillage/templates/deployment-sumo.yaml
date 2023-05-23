@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: smartvillage-traffic-light-controller-sumo
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           image: 'quay.io/computateorg/smartvillage-traffic-light-controller-sumo:computate-api'
           ports:
             - containerPort: 8081

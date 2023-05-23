@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: "{{ site_name }}"
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           image: 'quay.io/computateorg/smartabyar-smartvillage:latest'
           command:
             - /usr/lib/jvm/java-11-openjdk/bin/java

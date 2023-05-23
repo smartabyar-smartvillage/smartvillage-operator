@@ -30,7 +30,7 @@ spec:
             defaultMode: 440
       containers:
         - name: zookeeper
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           image: 'docker.io/zookeeper:3.6.1'
           resources:
             limits:
