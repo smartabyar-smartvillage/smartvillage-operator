@@ -182,8 +182,8 @@
 - name: "Remove {{ site_name }} deployment config on OpenShift"
   k8s:
     state: absent
-    api_version: apps.openshift.io/v1
-    kind: DeploymentConfig
+    api_version: apps/v1
+    kind: Deployment
     name: "{{ site_name }}-web"
     namespace: "{{ ansible_operator_meta.namespace }}"
   ignore_errors: true

@@ -629,6 +629,15 @@ spec:
                     default: fiware-broker-mqtt-0-svc
                     type: string
 
+              orionld:
+                type: object
+                properties:
+                  sync:
+                    default: true
+                    description: "Determines if the orionld-smartvillage-sync application will be created.\
+                      \ \n"
+                    type: boolean
+
           status:
             description: Status defines the observed state of SmartaByarSmartVillage
             type: object

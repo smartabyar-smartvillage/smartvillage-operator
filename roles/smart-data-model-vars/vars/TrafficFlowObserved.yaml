@@ -50,7 +50,7 @@ schema:
         default: 'Sjobovagen-SE'
       mqtt_host:
         type: string
-        default: fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
+        default: fiware-broker-mqtt-0-svc
       mqtt_port:
         type: number
         default: 1883

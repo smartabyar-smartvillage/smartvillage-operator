@@ -287,3 +287,5 @@ spec:
     amqp_port: 5672
     iot_subscribe_topic: |-
       iot-subscribe
+  orionld:
+    sync: True

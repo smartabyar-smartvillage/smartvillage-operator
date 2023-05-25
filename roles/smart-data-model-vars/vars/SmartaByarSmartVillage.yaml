@@ -618,3 +618,12 @@ schema:
       iot_subscribe_topic:
         type: string
         default: iot-subscribe
+
+  orionld:
+    type: object
+    properties:
+      sync:
+        type: boolean
+        default: true
+        description: |
+          Determines if the orionld-smartvillage-sync application will be created. 

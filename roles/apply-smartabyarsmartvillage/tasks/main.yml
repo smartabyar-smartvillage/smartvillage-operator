@@ -398,13 +398,13 @@
   when: values.site.create
 - name: "Install {{ site_name }}-orionld-sync service on OpenShift"
   k8s:
-    state: "{{ 'present' if values.site.create else 'absent' }}"
+    state: "{{ 'present' if values.orionld.sync else 'absent' }}"
     api_version: v1
     kind: Service
     name: "orionld-smartvillage-sync"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'service-orionld-sync.yaml') }}"
-  when: values.site.create
+  when: values.orionld.sync
 
 - name: "Query site host name"
   set_fact:
@@ -448,13 +448,13 @@
   when: values.site.create
 - name: "Install {{ site_name }}-orionld-sync deployment on OpenShift"
   k8s:
-    state: "{{ 'present' if values.site.create else 'absent' }}"
+    state: "{{ 'present' if values.orionld.sync else 'absent' }}"
     api_version: apps/v1
     kind: Deployment
     name: "orionld-smartvillage-sync"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'deployment-orionld-sync.yaml') }}"
-  when: values.site.create
+  when: values.orionld.sync
 #- name: "Install {{ site_name }} worker persistent volume claims on OpenShift"
 #  k8s:
 #    state: "{{ 'present' if site.create else 'absent' }}"
