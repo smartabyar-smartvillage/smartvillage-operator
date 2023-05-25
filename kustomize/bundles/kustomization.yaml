@@ -4,3 +4,4 @@ resources:
   - amq-broker/
   - amq-streams/
   - postgres/
+  - solr/
