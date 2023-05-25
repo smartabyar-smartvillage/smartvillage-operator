@@ -240,4 +240,21 @@ rules:
       - patch
       - update
       - watch
+  ##
+  ## Rules for smartvillage.computate.org/v1, Kind: EdgeAmqBroker
+  ##
+  - apiGroups:
+      - smartvillage.computate.org
+    resources:
+      - edgeamqbrokers
+      - edgeamqbrokers/status
+      - edgeamqbrokers/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
 #+kubebuilder:scaffold:rules

@@ -7,4 +7,5 @@ resources:
 - bases/smartvillage.computate.org_smartabyarsmartvillages.yaml
 - bases/smartvillage.computate.org_orionldcontextbrokers.yaml
 - bases/smartvillage.computate.org_iotagentjsons.yaml
+- bases/smartvillage.computate.org_edgeamqbrokers.yaml
 #+kubebuilder:scaffold:crdkustomizeresource

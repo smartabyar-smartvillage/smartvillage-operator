@@ -31,4 +31,8 @@
   kind: IoTAgentJson
   role: iotagentjson
   watchDependentResources: false
+- version: v1
+  group: smartvillage.computate.org
+  kind: EdgeAmqBroker
+  role: edgeamqbroker
 #+kubebuilder:scaffold:watch

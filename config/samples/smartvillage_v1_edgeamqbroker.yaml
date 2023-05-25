@@ -1,0 +1,12 @@
+apiVersion: smartvillage.computate.org/v1
+kind: EdgeAmqBroker
+metadata:
+  labels:
+    app.kubernetes.io/name: edgeamqbroker
+    app.kubernetes.io/instance: edgeamqbroker-sample
+    app.kubernetes.io/part-of: smartvillage-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: smartvillage-operator
+  name: edgeamqbroker-sample
+spec:
+  # TODO(user): Add fields here

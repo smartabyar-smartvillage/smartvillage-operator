@@ -5,4 +5,5 @@ resources:
 - smartvillage_v1_smartabyarsmartvillage.yaml
 - smartvillage_v1_orionldcontextbroker.yaml
 - smartvillage_v1_iotagentjson.yaml
+- smartvillage_v1_edgeamqbroker.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples

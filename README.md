@@ -61,6 +61,13 @@ operator-sdk create api --group smartvillage --version v1 --kind IoTAgentJson --
 ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=IoTAgentJson
 ```
 
+## Initialize EdgeAmqBroker model
+
+```bash
+operator-sdk create api --group smartvillage --version v1 --kind EdgeAmqBroker --generate-role
+ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=EdgeAmqBroker
+```
+
 ## Initialize SmartaByarSmartVillage model
 
 ```bash
