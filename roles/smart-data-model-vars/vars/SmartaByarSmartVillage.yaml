@@ -627,3 +627,8 @@ schema:
         default: true
         description: |
           Determines if the orionld-smartvillage-sync application will be created. 
+      sync_replicas:
+        type: number
+        default: 1
+        minimum: 0
+        maximum: 1

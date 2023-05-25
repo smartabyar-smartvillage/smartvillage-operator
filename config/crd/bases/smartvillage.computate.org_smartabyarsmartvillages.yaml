@@ -637,6 +637,11 @@ spec:
                     description: "Determines if the orionld-smartvillage-sync application will be created.\
                       \ \n"
                     type: boolean
+                  sync_replicas:
+                    default: 1
+                    maximum: 1
+                    minimum: 0
+                    type: number
 
           status:
             description: Status defines the observed state of SmartaByarSmartVillage

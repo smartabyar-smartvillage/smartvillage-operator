@@ -186,3 +186,4 @@ values:
     iot_subscribe_topic: "{{ crd.amq_broker.iot_subscribe_topic | default(schema | community.general.json_query('amq_broker.properties.iot_subscribe_topic.default')) }}"
   orionld:
     sync: "{{ crd.orionld.sync | default(schema | community.general.json_query('orionld.properties.sync.default')) }}"
+    sync_replicas: "{{ crd.orionld.sync_replicas | default(schema | community.general.json_query('orionld.properties.sync_replicas.default')) }}"

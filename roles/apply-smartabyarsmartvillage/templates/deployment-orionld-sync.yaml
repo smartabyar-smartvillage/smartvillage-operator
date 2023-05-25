@@ -1,5 +1,5 @@
 spec:
-  replicas: {{ values.site.web_replicas }}
+  replicas: {{ values.orionld.sync_replicas }}
   selector:
     matchLabels:
       app: orionld-smartvillage-sync
