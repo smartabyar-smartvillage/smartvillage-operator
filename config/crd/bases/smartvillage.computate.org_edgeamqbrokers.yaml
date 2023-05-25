@@ -15,7 +15,10 @@ spec:
   - name: v1
     schema:
       openAPIV3Schema:
-        description: EdgeAmqBroker is the Schema for the edgeamqbrokers API
+        description: |
+          EdgeAmqBroker is the Schema for the edgeamqbrokers API
+          An AMQ Broker that provides AMQP and MQTT messaging
+
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -32,7 +35,33 @@ spec:
           spec:
             description: Spec defines the desired state of EdgeAmqBroker
             type: object
-            x-kubernetes-preserve-unknown-fields: true
+            properties:
+              amq_broker:
+                type: object
+                properties:
+                  amqp_port:
+                    default: 5672
+                    type: number
+                  amqp_service_name:
+                    default: fiware-broker-amqp-0-svc
+                    type: string
+                  create:
+                    default: true
+                    description: "Determines if a new MQTT and AMQP AMQ Broker will be created. \n"
+                    type: boolean
+                  enabled:
+                    default: true
+                    type: boolean
+                  iot_subscribe_topic:
+                    default: iot-subscribe
+                    type: string
+                  mqtt_port:
+                    default: 1883
+                    type: number
+                  mqtt_service_name:
+                    default: fiware-broker-mqtt-0-svc
+                    type: string
+
           status:
             description: Status defines the observed state of EdgeAmqBroker
             type: object

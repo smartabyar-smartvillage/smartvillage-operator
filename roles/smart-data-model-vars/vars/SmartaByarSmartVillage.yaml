@@ -603,14 +603,6 @@ schema:
   amq_broker:
     type: object
     properties:
-      create:
-        type: boolean
-        default: true
-        description: |
-          Determines if a new MQTT and AMQP AMQ Broker will be created. 
-      enabled:
-        type: boolean
-        default: true
       mqtt_service_name:
         type: string
         default: fiware-broker-mqtt-0-svc

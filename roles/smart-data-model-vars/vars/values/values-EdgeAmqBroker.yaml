@@ -1,0 +1,10 @@
+values:
+
+  amq_broker:
+    create: "{{ crd.amq_broker.create | default(schema | community.general.json_query('amq_broker.properties.create.default')) }}"
+    enabled: "{{ crd.amq_broker.enabled | default(schema | community.general.json_query('amq_broker.properties.enabled.default')) }}"
+    mqtt_service_name: "{{ crd.amq_broker.mqtt_service_name | default(schema | community.general.json_query('amq_broker.properties.mqtt_service_name.default')) }}"
+    mqtt_port: "{{ crd.amq_broker.mqtt_port | default(schema | community.general.json_query('amq_broker.properties.mqtt_port.default')) }}"
+    amqp_service_name: "{{ crd.amq_broker.amqp_service_name | default(schema | community.general.json_query('amq_broker.properties.amqp_service_name.default')) }}"
+    amqp_port: "{{ crd.amq_broker.amqp_port | default(schema | community.general.json_query('amq_broker.properties.amqp_port.default')) }}"
+    iot_subscribe_topic: "{{ crd.amq_broker.iot_subscribe_topic | default(schema | community.general.json_query('amq_broker.properties.iot_subscribe_topic.default')) }}"

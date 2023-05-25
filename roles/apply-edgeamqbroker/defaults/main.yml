@@ -1,0 +1,20 @@
+---
+site_name: "{{ site.name | default('smartvillage') }}"
+operator_state: "present"
+ENTITY_TYPE: SmartaByarSmartVillage
+
+verify_connections: true
+
+postgres_nodeport: 30432
+postgres_nodeport_hostname: postgres.apps-crc.testing
+
+solr_nodeport: 443
+
+kafka_nodeport: 32000
+kafka_nodeport_hostname: kafka.apps-crc.testing
+
+mqtt_nodeport: 30083
+mqtt_nodeport_hostname: mqtt.apps-crc.testing
+
+zookeeper_nodeport: 30081
+zookeeper_nodeport_hostname: zookeeper.apps-crc.testing

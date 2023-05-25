@@ -1,0 +1,2 @@
+---
+site_name: "{{ site.name | default('smartvillage') }}"

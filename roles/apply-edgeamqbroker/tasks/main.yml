@@ -1,0 +1,55 @@
+---
+
+- name: "Query {{ ENTITY_TYPE }}"
+  set_fact:
+    crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
+  ignore_errors: true
+  when: crd_path is defined
+- name: "Query {{ ENTITY_TYPE }}"
+  set_fact:
+    crd: "{{ query('kubernetes.core.k8s', kind=ENTITY_TYPE, resource_name=ansible_operator_meta.name, namespace=ansible_operator_meta.namespace)[0].spec }}"
+  ignore_errors: true
+  when: crd_path is not defined
+- name: "Verify {{ ENTITY_TYPE }} exists"
+  fail:
+    msg: |-
+      You need to deploy a {{ ENTITY_TYPE }} to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_smartabyarsmartvillage.yaml
+  when: crd is not defined
+- debug:
+    var: crd
+
+# Install AMQ Broker
+- name: "Install {{ site_name }} AMQ Broker on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.amq_broker.create else 'absent' }}"
+    api_version: broker.amq.io/v1beta1
+    kind: ActiveMQArtemis
+    name: fiware-broker
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'activemqartemis.yaml') }}"
+  when: values.amq_broker.create
+- name: "Install {{ site_name }} AMQ Broker Address on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.amq_broker.create else 'absent' }}"
+    api_version: broker.amq.io/v1beta1
+    kind: ActiveMQArtemisAddress
+    name: fiware-address
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'activemqartemisaddress.yaml') }}"
+  when: values.amq_broker.create
+
+- name: "Verify MQTT"
+  wait_for:
+    host: "{{ values.amq_broker.mqtt_service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
+    port: "{{ values.amq_broker.mqtt_port }}"
+    state: started
+    delay: 0
+    timeout: 5
+  register: verify_mqtt
+  ignore_errors: yes
+  when: verify_connections and values.amq_broker.create
+- name: "Verify MQTT is running"
+  fail:
+    msg: |-
+      The MQTT service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
+  when: verify_connections and amq_broker.create and verify_mqtt.failed

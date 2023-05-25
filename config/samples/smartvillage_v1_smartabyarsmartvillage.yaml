@@ -279,8 +279,6 @@ spec:
         cpu: |-
           200m
   amq_broker:
-    create: True
-    enabled: True
     mqtt_service_name: |-
       fiware-broker-mqtt-0-svc
     mqtt_port: 1883

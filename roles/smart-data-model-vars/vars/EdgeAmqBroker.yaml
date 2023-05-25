@@ -1,0 +1,31 @@
+---
+name: smartvillage
+description: |
+  An AMQ Broker that provides AMQP and MQTT messaging
+schema:
+  amq_broker:
+    type: object
+    properties:
+      create:
+        type: boolean
+        default: true
+        description: |
+          Determines if a new MQTT and AMQP AMQ Broker will be created. 
+      enabled:
+        type: boolean
+        default: true
+      mqtt_service_name:
+        type: string
+        default: fiware-broker-mqtt-0-svc
+      mqtt_port:
+        type: number
+        default: 1883
+      amqp_service_name:
+        type: string
+        default: fiware-broker-amqp-0-svc
+      amqp_port:
+        type: number
+        default: 5672
+      iot_subscribe_topic:
+        type: string
+        default: iot-subscribe

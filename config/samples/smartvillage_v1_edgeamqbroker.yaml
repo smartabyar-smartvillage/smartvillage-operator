@@ -7,6 +7,19 @@ metadata:
     app.kubernetes.io/part-of: smartvillage-operator
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/created-by: smartvillage-operator
-  name: edgeamqbroker-sample
+  name: smartvillage
 spec:
-  # TODO(user): Add fields here
+  description: |
+    An AMQ Broker that provides AMQP and MQTT messaging
+
+  amq_broker:
+    create: True
+    enabled: True
+    mqtt_service_name: |-
+      fiware-broker-mqtt-0-svc
+    mqtt_port: 1883
+    amqp_service_name: |-
+      fiware-broker-amqp-0-svc
+    amqp_port: 5672
+    iot_subscribe_topic: |-
+      iot-subscribe

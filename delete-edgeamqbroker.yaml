@@ -1,0 +1,11 @@
+---
+- name: Remove EdgeAmqBroker resources from OpenShift
+  hosts: localhost
+  connection: local
+  roles:
+    - delete-edgeamqbroker
+  vars:
+    ENTITY_TYPE: EdgeAmqBroker
+    ansible_operator_meta:
+      name: smartvillage
+      namespace: smartvillage

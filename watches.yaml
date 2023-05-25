@@ -35,4 +35,8 @@
   group: smartvillage.computate.org
   kind: EdgeAmqBroker
   role: edgeamqbroker
+  watchDependentResources: false
+  finalizer:
+    name: smartvillage.computate.org/edgeamqbroker-finalizer
+    role: delete-edgeamqbroker
 #+kubebuilder:scaffold:watch

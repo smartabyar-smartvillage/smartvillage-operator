@@ -2,7 +2,10 @@ spec:
   acceptors:
     - name: mqtt
       protocols: mqtt
-      port: 1883
+      port: {{ values.amq_broker.mqtt_port }}
+    - name: amqp
+      protocols: amqp
+      port: {{ values.amq_broker.amqp_port }}
   console:
     expose: true
   deploymentPlan:

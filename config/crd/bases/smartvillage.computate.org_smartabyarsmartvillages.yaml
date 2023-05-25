@@ -619,13 +619,6 @@ spec:
                   amqp_service_name:
                     default: fiware-broker-amqp-0-svc
                     type: string
-                  create:
-                    default: true
-                    description: "Determines if a new MQTT and AMQP AMQ Broker will be created. \n"
-                    type: boolean
-                  enabled:
-                    default: true
-                    type: boolean
                   iot_subscribe_topic:
                     default: iot-subscribe
                     type: string
