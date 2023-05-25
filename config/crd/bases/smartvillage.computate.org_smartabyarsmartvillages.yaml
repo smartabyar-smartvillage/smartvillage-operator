@@ -95,6 +95,9 @@ spec:
                     type: boolean
                   static_base_url:
                     type: string
+                  sumo_replicas:
+                    default: 3
+                    type: number
                   template_path:
                     default: /home/ctate/.local/src/smartabyar-smartvillage/src/main/resources/templates
                     type: string

@@ -1,5 +1,5 @@
 spec:
-  replicas: {{ values.site.web_replicas }}
+  replicas: {{ values.site.sumo_replicas }}
   selector:
     matchLabels:
       app: "{{ site_name }}-sumo"

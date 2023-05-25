@@ -21,6 +21,9 @@ schema:
       web_replicas:
         type: number
         default: 3
+      sumo_replicas:
+        type: number
+        default: 3
       worker_replicas:
         type: number
         default: 1

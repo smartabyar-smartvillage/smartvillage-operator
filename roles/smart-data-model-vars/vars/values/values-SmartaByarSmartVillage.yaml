@@ -4,6 +4,7 @@ values:
     create: "{{ crd.site.create | default(schema | community.general.json_query('site.properties.create.default')) }}"
     enable_dev_nodeports: "{{ crd.site.enable_dev_nodeports | default(schema | community.general.json_query('site.properties.enable_dev_nodeports.default')) }}"
     web_replicas: "{{ crd.site.web_replicas | default(schema | community.general.json_query('site.properties.web_replicas.default')) }}"
+    sumo_replicas: "{{ crd.site.sumo_replicas | default(schema | community.general.json_query('site.properties.sumo_replicas.default')) }}"
     worker_replicas: "{{ crd.site.worker_replicas | default(schema | community.general.json_query('site.properties.worker_replicas.default')) }}"
     web_resources:
       limits:

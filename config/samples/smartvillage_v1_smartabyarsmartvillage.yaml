@@ -19,6 +19,7 @@ spec:
     create: True
     enable_dev_nodeports: False
     web_replicas: 3
+    sumo_replicas: 3
     worker_replicas: 1
     web_resources:
       limits:
