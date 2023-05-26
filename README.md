@@ -124,3 +124,34 @@ make deploy
 cd ~/.local/src/smartabyar-smartvillage
 oc apply -k openshift/kustomize/overlays/microshift/
 ```
+
+# OpenShift Local Deployment
+
+- Install the Edge AMQ Broker for MQTT and AMQP messaging. 
+
+```bash
+oc apply -k ~/.local/src/smartabyar-smartvillage/openshift/kustomize/overlays/local/edgeamqbrokers/
+# Finishes in about 32 seconds
+```
+
+- Install the Orion-LD Context Broker and MongoDB, to receive device entity data and activate NGSI-LD APIs. 
+
+```bash
+oc apply -k ~/.local/src/smartabyar-smartvillage/openshift/kustomize/overlays/local/orionldcontextbrokers/
+# Finishes in about 51 seconds
+```
+
+- Install the IoT Agent JSON, to receive MQTT or AMQP device data as JSON. 
+
+```bash
+oc apply -k ~/.local/src/smartabyar-smartvillage/openshift/kustomize/overlays/local/iotagentjsons/
+# Finishes in about 15 seconds
+```
+
+- Install the Smarta Byar Smart Village platform, to receive context broker subscription data and enable data science APIs. 
+
+```bash
+oc apply -k ~/.local/src/smartabyar-smartvillage/openshift/kustomize/overlays/local/smartabyarsmartvillages/
+# Finishes in about 240 seconds
+```
+

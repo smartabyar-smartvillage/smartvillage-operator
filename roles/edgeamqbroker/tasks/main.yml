@@ -1,2 +1,12 @@
 ---
 # tasks file for EdgeAmqBroker
+- name: Run Ansible role smart-data-model-vars
+  include_role:
+    name: smart-data-model-vars
+  vars:
+    ENTITY_TYPE: EdgeAmqBroker
+- name: Run Ansible role apply-edgeamqbroker
+  include_role:
+    name: apply-edgeamqbroker
+  vars:
+    ENTITY_TYPE: EdgeAmqBroker

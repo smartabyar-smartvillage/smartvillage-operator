@@ -3,7 +3,6 @@ spec:
     config:
       default.replication.factor: 3
       min.insync.replicas: 3
-    version: 3.2.3
     replicas: 3
     authorization:
       type: simple

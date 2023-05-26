@@ -31,6 +31,9 @@
   kind: IoTAgentJson
   role: iotagentjson
   watchDependentResources: false
+  finalizer:
+    name: smartvillage.computate.org/iotagentjson-finalizer
+    role: delete-iotagentjson
 - version: v1
   group: smartvillage.computate.org
   kind: EdgeAmqBroker

@@ -107,6 +107,36 @@
     namespace: "{{ ansible_operator_meta.namespace }}"
   ignore_errors: true
 
+# Install Zookeeper
+- name: "Remove Zookeeper persistent volume claim on OpenShift"
+  k8s:
+    state: absent
+    kind: PersistentVolumeClaim
+    api_version: v1
+    name: zookeeper
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove Zookeeper config map on OpenShift"
+  k8s:
+    state: absent
+    kind: ConfigMap
+    api_version: v1
+    name: zookeeper
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove Zookeeper deployment on OpenShift"
+  k8s:
+    state: absent
+    kind: Deployment
+    api_version: apps/v1
+    name: zookeeper
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove Zookeeper service on OpenShift"
+  k8s:
+    state: absent
+    kind: Service
+    api_version: v1
+    name: zookeeper
+    namespace: "{{ ansible_operator_meta.namespace }}"
+
 # Remove Solr
 - name: "Remove Solr configmap-computate-configset configmap on OpenShift"
   k8s:
@@ -155,7 +185,7 @@
     state: absent
     api_version: v1
     kind: Service
-    name: "{{ site_name }}-web"
+    name: "smartabyar-smartvillage-web"
     namespace: "{{ ansible_operator_meta.namespace }}"
   ignore_errors: true
 - name: "Remove {{ site_name }}-web route on OpenShift"
@@ -166,19 +196,18 @@
     name: "{{ site_name }}-web"
     namespace: "{{ ansible_operator_meta.namespace }}"
   ignore_errors: true
+- name: "Remove orionld-smartvillage-sync service on OpenShift"
+  k8s:
+    state: absent
+    api_version: v1
+    kind: Service
+    name: "orionld-smartvillage-sync"
+    namespace: "{{ ansible_operator_meta.namespace }}"
 
 #- name: "Remove {{ site_name }} secret on OpenShift"
 #  k8s:
 #    state: absent
 #    namespace: "{{ ansible_operator_meta.namespace }}"
-- name: "Remove {{ site_name }} image stream on OpenShift"
-  k8s:
-    state: absent
-    api_version: image.openshift.io/v1
-    kind: ImageStream
-    name: "{{ site_name }}"
-    namespace: "{{ ansible_operator_meta.namespace }}"
-  ignore_errors: true
 - name: "Remove {{ site_name }} deployment config on OpenShift"
   k8s:
     state: absent
@@ -187,6 +216,27 @@
     name: "{{ site_name }}-web"
     namespace: "{{ ansible_operator_meta.namespace }}"
   ignore_errors: true
+- name: "Remove {{ site_name }}-worker deployment on OpenShift"
+  k8s:
+    state: absent
+    api_version: apps/v1
+    kind: Deployment
+    name: "{{ site_name }}-worker"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove {{ site_name }}-sumo deployment on OpenShift"
+  k8s:
+    state: absent
+    api_version: apps/v1
+    kind: Deployment
+    name: "{{ site_name }}-sumo"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove {{ site_name }}-orionld-sync deployment on OpenShift"
+  k8s:
+    state: absent
+    api_version: apps/v1
+    kind: Deployment
+    name: "orionld-smartvillage-sync"
+    namespace: "{{ ansible_operator_meta.namespace }}"
 #- name: "Remove {{ site_name }} worker persistent volume claims on OpenShift"
 #  k8s:
 #    state: absent

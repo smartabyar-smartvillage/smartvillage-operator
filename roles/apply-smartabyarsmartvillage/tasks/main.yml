@@ -223,14 +223,15 @@
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'configmap-solr-computate-configset.yaml') }}"
   when: values.solr.create
-#- name: "Install Solr service account on OpenShift"
-#  k8s:
-#    state: "{{ 'present' if values.solr.create else 'absent' }}"
-#    kind: ServiceAccount
-#    api_version: v1
-#    name: solr
-#    namespace: "{{ ansible_operator_meta.namespace }}"
-#    definition: "{{ lookup('template', 'serviceaccount-solr.yaml') }}"
+- name: "Install Solr service account on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.solr.create else 'absent' }}"
+    kind: ServiceAccount
+    api_version: v1
+    name: solr
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'serviceaccount-solr.yaml') }}"
+  when: values.solr.create
 - name: "Install Solr Cloud on OpenShift"
   k8s:
     state: "{{ 'present' if values.solr.create else 'absent' }}"
@@ -396,7 +397,7 @@
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'route-web.yaml') }}"
   when: values.site.create
-- name: "Install {{ site_name }}-orionld-sync service on OpenShift"
+- name: "Install orionld-smartvillage-sync service on OpenShift"
   k8s:
     state: "{{ 'present' if values.orionld.sync else 'absent' }}"
     api_version: v1
