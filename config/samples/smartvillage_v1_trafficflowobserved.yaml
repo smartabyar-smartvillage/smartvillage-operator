@@ -12,15 +12,7 @@ spec:
   description: |
     An observation of traffic flow conditions at a certain place and time.
   attributes:
-    address:
-      addressCountry: Sweden
-      addressLocality: Veberöd
-      streetAddress: Sjöbovägen
-
-    area_served: |
-      96027913#0 96027913#2 30186293 311389510#1
-
-    average_gap_distance: 1
+    averageGapDistance: 1
     type: |
       TrafficFlowObserved
   iotagent:
@@ -47,7 +39,7 @@ spec:
     id: |-
       Sjobovagen-SE
     mqtt_host: |-
-      fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
+      fiware-broker-mqtt-0-svc
     mqtt_port: 1883
     mqtt_subscription_topic: |-
       iot/subscribe

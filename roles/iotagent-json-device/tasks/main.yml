@@ -1,4 +1,6 @@
 ---
+- debug:
+    msg: "{{ lookup('template', 'device.yml') | from_yaml }}"
 - name: "Provision the {{ values.device.id }} device"
   connection: local
   uri:

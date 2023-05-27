@@ -11,42 +11,6 @@ metadata:
 spec:
   description: |
     {{ MODEL_DESCRIPTION }}
-{% if spec.fiware is defined %}
-  fiware:
-    service: {{ spec.fiware.service }}
-    service_path: {{ spec.fiware.service_path }}
-{% endif %}
-{% if spec.iotagent is defined %}
-  iotagent:
-    iot_host: {{ spec.iotagent.iot_host }}
-{% endif %}
-{% if spec.service_group is defined %}
-  service_group:
-    cb_host: {{ spec.service_group.cb_host }}
-    resource: {{ spec.service_group.resource }}
-    apikey: {{ spec.service_group.apikey }}
-{% endif %}
-{% if spec.device is defined %}
-  device:
-    transport: {{ spec.device.transport }}
-    id: {{ spec.device.id }}
-    mqtt_host: {{ spec.device.mqtt_host }}
-    mqtt_port: {{ spec.device.mqtt_port }}
-    mqtt_subscription_topic: {{ spec.device.mqtt_subscription_topic }}
-{% endif %}
-{% if spec.smartabyar_smartvillage is defined %}
-  smartabyar_smartvillage:
-    enabled: {{ spec.smartabyar_smartvillage.enabled }}
-    auth_secret_name: {{ spec.smartabyar_smartvillage.auth_secret_name }}
-    auth_token_url: {{ spec.smartabyar_smartvillage.auth_token_url }}
-    site_base_url: {{ spec.smartabyar_smartvillage.site_base_url }}
-    smart_model_api: {{ spec.smartabyar_smartvillage.smart_model_api }}
-{% endif %}
-{% if spec.alternate_model is defined %}
-  alternate_model:
-    enabled: {{ spec.alternate_model.enabled }}
-    id: {{ spec.alternate_model.id }}
-{% endif %}
 {% if smart_data_model.attributes is defined %}
   attributes:
 {% for key, attribute in smart_data_model.attributes.items() %}

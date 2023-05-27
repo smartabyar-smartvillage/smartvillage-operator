@@ -35,6 +35,91 @@ spec:
             description: Spec defines the desired state of TrafficFlowObserved
             type: object
             properties:
+              attributes:
+                type: object
+                properties:
+                  object_id:
+                    type: string
+                  address:
+                    type: object
+                    properties:
+                      addressCountry:
+                        description: Property. The country. For example, Spain. Model:'https://schema.org/addressCountry'
+                        type: string
+                      addressLocality:
+                        description: Property. The locality in which the street address is, and which is
+                          in the region. Model:'https://schema.org/addressLocality'
+                        type: string
+                      addressRegion:
+                        description: Property. The region in which the locality is, and which is in the
+                          country. Model:'https://schema.org/addressRegion'
+                        type: string
+                      postOfficeBoxNumber:
+                        description: Property. The post office box number for PO box addresses. For example,
+                          03578. Model:'https://schema.org/postOfficeBoxNumber'
+                        type: string
+                      postalCode:
+                        description: Property. The postal code. For example, 24004. Model:'https://schema.org/https://schema.org/postalCode'
+                        type: string
+                      streetAddress:
+                        description: Property. The street address. Model:'https://schema.org/streetAddress'
+                        type: string
+
+                  alternateName:
+                    type: string
+                  areaServed:
+                    type: string
+                  averageGapDistance:
+                    type: number
+                    default: 1
+                  averageHeadwayTime:
+                    type: string
+                  averageVehicleLength:
+                    type: string
+                  averageVehicleSpeed:
+                    type: string
+                  congested:
+                    type: boolean
+                  dataProvider:
+                    type: string
+                  dateCreated:
+                    type: string
+                  dateModified:
+                    type: string
+                  dateObserved:
+                    type: string
+                  dateObservedFrom:
+                    type: string
+                  dateObservedTo:
+                    type: string
+                  description:
+                    type: string
+                  intensity:
+                    type: string
+                  laneDirection:
+                    type: string
+                  laneId:
+                    type: string
+                  location:
+                    type: object
+                  name:
+                    type: string
+                  occupancy:
+                    type: number
+                  refRoadSegment:
+                    type: string
+                  reversedLane:
+                    type: boolean
+                  source:
+                    type: string
+                  type:
+                    type: string
+                    default: |
+                      TrafficFlowObserved
+                  vehicleSubType:
+                    type: string
+                  vehicleType:
+                    type: string
               iotagent:
                 type: object
                 properties:
@@ -81,7 +166,7 @@ spec:
                     default: Sjobovagen-SE
                     type: string
                   mqtt_host:
-                    default: fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
+                    default: fiware-broker-mqtt-0-svc
                     type: string
                   mqtt_port:
                     default: 1883

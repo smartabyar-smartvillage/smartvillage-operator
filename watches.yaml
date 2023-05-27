@@ -4,16 +4,19 @@
   group: smartvillage.computate.org
   kind: TrafficFlowObserved
   role: trafficflowobserved
+  snakeCaseParameters: false
   watchDependentResources: false
 - version: v1
   group: smartvillage.computate.org
   kind: SmartTrafficLight
   role: smarttrafficlight
+  snakeCaseParameters: false
   watchDependentResources: false
 - version: v1
   group: smartvillage.computate.org
   kind: SmartaByarSmartVillage
   role: smartabyarsmartvillage
+  snakeCaseParameters: false
   watchDependentResources: false
   finalizer:
     name: smartvillage.computate.org/smartabyarsmartvillage-finalizer
@@ -22,6 +25,7 @@
   group: smartvillage.computate.org
   kind: OrionLDContextBroker
   role: orionldcontextbroker
+  snakeCaseParameters: false
   watchDependentResources: false
   finalizer:
     name: smartvillage.computate.org/orionldcontextbroker-finalizer
@@ -30,6 +34,7 @@
   group: smartvillage.computate.org
   kind: IoTAgentJson
   role: iotagentjson
+  snakeCaseParameters: false
   watchDependentResources: false
   finalizer:
     name: smartvillage.computate.org/iotagentjson-finalizer
@@ -38,6 +43,7 @@
   group: smartvillage.computate.org
   kind: EdgeAmqBroker
   role: edgeamqbroker
+  snakeCaseParameters: false
   watchDependentResources: false
   finalizer:
     name: smartvillage.computate.org/edgeamqbroker-finalizer

@@ -1,16 +1,35 @@
 values:
+
   attributes:
-    address:
-      addressCountry: Sweden
-      addressLocality: Veberöd
-      streetAddress: Sjöbovägen
-
-    area_served: |
-      96027913#0 96027913#2 30186293 311389510#1
-
-    average_gap_distance: 1
-    type: |
-      TrafficFlowObserved
+    address: "{{ crd.attributes.address | default('') }}"
+    alternateName: "{{ crd.attributes.alternateName | default('') }}"
+    areaServed: "{{ crd.attributes.areaServed | default('') }}"
+    averageGapDistance: "{{ crd.attributes.averageGapDistance | default(schema | community.general.json_query('averageGapDistance.default')) }}"
+    averageHeadwayTime: "{{ crd.attributes.averageHeadwayTime | default('') }}"
+    averageVehicleLength: "{{ crd.attributes.averageVehicleLength | default('') }}"
+    averageVehicleSpeed: "{{ crd.attributes.averageVehicleSpeed | default('') }}"
+    congested: "{{ crd.attributes.congested | default('') }}"
+    dataProvider: "{{ crd.attributes.dataProvider | default('') }}"
+    dateCreated: "{{ crd.attributes.dateCreated | default('') }}"
+    dateModified: "{{ crd.attributes.dateModified | default('') }}"
+    dateObserved: "{{ crd.attributes.dateObserved | default('') }}"
+    dateObservedFrom: "{{ crd.attributes.dateObservedFrom | default('') }}"
+    dateObservedTo: "{{ crd.attributes.dateObservedTo | default('') }}"
+    description: "{{ crd.attributes.description | default('') }}"
+    intensity: "{{ crd.attributes.intensity | default('') }}"
+    laneDirection: "{{ crd.attributes.laneDirection | default('') }}"
+    laneId: "{{ crd.attributes.laneId | default('') }}"
+    location: "{{ crd.attributes.location | default('') }}"
+    name: "{{ crd.attributes.name | default('') }}"
+    occupancy: "{{ crd.attributes.occupancy | default('') }}"
+    owner: "{{ crd.attributes.owner | default('') }}"
+    refRoadSegment: "{{ crd.attributes.refRoadSegment | default('') }}"
+    reversedLane: "{{ crd.attributes.reversedLane | default('') }}"
+    seeAlso: "{{ crd.attributes.seeAlso | default('') }}"
+    source: "{{ crd.attributes.source | default('') }}"
+    type: "{{ crd.attributes.type | default(schema | community.general.json_query('type.default')) }}"
+    vehicleSubType: "{{ crd.attributes.vehicleSubType | default('') }}"
+    vehicleType: "{{ crd.attributes.vehicleType | default('') }}"
 
   iotagent:
     service_name: "{{ crd.iotagent.service_name | default(schema | community.general.json_query('iotagent.properties.service_name.default')) }}"

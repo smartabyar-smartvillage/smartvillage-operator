@@ -6,6 +6,22 @@ transport: "{{ values.device.transport }}"
 attributes:
 {% for key, attribute in smart_data_model.attributes.items() %}
   - object_id: {{ key }}
-    name: {{ smart_data_model.attributes[key].name | default(key) }}
-    type: {{ smart_data_model.attributes[key].type }}
+    name: {{ attribute.name | default(key) }}
+    type: {{ attribute.type }}
+{% if values.attributes[key] != '' %}
+{% if (values.attributes[key] | type_debug) == 'AnsibleUnicode' %}
+    value:
+      data: |
+        {{ values.attributes[key] | indent(6, False) }}
+{% else %}
+{% if (values.attributes[key] | type_debug) == 'dict' %}
+    value:
+      data:
+        {{ values.attributes[key] | to_nice_yaml(indent=2) | indent(6, False) }}
+{% else %}
+    value:
+      data: {{ values.attributes[key] }}
+{% endif %}
+{% endif %}
+{% endif %}
 {% endfor %}

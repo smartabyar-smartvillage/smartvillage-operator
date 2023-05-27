@@ -155,3 +155,10 @@ oc apply -k ~/.local/src/smartabyar-smartvillage/openshift/kustomize/overlays/lo
 # Finishes in about 240 seconds
 ```
 
+- Install a TrafficFlowObserved Smart Data Model entity, to integrate it with the Iot Agent, Context Broker, and Smart Village application. 
+
+```bash
+oc apply -k ~/.local/src/smartabyar-smartvillage/openshift/kustomize/overlays/local/trafficflowobserveds/
+# Finishes in about 15 seconds
+```
+

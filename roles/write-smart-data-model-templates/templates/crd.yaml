@@ -35,121 +35,14 @@ spec:
             description: Spec defines the desired state of {{ ENTITY_TYPE }}
             type: object
             properties:
-{% if spec is defined %}
-{% if spec.fiware is defined %}
-              fiware:
-                type: object
-                properties:
-                  service:
-                    type: string
-                    default: {{ spec.fiware.service }}
-                    description: |
-                      Describes the provided service for these devices. 
-                      Use all lowercase letters. 
-                      No characters with accents. 
-                  service_path:
-                    type: string
-                    default: {{ spec.fiware.service_path }}
-                    description: |
-                      Fiware-ServicePath is an optional header. 
-                      It is assumed that all the entities created without Fiware-ServicePath 
-                      (or that don't include service path information in the database) 
-                      belongs to a root scope "/" implicitely. 
-                      Scope must start with "/" (only 'absolute' scopes are allowed). 
-                      10 maximum scope levels in a path. 
-                      50 maximum characters in each level, only alphanum and underscore allowed. 
-{% endif %}
-{% if spec.iotagent is defined %}
-              iotagent:
-                type: object
-                properties:
-                  iot_host:
-                    type: string
-                    default: {{ spec.iotagent.iot_host }}
-{% endif %}
-{% if spec.service_group is defined %}
-              service_group:
-                type: object
-                properties:
-                  cb_host:
-                    type: string
-                    default: {{ spec.service_group.cb_host }}
-                  resource:
-                    type: string
-                    default: {{ spec.service_group.resource }}
-                  apikey:
-                    type: string
-                    default: {{ spec.service_group.apikey }}
-                    description: |
-                      Where apiKey is an alphanumerical string used to group devices logically 
-                      (and for security matters) and deviceId is an ID that uniquely identifies the device. 
-                      The API Key can be configured globally for an instance of the IoT Agent, 
-                      or specifically for a given group of devices. 
-{% endif %}
-{% if spec.device is defined %}
-              device:
-                type: object
-                properties:
-                  transport:
-                    type: string
-                    default: {{ spec.device.transport }}
-                    enum:
-                      - MQTT
-                      - AMQP
-                  id:
-                    type: string
-                    description: |
-                      A unique ID for this {{ ENTITY_TYPE }} device. 
-                      It can be as simple as the number 1. 
-                      No characters with accents. 
-                    default: {{ spec.device.id }}
-                  mqtt_host:
-                    type: string
-                    default: {{ spec.device.mqtt_host }}
-                  mqtt_port:
-                    type: number
-                    default: {{ spec.device.mqtt_port }}
-                  mqtt_subscription_topic:
-                    type: string
-                    default: {{ spec.device.mqtt_subscription_topic }}
-{% endif %}
-{% if spec.smartabyar_smartvillage is defined %}
-              smartabyar_smartvillage:
-                type: object
-                properties:
-                  enabled:
-                    type: boolean
-                    default: {{ spec.smartabyar_smartvillage.enabled }}
-                  auth_secret_name:
-                    type: string
-                    default: {{ spec.smartabyar_smartvillage.auth_secret_name }}
-                  auth_token_url:
-                    type: string
-                    default: {{ spec.smartabyar_smartvillage.auth_token_url }}
-                  site_base_url:
-                    type: string
-                    default: {{ spec.smartabyar_smartvillage.site_base_url }}
-                  smart_model_api:
-                    type: string
-                    default: {{ spec.smartabyar_smartvillage.smart_model_api }}
-{% endif %}
-{% if spec.alternate_model is defined %}
-              alternate_model:
-                type: object
-                properties:
-                  enabled:
-                    type: boolean
-                    default: {{ spec.alternate_model.enabled }}
-                  id:
-                    default: {{ spec.alternate_model.id }}
-                    type: string
-{% endif %}
+{% if smart_data_model is defined %}
               attributes:
                 type: object
                 properties:
                   object_id:
                     type: string
 {% for key, attribute in smart_data_model.attributes.items() %}
+{% if attribute.type != 'array' or attribute.items.type is defined %}
                   {{ key }}:
                     type: {{ attribute.type }}
 {% if attribute.default is defined %}
@@ -165,24 +58,29 @@ spec:
 {% endif %}
 {% endif %}
 {% endif %}
-{% if MODEL_SPEC[ ENTITY_TYPE ].properties[key] is defined and spec.alternate_model.name is defined %}
+{% if MODEL_SPEC[ ENTITY_TYPE ].properties[key] is defined and schema.alternate_model.name is defined %}
                     description: |2
                       {{ MODEL_SPEC[ ENTITY_TYPE ].properties[key].description | indent(22, False) }}
                       See the docs here: https://github.com/smart-data-models/dataModel.{{ SUBMODULE_SHORT_NAME }}/blob/HEAD/{{ MODEL_NAME }}/model.yaml
 {% if attribute.alternate_name is defined %}
 
-                      In {{ spec.alternate_model.name }}, this attribute is known as {{ attribute.alternate_name }}: 
+                      In {{ schema.alternate_model.name }}, this attribute is known as {{ attribute.alternate_name }}: 
 {% if attribute.alternate_description is defined %}
                       {{ attribute.alternate_description | indent(22, False) }}
 {% endif %}
 {% if attribute.alternate_docs is defined %}
-                      See the {{ spec.alternate_model.name }} docs here: {{ attribute.alternate_docs | indent(22, False) }}
+                      See the {{ schema.alternate_model.name }} docs here: {{ attribute.alternate_docs | indent(22, False) }}
 {% endif %}
 {% endif %}
+{% endif %}
+{% if attribute.items is defined and attribute.items.type is defined %}
+                    items:
+                      type: {{ attribute.items.type }}
 {% endif %}
 {% if MODEL_SPEC[ ENTITY_TYPE ].properties[key].properties is defined %}
                     properties:
                       {{ MODEL_SPEC[ ENTITY_TYPE ].properties[key].properties | to_nice_yaml(indent=2) | indent(22, False) }}
+{% endif %}
 {% endif %}
 {% endfor %}
 {% endif %}
