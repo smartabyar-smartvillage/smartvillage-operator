@@ -49,7 +49,7 @@
       Content-Type: "application/json"
       Authorization: "Bearer {{ AUTH_TOKEN.json.access_token }}"
     body_format: json
-    body: "{{ lookup('template', ENTITY_TYPE + '.yml') | from_yaml }}"
+    body: "{{ lookup('template', 'smart-data-model.yml') | from_yaml }}"
     return_content: true
     validate_certs: false
     status_code: 

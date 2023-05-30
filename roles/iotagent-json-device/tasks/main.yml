@@ -37,7 +37,7 @@
       Fiware-ServicePath: "{{ values.fiware.service_path }}"
       Cache-Control: no-cache
     body_format: json
-    body: "{{ lookup('template', 'device.yml') | from_yaml | combine({ 'device_id': omit }) | combine({ 'entity_name': omit, 'entity_type': omit, 'transport': omit }) }}"
+    body: "{{ lookup('template', 'device.yml') | from_yaml | ansible.utils.remove_keys(target=['device_id', 'entity_name', 'entity_type', 'transport']) }}"
     return_content: true
     validate_certs: false
     status_code: 
@@ -52,15 +52,17 @@
     msg: "{{ UPDATE_DEVICE }}"
   when: CREATE_DEVICE.failed and UPDATE_DEVICE.failed
 
-- name: Publish message on MQTT topic to {{ values.device.id }} device
+- name: Publish message on MQTT topic to device /{{ values.service_group.apikey }}/{{ values.device.id }}/attrs
   community.general.mqtt:
 #    server: "{{ values.device.mqtt_host }}"
 #    port: "{{ values.device.mqtt_port }}"
     server: "fiware-broker-mqtt-nodeport.apps-crc.testing"
     port: "30083"
     topic: "/{{ values.service_group.apikey }}/{{ values.device.id }}/attrs"
-    payload: "{{ lookup('template', 'device_values.yml') | from_yaml | combine({ 'id': omit }) | combine({ 'type': omit }) | to_json }}"
+    payload: "{{ lookup('template', 'device_values.yml') | from_yaml | ansible.utils.remove_keys(target=['id', 'type']) | to_json }}"
     qos: 0
+- debug:
+    var: "{{ lookup('template', 'device_values.yml') | from_yaml | ansible.utils.remove_keys(target=['id', 'type']) | to_json }}"
 - name: "Query the context broker"
   connection: local
   uri:

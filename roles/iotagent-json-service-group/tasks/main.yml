@@ -34,7 +34,7 @@
       Fiware-ServicePath: "{{ values.fiware.service_path }}"
       Cache-Control: no-cache
     body_format: json
-    body: "{{ SERVICE_GROUP_BODY | combine({ 'apikey': omit }) | combine({ 'resource': omit }) }}"
+    body: "{{ SERVICE_GROUP_BODY | ansible.utils.remove_keys(target=['apikey', 'resource']) }}"
     return_content: true
     validate_certs: false
     status_code: 

@@ -1,0 +1,28 @@
+list:
+  - id: "{{ CONTEXT_BROKER_ENTITY.id }}"
+    inheritPk: "{{ CONTEXT_BROKER_ENTITY.id }}"
+    type: "{{ CONTEXT_BROKER_ENTITY.type }}"
+{% for key, attribute in smart_data_model.attributes.items() %}
+{% if values.attributes[key] != '' %}
+{% if attribute.type == 'string' %}
+    {{ key }}: |
+      {{ values.attributes[key] | indent(6, False) }}
+{% else %}
+{% if attribute.type == 'object' %}
+{{ key }}:
+    {{ values.attributes[key] | to_nice_yaml(indent=2) | indent(6, False) }}
+{% else %}
+    {{ key }}: {{ values.attributes[key] }}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endfor %}
+    saves: 
+      - id
+      - inheritPk
+      - type
+{% for key, attribute in smart_data_model.attributes.items() %}
+{% if values.attributes[key] != '' %}
+      - {{ key }}
+{% endif %}
+{% endfor %}

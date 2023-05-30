@@ -9,3 +9,4 @@ attributes:
     name: {{ attribute.name | default(key) }}
     type: {{ attribute.type }}
 {% endfor %}
+static_attributes: []
