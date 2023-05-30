@@ -51,3 +51,30 @@
 - fail:
     msg: "{{ UPDATE_DEVICE }}"
   when: CREATE_DEVICE.failed and UPDATE_DEVICE.failed
+
+- name: Publish message on MQTT topic to {{ values.device.id }} device
+  community.general.mqtt:
+#    server: "{{ values.device.mqtt_host }}"
+#    port: "{{ values.device.mqtt_port }}"
+    server: "fiware-broker-mqtt-nodeport.apps-crc.testing"
+    port: "30083"
+    topic: "/{{ values.service_group.apikey }}/{{ values.device.id }}/attrs"
+    payload: "{{ lookup('template', 'device_values.yml') | from_yaml | combine({ 'id': omit }) | combine({ 'type': omit }) | to_json }}"
+    qos: 0
+- name: "Query the context broker"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ values.context_broker.base_url }}/v2/entities"
+    method: GET
+    headers:
+      Fiware-Service: "{{ values.fiware.service }}"
+      Fiware-ServicePath: "{{ values.fiware.service_path }}"
+      Cache-Control: no-cache
+    return_content: true
+    validate_certs: false
+    status_code: 
+      - 200
+  register: CB_ENTITY_AFTER
+- debug:
+    var: CB_ENTITY_AFTER
