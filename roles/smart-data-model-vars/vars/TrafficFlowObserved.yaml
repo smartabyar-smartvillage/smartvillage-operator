@@ -285,6 +285,15 @@ smart_data_model:
       alternate_description: |
         An abstract vehicle class (see below). By default vehicles represent regular passenger cars.
       alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
+    customRouteId:
+      name: customRouteId
+      type: string
+      description: |
+        The unique ID of the route in SUMO. 
+      alternate_name: decel
+      alternate_description: |
+        The unique ID of the route in SUMO. 
+      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
     customSigma:
       name: customSigma
       type: number
@@ -311,13 +320,4 @@ smart_data_model:
       alternate_name: decel
       alternate_description: |
         The deceleration ability of vehicles of this type (in m/s^2)
-      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
-    customRouteId:
-      name: customRouteId
-      type: string
-      description: |
-        The unique ID of the route in SUMO. 
-      alternate_name: decel
-      alternate_description: |
-        The unique ID of the route in SUMO. 
       alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
