@@ -120,6 +120,14 @@ spec:
                     type: string
                   vehicleType:
                     type: string
+                  customSigma:
+                    type: number
+                  customAcceleration:
+                    type: number
+                  customDeceleration:
+                    type: number
+                  customRouteId:
+                    type: string
               iotagent:
                 type: object
                 properties:

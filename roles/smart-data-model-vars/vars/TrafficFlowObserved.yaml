@@ -285,3 +285,39 @@ smart_data_model:
       alternate_description: |
         An abstract vehicle class (see below). By default vehicles represent regular passenger cars.
       alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
+    customSigma:
+      name: customSigma
+      type: number
+      description: |
+        The driver imperfection as a floating point number [0,1] (0 denotes perfect driving)
+      alternate_name: sigma
+      alternate_description: |
+        The driver imperfection as a floating point number [0,1] (0 denotes perfect driving)
+      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
+    customAcceleration:
+      name: customAcceleration
+      type: number
+      description: |
+        The acceleration ability of vehicles of this type (in m/s^2)
+      alternate_name: accel
+      alternate_description: |
+        The acceleration ability of vehicles of this type (in m/s^2)
+      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
+    customDeceleration:
+      name: customDeceleration
+      type: number
+      description: |
+        The deceleration ability of vehicles of this type (in m/s^2)
+      alternate_name: decel
+      alternate_description: |
+        The deceleration ability of vehicles of this type (in m/s^2)
+      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
+    customRouteId:
+      name: customRouteId
+      type: string
+      description: |
+        The unique ID of the route in SUMO. 
+      alternate_name: decel
+      alternate_description: |
+        The unique ID of the route in SUMO. 
+      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
