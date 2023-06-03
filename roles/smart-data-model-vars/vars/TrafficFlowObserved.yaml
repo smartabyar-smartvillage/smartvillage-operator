@@ -135,7 +135,7 @@ smart_data_model:
     averageHeadwayTime:
       # See Smart Data Model: 
       name: averageHeadwayTime
-      type: string
+      type: number
       alternate_name: tau
       alternate_description: |
         The driver's desired (minimum) time headway. 
@@ -145,7 +145,7 @@ smart_data_model:
       minimum: 0
     averageVehicleLength:
       name: averageVehicleLength
-      type: string
+      type: number
       description: |
         Average length of the vehicles transiting during the observation period
       alternate_name: length
@@ -155,7 +155,7 @@ smart_data_model:
       minimum: 0
     averageVehicleSpeed:
       name: averageVehicleSpeed
-      type: string
+      type: number
       description: |
         Average speed of the vehicles transiting during the observation period
       alternate_name: speed
@@ -205,7 +205,7 @@ smart_data_model:
         A description of this item
     intensity:
       name: intensity
-      type: string
+      type: number
       description: |
         Total number of vehicles detected during this observation period
       alternate_name: number
@@ -220,7 +220,7 @@ smart_data_model:
         Usual direction of travel in the lane referred by this observation. This attribute is useful when the observation is not referencing any road segment, allowing to know the direction of travel of the traffic flow observed. Enum:forward, backward''. See RoadSegment for a description of the semantics of these values.
     laneId:
       name: laneId
-      type: string
+      type: number
       description: |
         Lane identifier. Lane identification is done using the conventions defined by RoadSegment entity which are based on [OpenStreetMap](http://wiki.openstreetmap.org/wiki/Forward_%26_backward,_left_%26_right).
       alternate_name: lane
@@ -316,8 +316,38 @@ smart_data_model:
       name: customDeceleration
       type: number
       description: |
-        The deceleration ability of vehicles of this type (in m/s^2)
+        The deceleration ability of vehicles of this type (in m/s^2). 
       alternate_name: decel
       alternate_description: |
-        The deceleration ability of vehicles of this type (in m/s^2)
+        The deceleration ability of vehicles of this type (in m/s^2). 
       alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
+    customMinGreenTime:
+      name: customMinGreenTime
+      type: number
+      description: |
+        Min green time for the traffic light in seconds [1, 50]. 
+    customMaxGreenTime:
+      name: customMaxGreenTime
+      type: number
+      description: |
+        Max green time for the traffic light in seconds [1, 50]. 
+    customAverageVehiclesPerMinute:
+      name: customAverageVehiclesPerMinute
+      type: number
+      description: |
+        Average vehicle/min [1, 30]. 
+    customDemandScalingFactor:
+      name: customDemandScalingFactor
+      type: number
+      description: |
+        Demand scaling factor (multiplies all vehicle demands) [1, 2]. 
+    customQueueLengthThreshold:
+      name: customQueueLengthThreshold
+      type: number
+      description: |
+        queue length threshold between low-high content [1, 15]. 
+    customTrafficLightId:
+      name: customTrafficLightId
+      type: string
+      description: |
+        The Smart Traffic Light ID. 

@@ -30,10 +30,16 @@ values:
     type: "{{ crd.attributes.type | default(schema | community.general.json_query('type.default')) }}"
     vehicleSubType: "{{ crd.attributes.vehicleSubType | default('') }}"
     vehicleType: "{{ crd.attributes.vehicleType | default('') }}"
+    customRouteId: "{{ crd.attributes.customRouteId | default('') }}"
     customSigma: "{{ crd.attributes.customSigma | default('') }}"
     customAcceleration: "{{ crd.attributes.customAcceleration | default('') }}"
     customDeceleration: "{{ crd.attributes.customDeceleration | default('') }}"
-    customRouteId: "{{ crd.attributes.customRouteId | default('') }}"
+    customMinGreenTime: "{{ crd.attributes.customMinGreenTime | default('') }}"
+    customMaxGreenTime: "{{ crd.attributes.customMaxGreenTime | default('') }}"
+    customAverageVehiclesPerMinute: "{{ crd.attributes.customAverageVehiclesPerMinute | default('') }}"
+    customDemandScalingFactor: "{{ crd.attributes.customDemandScalingFactor | default('') }}"
+    customQueueLengthThreshold: "{{ crd.attributes.customQueueLengthThreshold | default('') }}"
+    customTrafficLightId: "{{ crd.attributes.customTrafficLightId | default('') }}"
 
   iotagent:
     service_name: "{{ crd.iotagent.service_name | default(schema | community.general.json_query('iotagent.properties.service_name.default')) }}"

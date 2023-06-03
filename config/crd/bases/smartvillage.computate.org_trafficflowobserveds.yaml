@@ -73,11 +73,11 @@ spec:
                     type: number
                     default: 1
                   averageHeadwayTime:
-                    type: string
+                    type: number
                   averageVehicleLength:
-                    type: string
+                    type: number
                   averageVehicleSpeed:
-                    type: string
+                    type: number
                   congested:
                     type: boolean
                   dataProvider:
@@ -95,11 +95,11 @@ spec:
                   description:
                     type: string
                   intensity:
-                    type: string
+                    type: number
                   laneDirection:
                     type: string
                   laneId:
-                    type: string
+                    type: number
                   location:
                     type: object
                   name:
@@ -120,13 +120,25 @@ spec:
                     type: string
                   vehicleType:
                     type: string
+                  customRouteId:
+                    type: string
                   customSigma:
                     type: number
                   customAcceleration:
                     type: number
                   customDeceleration:
                     type: number
-                  customRouteId:
+                  customMinGreenTime:
+                    type: number
+                  customMaxGreenTime:
+                    type: number
+                  customAverageVehiclesPerMinute:
+                    type: number
+                  customDemandScalingFactor:
+                    type: number
+                  customQueueLengthThreshold:
+                    type: number
+                  customTrafficLightId:
                     type: string
               iotagent:
                 type: object
