@@ -8,41 +8,35 @@ metadata:
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/created-by: smartvillage-operator
   name: smartvillage
+  namespace: smartvillage
 spec:
-  description: |
-    Red Hat Global Social Innovation Program is partnering with Boston University and Smarta Byar 
-    in order to collaborate on creating a global and open research platform allowing researchers 
-    to study what social sustainability means by using a digital twin of Veberöd, Sweden 
-    as the test village, supported by Smarta Byar.
-
   site:
-    create: True
-    enable_dev_nodeports: False
-    web_replicas: 3
-    sumo_replicas: 3
+    create: true
+    enable_dev_nodeports: true
+    web_replicas: 0
     worker_replicas: 1
     web_resources:
       limits:
-        cpu: |-
-          1m
         memory: |-
-          1Gi
-      requests:
+          1000Mi
         cpu: |-
-          400m
+          600m
+      requests:
         memory: |-
           500Mi
+        cpu: |-
+          400m
     worker_resources:
       limits:
-        cpu: |-
-          1m
         memory: |-
-          1Gi
-      requests:
+          1000Mi
         cpu: |-
-          400m
+          600m
+      requests:
         memory: |-
           500Mi
+        cpu: |-
+          400m
     name: |-
       smartvillage
     secret_name: |-
@@ -69,8 +63,6 @@ spec:
       create: True
   zookeeper:
     create: True
-    volume_size: |-
-      1Gi
     service_name: |-
       zookeeper
     port: 2181
@@ -79,21 +71,20 @@ spec:
     max_sleep_millis: 5000
     connection_timeout_millis: 3000
     session_timeout_millis: 5000
-    resources:
-      limits:
-        memory: |-
-          500Mi
-        cpu: |-
-          500m
-      requests:
-        memory: |-
-          200Mi
-        cpu: |-
-          200m
+    limits:
+      memory: |-
+        500Mi
+      cpu: |-
+        500m
+    requests:
+      memory: |-
+        200Mi
+      cpu: |-
+        200m
   sso:
-    create: True
+    create: false
     host_name: |-
-      keycloak-sso.apps-crc.testing
+      sso.computate.org
     cluster_name: |-
       sso
     postgres_secret_name: |-
@@ -101,6 +92,7 @@ spec:
     client_secret_name: |-
       keycloak-client-secret-smartvillage
   auth:
+    host_name: sso.computate.org
     port: 443
     ssl: True
     realm: |-
@@ -110,7 +102,7 @@ spec:
     token_uri: |-
       /auth/realms/SMARTVILLAGE/protocol/openid-connect/token
   postgres:
-    create: True
+    create: true
     service_name: |-
       postgres-primary
     port: 5432
@@ -130,13 +122,13 @@ spec:
         cpu: |-
           200m
   solr:
-    create: True
+    create: true
     service_name: |-
       default-solrcloud-common
     port: 80
     ssl: False
     route:
-      create: False
+      create: true
       host_name: |-
         solr.apps-crc.testing
     collection: |-
@@ -153,17 +145,12 @@ spec:
         cpu: |-
           200m
   email:
-    enabled: False
-    secret_name: |-
-      smartvillage
+    enabled: true
+    secret_name: smartvillage
   import_data:
     enabled: True
     sitepage:
       enabled: True
-      period: |-
-        2 minutes
-      start_time: |-
-        00:00:00 [America/New_York]
     sitehtm:
       enabled: True
     iotnode:
@@ -212,11 +199,10 @@ spec:
     trafficflowobserved: |-
       SiteAdmin
   sumo:
-    replicas: 1
     resources:
       limits:
         cpu: |-
-          1m
+          500m
         memory: |-
           1Gi
       requests:
@@ -231,7 +217,7 @@ spec:
     fcd_sync_path: |-
       /home/ctate/.local/share/sumo/data/veberod/fcd
   yggio:
-    enabled: False
+    enabled: true
     api_relative_uri_iotnode: |-
       /api/iotnodes
     auth_local_uri: |-
@@ -244,7 +230,7 @@ spec:
     api_uri: |-
       /v2
   kafka:
-    create: True
+    create: true
     keystore_secret: |-
       smartvillage-kafka
     truststore_secret: |-
@@ -260,16 +246,10 @@ spec:
       PKCS12
     ssl_keystore_location: |-
       /opt/kafka/keystore/user.p12
-    ssl_user_crt_location: |-
-      /opt/kafka/keystore/user.crt
-    ssl_user_key_location: |-
-      /opt/kafka/keystore/user.key
     ssl_truststore_type: |-
       PKCS12
     ssl_truststore_location: |-
       /opt/kafka/truststore/ca.p12
-    ssl_ca_crt_location: |-
-      /opt/kafka/truststore/ca.crt
     resources:
       limits:
         memory: |-
@@ -282,14 +262,5 @@ spec:
         cpu: |-
           200m
   amq_broker:
-    mqtt_service_name: |-
-      fiware-broker-mqtt-0-svc
-    mqtt_port: 1883
-    amqp_service_name: |-
-      fiware-broker-amqp-0-svc
-    amqp_port: 5672
-    iot_subscribe_topic: |-
-      iot-subscribe
-  orionld:
-    sync: True
-    sync_replicas: 1
+    create: true
+    enabled: True

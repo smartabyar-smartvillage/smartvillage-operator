@@ -1,0 +1,15 @@
+apiVersion: smartvillage.computate.org/v1
+kind: OrionLDContextBroker
+metadata:
+  labels:
+    app.kubernetes.io/name: orionldcontextbroker
+    app.kubernetes.io/instance: orionldcontextbroker-sample
+    app.kubernetes.io/part-of: smartvillage-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: smartvillage-operator
+  name: orion-ld
+  namespace: smartvillage
+spec:
+  orionld:
+    route:
+      create: true

@@ -14,6 +14,114 @@ ansible-galaxy collection install kubernetes.core
 ansible-galaxy collection install kubernetes.core -U
 ```
 
+# Clone the Smart Village Operator
+
+Create a directory for the Smart Village Operator source code: 
+
+
+```bash
+mkdir ~/.local/src
+```
+
+Clone the Smart Village Operator source code: 
+
+```bash
+git clone git@github.com:computate-org/smartvillage-operator.git ~/.local/src/smartvillage-operator
+```
+
+# Installation on Red Hat MicroShift
+
+- [Install Red Hat MicroShift following the official documentation here](https://access.redhat.com/documentation/en-us/red_hat_build_of_microshift). 
+- Make sure you have the `oc` command in your terminal after installation of MicroShift. 
+- Make sure microshift is running: `systemctl status microshift`. 
+- Watch the logs for MicroShift if you find any problems: `journalctl -fu microshift`
+- Make sure your computer has an actual ethernet connection and not WIFI for MicroShift to work. 
+
+## Create a new namespace in MicroShift for the Smart Village Operator and application. 
+
+```bash
+oc create namespace smartvillage
+```
+
+## Configure the new namespace as the current context
+```bash
+oc config set-context --current --namespace=smartvillage
+```
+
+## Install the required AMQ Broker Operator bundle
+
+```bash
+cd ~/.local/src/smartvillage-operator
+oc apply -k kustomize/bundles/amq-broker/
+```
+
+## Deploy the operator into the namespace
+
+```bash
+cd ~/.local/src/smartvillage-operator
+make deploy
+```
+
+## Deploy the FIWARE components into the namespace
+
+This will install the following applications: 
+
+- An Edge version of the Red Hat AMQ Broker for AMQP and MQTT protocols
+- A FIWARE Orion-LD Context Broker for smart device entity data
+- An IoT Agent JSON for receiving AMQP and MQTT messages and updating the Context Broker
+- The Smarta Byar Smart Village Sync microservice, for sending context broker subscription data to the Smart Village application. 
+
+```bash
+cd ~/.local/src/smartvillage-operator
+oc apply -k kustomize/overlays/microshift/
+```
+
+## Optional: Deploy sample Smart Data Models into the namespace
+
+Some sample TrafficFlowObserved Smart Data Models are provided, 
+as well as an Orion-LD Smart Village Sync microservice. 
+These will automatically be sent by MQTT to the IoT Agent JSON, 
+and into the Orion-LD Context broker. A subscription is set up
+that will publish to the Orion-LD Smart Village Sync service. 
+The Orion-LD Smart Village Sync is for publishing securely 
+device entity data to the Smart Village platform in the cloud. 
+
+```bash
+cd ~/.local/src/smartvillage-operator
+oc apply -k kustomize/samples/microshift/
+```
+
+### Configure SSO for the Orion-LD Smart Village Sync
+
+To connect successfully to the Smart Village platform, 
+you will need a valid CLIENT_ID and CLIENT_SECRET configured to a 
+Red Hat Single Sign On server, which is provided by the Smart Village app. 
+
+Create a keycloak-client-secret-smartvillage secret on MicroShift. 
+
+```yaml
+kind: Secret
+apiVersion: v1
+metadata:
+  name: keycloak-client-secret-smartvillage
+stringData:
+  CLIENT_ID: smartvillage
+  CLIENT_SECRET: ...
+type: Opaque
+```
+
+# Install Smart Village Operator CRDS without deploying the operator
+
+You can run the same ansible roles that the operator uses without deploying the operator. 
+You will need to set the following ansible variables: 
+
+- ` -e crd_path=~/.local/src/smartabyar-smartvillage/openshift/kustomize/overlays/nerc-ocp-prod/smartabyarsmartvillages/smartvillage/smartabyarsmartvillage.yaml` to point to the `SmartaByarSmartVillage` instance you wish to deploy. 
+` ` -e ansible_operator_meta_namespace=smart-village-faeeb6c` the namespace where you wish to deploy the resources. 
+
+For example: 
+
+`ansible-playbook apply-smartabyarsmartvillage.yaml -e crd_path=~/.local/src/smartabyar-smartvillage/openshift/kustomize/overlays/nerc-ocp-prod/smartabyarsmartvillages/smartvillage/smartabyarsmartvillage.yaml -e ansible_operator_meta_namespace=smart-village-faeeb6c`
+
 # How the operator was initialized
 
 ```bash
@@ -75,20 +183,7 @@ operator-sdk create api --group smartvillage --version v1 --kind SmartaByarSmart
 ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=SmartaByarSmartVillage
 ```
 
-Create a keycloak-client-secret-smartvillage secret on OpenShift
-
-```yaml
-kind: Secret
-apiVersion: v1
-metadata:
-  name: keycloak-client-secret-smartvillage
-stringData:
-  CLIENT_ID: smartvillage
-  CLIENT_SECRET: ...
-type: Opaque
-```
-
-# Install AMQ Broker on microshift
+# Install the latest AMQ Broker on MicroShift manually
 
 Follow the instructions in the docs [Deploying AMQ Broker on OpenShift Container Platform using the AMQ Broker Operator](https://access.redhat.com/documentation/en-us/red_hat_amq_broker/7.11/html/deploying_amq_broker_on_openshift/deploying-broker-on-ocp-using-operator_broker-ocp)
 
@@ -112,18 +207,6 @@ oc apply -f operator.yaml
 # Install kubectl command
 
 https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
-
-# Install the Smart Village Operator on microshift
-
-```bash
-mkdir ~/.local/src
-git clone git@github.com:computate-org/smartvillage-operator.git ~/.local/src/smartvillage-operator
-git clone git@github.com:computate-org/smartabyar-smartvillage.git ~/.local/src/smartabyar-smartvillage
-cd ~/.local/src/smartvillage-operator
-make deploy
-cd ~/.local/src/smartabyar-smartvillage
-oc apply -k openshift/kustomize/overlays/microshift/
-```
 
 # OpenShift Local Deployment
 

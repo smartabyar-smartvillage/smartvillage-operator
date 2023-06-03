@@ -441,6 +441,9 @@ schema:
       personstep:
         type: string
         default: 'SiteAdmin'
+      smarttrafficlight:
+        type: string
+        default: 'SiteAdmin'
       trafficlight:
         type: string
         default: 'SiteAdmin'

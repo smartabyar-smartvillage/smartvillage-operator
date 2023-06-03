@@ -1,0 +1,50 @@
+apiVersion: smartvillage.computate.org/v1
+kind: TrafficFlowObserved
+metadata:
+  name: sweden-veberod-1-lakaregatan-ne
+  namespace: smartvillage
+spec:
+  attributes:
+    address:
+      addressCountry: Sweden
+      addressLocality: Veberöd
+      streetAddress: Läkaregatan
+    area_served: |
+      -355113043#1 -24626686#2 -24626686#1 -34992983#3 -34992983#1
+    averageVehicleLength: 5
+    averageGapDistance: 1
+    averageVehicleSpeed: 55
+    customRouteId: r42
+    customSigma: 0.5
+    customAcceleration: 2.6
+    customDeceleration: 4.5
+    customMinGreenTime: 33.00
+    customMaxGreenTime: 39.00
+    customAverageVehiclesPerMinute: 12.00
+    customDemandScalingFactor: 1.00
+    customQueueLengthThreshold: 8.00
+  iotagent:
+    base_url: http://iotagent-json-smartvillage.apps-crc.testing
+  context_broker:
+    base_url: http://orion-ld-smartvillage.apps-crc.testing
+  fiware:
+    service: smarttrafficlights
+    service_path: /Sweden/Veberod/CityCenter
+  service_group:
+    resource: /iot/json
+    apikey: VeberodIntersection1
+  device:
+    transport: MQTT
+    id: Intersection1-Lakaregatan-NE
+    mqtt_host: fiware-broker-mqtt-0-svc
+    mqtt_port: 1883
+    mqtt_subscription_topic: iot/subscribe
+    subscription_url: http://orionld-smartvillage-sync:8080
+  smartabyar_smartvillage:
+    enabled: true
+    auth_token_url: https://sso.computate.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+    site_base_url: https://smartvillage-web-smartvillage.apps-crc.testing
+  alternate_model:
+    enabled: true
+    id: sumo
+    name: SUMO

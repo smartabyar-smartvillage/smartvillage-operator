@@ -1,5 +1,6 @@
 values:
 
+
   site:
     create: "{{ crd.site.create | default(schema | community.general.json_query('site.properties.create.default')) }}"
     enable_dev_nodeports: "{{ crd.site.enable_dev_nodeports | default(schema | community.general.json_query('site.properties.enable_dev_nodeports.default')) }}"
@@ -128,6 +129,7 @@ values:
     iotnodestep: "{{ crd.auth_role.iotnodestep | default(schema | community.general.json_query('auth_role.properties.iotnodestep.default')) }}"
     vehiclestep: "{{ crd.auth_role.vehiclestep | default(schema | community.general.json_query('auth_role.properties.vehiclestep.default')) }}"
     personstep: "{{ crd.auth_role.personstep | default(schema | community.general.json_query('auth_role.properties.personstep.default')) }}"
+    smarttrafficlight: "{{ crd.auth_role.smarttrafficlight | default(schema | community.general.json_query('auth_role.properties.smarttrafficlight.default')) }}"
     trafficlight: "{{ crd.auth_role.trafficlight | default(schema | community.general.json_query('auth_role.properties.trafficlight.default')) }}"
     trafficlightstep: "{{ crd.auth_role.trafficlightstep | default(schema | community.general.json_query('auth_role.properties.trafficlightstep.default')) }}"
     trafficsimulation: "{{ crd.auth_role.trafficsimulation | default(schema | community.general.json_query('auth_role.properties.trafficsimulation.default')) }}"

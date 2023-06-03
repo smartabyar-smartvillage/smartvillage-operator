@@ -455,6 +455,9 @@ spec:
                   siteuser:
                     default: SiteAdmin
                     type: string
+                  smarttrafficlight:
+                    default: SiteAdmin
+                    type: string
                   systemevent:
                     default: SiteAdmin
                     type: string

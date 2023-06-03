@@ -1,0 +1,19 @@
+apiVersion: smartvillage.computate.org/v1
+kind: SmartaByarSmartVillage
+metadata:
+  name: smartvillage
+  namespace: smartvillage
+spec:
+  site:
+    create: false
+    enable_dev_nodeports: true
+  zookeeper:
+    create: false
+  sso:
+    create: false
+  postgres:
+    create: false
+  solr:
+    create: false
+  kafka:
+    create: false
