@@ -24,7 +24,7 @@ spec:
     web_resources:
       limits:
         cpu: |-
-          1m
+          500m
         memory: |-
           1Gi
       requests:
@@ -35,7 +35,7 @@ spec:
     worker_resources:
       limits:
         cpu: |-
-          1m
+          500m
         memory: |-
           1Gi
       requests:
@@ -216,7 +216,7 @@ spec:
     resources:
       limits:
         cpu: |-
-          1m
+          500m
         memory: |-
           1Gi
       requests:

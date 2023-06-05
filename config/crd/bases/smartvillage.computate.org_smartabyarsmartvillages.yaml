@@ -112,7 +112,7 @@ spec:
                       limits:
                         properties:
                           cpu:
-                            default: 1m
+                            default: 500m
                             type: string
                           memory:
                             default: 1Gi
@@ -141,7 +141,7 @@ spec:
                       limits:
                         properties:
                           cpu:
-                            default: 1m
+                            default: 500m
                             type: string
                           memory:
                             default: 1Gi
@@ -502,7 +502,7 @@ spec:
                       limits:
                         properties:
                           cpu:
-                            default: 1m
+                            default: 500m
                             type: string
                           memory:
                             default: 1Gi
