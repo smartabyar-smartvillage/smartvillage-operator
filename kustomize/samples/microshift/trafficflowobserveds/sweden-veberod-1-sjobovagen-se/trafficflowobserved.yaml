@@ -5,10 +5,6 @@ metadata:
   namespace: smartvillage
 spec:
   attributes:
-    address:
-      addressCountry: Sweden
-      addressLocality: Veberöd
-      streetAddress: Sjöbovägen
     area_served: |
       96027913#0 96027913#2 30186293 311389510#1
     averageVehicleLength: 5
@@ -23,6 +19,7 @@ spec:
     customAverageVehiclesPerMinute: 7.00
     customDemandScalingFactor: 1.00
     customQueueLengthThreshold: 2.00
+    customTrafficLightId: veberod-intersection-1
   iotagent:
     base_url: http://iotagent-json.smartvillage.svc:4041
   context_broker:
@@ -43,7 +40,7 @@ spec:
   smartabyar_smartvillage:
     enabled: true
     auth_token_url: https://sso.computate.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
-    site_base_url: https://smartabyarsmartvillage.org
+    site_base_url: https://www.smartabyarsmartvillage.org
   alternate_model:
     enabled: true
     id: sumo
