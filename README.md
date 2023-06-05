@@ -4,8 +4,8 @@
 ## Install kubernetes.core Ansible Galaxy Collection
 
 ```bash
-pip3 install kubernetes jmespath
-ansible-galaxy collection install kubernetes.core
+pip3 install kubernetes jmespath paho-mqtt
+ansible-galaxy collection install kubernetes.core ansible.utils
 ```
 
 ### Upgrade kubernetes.core Ansible Galaxy Collection if necessary
