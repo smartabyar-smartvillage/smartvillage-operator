@@ -60,7 +60,3 @@
 - name: Run Ansible role iotagent-json-subscription
   include_role:
     name: iotagent-json-subscription
-- name: Run Ansible role smartabyar-smartvillage-import
-  include_role:
-    name: smartabyar-smartvillage-import
-  when: values.smartabyar_smartvillage.enabled
