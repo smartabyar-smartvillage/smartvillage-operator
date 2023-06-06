@@ -1,0 +1,9 @@
+apiVersion: helm.openshift.io/v1beta1
+kind: HelmChartRepository
+metadata:
+  name: solr-helm-repo
+  namespace: smart-village-view
+spec:
+  name: solr-helm-repo
+  connectionConfig:
+    url: https://solr.apache.org/charts
