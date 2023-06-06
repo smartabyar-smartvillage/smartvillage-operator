@@ -1,12 +1,6 @@
 apiVersion: smartvillage.computate.org/v1
 kind: IoTAgentJson
 metadata:
-  labels:
-    app.kubernetes.io/name: iotagentjson
-    app.kubernetes.io/instance: iotagentjson-sample
-    app.kubernetes.io/part-of: smartvillage-operator
-    app.kubernetes.io/managed-by: kustomize
-    app.kubernetes.io/created-by: smartvillage-operator
   name: iotagent-json
   namespace: smartvillage
 spec:
@@ -14,4 +8,3 @@ spec:
     replicas: 1
     route:
       create: true
-
