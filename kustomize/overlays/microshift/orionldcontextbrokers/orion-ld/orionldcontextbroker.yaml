@@ -13,3 +13,5 @@ spec:
   orionld:
     route:
       create: true
+    replicas: 1
+

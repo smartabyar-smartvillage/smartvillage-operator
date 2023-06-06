@@ -17,6 +17,7 @@ spec:
   site:
     create: false
     enable_dev_nodeports: true
+    host_name: www.smartabyarsmartvillage.org
   zookeeper:
     create: false
   sso:
