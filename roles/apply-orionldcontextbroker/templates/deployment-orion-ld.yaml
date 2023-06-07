@@ -72,6 +72,10 @@ spec:
               value: postgres
             - name: ORIONLD_TROE_PORT
               value: '5432'
+{% if values.orionld.cors_allowed_origin is defined %}
+            - name: ORIONLD_CORS_ALLOWED_ORIGIN
+              value: '{{ values.orionld.cors_allowed_origin }}'
+{% endif %}
           image: 'quay.io/fiware/orion-ld:1.0.1'
           imagePullPolicy: IfNotPresent
           livenessProbe:

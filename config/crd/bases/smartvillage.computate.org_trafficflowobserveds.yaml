@@ -101,7 +101,7 @@ spec:
                   laneId:
                     type: number
                   location:
-                    type: object
+                    type: string
                   name:
                     type: string
                   occupancy:

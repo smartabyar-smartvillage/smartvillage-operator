@@ -41,6 +41,10 @@ spec:
               orionld:
                 type: object
                 properties:
+                  cors_allowed_origin:
+                    description: "Enable Cross-Origin Resource Sharing with allowed origin. \nUse '__ALL'\
+                      \ for any.\n"
+                    type: string
                   log_level:
                     default: INFO
                     description: "The level of logs to report in the pod logs. \n"

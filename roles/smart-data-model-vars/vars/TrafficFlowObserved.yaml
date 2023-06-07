@@ -228,10 +228,17 @@ smart_data_model:
         the lane id takes the form <edge_id>_<lane_index>. the edge has to be part of the corresponding route. If the edge supports opposite direciton driving, the lane index may use values beyond the lane indices of the stop edge to define stops on the opposite side.
       alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
     location:
-      name: name
-      type: object
+      name: location
+      type: "geo:point"
       description: |
         Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon
+#      properties:
+#        type:
+#          type: string
+#        coordinates:
+#          type: array
+#          items:
+#            type: number
     name:
       name: name
       type: string

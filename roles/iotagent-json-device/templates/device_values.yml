@@ -2,11 +2,11 @@
 {% if values.attributes[key] != '' %}
 {% if (values.attributes[key] | type_debug) == 'AnsibleUnicode' %}
 {{ key }}: |
-  {{ values.attributes[key] | indent(6, False) }}
+  {{ values.attributes[key] | indent(2, False) }}
 {% else %}
 {% if (values.attributes[key] | type_debug) == 'dict' %}
 {{ key }}:
-  {{ values.attributes[key] | to_nice_yaml(indent=2) | indent(6, False) }}
+  {{ values.attributes[key] | to_nice_yaml(indent=2) | indent(2, False) }}
 {% else %}
 {{ key }}: {{ values.attributes[key] }}
 {% endif %}

@@ -44,7 +44,11 @@ spec:
 {% for key, attribute in smart_data_model.attributes.items() %}
 {% if attribute.type != 'array' or attribute.items.type is defined %}
                   {{ key }}:
+{% if 'geo:point' == attribute.type %}
+                    type: string
+{% else %}
                     type: {{ attribute.type }}
+{% endif %}
 {% if attribute.default is defined %}
 {% if (attribute.default | type_debug) == 'AnsibleUnicode' %}
                     default: |
@@ -77,9 +81,14 @@ spec:
                     items:
                       type: {{ attribute.items.type }}
 {% endif %}
+{% if attribute.properties is defined %}
+                    properties:
+                      {{ attribute.properties | to_nice_yaml(indent=2) | indent(22, False) }}
+{% else %}
 {% if MODEL_SPEC[ ENTITY_TYPE ].properties[key].properties is defined %}
                     properties:
                       {{ MODEL_SPEC[ ENTITY_TYPE ].properties[key].properties | to_nice_yaml(indent=2) | indent(22, False) }}
+{% endif %}
 {% endif %}
 {% endif %}
 {% endfor %}

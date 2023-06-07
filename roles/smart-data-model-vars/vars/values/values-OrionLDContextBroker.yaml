@@ -1,11 +1,13 @@
 values:
 
+
   orionld:
     service_name: "{{ crd.orionld.service_name | default(schema | community.general.json_query('orionld.properties.service_name.default')) }}"
     route:
       create: "{{ crd.orionld.route.create | default(schema | community.general.json_query('orionld.properties.route.properties.create.default')) }}"
       host: "{{ crd.orionld.route.host | default('') }}"
     port: "{{ crd.orionld.port | default(schema | community.general.json_query('orionld.properties.port.default')) }}"
+    cors_allowed_origin: "{{ crd.orionld.cors_allowed_origin | default('') }}"
     log_level: "{{ crd.orionld.log_level | default(schema | community.general.json_query('orionld.properties.log_level.default')) }}"
     replicas: "{{ crd.orionld.replicas | default(schema | community.general.json_query('orionld.properties.replicas.default')) }}"
     resources:

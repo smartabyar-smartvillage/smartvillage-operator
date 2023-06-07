@@ -26,6 +26,11 @@ schema:
       port:
         type: number
         default: 1026
+      cors_allowed_origin:
+        type: string
+        description: |
+          Enable Cross-Origin Resource Sharing with allowed origin. 
+          Use '__ALL' for any.
       log_level:
         type: string
         default: INFO
