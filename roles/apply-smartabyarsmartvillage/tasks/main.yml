@@ -36,7 +36,7 @@
     definition: "{{ lookup('template', 'service-zookeeper-nodeport.yaml') }}"
 - name: "{{ 'Install' if values.site.enable_dev_nodeports else 'Skip' }} fiware-broker-mqtt-nodeport NodePort service on OpenShift"
   k8s:
-    state: "{{ 'present' if values.site.enable_dev_nodeports and values.postgres.create else 'absent' }}"
+    state: "{{ 'present' if values.site.enable_dev_nodeports else 'absent' }}"
     api_version: v1
     kind: Service
     name: "fiware-broker-mqtt-nodeport"
