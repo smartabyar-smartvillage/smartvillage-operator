@@ -43,6 +43,11 @@
 							var t = 'type: ' + record.type + '<br>';
 							t += 'ID: ' + record.id + '<br>';
 							t += 'Route Id: ' + record.customRouteId.value + '<br>';
+							if(record.address && record.address.value) {
+								t += 'Country: ' + record.address.value.addressCountry + '<br>';
+								t += 'Locality: ' + record.address.value.addressLocality + '<br>';
+								t += 'Address: ' + record.address.value.streetAddress + '<br>';
+							}
 							t += 'Acceleration: ' + record.customAcceleration.value + '<br>';
 							t += 'Deceleration: ' + record.customDeceleration.value + '<br>';
 							t += 'Min Green Time: ' + record.customMinGreenTime.value + '<br>';
