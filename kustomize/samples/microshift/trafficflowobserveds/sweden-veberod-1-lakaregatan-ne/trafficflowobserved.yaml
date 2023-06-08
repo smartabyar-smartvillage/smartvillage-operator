@@ -5,6 +5,10 @@ metadata:
   namespace: smartvillage
 spec:
   attributes:
+    address:
+      addressCountry: Sweden
+      addressLocality: Veberöd
+      streetAddress: Läkaregatan
     area_served: |
       -355113043#1 -24626686#2 -24626686#1 -34992983#3 -34992983#1
     averageVehicleLength: 5
@@ -20,6 +24,7 @@ spec:
     customDemandScalingFactor: 1.00
     customQueueLengthThreshold: 8.00
     customTrafficLightId: veberod-intersection-1
+    location: 55.633703, 13.492540
   iotagent:
     base_url: http://iotagent-json.smartvillage.svc:4041
   context_broker:

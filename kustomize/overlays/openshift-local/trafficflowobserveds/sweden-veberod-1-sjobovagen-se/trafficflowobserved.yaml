@@ -23,6 +23,7 @@ spec:
     customAverageVehiclesPerMinute: 7.00
     customDemandScalingFactor: 1.00
     customQueueLengthThreshold: 2.00
+    customTrafficLightId: veberod-intersection-1
     location: 55.633825, 13.492458
   iotagent:
     base_url: http://iotagent-json-smartvillage.apps-crc.testing
