@@ -62,6 +62,12 @@ cd ~/.local/src/smartvillage-operator
 make deploy
 ```
 
+## View the logs of the operator
+
+```bash
+oc logs -n smartvillage-operator-system deployment/smartvillage-operator-controller-manager -f
+```
+
 ## Deploy the FIWARE components into the namespace
 
 This will install the following applications: 
