@@ -52,7 +52,7 @@ oc config set-context --current --namespace=smartvillage
 
 ```bash
 cd ~/.local/src/smartvillage-operator
-oc apply -k kustomize/bundles/amq-broker/
+oc apply -k kustomize/operators/amq-broker-in-namespace/
 ```
 
 ## Deploy the operator into the namespace
