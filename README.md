@@ -82,13 +82,7 @@ operator-sdk olm install
 ```
 
 
-- [Install Red Hat MicroShift following the official documentation here](https://access.redhat.com/documentation/en-us/red_hat_build_of_microshift). 
-- Make sure you have the `oc` command in your terminal after installation of MicroShift. 
-- Make sure microshift is running: `systemctl status microshift`. 
-- Watch the logs for MicroShift if you find any problems: `journalctl -fu microshift`
-- Make sure your computer has an actual ethernet connection and not WIFI for MicroShift to work. 
-
-## Create a new namespace in MicroShift for the Smart Village Operator and application. 
+## Create a new namespace in kubernetes for the Smart Village Operator and application. 
 
 ```bash
 oc create namespace smartvillage
@@ -130,7 +124,7 @@ This will install the following applications:
 
 ```bash
 cd ~/.local/src/smartvillage-operator
-oc apply -k kustomize/overlays/microshift/
+oc apply -k kustomize/overlays/kubernetes/
 ```
 
 ## Optional: Deploy sample Smart Data Models into the namespace
@@ -145,7 +139,15 @@ device entity data to the Smart Village platform in the cloud.
 
 ```bash
 cd ~/.local/src/smartvillage-operator
-oc apply -k kustomize/samples/microshift/
+oc apply -k kustomize/samples/kubernetes/
+```
+
+Test the orion-ld entity API to see the smart data models in the Context Broker: 
+
+```bash
+kubectl run --image=registry.access.redhat.com/ubi8/ubi --rm -it -- bash
+yum install -y jq
+curl http://orion-ld:1026/v2/entities -H "Fiware-Service: smarttrafficlights" -H "Fiware-ServicePath: /Sweden/Veberod/CityCenter" | jq
 ```
 
 # Installation on Red Hat MicroShift
