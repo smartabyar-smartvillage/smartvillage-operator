@@ -1,19 +1,4 @@
 
-# Prerequisites
-
-## Install kubernetes.core Ansible Galaxy Collection
-
-```bash
-pip3 install kubernetes jmespath paho-mqtt
-ansible-galaxy collection install kubernetes.core ansible.utils
-```
-
-### Upgrade kubernetes.core Ansible Galaxy Collection if necessary
-
-```bash
-ansible-galaxy collection install kubernetes.core -U
-```
-
 # Clone the Smart Village Operator
 
 Create a directory for the Smart Village Operator source code: 
@@ -27,6 +12,140 @@ Clone the Smart Village Operator source code:
 
 ```bash
 git clone git@github.com:computate-org/smartvillage-operator.git ~/.local/src/smartvillage-operator
+```
+
+# Install Smart Village Operator on Kubernetes Kind
+
+## Install Kubernetes Kind
+
+See the documentation [here](https://kind.sigs.k8s.io/docs/user/quick-start/). 
+
+```bash
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.18.0/kind-linux-amd64
+chmod +x ./kind
+sudo mv ./kind /usr/bin/kind
+sudo kind create cluster
+```
+
+## ERROR: failed to create cluster: running kind with rootless provider requires setting systemd property "Delegate=yes"
+
+If you get the error above, follow the instructions [here](https://kind.sigs.k8s.io/docs/user/rootless/). 
+You may not need to modify `/etc/default/grub`. 
+
+After following these instructions, *reboot your computer*. 
+
+## Install kubectl
+
+
+```bash
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+chmod +x kubectl
+sudo mv kubectl /usr/bin/
+```
+
+Test that you can connect to your kubernetes cluster
+
+```bash
+kubectl get pod -A
+```
+
+
+## Install Red Hat Pull Secret
+
+Create a free Red Hat Developer account, and download your Red Hat OpenShift pull secret [https://console.redhat.com/openshift/create/local](https://console.redhat.com/openshift/create/local). 
+
+```bash
+kubectl create secret generic redhat-reg --from-file=.dockerconfigjson="$HOME/Downloads/pull-secret" --type=kubernetes.io/dockerconfigjson
+kubectl patch serviceaccount amq-broker-controller-manager -p '{"imagePullSecrets": [{"name": "redhat-reg"}]}'
+```
+
+## Install the Operator SDK
+
+```bash
+export ARCH=$(case $(uname -m) in x86_64) echo -n amd64 ;; aarch64) echo -n arm64 ;; *) echo -n $(uname -m) ;; esac)
+export OS=$(uname | awk '{print tolower($0)}')
+export OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.28.1
+curl -LO ${OPERATOR_SDK_DL_URL}/operator-sdk_${OS}_${ARCH}
+gpg --keyserver keyserver.ubuntu.com --recv-keys 052996E2A20B5C7E
+curl -LO ${OPERATOR_SDK_DL_URL}/checksums.txt
+curl -LO ${OPERATOR_SDK_DL_URL}/checksums.txt.asc
+gpg -u "Operator SDK (release) <cncf-operator-sdk@cncf.io>" --verify checksums.txt.asc
+grep operator-sdk_${OS}_${ARCH} checksums.txt | sha256sum -c -
+sudo chmod +x operator-sdk_${OS}_${ARCH} && sudo mv operator-sdk_${OS}_${ARCH} /usr/bin/operator-sdk
+```
+
+
+Install operators to cluster
+
+```bash
+operator-sdk olm install
+```
+
+
+- [Install Red Hat MicroShift following the official documentation here](https://access.redhat.com/documentation/en-us/red_hat_build_of_microshift). 
+- Make sure you have the `oc` command in your terminal after installation of MicroShift. 
+- Make sure microshift is running: `systemctl status microshift`. 
+- Watch the logs for MicroShift if you find any problems: `journalctl -fu microshift`
+- Make sure your computer has an actual ethernet connection and not WIFI for MicroShift to work. 
+
+## Create a new namespace in MicroShift for the Smart Village Operator and application. 
+
+```bash
+oc create namespace smartvillage
+```
+
+## Configure the new namespace as the current context
+```bash
+oc config set-context --current --namespace=smartvillage
+```
+
+## Install the required AMQ Broker Operator bundle
+
+```bash
+cd ~/.local/src/smartvillage-operator
+oc apply -k kustomize/operators/amq-broker-in-namespace/
+```
+
+## Deploy the operator into the namespace
+
+```bash
+cd ~/.local/src/smartvillage-operator
+make deploy
+```
+
+## View the logs of the operator
+
+```bash
+oc logs -n smartvillage-operator-system deployment/smartvillage-operator-controller-manager -f
+```
+
+## Deploy the FIWARE components into the namespace
+
+This will install the following applications: 
+
+- An Edge version of the Red Hat AMQ Broker for AMQP and MQTT protocols
+- A FIWARE Orion-LD Context Broker for smart device entity data
+- An IoT Agent JSON for receiving AMQP and MQTT messages and updating the Context Broker
+- The Smarta Byar Smart Village Sync microservice, for sending context broker subscription data to the Smart Village application. 
+
+```bash
+cd ~/.local/src/smartvillage-operator
+oc apply -k kustomize/overlays/microshift/
+```
+
+## Optional: Deploy sample Smart Data Models into the namespace
+
+Some sample TrafficFlowObserved Smart Data Models are provided, 
+as well as an Orion-LD Smart Village Sync microservice. 
+These will automatically be sent by MQTT to the IoT Agent JSON, 
+and into the Orion-LD Context broker. A subscription is set up
+that will publish to the Orion-LD Smart Village Sync service. 
+The Orion-LD Smart Village Sync is for publishing securely 
+device entity data to the Smart Village platform in the cloud. 
+
+```bash
+cd ~/.local/src/smartvillage-operator
+oc apply -k kustomize/samples/microshift/
 ```
 
 # Installation on Red Hat MicroShift
@@ -249,5 +368,20 @@ oc apply -k ~/.local/src/smartabyar-smartvillage/openshift/kustomize/overlays/lo
 ```bash
 oc apply -k ~/.local/src/smartabyar-smartvillage/openshift/kustomize/overlays/local/trafficflowobserveds/
 # Finishes in about 15 seconds
+```
+
+# Operator Developer Prerequisites
+
+## Install kubernetes.core Ansible Galaxy Collection
+
+```bash
+pip3 install kubernetes jmespath paho-mqtt
+ansible-galaxy collection install kubernetes.core ansible.utils
+```
+
+### Upgrade kubernetes.core Ansible Galaxy Collection if necessary
+
+```bash
+ansible-galaxy collection install kubernetes.core -U
 ```
 
