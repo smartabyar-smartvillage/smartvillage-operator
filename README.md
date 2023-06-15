@@ -48,8 +48,18 @@ nodes:
     hostPort: 8043
     protocol: TCP
 ' > /tmp/kind-cluster.yaml
+```
 
+Create the cluster on Red Hat Enterprise Linux: 
+
+```bash
 systemd-run --user --scope --property=Delegate=yes kind create cluster --config=/tmp/kind-cluster.yaml
+```
+
+Create the cluster on Microsoft Windows:
+
+```bash
+kind create cluster --config=/tmp/kind-cluster.yaml
 ```
 
 Apply Contour components for Ingress
