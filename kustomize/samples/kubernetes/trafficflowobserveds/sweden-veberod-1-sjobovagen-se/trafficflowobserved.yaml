@@ -9,7 +9,7 @@ spec:
       addressCountry: Sweden
       addressLocality: Veberöd
       streetAddress: Sjöbovägen
-    area_served: |
+    areaServed: |
       96027913#0 96027913#2 30186293 311389510#1
     averageVehicleLength: 5
     averageGapDistance: 1

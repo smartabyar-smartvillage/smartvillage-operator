@@ -9,7 +9,7 @@ spec:
       addressCountry: Sweden
       addressLocality: Veberöd
       streetAddress: Läkaregatan
-    area_served: |
+    areaServed: |
       -355113043#1 -24626686#2 -24626686#1 -34992983#3 -34992983#1
     averageVehicleLength: 5
     averageGapDistance: 1

@@ -24,7 +24,39 @@ See the documentation [here](https://kind.sigs.k8s.io/docs/user/quick-start/).
 curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.18.0/kind-linux-amd64
 chmod +x ./kind
 sudo mv ./kind /usr/bin/kind
-sudo kind create cluster
+```
+
+Create a cluster with ingress available on port 8080 and 8043
+
+```bash
+echo '
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+  kubeadmConfigPatches:
+  - |
+    kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "ingress-ready=true"
+  extraPortMappings:
+  - containerPort: 80
+    hostPort: 8080
+    protocol: TCP
+  - containerPort: 443
+    hostPort: 8043
+    protocol: TCP
+' > /tmp/kind-cluster.yaml
+
+systemd-run --user --scope --property=Delegate=yes kind create cluster --config=/tmp/kind-cluster.yaml
+```
+
+Apply Contour components for Ingress
+
+```bash
+kubectl apply -f https://projectcontour.io/quickstart/contour.yaml
+kubectl patch daemonsets -n projectcontour envoy -p '{"spec":{"template":{"spec":{"nodeSelector":{"ingress-ready":"true"},"tolerations":[{"key":"node-role.kubernetes.io/control-plane","operator":"Equal","effect":"NoSchedule"},{"key":"node-role.kubernetes.io/master","operator":"Equal","effect":"NoSchedule"}]}}}}'
 ```
 
 ## ERROR: failed to create cluster: running kind with rootless provider requires setting systemd property "Delegate=yes"
@@ -47,16 +79,6 @@ Test that you can connect to your kubernetes cluster
 
 ```bash
 kubectl get pod -A
-```
-
-
-## Install Red Hat Pull Secret
-
-Create a free Red Hat Developer account, and download your Red Hat OpenShift pull secret [https://console.redhat.com/openshift/create/local](https://console.redhat.com/openshift/create/local). 
-
-```bash
-kubectl create secret generic redhat-reg --from-file=.dockerconfigjson="$HOME/Downloads/pull-secret" --type=kubernetes.io/dockerconfigjson
-kubectl patch serviceaccount amq-broker-controller-manager -p '{"imagePullSecrets": [{"name": "redhat-reg"}]}'
 ```
 
 ## Install the Operator SDK
@@ -85,19 +107,28 @@ operator-sdk olm install
 ## Create a new namespace in kubernetes for the Smart Village Operator and application. 
 
 ```bash
-oc create namespace smartvillage
+kubectl create namespace smartvillage
 ```
 
 ## Configure the new namespace as the current context
 ```bash
-oc config set-context --current --namespace=smartvillage
+kubectl config set-context --current --namespace=smartvillage
+```
+
+## Install Red Hat Pull Secret
+
+Create a free Red Hat Developer account, and download your Red Hat OpenShift pull secret [https://console.redhat.com/openshift/create/local](https://console.redhat.com/openshift/create/local). 
+
+```bash
+kubectl create secret generic redhat-reg --from-file=.dockerconfigjson="$HOME/Downloads/pull-secret" --type=kubernetes.io/dockerconfigjson
 ```
 
 ## Install the required AMQ Broker Operator bundle
 
 ```bash
 cd ~/.local/src/smartvillage-operator
-oc apply -k kustomize/operators/amq-broker-in-namespace/
+kubectl apply -k kustomize/operators/amq-broker-in-namespace/
+kubectl patch serviceaccount amq-broker-controller-manager -p '{"imagePullSecrets": [{"name": "redhat-reg"}]}'
 ```
 
 ## Deploy the operator into the namespace
@@ -105,12 +136,6 @@ oc apply -k kustomize/operators/amq-broker-in-namespace/
 ```bash
 cd ~/.local/src/smartvillage-operator
 make deploy
-```
-
-## View the logs of the operator
-
-```bash
-oc logs -n smartvillage-operator-system deployment/smartvillage-operator-controller-manager -f
 ```
 
 ## Deploy the FIWARE components into the namespace
@@ -124,7 +149,20 @@ This will install the following applications:
 
 ```bash
 cd ~/.local/src/smartvillage-operator
-oc apply -k kustomize/overlays/kubernetes/
+kubectl apply -k kustomize/overlays/kubernetes/
+```
+
+## View the events of the deployment
+
+```bash
+kubectl get events -w
+kubectl get pod
+```
+
+## View the logs of the operator
+
+```bash
+kubectl logs -n smartvillage-operator-system deployment/smartvillage-operator-controller-manager -f
 ```
 
 ## Optional: Deploy sample Smart Data Models into the namespace
@@ -139,7 +177,7 @@ device entity data to the Smart Village platform in the cloud.
 
 ```bash
 cd ~/.local/src/smartvillage-operator
-oc apply -k kustomize/samples/kubernetes/
+kubectl apply -k kustomize/samples/kubernetes/
 ```
 
 Test the orion-ld entity API to see the smart data models in the Context Broker: 
