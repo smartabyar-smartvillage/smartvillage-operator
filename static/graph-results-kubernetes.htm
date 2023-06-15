@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+	<head>
+		<title>map results</title>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+		<script src="https://code.jquery.com/jquery-3.6.2.min.js" crossorigin="anonymous"></script>
+		<script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
+		<script>
+
+			function fiwareGraph(apiRequest) {
+				$.ajax({
+						dataType: 'json'
+						, url: 'http://localhost:8080/v2/entities'
+						, headers: { 'Fiware-Service': 'smarttrafficlights', 'Fiware-ServicePath': '/Sweden/Veberod/CityCenter' }
+						, type: 'GET'
+						, crossDomain: true
+				}).fail(function(data, textStatus) {
+					console.log(data);
+				}).done(function( entities ) {
+					var data = [];
+					var layout = {};
+					layout['showlegend'] = true;
+					layout['dragmode'] = 'zoom';
+					layout['uirevision'] = 'true';
+					layout['mapbox'] = { style: 'open-street-map', center: { lat: 55.633758, lon: 13.492508 }, zoom: 17 };
+					layout['margin'] = { r: 0, t: 30, b: 0, l: 0 };
+					var trace = {};
+					trace['showlegend'] = true;
+					trace['type'] = 'scattermapbox';
+					var colors = [];
+					var lat = [];
+					var lon = [];
+					var text = [];
+					trace['lat'] = lat;
+					trace['lon'] = lon;
+					trace['text'] = text;
+					entities.forEach((record) => {
+						var location = record.location;
+						if(location) {
+							var locationParts = location.value.split(', ');
+							var t = 'type: ' + record.type + '<br>';
+							t += 'ID: ' + record.id + '<br>';
+							t += 'Route Id: ' + record.customRouteId.value + '<br>';
+							if(record.address && record.address.value) {
+								t += 'Country: ' + record.address.value.addressCountry + '<br>';
+								t += 'Locality: ' + record.address.value.addressLocality + '<br>';
+								t += 'Address: ' + record.address.value.streetAddress + '<br>';
+							}
+							t += 'Acceleration: ' + record.customAcceleration.value + '<br>';
+							t += 'Deceleration: ' + record.customDeceleration.value + '<br>';
+							t += 'Min Green Time: ' + record.customMinGreenTime.value + '<br>';
+							t += 'Max Green Time: ' + record.customMaxGreenTime.value + '<br>';
+							t += 'Average Vehicles Per Minute: ' + record.customAverageVehiclesPerMinute.value + '<br>';
+							t += 'Demand Scaling Factor: ' + record.customDemandScalingFactor.value + '<br>';
+							t += 'Queue Length Threshold: ' + record.customQueueLengthThreshold.value + '<br>';
+							t += 'Traffic Light Id: ' + record.customTrafficLightId.value + '<br>';
+							text.push(t);
+							lat.push(parseFloat(locationParts[0]));
+							lon.push(parseFloat(locationParts[1]));
+							colors.push('red');
+						}
+					});
+					trace['marker'] = { color: colors, size: 10 };
+					data.push(trace);
+					Plotly.react('PageGraph', data, layout);
+				});
+			}
+
+			$(document).ready(function() {
+				fiwareGraph();
+			});
+		</script>
+
+	</head>
+	<body class="w3-light-grey " style="height: 100%;">
+		<div id="PageGraph" class="w3-content htmBodyGraph "></div>
+	</body>
+</html>

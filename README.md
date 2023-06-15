@@ -165,6 +165,72 @@ kubectl get pod
 kubectl logs -n smartvillage-operator-system deployment/smartvillage-operator-controller-manager -f
 ```
 
+## Expose the orion-ld context broker as Ingress
+
+Create an HTTP Proxy with CORS for orion-ld at localhost
+
+```bash
+echo '
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: orion-ld
+spec:
+  virtualhost:
+    fqdn: localhost
+    corsPolicy:
+        allowCredentials: true
+        allowOrigin:
+          - "*" # allows any origin
+        allowMethods:
+          - GET
+          - POST
+          - OPTIONS
+        allowHeaders:
+          - authorization
+          - cache-control
+          - fiware-service
+          - fiware-servicepath
+        exposeHeaders:
+          - Content-Length
+          - Content-Range
+        maxAge: "10m" # preflight requests can be cached for 10 minutes.
+  routes:
+    - conditions:
+      - prefix: /
+      services:
+        - name: orion-ld
+          port: 1026
+' > /tmp/contour-cors.yaml
+
+kubectl apply -f /tmp/contour-cors.yaml
+```
+
+Expose an Ingress for orion-ld
+
+```bash
+echo '
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: orion-ld
+spec:
+  rules:
+    - host: localhost
+      http:
+        paths:
+          - backend:
+              service: 
+                name: orion-ld
+                port:
+                  number: 1026
+            path: /orion-ld
+            pathType: Prefix
+' > /tmp/ingress.yaml
+
+oc apply -f /tmp/ingress.yaml
+```
+
 ## Optional: Deploy sample Smart Data Models into the namespace
 
 Some sample TrafficFlowObserved Smart Data Models are provided, 
