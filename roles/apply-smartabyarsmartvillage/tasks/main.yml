@@ -34,6 +34,14 @@
     name: "zookeeper-nodeport"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'service-zookeeper-nodeport.yaml') }}"
+- name: "{{ 'Install' if values.site.enable_dev_nodeports else 'Skip' }} solr-nodeport NodePort service on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.site.enable_dev_nodeports and values.solr.create else 'absent' }}"
+    api_version: v1
+    kind: Service
+    name: "solr-nodeport"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'service-solr-nodeport.yaml') }}"
 - name: "{{ 'Install' if values.site.enable_dev_nodeports else 'Skip' }} fiware-broker-mqtt-nodeport NodePort service on OpenShift"
   k8s:
     state: "{{ 'present' if values.site.enable_dev_nodeports else 'absent' }}"

@@ -71,5 +71,7 @@ spec:
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
-      securityContext: {}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
       schedulerName: default-scheduler

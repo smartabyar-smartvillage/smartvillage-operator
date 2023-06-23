@@ -8,7 +8,7 @@ verify_connections: true
 postgres_nodeport: 30432
 postgres_nodeport_hostname: postgres.apps-crc.testing
 
-solr_nodeport: 443
+solr_nodeport: 30983
 
 kafka_nodeport: 32000
 kafka_nodeport_hostname: kafka.apps-crc.testing

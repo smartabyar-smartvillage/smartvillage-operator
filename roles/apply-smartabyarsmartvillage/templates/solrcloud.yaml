@@ -17,6 +17,7 @@ spec:
     podOptions:
       podSecurityContext:
         runAsNonRoot: true
+        runAsUser: 8983
       serviceAccountName: solr
       resources:
         limits:
