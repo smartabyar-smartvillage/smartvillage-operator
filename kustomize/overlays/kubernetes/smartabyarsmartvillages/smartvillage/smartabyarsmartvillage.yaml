@@ -10,6 +10,7 @@ metadata:
   name: smartvillage
   namespace: smartvillage
 spec:
+  openshift: false
   site:
     create: true
     enable_dev_nodeports: true

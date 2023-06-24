@@ -31,6 +31,7 @@ spec:
           bootstrap:
             nodePort: 32100
           brokers:
+{% if values.openshift %}
             - broker: 0
               nodePort: 32000
               advertisedHost: kafka0.apps-crc.testing
@@ -40,6 +41,17 @@ spec:
             - broker: 2
               nodePort: 32002
               advertisedHost: kafka2.apps-crc.testing
+{% else %}
+            - broker: 0
+              nodePort: 32000
+              advertisedHost: localhost
+            - broker: 1
+              nodePort: 32001
+              advertisedHost: localhost
+            - broker: 2
+              nodePort: 32002
+              advertisedHost: localhost
+{% endif %}
 {% endif %}
     storage:
       type: ephemeral

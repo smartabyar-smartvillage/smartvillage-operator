@@ -72,6 +72,9 @@ spec:
   image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres-gis:ubi8-15.1-3.3-0
   postgresVersion: 15
   postGISVersion: 3.3.0
+{% if values.openshift %}
+  openshift: true
+{% endif %}
   users:
     - name: {{ values.sso.cluster_name | default('') }}
       options: "SUPERUSER"

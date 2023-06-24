@@ -257,7 +257,7 @@
     name: solr
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'route-solr.yaml') }}"
-  when: values.solr.create
+  when: values.openshift and values.solr.create
   ignore_errors: true
 
 - name: "Query prerequisite host names"
@@ -404,7 +404,7 @@
     name: "{{ site_name }}-web"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'route-web.yaml') }}"
-  when: values.site.create
+  when: values.openshift and values.site.create
 - name: "Install orionld-smartvillage-sync service on OpenShift"
   k8s:
     state: "{{ 'present' if values.orionld.sync else 'absent' }}"
