@@ -243,6 +243,8 @@ spec:
 
             - name: AUTH_ROLE_ADMIN
               value: '{{ values.auth_role.admin }}'
+            - name: AUTH_ROLE_SUPER_ADMIN
+              value: '{{ values.auth_role.superadmin }}'
             - name: AUTH_ROLE_REQUIRED_SiteUser
               value: '{{ values.auth_role.siteuser }}'
             - name: AUTH_ROLE_REQUIRED_MapResult

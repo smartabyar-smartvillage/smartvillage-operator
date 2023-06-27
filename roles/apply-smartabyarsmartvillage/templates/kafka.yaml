@@ -30,6 +30,8 @@ spec:
         configuration:
           bootstrap:
             nodePort: 32100
+            alternativeNames:
+              - localhost
           brokers:
 {% if values.openshift %}
             - broker: 0

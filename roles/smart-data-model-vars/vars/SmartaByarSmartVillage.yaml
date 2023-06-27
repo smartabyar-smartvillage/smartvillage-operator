@@ -423,6 +423,9 @@ schema:
       admin:
         type: string
         default: 'SiteAdmin'
+      superadmin:
+        type: string
+        default: 'SuperAdmin'
       siteuser:
         type: string
         default: 'SiteAdmin'
