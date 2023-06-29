@@ -1,0 +1,11 @@
+spec:
+  ports:
+    - name: default-solrcloud-common
+      protocol: TCP
+      port: 8983
+      targetPort: 8983
+      nodePort: {{ solr_nodeport }}
+  type: NodePort
+  selector:
+    solr-cloud: default
+    technology: solr-cloud

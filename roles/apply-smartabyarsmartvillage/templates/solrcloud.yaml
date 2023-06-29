@@ -17,6 +17,11 @@ spec:
     podOptions:
       podSecurityContext:
         runAsNonRoot: true
+{% if values.openshift %}
+{% else %}
+        runAsUser: 8983
+        fsGroup: 8983
+{% endif %}
       serviceAccountName: solr
       resources:
         limits:

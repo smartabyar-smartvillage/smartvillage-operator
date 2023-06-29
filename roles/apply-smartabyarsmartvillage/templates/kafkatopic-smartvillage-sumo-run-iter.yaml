@@ -1,0 +1,4 @@
+metadata:
+  labels:
+    strimzi.io/cluster: smartvillage-kafka
+spec: {}

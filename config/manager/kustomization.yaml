@@ -5,4 +5,4 @@ kind: Kustomization
 images:
 - name: controller
   newName: quay.io/computateorg/smartvillage-operator
-  newTag: 0.0.236
+  newTag: 0.0.248

@@ -1,6 +1,7 @@
 values:
 
 
+  openshift: "{{ crd.openshift | default(schema | community.general.json_query('openshift.default')) }}"
   site:
     create: "{{ crd.site.create | default(schema | community.general.json_query('site.properties.create.default')) }}"
     enable_dev_nodeports: "{{ crd.site.enable_dev_nodeports | default(schema | community.general.json_query('site.properties.enable_dev_nodeports.default')) }}"
@@ -24,6 +25,7 @@ values:
     name: "{{ crd.site.name | default(schema | community.general.json_query('site.properties.name.default')) }}"
     secret_name: "{{ crd.site.secret_name | default(schema | community.general.json_query('site.properties.secret_name.default')) }}"
     host_name: "{{ crd.site.host_name | default(schema | community.general.json_query('site.properties.host_name.default')) }}"
+    site_base_url: "{{ crd.site.site_base_url | default('') }}"
     zone: "{{ crd.site.zone | default(schema | community.general.json_query('site.properties.zone.default')) }}"
     locale: "{{ crd.site.locale | default(schema | community.general.json_query('site.properties.locale.default')) }}"
     instances: "{{ crd.site.instances | default(schema | community.general.json_query('site.properties.instances.default')) }}"
@@ -121,6 +123,7 @@ values:
       enabled: "{{ crd.import_data.trafficsimulation.enabled | default(schema | community.general.json_query('import_data.properties.trafficsimulation.properties.enabled.default')) }}"
   auth_role:
     admin: "{{ crd.auth_role.admin | default(schema | community.general.json_query('auth_role.properties.admin.default')) }}"
+    superadmin: "{{ crd.auth_role.superadmin | default(schema | community.general.json_query('auth_role.properties.superadmin.default')) }}"
     siteuser: "{{ crd.auth_role.siteuser | default(schema | community.general.json_query('auth_role.properties.siteuser.default')) }}"
     sitepage: "{{ crd.auth_role.sitepage | default(schema | community.general.json_query('auth_role.properties.sitepage.default')) }}"
     sitehtm: "{{ crd.auth_role.sitehtm | default(schema | community.general.json_query('auth_role.properties.sitehtm.default')) }}"

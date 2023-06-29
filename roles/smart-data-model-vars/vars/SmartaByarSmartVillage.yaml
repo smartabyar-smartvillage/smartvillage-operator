@@ -7,6 +7,12 @@ description: |
   as the test village, supported by Smarta Byar.
 schema:
 
+  openshift:
+    type: boolean
+    default: true
+    description: |
+      true if deploying applications to OpenShift, 
+      false if deploying applications to kubernetes. 
   site:
     type: object
     properties:
@@ -83,6 +89,8 @@ schema:
       host_name:
         type: string
         default: smartvillage.apps-crc.testing
+      site_base_url:
+        type: string
       zone:
         type: string
         default: "America/New_York"
@@ -417,6 +425,9 @@ schema:
       admin:
         type: string
         default: 'SiteAdmin'
+      superadmin:
+        type: string
+        default: 'SuperAdmin'
       siteuser:
         type: string
         default: 'SiteAdmin'

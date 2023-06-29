@@ -15,6 +15,7 @@ spec:
     to study what social sustainability means by using a digital twin of Veberöd, Sweden 
     as the test village, supported by Smarta Byar.
 
+  openshift: True
   site:
     create: True
     enable_dev_nodeports: False
@@ -177,6 +178,8 @@ spec:
   auth_role:
     admin: |-
       SiteAdmin
+    superadmin: |-
+      SuperAdmin
     siteuser: |-
       SiteAdmin
     sitepage: |-

@@ -79,9 +79,9 @@ spec:
             - name: SITE_PORT
               value: "8080"
             - name: SITE_BASE_URL
-              value: "https://{{ site_host_name }}"
+              value: "{{ values.site.site_base_url | default('https://' + site_host_name) }}"
             - name: STATIC_BASE_URL
-              value: "{{ static_base_url }}"
+              value: "{{ static_base_url | default((values.site.site_base_url | default('https://' + site_host_name, true)) + '/static', true) }}"
             - name: STATIC_PATH
               value: "/usr/local/src/smartabyar-smartvillage-static"
             - name: SITE_ZONE
@@ -225,6 +225,8 @@ spec:
 
             - name: AUTH_ROLE_ADMIN
               value: '{{ values.auth_role.admin }}'
+            - name: AUTH_ROLE_SUPER_ADMIN
+              value: '{{ values.auth_role.superadmin }}'
             - name: AUTH_ROLE_REQUIRED_SiteUser
               value: '{{ values.auth_role.siteuser }}'
             - name: AUTH_ROLE_REQUIRED_MapResult

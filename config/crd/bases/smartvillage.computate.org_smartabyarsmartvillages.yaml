@@ -39,6 +39,9 @@ spec:
             description: Spec defines the desired state of SmartaByarSmartVillage
             type: object
             properties:
+              openshift:
+                type: boolean
+                default: True
               site:
                 type: object
                 properties:
@@ -87,8 +90,10 @@ spec:
                     type: object
                   secret_name:
                     default: smartvillage
-                    description: "The secret name to store site secrets. \nIf empty, \"smartvillage\"\
-                      \ will be used. \n"
+                    description: "The secret name to store site secrets. \nIf empty, \"smartvillage\"
+                      will be used. \n"
+                    type: string
+                  site_base_url:
                     type: string
                   ssl_verify:
                     default: false
@@ -219,8 +224,8 @@ spec:
                 properties:
                   client_secret_name:
                     default: keycloak-client-secret-smartvillage
-                    description: "Optional secret name where the SSO secrets are stored. \nIf empty,\
-                      \ \"keycloak-client-secret-smartvillage\" will be used. \n"
+                    description: "Optional secret name where the SSO secrets are stored. \nIf empty,
+                      \"keycloak-client-secret-smartvillage\" will be used. \n"
                     type: string
                   cluster_name:
                     default: sso
@@ -235,8 +240,8 @@ spec:
                     type: string
                   postgres_secret_name:
                     default: postgres-pguser-sso
-                    description: "Optional secret name where the SSO secrets are stored. \nIf empty,\
-                      \ \"postgres-pguser-sso\" will be used. \n"
+                    description: "Optional secret name where the SSO secrets are stored. \nIf empty,
+                      \"postgres-pguser-sso\" will be used. \n"
                     type: string
 
               auth:
@@ -267,8 +272,8 @@ spec:
                 properties:
                   cluster_name:
                     default: postgres
-                    description: "Crunchy Postgres cluster name. \nIf empty, \"postgres\" will be used.\
-                      \ \n"
+                    description: "Crunchy Postgres cluster name. \nIf empty, \"postgres\" will be used.
+                      \n"
                     type: string
                   create:
                     default: true
@@ -301,8 +306,8 @@ spec:
                     type: object
                   secret_name:
                     default: postgres-pguser-smartvillage
-                    description: "Optional secret name where the postgres secrets are stored. \nIf empty,\
-                      \ \"postgres-pguser-smartvillage\" will be used. \n"
+                    description: "Optional secret name where the postgres secrets are stored. \nIf empty,
+                      \"postgres-pguser-smartvillage\" will be used. \n"
                     type: string
                   service_name:
                     default: postgres-primary
@@ -369,8 +374,8 @@ spec:
                     type: boolean
                   secret_name:
                     default: smartvillage
-                    description: "The secret name to store SMTP email secrets. \nIf empty, \"smartvillage\"\
-                      \ will be used. \n"
+                    description: "The secret name to store SMTP email secrets. \nIf empty, \"smartvillage\"
+                      will be used. \n"
                     type: string
 
               import_data:
@@ -457,6 +462,9 @@ spec:
                     type: string
                   smarttrafficlight:
                     default: SiteAdmin
+                    type: string
+                  superadmin:
+                    default: SuperAdmin
                     type: string
                   systemevent:
                     default: SiteAdmin
@@ -640,8 +648,8 @@ spec:
                 properties:
                   sync:
                     default: true
-                    description: "Determines if the orionld-smartvillage-sync application will be created.\
-                      \ \n"
+                    description: "Determines if the orionld-smartvillage-sync application will be created.
+                      \n"
                     type: boolean
                   sync_replicas:
                     default: 1

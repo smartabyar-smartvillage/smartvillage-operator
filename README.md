@@ -139,6 +139,7 @@ kubectl create secret generic redhat-reg --from-file=.dockerconfigjson="$HOME/Do
 cd ~/.local/src/smartvillage-operator
 kubectl apply -k kustomize/operators/amq-broker-in-namespace/
 kubectl patch serviceaccount amq-broker-controller-manager -p '{"imagePullSecrets": [{"name": "redhat-reg"}]}'
+kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "redhat-reg"}]}'
 ```
 
 ## Deploy the operator into the namespace

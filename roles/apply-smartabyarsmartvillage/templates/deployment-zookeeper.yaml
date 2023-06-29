@@ -71,5 +71,11 @@ spec:
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
+{% if values.openshift %}
       securityContext: {}
+{% else %}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+{% endif %}
       schedulerName: default-scheduler
