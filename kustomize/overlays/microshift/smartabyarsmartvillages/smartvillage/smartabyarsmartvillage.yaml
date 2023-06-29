@@ -1,0 +1,269 @@
+apiVersion: smartvillage.computate.org/v1
+kind: SmartaByarSmartVillage
+metadata:
+  labels:
+    app.kubernetes.io/name: smartabyarsmartvillage
+    app.kubernetes.io/instance: smartabyarsmartvillage-sample
+    app.kubernetes.io/part-of: smartvillage-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: smartvillage-operator
+  name: smartvillage
+  namespace: smartvillage
+spec:
+  site:
+    create: true
+    enable_dev_nodeports: true
+    web_replicas: 0
+    sumo_replicas: 1
+    worker_replicas: 1
+    web_resources:
+      limits:
+        memory: |-
+          1000Mi
+        cpu: |-
+          600m
+      requests:
+        memory: |-
+          500Mi
+        cpu: |-
+          400m
+    worker_resources:
+      limits:
+        memory: |-
+          1000Mi
+        cpu: |-
+          600m
+      requests:
+        memory: |-
+          500Mi
+        cpu: |-
+          400m
+    name: |-
+      smartvillage
+    secret_name: |-
+      smartvillage
+    host_name: |-
+      localhost
+    site_base_url: |-
+      http://127.0.0.1:44889
+    zone: |-
+      America/New_York
+    locale: |-
+      en-US
+    instances: 3
+    template_path: |-
+      /home/ctate/.local/src/smartabyar-smartvillage/src/main/resources/templates
+    worker_pool_size: 1
+    enable_zookeeper_cluster: True
+    ssl_verify: False
+    default_map_location: |-
+      55.61888,13.548799
+    default_map_zoom: 11
+    vertx_warning_exception_seconds: 60
+    java_opts: |-
+      
+    route:
+      create: false
+  zookeeper:
+    create: true
+    service_name: |-
+      zookeeper
+    port: 2181
+    max_retries: 0
+    base_sleep_time_millis: 5000
+    max_sleep_millis: 5000
+    connection_timeout_millis: 3000
+    session_timeout_millis: 5000
+    limits:
+      memory: |-
+        500Mi
+      cpu: |-
+        500m
+    requests:
+      memory: |-
+        200Mi
+      cpu: |-
+        200m
+  sso:
+    create: false
+    host_name: |-
+      sso.computate.org
+    cluster_name: |-
+      sso
+    postgres_secret_name: |-
+      postgres-pguser-sso
+    client_secret_name: |-
+      keycloak-client-secret-smartvillage
+  auth:
+    host_name: sso.computate.org
+    port: 443
+    ssl: True
+    realm: |-
+      SMARTVILLAGE
+    client: |-
+      smartvillage
+    token_uri: |-
+      /auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+  postgres:
+    create: true
+    service_name: |-
+      postgres-primary
+    port: 5432
+    cluster_name: |-
+      postgres
+    secret_name: |-
+      postgres-pguser-smartvillage
+    resources:
+      limits:
+        memory: |-
+          500Mi
+        cpu: |-
+          500m
+      requests:
+        memory: |-
+          200Mi
+        cpu: |-
+          200m
+  solr:
+    create: true
+    service_name: |-
+      default-solrcloud-common
+    port: 80
+    ssl: False
+    route:
+      create: false
+      host_name: |-
+        solr.apps-crc.testing
+    collection: |-
+      smartvillage
+    resources:
+      limits:
+        memory: |-
+          1Gi
+        cpu: |-
+          1
+      requests:
+        memory: |-
+          200Mi
+        cpu: |-
+          200m
+  email:
+    enabled: true
+    secret_name: smartvillage
+  import_data:
+    enabled: True
+    sitepage:
+      enabled: True
+    sitehtm:
+      enabled: True
+    iotnode:
+      enabled: False
+    vehiclestep:
+      enabled: False
+    timestep:
+      enabled: False
+    trafficsimulation:
+      enabled: False
+  auth_role:
+    admin: |-
+      SiteAdmin
+    siteuser: |-
+      SiteAdmin
+    sitepage: |-
+      SiteAdmin
+    sitehtm: |-
+      SiteAdmin
+    iotnode: |-
+      SiteAdmin
+    mapresult: |-
+      SiteAdmin
+    iotnodestep: |-
+      SiteAdmin
+    vehiclestep: |-
+      SiteAdmin
+    personstep: |-
+      SiteAdmin
+    smarttrafficlight: |-
+      SiteAdmin
+    trafficlight: |-
+      SiteAdmin
+    trafficlightstep: |-
+      SiteAdmin
+    trafficsimulation: |-
+      SiteAdmin
+    simulationreport: |-
+      SiteAdmin
+    systemevent: |-
+      SiteAdmin
+    bicyclestep: |-
+      SiteAdmin
+    timestep: |-
+      SiteAdmin
+    trafficflowobserved: |-
+      SiteAdmin
+  sumo:
+    resources:
+      limits:
+        cpu: |-
+          500m
+        memory: |-
+          1Gi
+      requests:
+        cpu: |-
+          400m
+        memory: |-
+          500Mi
+    executable_path: |-
+      /home/ctate/.local/bin/sumo
+    python_executable_path: |-
+      /home/ctate/python/bin/python
+    fcd_sync_path: |-
+      /home/ctate/.local/share/sumo/data/veberod/fcd
+  yggio:
+    enabled: true
+    api_relative_uri_iotnode: |-
+      /api/iotnodes
+    auth_local_uri: |-
+      /api/auth/local
+  fiware:
+    ssl: False
+    port: 80
+    host_name: |-
+      orion-ld
+    api_uri: |-
+      /v2
+  kafka:
+    create: true
+    keystore_secret: |-
+      smartvillage-kafka
+    truststore_secret: |-
+      smartvillage-kafka-cluster-ca-cert
+    service_name: |-
+      smartvillage-kafka-kafka-bootstrap
+    port: 9093
+    group: |-
+      smartvillage-kafka
+    security_protocol: |-
+      SSL
+    ssl_keystore_type: |-
+      PKCS12
+    ssl_keystore_location: |-
+      /opt/kafka/keystore/user.p12
+    ssl_truststore_type: |-
+      PKCS12
+    ssl_truststore_location: |-
+      /opt/kafka/truststore/ca.p12
+    resources:
+      limits:
+        memory: |-
+          500Mi
+        cpu: |-
+          500m
+      requests:
+        memory: |-
+          200Mi
+        cpu: |-
+          200m
+  amq_broker:
+    create: true
+    enabled: True
