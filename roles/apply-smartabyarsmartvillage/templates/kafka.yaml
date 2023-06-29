@@ -30,8 +30,11 @@ spec:
         configuration:
           bootstrap:
             nodePort: 32100
+{% if values.openshift %}
+{% else %}
             alternativeNames:
-              - localhost
+              - 127.0.0.1
+{% endif %}
           brokers:
 {% if values.openshift %}
             - broker: 0
@@ -46,13 +49,13 @@ spec:
 {% else %}
             - broker: 0
               nodePort: 32000
-              advertisedHost: localhost
+              advertisedHost: 127.0.0.1
             - broker: 1
               nodePort: 32001
-              advertisedHost: localhost
+              advertisedHost: 127.0.0.1
             - broker: 2
               nodePort: 32002
-              advertisedHost: localhost
+              advertisedHost: 127.0.0.1
 {% endif %}
 {% endif %}
     storage:
