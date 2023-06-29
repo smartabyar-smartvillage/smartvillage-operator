@@ -178,6 +178,8 @@ spec:
   auth_role:
     admin: |-
       SiteAdmin
+    superadmin: |-
+      SuperAdmin
     siteuser: |-
       SiteAdmin
     sitepage: |-

@@ -34,7 +34,7 @@ kubectl delete pod -l strimzi.io/name=smartvillage-kafka-zookeeper
 In 4 different terminals, create tunnels to the following nodeports: 
 
 ```bash
-minikube -n smartvillage service fiware-broker-mqtt-nodeport --url
+minikube -n smartvillage service site-nodeport --url
 ```
 
 ```bash

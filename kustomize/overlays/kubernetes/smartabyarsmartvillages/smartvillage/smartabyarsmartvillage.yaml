@@ -44,7 +44,9 @@ spec:
     secret_name: |-
       smartvillage
     host_name: |-
-      smartvillage.apps-crc.testing
+      localhost
+    site_base_url: |-
+      http://127.0.0.1:44889
     zone: |-
       America/New_York
     locale: |-

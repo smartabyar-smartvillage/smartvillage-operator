@@ -18,3 +18,5 @@ mqtt_nodeport_hostname: mqtt.apps-crc.testing
 
 zookeeper_nodeport: 30081
 zookeeper_nodeport_hostname: zookeeper.apps-crc.testing
+
+site_nodeport: 30080

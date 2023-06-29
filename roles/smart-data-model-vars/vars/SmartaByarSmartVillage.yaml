@@ -89,6 +89,8 @@ schema:
       host_name:
         type: string
         default: smartvillage.apps-crc.testing
+      site_base_url:
+        type: string
       zone:
         type: string
         default: "America/New_York"

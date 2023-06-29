@@ -50,6 +50,14 @@
     name: "fiware-broker-mqtt-nodeport"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'service-fiware-broker-mqtt-nodeport.yaml') }}"
+- name: "{{ 'Install' if values.site.enable_dev_nodeports else 'Skip' }} site-nodeport NodePort service on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.site.enable_dev_nodeports and not values.openshift else 'absent' }}"
+    api_version: v1
+    kind: Service
+    name: "site-nodeport"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'service-site-nodeport.yaml') }}"
 
 # Install PostgreSQL
 - name: "Install PostgreSQL {{ site_name }}-db-create configmap on OpenShift"
@@ -149,6 +157,15 @@
     name: smartvillage-sumo-run-report
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'kafkatopic-smartvillage-sumo-run-report.yaml') }}"
+  when: values.kafka.create
+- name: "Install {{ site_name }} Kafka Topic smartvillage-sumo-run-iter on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.kafka.create else 'absent' }}"
+    kind: KafkaTopic
+    api_version: kafka.strimzi.io/v1beta2
+    name: smartvillage-sumo-run-iter
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'kafkatopic-smartvillage-sumo-run-iter.yaml') }}"
   when: values.kafka.create
 - name: "Install {{ site_name }} Kafka Topic smartvillage-sumo-stop on OpenShift"
   k8s:
@@ -423,10 +440,6 @@
   set_fact:
     site_host_name: "{{ values.site.host_name }}"
   when: not values.openshift
-- name: "Set static base URL"
-  set_fact:
-    site_base_url: "https://{{ site_host_name }}"
-    static_base_url: "{{ values.site.static_base_url | default('https://' + site_host_name + '/static', true) }}"
 
 #- name: "Install {{ site_name }} secret on OpenShift"
 #  k8s:

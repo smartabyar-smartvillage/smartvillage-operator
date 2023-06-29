@@ -93,6 +93,8 @@ spec:
                     description: "The secret name to store site secrets. \nIf empty, \"smartvillage\"
                       will be used. \n"
                     type: string
+                  site_base_url:
+                    type: string
                   ssl_verify:
                     default: false
                     type: boolean
@@ -460,6 +462,9 @@ spec:
                     type: string
                   smarttrafficlight:
                     default: SiteAdmin
+                    type: string
+                  superadmin:
+                    default: SuperAdmin
                     type: string
                   systemevent:
                     default: SiteAdmin
