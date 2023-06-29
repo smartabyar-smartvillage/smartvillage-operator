@@ -40,6 +40,9 @@
 						var location = record.location;
 						if(location) {
 							var locationParts = location.value.split(', ');
+							lat.push(parseFloat(locationParts[0]));
+							lon.push(parseFloat(locationParts[1]));
+							colors.push('red');
 							var t = 'type: ' + record.type + '<br>';
 							t += 'ID: ' + record.id + '<br>';
 							t += 'Route Id: ' + record.customRouteId.value + '<br>';
@@ -57,9 +60,6 @@
 							t += 'Queue Length Threshold: ' + record.customQueueLengthThreshold.value + '<br>';
 							t += 'Traffic Light Id: ' + record.customTrafficLightId.value + '<br>';
 							text.push(t);
-							lat.push(parseFloat(locationParts[0]));
-							lon.push(parseFloat(locationParts[1]));
-							colors.push('red');
 						}
 					});
 					trace['marker'] = { color: colors, size: 10 };
@@ -75,6 +75,6 @@
 
 	</head>
 	<body class="w3-light-grey " style="height: 100%;">
-		<div id="PageGraph" class="w3-content htmBodyGraph "></div>
+		<div id="PageGraph" class="w3-content "></div>
 	</body>
 </html>
