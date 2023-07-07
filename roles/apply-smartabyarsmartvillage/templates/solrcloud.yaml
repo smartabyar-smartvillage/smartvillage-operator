@@ -42,6 +42,9 @@ spec:
   zookeeperRef:
     provided:
       replicas: 2
+      persistence:
+        spec:
+          storage: 5Gi
       zookeeperPodPolicy:
         resources:
           limits:
