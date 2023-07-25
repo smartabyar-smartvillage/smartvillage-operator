@@ -139,9 +139,9 @@ spec:
     resources:
       limits:
         memory: |-
-          1Gi
+          2Gi
         cpu: |-
-          1
+          2
       requests:
         memory: |-
           200Mi
