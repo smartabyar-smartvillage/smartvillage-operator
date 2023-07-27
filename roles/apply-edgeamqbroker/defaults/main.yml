@@ -2,3 +2,5 @@
 site_name: "{{ site.name | default('smartvillage') }}"
 operator_state: "present"
 ENTITY_TYPE: EdgeAmqBroker
+
+verify_connections: true
