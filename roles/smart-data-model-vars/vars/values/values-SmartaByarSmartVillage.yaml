@@ -163,6 +163,17 @@ values:
     host_name: "{{ crd.fiware.host_name | default(schema | community.general.json_query('fiware.properties.host_name.default')) }}"
     api_uri: "{{ crd.fiware.api_uri | default(schema | community.general.json_query('fiware.properties.api_uri.default')) }}"
   kafka:
+    topic_names:
+      entity: "{{ crd.kafka.topic_names.entity | default(schema | community.general.json_query('kafka.properties.topic_names.properties.entity.default')) }}"
+      entitybatch: "{{ crd.kafka.topic_names.entitybatch | default(schema | community.general.json_query('kafka.properties.topic_names.properties.entitybatch.default')) }}"
+      registry: "{{ crd.kafka.topic_names.registry | default(schema | community.general.json_query('kafka.properties.topic_names.properties.registry.default')) }}"
+      temporal: "{{ crd.kafka.topic_names.temporal | default(schema | community.general.json_query('kafka.properties.topic_names.properties.temporal.default')) }}"
+      inotify: "{{ crd.kafka.topic_names.inotify | default(schema | community.general.json_query('kafka.properties.topic_names.properties.inotify.default')) }}"
+      iregsub: "{{ crd.kafka.topic_names.iregsub | default(schema | community.general.json_query('kafka.properties.topic_names.properties.iregsub.default')) }}"
+      subalive: "{{ crd.kafka.topic_names.subalive | default(schema | community.general.json_query('kafka.properties.topic_names.properties.subalive.default')) }}"
+      subsync: "{{ crd.kafka.topic_names.subsync | default(schema | community.general.json_query('kafka.properties.topic_names.properties.subsync.default')) }}"
+      regsubalive: "{{ crd.kafka.topic_names.regsubalive | default(schema | community.general.json_query('kafka.properties.topic_names.properties.regsubalive.default')) }}"
+      regsubsync: "{{ crd.kafka.topic_names.regsubsync | default(schema | community.general.json_query('kafka.properties.topic_names.properties.regsubsync.default')) }}"
     create: "{{ crd.kafka.create | default(schema | community.general.json_query('kafka.properties.create.default')) }}"
     keystore_secret: "{{ crd.kafka.keystore_secret | default(schema | community.general.json_query('kafka.properties.keystore_secret.default')) }}"
     truststore_secret: "{{ crd.kafka.truststore_secret | default(schema | community.general.json_query('kafka.properties.truststore_secret.default')) }}"

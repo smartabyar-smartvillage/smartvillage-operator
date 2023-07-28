@@ -551,6 +551,39 @@ schema:
   kafka:
     type: object
     properties:
+      topic_names:
+        type: object
+        properties:
+          entity:
+            type: string
+            default: ENTITY
+          entitybatch:
+            type: string
+            default: ENTITYBATCH
+          registry:
+            type: string
+            default: REGISTRY
+          temporal:
+            type: string
+            default: TEMPORAL
+          inotify:
+            type: string
+            default: I_NOTIFY
+          iregsub:
+            type: string
+            default: I_REGSUB
+          subalive:
+            type: string
+            default: SUB_ALIVE
+          subsync:
+            type: string
+            default: SUB_SYNC
+          regsubalive:
+            type: string
+            default: REG_SUB_ALIVE
+          regsubsync:
+            type: string
+            default: REG_SUB_SYNC
       create:
         type: boolean
         default: true

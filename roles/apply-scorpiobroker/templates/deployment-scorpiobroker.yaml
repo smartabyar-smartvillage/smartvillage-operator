@@ -1,0 +1,89 @@
+metadata:
+  labels:
+    app.kubernetes.io/instance: demo-scorpiobroker
+    app.kubernetes.io/name: scorpiobroker
+spec:
+  replicas: {{ values.scorpiobroker.replicas }}
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: scorpiobroker
+      app.kubernetes.io/name: scorpiobroker
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: scorpiobroker
+        app.kubernetes.io/name: scorpiobroker
+        app.kubernetes.io/version: 1.0.1
+        helm.sh/chart: scorpiobroker-1.0.2
+        marinera/component: core
+        marinera/platform: fiware
+        marinera/product: scorpiobroker
+        marinera/subcomponent: broker
+    spec:
+      containers:
+          env:
+
+            - name: DBHOST
+              value: "{{ values.postgres.service_name }}"
+            - name: DBPORT
+              value: "{{ values.postgres.port }}"
+            - name: DBNAME
+              valueFrom:
+                secretKeyRef:
+                  key: dbname
+                  name: {{ values.postgres.secret_name }}
+            - name: DBUSER
+              valueFrom:
+                secretKeyRef:
+                  key: user
+                  name: {{ values.postgres.secret_name }}
+            - name: DBPASS
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: {{ values.postgres.secret_name }}
+
+            - name: "BUSHOST"
+              value: "{{ values.kafka.service_name }}"
+            - name: "BUSPORT"
+              value: "{{ values.kafka.port }}"
+{% if values.scorpiobroker.cors_allowed_origin is defined %}
+            - name: ORIONLD_CORS_ALLOWED_ORIGIN
+              value: '{{ values.scorpiobroker.cors_allowed_origin }}'
+{% endif %}
+          image: 'docker.io/scorpiobroker/all-in-one-runner:java-kafka-latest'
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 9090
+            timeoutSeconds: 30
+          name: scorpiobroker
+          ports:
+            - containerPort: 1026
+              name: http
+              protocol: TCP
+          readinessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 9090
+            timeoutSeconds: 30
+          resources:
+            limits:
+              cpu: '{{ values.scorpiobroker.resources.limits.cpu }}'
+              memory: '{{ values.scorpiobroker.resources.limits.memory }}'
+            requests:
+              cpu: '{{ values.scorpiobroker.resources.requests.cpu }}'
+              memory: '{{ values.scorpiobroker.resources.requests.memory }}'
+      serviceAccountName: default
+      volumes: null

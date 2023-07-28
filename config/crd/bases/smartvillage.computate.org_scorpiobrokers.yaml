@@ -1,0 +1,199 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: scorpiobrokers.smartvillage.computate.org
+spec:
+  group: smartvillage.computate.org
+  names:
+    kind: ScorpioBroker
+    listKind: ScorpioBrokerList
+    plural: scorpiobrokers
+    singular: scorpiobroker
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: |
+          ScorpioBroker is the Schema for the scorpiobrokers API
+          Scorpio is an NGSI-LD compliant context broker developed by NEC Laboratories Europe and NEC Technologies India. 
+          It implements the full NGSI-LD API as specified by the ETSI Industry Specification Group on cross cutting Context Information Management (ETSI ISG CIM).
+
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: Spec defines the desired state of ScorpioBroker
+            type: object
+            properties:
+              scorpiobroker:
+                type: object
+                properties:
+                  cors_allowed_origin:
+                    description: "Enable Cross-Origin Resource Sharing with allowed origin. \nUse '__ALL'\
+                      \ for any.\n"
+                    type: string
+                  log_level:
+                    default: INFO
+                    description: "The level of logs to report in the pod logs. \n"
+                    enum:
+                    - DEBUG
+                    - INFO
+                    - WARN
+                    - ERROR
+                    type: string
+                  port:
+                    default: 9090
+                    type: number
+                  replicas:
+                    default: 2
+                    description: "The number of Scorpio Broker pods to run. \n"
+                    type: number
+                  resources:
+                    properties:
+                      limits:
+                        properties:
+                          cpu:
+                            default: 250m
+                            type: string
+                          memory:
+                            default: 1Gi
+                            type: string
+                        type: object
+                      requests:
+                        properties:
+                          cpu:
+                            default: 10m
+                            type: string
+                          memory:
+                            default: 50Mi
+                            type: string
+                        type: object
+                    type: object
+                  route:
+                    properties:
+                      create:
+                        default: false
+                        description: "Whether to create a route for Scorpio Broker. \n"
+                        type: boolean
+                      host:
+                        description: "The Route host name for Scorpio Broker. \n"
+                        type: string
+                    type: object
+                  service_name:
+                    default: scorpiobroker
+                    type: string
+
+              postgres:
+                type: object
+                properties:
+                  port:
+                    default: 5432
+                    description: "The port to connect to PostgreSQL. \n"
+                    type: number
+                  secret_name:
+                    default: postgres-pguser-scorpiobroker
+                    description: "Optional secret name where the postgres secrets are stored. \nIf empty,\
+                      \ \"postgres-pguser-scorpiobroker\" will be used. \n"
+                    type: string
+                  service_name:
+                    default: postgres-primary
+                    description: "The host name to connect to PostgreSQL. \n"
+                    type: string
+
+              kafka:
+                type: object
+                properties:
+                  group:
+                    default: smartvillage-kafka
+                    type: string
+                  keystore_secret:
+                    default: smartvillage-kafka
+                    type: string
+                  port:
+                    default: 9093
+                    type: number
+                  security_protocol:
+                    default: SSL
+                    type: string
+                  service_name:
+                    default: smartvillage-kafka-kafka-bootstrap
+                    type: string
+                  ssl_ca_crt_location:
+                    default: /opt/kafka/truststore/ca.crt
+                    type: string
+                  ssl_keystore_location:
+                    default: /opt/kafka/keystore/user.p12
+                    type: string
+                  ssl_keystore_type:
+                    default: PKCS12
+                    type: string
+                  ssl_truststore_location:
+                    default: /opt/kafka/truststore/ca.p12
+                    type: string
+                  ssl_truststore_type:
+                    default: PKCS12
+                    type: string
+                  ssl_user_crt_location:
+                    default: /opt/kafka/keystore/user.crt
+                    type: string
+                  ssl_user_key_location:
+                    default: /opt/kafka/keystore/user.key
+                    type: string
+                  topic_names:
+                    properties:
+                      entity:
+                        default: ENTITY
+                        type: string
+                      entitybatch:
+                        default: ENTITYBATCH
+                        type: string
+                      inotify:
+                        default: I_NOTIFY
+                        type: string
+                      iregsub:
+                        default: I_REGSUB
+                        type: string
+                      registry:
+                        default: REGISTRY
+                        type: string
+                      regsubalive:
+                        default: REG_SUB_ALIVE
+                        type: string
+                      regsubsync:
+                        default: REG_SUB_SYNC
+                        type: string
+                      subalive:
+                        default: SUB_ALIVE
+                        type: string
+                      subsync:
+                        default: SUB_SYNC
+                        type: string
+                      temporal:
+                        default: TEMPORAL
+                        type: string
+                    type: object
+                  truststore_secret:
+                    default: smartvillage-kafka-cluster-ca-cert
+                    type: string
+
+          status:
+            description: Status defines the observed state of ScorpioBroker
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

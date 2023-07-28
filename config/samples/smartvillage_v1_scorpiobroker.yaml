@@ -1,0 +1,88 @@
+apiVersion: smartvillage.computate.org/v1
+kind: ScorpioBroker
+metadata:
+  labels:
+    app.kubernetes.io/name: scorpiobroker
+    app.kubernetes.io/instance: scorpiobroker-sample
+    app.kubernetes.io/part-of: smartvillage-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: smartvillage-operator
+  name: smartvillage
+spec:
+  description: |
+    Scorpio is an NGSI-LD compliant context broker developed by NEC Laboratories Europe and NEC Technologies India. 
+    It implements the full NGSI-LD API as specified by the ETSI Industry Specification Group on cross cutting Context Information Management (ETSI ISG CIM).
+
+  scorpiobroker:
+    service_name: |-
+      scorpiobroker
+    route:
+      create: False
+    port: 9090
+    log_level: |-
+      INFO
+    replicas: 2
+    resources:
+      limits:
+        cpu: |-
+          250m
+        memory: |-
+          1Gi
+      requests:
+        cpu: |-
+          10m
+        memory: |-
+          50Mi
+  postgres:
+    service_name: |-
+      postgres-primary
+    port: 5432
+    secret_name: |-
+      postgres-pguser-scorpiobroker
+  kafka:
+    topic_names:
+      entity: |-
+        ENTITY
+      entitybatch: |-
+        ENTITYBATCH
+      registry: |-
+        REGISTRY
+      temporal: |-
+        TEMPORAL
+      inotify: |-
+        I_NOTIFY
+      iregsub: |-
+        I_REGSUB
+      subalive: |-
+        SUB_ALIVE
+      subsync: |-
+        SUB_SYNC
+      regsubalive: |-
+        REG_SUB_ALIVE
+      regsubsync: |-
+        REG_SUB_SYNC
+    keystore_secret: |-
+      smartvillage-kafka
+    truststore_secret: |-
+      smartvillage-kafka-cluster-ca-cert
+    service_name: |-
+      smartvillage-kafka-kafka-bootstrap
+    port: 9093
+    group: |-
+      smartvillage-kafka
+    security_protocol: |-
+      SSL
+    ssl_keystore_type: |-
+      PKCS12
+    ssl_keystore_location: |-
+      /opt/kafka/keystore/user.p12
+    ssl_user_crt_location: |-
+      /opt/kafka/keystore/user.crt
+    ssl_user_key_location: |-
+      /opt/kafka/keystore/user.key
+    ssl_truststore_type: |-
+      PKCS12
+    ssl_truststore_location: |-
+      /opt/kafka/truststore/ca.p12
+    ssl_ca_crt_location: |-
+      /opt/kafka/truststore/ca.crt

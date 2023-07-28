@@ -48,4 +48,11 @@ resources:
   group: smartvillage
   kind: EdgeAmqBroker
   version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  domain: computate.org
+  group: smartvillage
+  kind: ScorpioBroker
+  version: v1
 version: "3"

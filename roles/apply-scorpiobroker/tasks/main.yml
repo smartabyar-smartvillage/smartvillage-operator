@@ -1,0 +1,37 @@
+---
+
+- name: "Query {{ ENTITY_TYPE }}"
+  set_fact:
+    crd: "{{ query('kubernetes.core.k8s', kind=ENTITY_TYPE, resource_name=ansible_operator_meta.name, namespace=ansible_operator_meta.namespace)[0].spec }}"
+  ignore_errors: true
+- name: "Verify {{ ENTITY_TYPE }} exists"
+  fail:
+    msg: |-
+      You need to deploy a {{ ENTITY_TYPE }} to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_scorpiobroker.yaml
+  when: crd is not defined
+
+- name: "Install scorpiobroker service on OpenShift"
+  k8s:
+    state: present
+    api_version: v1
+    kind: Service
+    name: "{{ values.scorpiobroker.service_name }}"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'service-scorpiobroker.yaml') }}"
+- name: "Install scorpiobroker deployment on OpenShift"
+  k8s:
+    state: present
+    api_version: apps/v1
+    kind: Deployment
+    name: "scorpiobroker"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'deployment-scorpiobroker.yaml') }}"
+- name: "Install Orion-LD route on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.scorpiobroker.route.create else 'absent' }}"
+    kind: Route
+    api_version: route.openshift.io/v1
+    name: scorpiobroker
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'route-scorpiobroker.yaml') }}"
+  ignore_errors: true

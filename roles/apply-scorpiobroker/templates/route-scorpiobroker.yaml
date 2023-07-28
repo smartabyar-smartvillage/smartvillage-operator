@@ -1,0 +1,11 @@
+spec:
+{% if values.scorpiobroker.route.host is defined %}
+  host: {{ values.scorpiobroker.route.host }}
+{% endif %}
+  to:
+    kind: Service
+    name: scorpiobroker
+    weight: 100
+  port:
+    targetPort: http
+  wildcardPolicy: None

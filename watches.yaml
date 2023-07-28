@@ -48,4 +48,13 @@
   finalizer:
     name: smartvillage.computate.org/edgeamqbroker-finalizer
     role: delete-edgeamqbroker
+- version: v1
+  group: smartvillage.computate.org
+  kind: ScorpioBroker
+  role: scorpiobroker
+  snakeCaseParameters: false
+  watchDependentResources: false
+  finalizer:
+    name: smartvillage.computate.org/scorpiobroker-finalizer
+    role: delete-edgeamqbroker
 #+kubebuilder:scaffold:watch

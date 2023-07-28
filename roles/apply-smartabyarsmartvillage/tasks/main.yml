@@ -15,8 +15,6 @@
     msg: |-
       You need to deploy a {{ ENTITY_TYPE }} to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_smartabyarsmartvillage.yaml
   when: crd is not defined
-- debug:
-    var: crd
 
 - name: "{{ 'Install' if values.site.enable_dev_nodeports else 'Skip' }} postgres-nodeport NodePort service on OpenShift"
   k8s:
@@ -175,6 +173,97 @@
     name: smartvillage-sumo-stop
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'kafkatopic-smartvillage-sumo-stop.yaml') }}"
+  when: values.kafka.create
+
+- name: "Install {{ site_name }} Kafka Topic entity on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.kafka.create else 'absent' }}"
+    kind: KafkaTopic
+    api_version: kafka.strimzi.io/v1beta2
+    name: scorpiobroker-entity
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'kafkatopic-scorpiobroker-entity.yaml') }}"
+  when: values.kafka.create
+- name: "Install {{ site_name }} Kafka Topic entitybatch on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.kafka.create else 'absent' }}"
+    kind: KafkaTopic
+    api_version: kafka.strimzi.io/v1beta2
+    name: scorpiobroker-entitybatch
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'kafkatopic-scorpiobroker-entitybatch.yaml') }}"
+  when: values.kafka.create
+- name: "Install {{ site_name }} Kafka Topic registry on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.kafka.create else 'absent' }}"
+    kind: KafkaTopic
+    api_version: kafka.strimzi.io/v1beta2
+    name: scorpiobroker-registry
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'kafkatopic-scorpiobroker-registry.yaml') }}"
+  when: values.kafka.create
+- name: "Install {{ site_name }} Kafka Topic temporal on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.kafka.create else 'absent' }}"
+    kind: KafkaTopic
+    api_version: kafka.strimzi.io/v1beta2
+    name: scorpiobroker-temporal
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'kafkatopic-scorpiobroker-temporal.yaml') }}"
+  when: values.kafka.create
+- name: "Install {{ site_name }} Kafka Topic i-notify on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.kafka.create else 'absent' }}"
+    kind: KafkaTopic
+    api_version: kafka.strimzi.io/v1beta2
+    name: scorpiobroker-i-notify
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'kafkatopic-scorpiobroker-i-notify.yaml') }}"
+  when: values.kafka.create
+- name: "Install {{ site_name }} Kafka Topic i-regsub on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.kafka.create else 'absent' }}"
+    kind: KafkaTopic
+    api_version: kafka.strimzi.io/v1beta2
+    name: scorpiobroker-i-regsub
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'kafkatopic-scorpiobroker-i-regsub.yaml') }}"
+  when: values.kafka.create
+- name: "Install {{ site_name }} Kafka Topic sub-alive on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.kafka.create else 'absent' }}"
+    kind: KafkaTopic
+    api_version: kafka.strimzi.io/v1beta2
+    name: scorpiobroker-sub-alive
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'kafkatopic-scorpiobroker-sub-alive.yaml') }}"
+  when: values.kafka.create
+- name: "Install {{ site_name }} Kafka Topic sub-sync on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.kafka.create else 'absent' }}"
+    kind: KafkaTopic
+    api_version: kafka.strimzi.io/v1beta2
+    name: scorpiobroker-sub-sync
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'kafkatopic-scorpiobroker-sub-sync.yaml') }}"
+  when: values.kafka.create
+- name: "Install {{ site_name }} Kafka Topic reg-sub-alive on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.kafka.create else 'absent' }}"
+    kind: KafkaTopic
+    api_version: kafka.strimzi.io/v1beta2
+    name: scorpiobroker-reg-sub-alive
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'kafkatopic-scorpiobroker-reg-sub-alive.yaml') }}"
+  when: values.kafka.create
+- name: "Install {{ site_name }} Kafka Topic reg-sub-sync on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.kafka.create else 'absent' }}"
+    kind: KafkaTopic
+    api_version: kafka.strimzi.io/v1beta2
+    name: scorpiobroker-reg-sub-sync
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'kafkatopic-scorpiobroker-reg-sub-sync.yaml') }}"
   when: values.kafka.create
 
 # Install Zookeeper

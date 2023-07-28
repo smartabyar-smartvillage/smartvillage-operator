@@ -247,6 +247,27 @@ spec:
     api_uri: |-
       /v2
   kafka:
+    topic_names:
+      entity: |-
+        ENTITY
+      entitybatch: |-
+        ENTITYBATCH
+      registry: |-
+        REGISTRY
+      temporal: |-
+        TEMPORAL
+      inotify: |-
+        I_NOTIFY
+      iregsub: |-
+        I_REGSUB
+      subalive: |-
+        SUB_ALIVE
+      subsync: |-
+        SUB_SYNC
+      regsubalive: |-
+        REG_SUB_ALIVE
+      regsubsync: |-
+        REG_SUB_SYNC
     create: True
     keystore_secret: |-
       smartvillage-kafka

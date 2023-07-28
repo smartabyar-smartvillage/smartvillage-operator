@@ -1,0 +1,5 @@
+metadata:
+  labels:
+    strimzi.io/cluster: smartvillage-kafka
+spec:
+  topicName: {{ values.kafka.topic_names.regsubalive }}

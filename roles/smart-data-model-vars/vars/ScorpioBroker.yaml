@@ -1,0 +1,164 @@
+---
+name: smartvillage
+description: |
+  Scorpio is an NGSI-LD compliant context broker developed by NEC Laboratories Europe and NEC Technologies India. 
+  It implements the full NGSI-LD API as specified by the ETSI Industry Specification Group on cross cutting Context Information Management (ETSI ISG CIM).
+schema:
+  scorpiobroker:
+    type: object
+    properties:
+      service_name:
+        type: string
+        default: scorpiobroker
+      route:
+        type: object
+        properties:
+          create:
+            type: boolean
+            default: false
+            description: |
+              Whether to create a route for Scorpio Broker. 
+          host:
+            type: string
+            description: |
+              The Route host name for Scorpio Broker. 
+      port:
+        type: number
+        default: 9090
+      cors_allowed_origin:
+        type: string
+        description: |
+          Enable Cross-Origin Resource Sharing with allowed origin. 
+          Use '__ALL' for any.
+      log_level:
+        type: string
+        default: INFO
+        enum:
+          - DEBUG
+          - INFO
+          - WARN
+          - ERROR
+        description: |
+          The level of logs to report in the pod logs. 
+      replicas:
+        type: number
+        default: 1
+        description: |
+          The number of Scorpio Broker pods to run. 
+      resources:
+        type: object
+        properties:
+          limits:
+            type: object
+            properties:
+              cpu:
+                type: string
+                default: 250m
+              memory:
+                type: string
+                default: 1Gi
+          requests:
+            type: object
+            properties:
+              cpu:
+                type: string
+                default: 10m
+              memory:
+                type: string
+                default: 50Mi
+
+  postgres:
+    type: object
+    properties:
+      service_name:
+        type: string
+        default: postgres-primary
+        description: |
+          The host name to connect to PostgreSQL. 
+      port:
+        type: number
+        default: 5432
+        description: |
+          The port to connect to PostgreSQL. 
+      secret_name:
+        type: string
+        default: postgres-pguser-scorpiobroker
+        description: |
+          Optional secret name where the postgres secrets are stored. 
+          If empty, "postgres-pguser-scorpiobroker" will be used. 
+
+  kafka:
+    type: object
+    properties:
+      topic_names:
+        type: object
+        properties:
+          entity:
+            type: string
+            default: ENTITY
+          entitybatch:
+            type: string
+            default: ENTITYBATCH
+          registry:
+            type: string
+            default: REGISTRY
+          temporal:
+            type: string
+            default: TEMPORAL
+          inotify:
+            type: string
+            default: I_NOTIFY
+          iregsub:
+            type: string
+            default: I_REGSUB
+          subalive:
+            type: string
+            default: SUB_ALIVE
+          subsync:
+            type: string
+            default: SUB_SYNC
+          regsubalive:
+            type: string
+            default: REG_SUB_ALIVE
+          regsubsync:
+            type: string
+            default: REG_SUB_SYNC
+      keystore_secret:
+        type: string
+        default: smartvillage-kafka
+      truststore_secret:
+        type: string
+        default: smartvillage-kafka-cluster-ca-cert
+      service_name:
+        type: string
+        default: smartvillage-kafka-kafka-bootstrap
+      port:
+        type: number
+        default: 9093
+      group:
+        type: string
+        default: smartvillage-kafka
+      security_protocol:
+        type: string
+        default: SSL
+      ssl_keystore_type:
+        type: string
+        default: PKCS12
+      ssl_keystore_location:
+        type: string
+        default: /opt/kafka/keystore/user.p12
+      ssl_user_crt_location:
+        type: string
+        default: /opt/kafka/keystore/user.crt
+      ssl_user_key_location:
+        type: string
+        default: /opt/kafka/keystore/user.key
+      ssl_truststore_type:
+        type: string
+        default: PKCS12
+      ssl_truststore_location:
+        type: string
+        default: /opt/kafka/truststore/ca.p12
+      ssl_ca_crt_location:
+        type: string
+        default: /opt/kafka/truststore/ca.crt

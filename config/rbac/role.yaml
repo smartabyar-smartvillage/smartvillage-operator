@@ -257,4 +257,21 @@ rules:
       - patch
       - update
       - watch
+  ##
+  ## Rules for smartvillage.computate.org/v1, Kind: ScorpioBroker
+  ##
+  - apiGroups:
+      - smartvillage.computate.org
+    resources:
+      - scorpiobrokers
+      - scorpiobrokers/status
+      - scorpiobrokers/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
 #+kubebuilder:scaffold:rules

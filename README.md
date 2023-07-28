@@ -404,6 +404,13 @@ operator-sdk create api --group smartvillage --version v1 --kind OrionLDContextB
 ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=OrionLDContextBroker
 ```
 
+## Initialize ScorpioBroker model
+
+```bash
+operator-sdk create api --group smartvillage --version v1 --kind ScorpioBroker --generate-role
+ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=ScorpioBroker
+```
+
 ## Initialize IoTAgentJson model
 
 ```bash

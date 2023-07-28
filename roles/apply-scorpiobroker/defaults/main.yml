@@ -1,0 +1,3 @@
+---
+site_name: "{{ site.name | default('smartvillage') }}"
+ENTITY_TYPE: ScorpioBroker
