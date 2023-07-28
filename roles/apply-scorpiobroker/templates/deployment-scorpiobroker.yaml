@@ -20,13 +20,9 @@ spec:
         app.kubernetes.io/instance: scorpiobroker
         app.kubernetes.io/name: scorpiobroker
         app.kubernetes.io/version: 1.0.1
-        helm.sh/chart: scorpiobroker-1.0.2
-        marinera/component: core
-        marinera/platform: fiware
-        marinera/product: scorpiobroker
-        marinera/subcomponent: broker
     spec:
       containers:
+        - name: scorpiobroker
           env:
 
             - name: DBHOST
@@ -37,26 +33,109 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: dbname
-                  name: {{ values.postgres.secret_name }}
+                  name: "{{ values.postgres.secret_name }}"
             - name: DBUSER
               valueFrom:
                 secretKeyRef:
                   key: user
-                  name: {{ values.postgres.secret_name }}
+                  name: "{{ values.postgres.secret_name }}"
             - name: DBPASS
               valueFrom:
                 secretKeyRef:
                   key: password
-                  name: {{ values.postgres.secret_name }}
+                  name: "{{ values.postgres.secret_name }}"
 
             - name: "BUSHOST"
               value: "{{ values.kafka.service_name }}"
             - name: "BUSPORT"
               value: "{{ values.kafka.port }}"
-{% if values.scorpiobroker.cors_allowed_origin is defined %}
-            - name: ORIONLD_CORS_ALLOWED_ORIGIN
-              value: '{{ values.scorpiobroker.cors_allowed_origin }}'
-{% endif %}
+
+            - name: "MP_MESSAGING_INCOMING_REGISTRYRETRIEVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_INCOMING_ENTITYRETRIEVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_INCOMING_ENTITYBATCHRETRIEVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_INCOMING_ISUBSRETRIEVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_INCOMING_INOTIFICATIONRETRIEVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_INCOMING_SUBALIVERETRIEVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_INCOMING_SUBSYNCRETRIEVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_INCOMING_REGSUBALIVERETRIEVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_INCOMING_REGSUBSYNCRETRIEVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+
+            - name: "MP_MESSAGING_OUTGOING_REGISTRY_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_OUTGOING_ENTITY_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_OUTGOING_ENTITYBATCH_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_OUTGOING_HISTORY_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_OUTGOING_ISUBS_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_OUTGOING_INOTIFICATION_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_OUTGOING_SUBALIVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_OUTGOING_SUBSYNC_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_OUTGOING_REGSUBALIVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_OUTGOING_REGSUBSYNC_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+
+            - name: "MP_MESSAGING_CONNECTOR_SMALLRYEKAFKA_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+            - name: "MP_MESSAGING_CONNECTOR_SMALLRYEKAFKA_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_CONNECTOR_SMALLRYEKAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM"
+              value: ""
+            - name: "MP_MESSAGING_CONNECTOR_SMALLRYEKAFKA_SSL_KEYSTORE_TYPE"
+              value: "{{ values.kafka.ssl_keystore_type }}"
+            - name: "MP_MESSAGING_CONNECTOR_SMALLRYEKAFKA_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+            - name: "MP_MESSAGING_CONNECTOR_SMALLRYEKAFKA_SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  key: "user.password"
+                  name: "{{ values.kafka.keystore_secret }}"
+
+            - name: "MP_MESSAGING_CONNECTOR_SMALLRYEKAFKA_SSL_TRUSTSTORE_TYPE"
+              value: "{{ values.kafka.ssl_keystore_type }}"
+            - name: "MP_MESSAGING_CONNECTOR_SMALLRYEKAFKA_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+            - name: "MP_MESSAGING_CONNECTOR_SMALLRYEKAFKA_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  key: "ca.password"
+                  name: "{{ values.kafka.truststore_secret }}"
+
+            - name: "SCORPIO_TOPICS_ENTITY"
+              value: "{{ values.kafka.topic_names.entity }}"
+            - name: "SCORPIO_TOPICS_ENTITYBATCH"
+              value: "{{ values.kafka.topic_names.entitybatch }}"
+            - name: "SCORPIO_TOPICS_REGISTRY"
+              value: "{{ values.kafka.topic_names.registry }}"
+            - name: "SCORPIO_TOPICS_TEMPORAL"
+              value: "{{ values.kafka.topic_names.temporal }}"
+            - name: "SCORPIO_TOPICS_INTERNALNOTIFICATION"
+              value: "{{ values.kafka.topic_names.inotify }}"
+            - name: "SCORPIO_TOPICS_INTERNALREGSUB"
+              value: "{{ values.kafka.topic_names.iregsub }}"
+            - name: "SCORPIO_TOPICS_SUBALIVE"
+              value: "{{ values.kafka.topic_names.subalive }}"
+            - name: "SCORPIO_TOPICS_SUBSYNC"
+              value: "{{ values.kafka.topic_names.subsync }}"
+            - name: "SCORPIO_TOPICS_REGSUBALIVE"
+              value: "{{ values.kafka.topic_names.regsubalive }}"
+            - name: "SCORPIO_TOPICS_REGSUBSYNC"
+              value: "{{ values.kafka.topic_names.regsubsync }}"
           image: 'docker.io/scorpiobroker/all-in-one-runner:java-kafka-latest'
           imagePullPolicy: IfNotPresent
           livenessProbe:
@@ -66,9 +145,8 @@ spec:
             tcpSocket:
               port: 9090
             timeoutSeconds: 30
-          name: scorpiobroker
           ports:
-            - containerPort: 1026
+            - containerPort: 9090
               name: http
               protocol: TCP
           readinessProbe:
@@ -85,5 +163,19 @@ spec:
             requests:
               cpu: '{{ values.scorpiobroker.resources.requests.cpu }}'
               memory: '{{ values.scorpiobroker.resources.requests.memory }}'
-      serviceAccountName: default
-      volumes: null
+          volumeMounts:
+            - mountPath: /opt/kafka/keystore
+              name: "{{ values.kafka.keystore_secret }}"
+              readOnly: true
+            - mountPath: /opt/kafka/truststore
+              name: "{{ values.kafka.truststore_secret }}"
+              readOnly: true
+      volumes:
+        - name: "{{ values.kafka.keystore_secret }}"
+          secret:
+            defaultMode: 420
+            secretName: "{{ values.kafka.keystore_secret }}"
+        - name: "{{ values.kafka.truststore_secret }}"
+          secret:
+            defaultMode: 420
+            secretName: "{{ values.kafka.truststore_secret }}"

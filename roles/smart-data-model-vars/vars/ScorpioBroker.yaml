@@ -95,37 +95,37 @@ schema:
         properties:
           entity:
             type: string
-            default: ENTITY
+            default: scorpiobroker-entity
           entitybatch:
             type: string
-            default: ENTITYBATCH
+            default: scorpiobroker-entitybatch
           registry:
             type: string
-            default: REGISTRY
+            default: scorpiobroker-registry
           temporal:
             type: string
-            default: TEMPORAL
+            default: scorpiobroker-temporal
           inotify:
             type: string
-            default: I_NOTIFY
+            default: scorpiobroker-i-notify
           iregsub:
             type: string
-            default: I_REGSUB
+            default: scorpiobroker-i-regsub
           subalive:
             type: string
-            default: SUB_ALIVE
+            default: scorpiobroker-sub-alive
           subsync:
             type: string
-            default: SUB_SYNC
+            default: scorpiobroker-sub-sync
           regsubalive:
             type: string
-            default: REG_SUB_ALIVE
+            default: scorpiobroker-reg-sub-alive
           regsubsync:
             type: string
-            default: REG_SUB_SYNC
+            default: scorpiobroker-reg-sub-sync
       keystore_secret:
         type: string
-        default: smartvillage-kafka
+        default: scorpiobroker-kafka
       truststore_secret:
         type: string
         default: smartvillage-kafka-cluster-ca-cert

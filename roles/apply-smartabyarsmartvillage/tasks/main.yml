@@ -134,6 +134,15 @@
     state: "{{ 'present' if values.kafka.create else 'absent' }}"
     api_version: kafka.strimzi.io/v1beta2
     kind: KafkaUser
+    name: scorpiobroker-kafka
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'kafkauser-scorpiobroker.yaml') }}"
+  when: values.kafka.create
+- name: "Install {{ site_name }} Kafka user on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.kafka.create else 'absent' }}"
+    api_version: kafka.strimzi.io/v1beta2
+    kind: KafkaUser
     name: smartvillage-kafka
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'kafkauser.yaml') }}"

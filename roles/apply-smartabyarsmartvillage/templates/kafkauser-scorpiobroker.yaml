@@ -1,0 +1,25 @@
+metadata:
+  labels:
+    strimzi.io/cluster: smartvillage-kafka
+spec:
+  authentication:
+    type: tls
+  authorization:
+    acls:
+      - host: '*'
+        operations:
+          - All
+        resource:
+          name: scorpiobroker-
+          patternType: prefix
+          type: topic
+        type: allow
+      - host: '*'
+        operations:
+          - All
+        resource:
+          name: scorpiobroker-
+          patternType: prefix
+          type: group
+        type: allow
+    type: simple
