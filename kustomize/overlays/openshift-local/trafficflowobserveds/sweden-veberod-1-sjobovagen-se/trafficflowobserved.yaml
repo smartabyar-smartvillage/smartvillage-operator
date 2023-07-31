@@ -26,9 +26,9 @@ spec:
     customTrafficLightId: veberod-intersection-1
     location: 55.633825, 13.492458
   iotagent:
-    base_url: http://iotagent-json-smartvillage.apps-crc.testing
+    base_url: http://iotagent-json.smartvillage.svc:4041
   context_broker:
-    base_url: http://orion-ld-smartvillage.apps-crc.testing
+    base_url: http://scorpiobroker.smartvillage.svc:9090
   fiware:
     service: smarttrafficlights
     service_path: /Sweden/Veberod/CityCenter

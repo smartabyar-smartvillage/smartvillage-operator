@@ -18,10 +18,10 @@ schema:
     properties:
       service_name:
         type: string
-        default: orion-ld
+        default: scorpiobroker
       port:
         type: number
-        default: 1026
+        default: 9090
   iotagent:
     type: object
     properties:

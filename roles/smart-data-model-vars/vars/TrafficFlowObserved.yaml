@@ -20,7 +20,7 @@ schema:
         default: orion-ld
       base_url:
         type: string
-        default: http://orion-ld-smartvillage.apps-crc.testing
+        default: http://scorpiobroker:9090
   fiware:
     type: object
     properties:
