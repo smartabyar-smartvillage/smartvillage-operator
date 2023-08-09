@@ -140,6 +140,9 @@ spec:
                     type: number
                   customTrafficLightId:
                     type: string
+                  customVehicleQueueThreshold:
+                    type: number
+                    default: 8
               iotagent:
                 type: object
                 properties:
@@ -153,7 +156,7 @@ spec:
                 type: object
                 properties:
                   base_url:
-                    default: http://orion-ld-smartvillage.apps-crc.testing
+                    default: http://scorpiobroker:9090
                     type: string
                   service_name:
                     default: orion-ld

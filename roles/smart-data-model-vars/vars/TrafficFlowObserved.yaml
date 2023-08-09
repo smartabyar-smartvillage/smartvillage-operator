@@ -333,21 +333,29 @@ smart_data_model:
       type: number
       description: |
         Min green time for the traffic light in seconds [1, 50]. 
+      minimum: 1
+      maximum: 50
     customMaxGreenTime:
       name: customMaxGreenTime
       type: number
       description: |
         Max green time for the traffic light in seconds [1, 50]. 
+      minimum: 1
+      maximum: 100
     customAverageVehiclesPerMinute:
       name: customAverageVehiclesPerMinute
       type: number
       description: |
         Average vehicle/min [1, 30]. 
+      minimum: 1
+      maximum: 30
     customDemandScalingFactor:
       name: customDemandScalingFactor
       type: number
       description: |
         Demand scaling factor (multiplies all vehicle demands) [1, 2]. 
+      minimum: 1
+      maximum: 2
     customQueueLengthThreshold:
       name: customQueueLengthThreshold
       type: number
@@ -358,3 +366,9 @@ smart_data_model:
       type: string
       description: |
         The Smart Traffic Light ID. 
+    customVehicleQueueThreshold:
+      name: customVehicleQueueThreshold
+      type: number
+      default: 8
+      minimum: 1
+      maximum: 60

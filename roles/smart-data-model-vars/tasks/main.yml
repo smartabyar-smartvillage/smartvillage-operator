@@ -5,6 +5,81 @@
       The ENTITY_TYPE var is not defined. 
       Try running again like this: ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=TrafficFlowObserved
   when: ENTITY_TYPE is not defined
+- name: "Check for CRD vars values file: {{ CRD_VARS_VALUES_PATH }}"
+  ansible.builtin.stat:
+    path: "{{ CRD_VARS_VALUES_PATH }}"
+  register: CRD_VARS_VALUES_STAT
+- name: Read the watches.yaml
+  slurp:
+    path: "{{ WATCHES_PATH }}"
+  register: WATCHES_SLURP
+  when: not CRD_VARS_VALUES_STAT.stat.exists
+- name: Set the watches.yaml data to a fact
+  set_fact:
+    WATCHES_DATA: "{{ WATCHES_SLURP['content'] | b64decode | from_yaml }}"
+  when: not CRD_VARS_VALUES_STAT.stat.exists
+- name: Find index of kind in watches.yaml data
+  ansible.builtin.set_fact:
+    WATCHES_INDEX: "{{ lookup('ansible.utils.index_of', WATCHES_DATA, 'eq', ENTITY_TYPE, 'kind') }}"
+  when: not CRD_VARS_VALUES_STAT.stat.exists
+- debug:
+    var: WATCHES_INDEX
+  when: not CRD_VARS_VALUES_STAT.stat.exists
+- name: Update the fact
+  ansible.utils.update_fact:
+    updates:
+    - path: "WATCHES_DATA[{{ WATCHES_INDEX }}].snakeCaseParameters"
+      value: false
+    - path: "WATCHES_DATA[{{ WATCHES_INDEX }}].watchDependentResources"
+      value: false
+    - path: "WATCHES_DATA[{{ WATCHES_INDEX }}].finalizer"
+      value:
+        name: smartvillage.computate.org/{{ ENTITY_TYPE | lower }}-finalizer
+        role: delete-{{ ENTITY_TYPE | lower }}
+  register: WATCHES_DATA_UPDATED
+  when: not CRD_VARS_VALUES_STAT.stat.exists
+- name: Write back to a file
+  copy:
+    content: "{{ lookup('template', 'watches.yaml') | replace('\\{\\{', '{{') | replace('\\}\\}', '}}') }}"
+    dest: "{{ WATCHES_PATH }}"
+  when: not CRD_VARS_VALUES_STAT.stat.exists
+
+- name: "Check for role defaults file: {{ ROLE_DEFAULTS_PATH }}"
+  ansible.builtin.stat:
+    path: "{{ ROLE_DEFAULTS_PATH }}"
+  register: ROLE_DEFAULTS_STAT
+- name: "Create directory if it does not exist {{ ROLE_DEFAULTS_PATH | dirname }}"
+  ansible.builtin.file:
+    path: "{{ ROLE_DEFAULTS_PATH | dirname }}"
+    state: directory
+  when: not ROLE_DEFAULTS_STAT.stat.exists
+- name: "Write role defaults: {{ ROLE_DEFAULTS_PATH }}"
+  copy:
+    content: "{{ lookup('template', 'role-defaults.yaml') | replace('\\{\\{', '{{') | replace('\\}\\}', '}}') }}"
+    dest: "{{ ROLE_DEFAULTS_PATH }}"
+  when: not ROLE_DEFAULTS_STAT.stat.exists
+
+- name: "Check for role tasks file: {{ ROLE_TASKS_PATH }}"
+  ansible.builtin.stat:
+    path: "{{ ROLE_TASKS_PATH }}"
+  register: ROLE_TASKS_STAT
+- name: "Create directory if it does not exist {{ ROLE_TASKS_PATH | dirname }}"
+  ansible.builtin.file:
+    path: "{{ ROLE_TASKS_PATH | dirname }}"
+    state: directory
+  when: not ROLE_TASKS_STAT.stat.exists
+- name: "Write role tasks: {{ ROLE_TASKS_PATH }}"
+  copy:
+    content: "{{ lookup('template', 'role-tasks.yaml') | replace('\\{\\{', '{{') | replace('\\}\\}', '}}') }}"
+    dest: "{{ ROLE_TASKS_PATH }}"
+  when: not ROLE_TASKS_STAT.stat.exists
+
+- name: "Write CRD vars values file: {{ CRD_VARS_VALUES_PATH }}"
+  ansible.builtin.copy:
+    content: "{{ lookup('template', 'vars-values.yaml') | replace('\\{\\{', '{{') | replace('\\}\\}', '}}') }}"
+    dest: "{{ CRD_VARS_VALUES_PATH }}"
+  when: not CRD_VARS_VALUES_STAT.stat.exists
+
 - name: "Load {{ ENTITY_TYPE }} smart data model specific schema"
   ansible.builtin.include_vars:
     file: "{{ ENTITY_TYPE }}.yaml"

@@ -1,60 +1,69 @@
 ---
 # Use the 'create api' subcommand to add watches to this file.
-- version: v1
-  group: smartvillage.computate.org
+- group: smartvillage.computate.org
   kind: TrafficFlowObserved
   role: trafficflowobserved
   snakeCaseParameters: false
+  version: v1
   watchDependentResources: false
-- version: v1
-  group: smartvillage.computate.org
+- group: smartvillage.computate.org
   kind: SmartTrafficLight
   role: smarttrafficlight
   snakeCaseParameters: false
+  version: v1
   watchDependentResources: false
-- version: v1
+- finalizer:
+    name: smartvillage.computate.org/smartabyarsmartvillage-finalizer
+    role: delete-smartabyarsmartvillage
   group: smartvillage.computate.org
   kind: SmartaByarSmartVillage
   role: smartabyarsmartvillage
   snakeCaseParameters: false
+  version: v1
   watchDependentResources: false
-  finalizer:
-    name: smartvillage.computate.org/smartabyarsmartvillage-finalizer
-    role: delete-smartabyarsmartvillage
-- version: v1
+- finalizer:
+    name: smartvillage.computate.org/orionldcontextbroker-finalizer
+    role: delete-orionldcontextbroker
   group: smartvillage.computate.org
   kind: OrionLDContextBroker
   role: orionldcontextbroker
   snakeCaseParameters: false
+  version: v1
   watchDependentResources: false
-  finalizer:
-    name: smartvillage.computate.org/orionldcontextbroker-finalizer
-    role: delete-orionldcontextbroker
-- version: v1
+- finalizer:
+    name: smartvillage.computate.org/iotagentjson-finalizer
+    role: delete-iotagentjson
   group: smartvillage.computate.org
   kind: IoTAgentJson
   role: iotagentjson
   snakeCaseParameters: false
+  version: v1
   watchDependentResources: false
-  finalizer:
-    name: smartvillage.computate.org/iotagentjson-finalizer
-    role: delete-iotagentjson
-- version: v1
+- finalizer:
+    name: smartvillage.computate.org/edgeamqbroker-finalizer
+    role: delete-edgeamqbroker
   group: smartvillage.computate.org
   kind: EdgeAmqBroker
   role: edgeamqbroker
   snakeCaseParameters: false
+  version: v1
   watchDependentResources: false
-  finalizer:
-    name: smartvillage.computate.org/edgeamqbroker-finalizer
-    role: delete-edgeamqbroker
-- version: v1
+- finalizer:
+    name: smartvillage.computate.org/scorpiobroker-finalizer
+    role: delete-scorpiobroker
   group: smartvillage.computate.org
   kind: ScorpioBroker
   role: scorpiobroker
   snakeCaseParameters: false
+  version: v1
   watchDependentResources: false
-  finalizer:
-    name: smartvillage.computate.org/scorpiobroker-finalizer
-    role: delete-edgeamqbroker
+- finalizer:
+    name: smartvillage.computate.org/trafficsimulation-finalizer
+    role: delete-trafficsimulation
+  group: smartvillage.computate.org
+  kind: TrafficSimulation
+  role: trafficsimulation
+  snakeCaseParameters: false
+  version: v1
+  watchDependentResources: false
 #+kubebuilder:scaffold:watch

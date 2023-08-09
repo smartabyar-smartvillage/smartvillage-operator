@@ -432,6 +432,33 @@ operator-sdk create api --group smartvillage --version v1 --kind SmartaByarSmart
 ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=SmartaByarSmartVillage
 ```
 
+## Initialize TrafficSimulation model
+
+```bash
+operator-sdk create api --group smartvillage --version v1 --kind TrafficSimulation --generate-role
+ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=TrafficSimulation
+```
+
+- Edit the newly generated vars values file: `smartvillage-operator/roles/smart-data-model-vars/vars/TrafficSimulation.yaml`. 
+- Re-run the playbook to regenerate the latest model. 
+
+```bash
+ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=TrafficSimulation
+```
+
+- Increment the VERSION in the smartvillage-operator/Makefile
+- Build and deploy the new version of the operator
+
+```bash
+make docker-build docker-push deploy
+```
+
+- View the logs of the operator
+
+```bash
+kubectl logs -n smartvillage-operator-system deployment/smartvillage-operator-controller-manager -f
+```
+
 # Install the latest AMQ Broker on MicroShift manually
 
 Follow the instructions in the docs [Deploying AMQ Broker on OpenShift Container Platform using the AMQ Broker Operator](https://access.redhat.com/documentation/en-us/red_hat_amq_broker/7.11/html/deploying_amq_broker_on_openshift/deploying-broker-on-ocp-using-operator_broker-ocp)

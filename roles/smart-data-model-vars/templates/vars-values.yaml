@@ -1,0 +1,11 @@
+---
+name: smartvillage
+description: |
+  
+schema:
+  {{ ENTITY_TYPE | lower }}:
+    type: object
+    properties:
+      example_property:
+        type: string
+        default: example_default

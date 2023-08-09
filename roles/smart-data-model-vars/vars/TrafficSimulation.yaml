@@ -1,0 +1,120 @@
+---
+name: smartvillage
+description: |
+  
+schema:
+  iotagent:
+    type: object
+    properties:
+      service_name:
+        type: string
+        default: iotagent-json
+      base_url:
+        type: string
+  context_broker:
+    type: object
+    properties:
+      service_name:
+        type: string
+        default: orion-ld
+      base_url:
+        type: string
+        default: http://scorpiobroker:9090
+  fiware:
+    type: object
+    properties:
+      service:
+        type: string
+        default: trafficsimulations
+      service_path:
+        type: string
+        default: /Sweden/Veberod/CityCenter
+  service_group:
+    type: object
+    properties:
+      resource:
+        type: string
+        default: /iot/json
+      apikey:
+        type: string
+        default: VeberodIntersection1
+  device:
+    type: object
+    properties:
+      transport:
+        type: string
+        default: MQTT
+      id:
+        type: string
+        default: 'VeberodIntersection1'
+      mqtt_host:
+        type: string
+        default: fiware-broker-mqtt-0-svc
+      mqtt_port:
+        type: number
+        default: 1883
+      mqtt_subscription_topic:
+        type: string
+        default: iot/subscribe
+      subscription_url:
+        type: string
+        default: "http://orionld-smartvillage-sync:8080"
+  smartabyar_smartvillage:
+    type: object
+    properties:
+      enabled:
+        type: boolean
+        default: true
+      auth_secret_name:
+        type: string
+        default: keycloak-client-secret-smartvillage
+      auth_token_url:
+        type: string
+        default: https://keycloak-sso.apps-crc.testing/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+      site_base_url:
+        type: string
+        default: https://smartvillage-web-smartvillage.apps-crc.testing
+      smart_model_api:
+        type: string
+        default: /api/traffic-simulation
+  trafficsimulation:
+    type: object
+    properties:
+      simulationName:
+        type: string
+        default: Veberöd intersection 1
+      sumocfgPath:
+        type: string
+        default: /usr/local/src/TLC/input/Veberod_intersection_pedestrian.sumocfg
+      fcdFilePath:
+        type: string
+        default: /usr/local/src/TLC/output/veberod-fcd.xml
+      startSeconds:
+        type: number
+        default: 0
+      endSeconds:
+        type: number
+        default: 300
+      stepSeconds:
+        type: number
+        default: 1
+      paramStepSize:
+        type: number
+        default: 1
+        minimum: 0.5
+        maximum: 2
+      paramRunTime:
+        type: number
+        default: 1000
+        minimum: 500
+        maximum: 3600
+      paramItersPerPar:
+        type: number
+        default: 3
+        minimum: 1
+        maximum: 30
+      paramTotalIterNum:
+        type: number
+        default: 5
+        minimum: 1
+        maximum: 30

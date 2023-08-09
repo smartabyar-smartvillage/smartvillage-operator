@@ -274,4 +274,21 @@ rules:
       - patch
       - update
       - watch
+  ##
+  ## Rules for smartvillage.computate.org/v1, Kind: TrafficSimulation
+  ##
+  - apiGroups:
+      - smartvillage.computate.org
+    resources:
+      - trafficsimulations
+      - trafficsimulations/status
+      - trafficsimulations/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
 #+kubebuilder:scaffold:rules

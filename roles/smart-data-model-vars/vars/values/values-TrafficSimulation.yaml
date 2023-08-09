@@ -1,0 +1,39 @@
+values:
+
+
+  iotagent:
+    service_name: "{{ crd.iotagent.service_name | default(schema | community.general.json_query('iotagent.properties.service_name.default')) }}"
+    base_url: "{{ crd.iotagent.base_url | default('') }}"
+  context_broker:
+    service_name: "{{ crd.context_broker.service_name | default(schema | community.general.json_query('context_broker.properties.service_name.default')) }}"
+    base_url: "{{ crd.context_broker.base_url | default(schema | community.general.json_query('context_broker.properties.base_url.default')) }}"
+  fiware:
+    service: "{{ crd.fiware.service | default(schema | community.general.json_query('fiware.properties.service.default')) }}"
+    service_path: "{{ crd.fiware.service_path | default(schema | community.general.json_query('fiware.properties.service_path.default')) }}"
+  service_group:
+    resource: "{{ crd.service_group.resource | default(schema | community.general.json_query('service_group.properties.resource.default')) }}"
+    apikey: "{{ crd.service_group.apikey | default(schema | community.general.json_query('service_group.properties.apikey.default')) }}"
+  device:
+    transport: "{{ crd.device.transport | default(schema | community.general.json_query('device.properties.transport.default')) }}"
+    id: "{{ crd.device.id | default(schema | community.general.json_query('device.properties.id.default')) }}"
+    mqtt_host: "{{ crd.device.mqtt_host | default(schema | community.general.json_query('device.properties.mqtt_host.default')) }}"
+    mqtt_port: "{{ crd.device.mqtt_port | default(schema | community.general.json_query('device.properties.mqtt_port.default')) }}"
+    mqtt_subscription_topic: "{{ crd.device.mqtt_subscription_topic | default(schema | community.general.json_query('device.properties.mqtt_subscription_topic.default')) }}"
+    subscription_url: "{{ crd.device.subscription_url | default(schema | community.general.json_query('device.properties.subscription_url.default')) }}"
+  smartabyar_smartvillage:
+    enabled: "{{ crd.smartabyar_smartvillage.enabled | default(schema | community.general.json_query('smartabyar_smartvillage.properties.enabled.default')) }}"
+    auth_secret_name: "{{ crd.smartabyar_smartvillage.auth_secret_name | default(schema | community.general.json_query('smartabyar_smartvillage.properties.auth_secret_name.default')) }}"
+    auth_token_url: "{{ crd.smartabyar_smartvillage.auth_token_url | default(schema | community.general.json_query('smartabyar_smartvillage.properties.auth_token_url.default')) }}"
+    site_base_url: "{{ crd.smartabyar_smartvillage.site_base_url | default(schema | community.general.json_query('smartabyar_smartvillage.properties.site_base_url.default')) }}"
+    smart_model_api: "{{ crd.smartabyar_smartvillage.smart_model_api | default(schema | community.general.json_query('smartabyar_smartvillage.properties.smart_model_api.default')) }}"
+  trafficsimulation:
+    simulationName: "{{ crd.trafficsimulation.simulationName | default(schema | community.general.json_query('trafficsimulation.properties.simulationName.default')) }}"
+    sumocfgPath: "{{ crd.trafficsimulation.sumocfgPath | default(schema | community.general.json_query('trafficsimulation.properties.sumocfgPath.default')) }}"
+    fcdFilePath: "{{ crd.trafficsimulation.fcdFilePath | default(schema | community.general.json_query('trafficsimulation.properties.fcdFilePath.default')) }}"
+    startSeconds: "{{ crd.trafficsimulation.startSeconds | default(schema | community.general.json_query('trafficsimulation.properties.startSeconds.default')) }}"
+    endSeconds: "{{ crd.trafficsimulation.endSeconds | default(schema | community.general.json_query('trafficsimulation.properties.endSeconds.default')) }}"
+    stepSeconds: "{{ crd.trafficsimulation.stepSeconds | default(schema | community.general.json_query('trafficsimulation.properties.stepSeconds.default')) }}"
+    paramStepSize: "{{ crd.trafficsimulation.paramStepSize | default(schema | community.general.json_query('trafficsimulation.properties.paramStepSize.default')) }}"
+    paramRunTime: "{{ crd.trafficsimulation.paramRunTime | default(schema | community.general.json_query('trafficsimulation.properties.paramRunTime.default')) }}"
+    paramItersPerPar: "{{ crd.trafficsimulation.paramItersPerPar | default(schema | community.general.json_query('trafficsimulation.properties.paramItersPerPar.default')) }}"
+    paramTotalIterNum: "{{ crd.trafficsimulation.paramTotalIterNum | default(schema | community.general.json_query('trafficsimulation.properties.paramTotalIterNum.default')) }}"

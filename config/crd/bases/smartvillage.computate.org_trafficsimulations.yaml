@@ -1,0 +1,168 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: trafficsimulations.smartvillage.computate.org
+spec:
+  group: smartvillage.computate.org
+  names:
+    kind: TrafficSimulation
+    listKind: TrafficSimulationList
+    plural: trafficsimulations
+    singular: trafficsimulation
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: |
+          TrafficSimulation is the Schema for the trafficsimulations API
+          
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: Spec defines the desired state of TrafficSimulation
+            type: object
+            properties:
+              iotagent:
+                type: object
+                properties:
+                  base_url:
+                    type: string
+                  service_name:
+                    default: iotagent-json
+                    type: string
+
+              context_broker:
+                type: object
+                properties:
+                  base_url:
+                    default: http://scorpiobroker:9090
+                    type: string
+                  service_name:
+                    default: orion-ld
+                    type: string
+
+              fiware:
+                type: object
+                properties:
+                  service:
+                    default: trafficsimulations
+                    type: string
+                  service_path:
+                    default: /Sweden/Veberod/CityCenter
+                    type: string
+
+              service_group:
+                type: object
+                properties:
+                  apikey:
+                    default: VeberodIntersection1
+                    type: string
+                  resource:
+                    default: /iot/json
+                    type: string
+
+              device:
+                type: object
+                properties:
+                  id:
+                    default: VeberodIntersection1
+                    type: string
+                  mqtt_host:
+                    default: fiware-broker-mqtt-0-svc
+                    type: string
+                  mqtt_port:
+                    default: 1883
+                    type: number
+                  mqtt_subscription_topic:
+                    default: iot/subscribe
+                    type: string
+                  subscription_url:
+                    default: http://orionld-smartvillage-sync:8080
+                    type: string
+                  transport:
+                    default: MQTT
+                    type: string
+
+              smartabyar_smartvillage:
+                type: object
+                properties:
+                  auth_secret_name:
+                    default: keycloak-client-secret-smartvillage
+                    type: string
+                  auth_token_url:
+                    default: https://keycloak-sso.apps-crc.testing/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+                    type: string
+                  enabled:
+                    default: true
+                    type: boolean
+                  site_base_url:
+                    default: https://smartvillage-web-smartvillage.apps-crc.testing
+                    type: string
+                  smart_model_api:
+                    default: /api/traffic-simulation
+                    type: string
+
+              trafficsimulation:
+                type: object
+                properties:
+                  endSeconds:
+                    default: 300
+                    type: number
+                  fcdFilePath:
+                    default: /usr/local/src/TLC/output/veberod-fcd.xml
+                    type: string
+                  paramItersPerPar:
+                    default: 3
+                    maximum: 30
+                    minimum: 1
+                    type: number
+                  paramRunTime:
+                    default: 1000
+                    maximum: 3600
+                    minimum: 500
+                    type: number
+                  paramStepSize:
+                    default: 1
+                    maximum: 2
+                    minimum: 0.5
+                    type: number
+                  paramTotalIterNum:
+                    default: 5
+                    maximum: 30
+                    minimum: 1
+                    type: number
+                  simulationName:
+                    default: Veberöd intersection 1
+                    type: string
+                  startSeconds:
+                    default: 0
+                    type: number
+                  stepSeconds:
+                    default: 1
+                    type: number
+                  sumocfgPath:
+                    default: /usr/local/src/TLC/input/Veberod_intersection_pedestrian.sumocfg
+                    type: string
+
+          status:
+            description: Status defines the observed state of TrafficSimulation
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
