@@ -21,7 +21,7 @@ spec:
     port: 9090
     log_level: |-
       INFO
-    replicas: 2
+    replicas: 1
     resources:
       limits:
         cpu: |-
@@ -42,27 +42,27 @@ spec:
   kafka:
     topic_names:
       entity: |-
-        ENTITY
+        scorpiobroker-entity
       entitybatch: |-
-        ENTITYBATCH
+        scorpiobroker-entitybatch
       registry: |-
-        REGISTRY
+        scorpiobroker-registry
       temporal: |-
-        TEMPORAL
+        scorpiobroker-temporal
       inotify: |-
-        I_NOTIFY
+        scorpiobroker-i-notify
       iregsub: |-
-        I_REGSUB
+        scorpiobroker-i-regsub
       subalive: |-
-        SUB_ALIVE
+        scorpiobroker-sub-alive
       subsync: |-
-        SUB_SYNC
+        scorpiobroker-sub-sync
       regsubalive: |-
-        REG_SUB_ALIVE
+        scorpiobroker-reg-sub-alive
       regsubsync: |-
-        REG_SUB_SYNC
+        scorpiobroker-reg-sub-sync
     keystore_secret: |-
-      smartvillage-kafka
+      scorpiobroker-kafka
     truststore_secret: |-
       smartvillage-kafka-cluster-ca-cert
     service_name: |-

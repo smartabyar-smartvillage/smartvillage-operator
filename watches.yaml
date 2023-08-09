@@ -66,4 +66,13 @@
   snakeCaseParameters: false
   version: v1
   watchDependentResources: false
+- finalizer:
+    name: smartvillage.computate.org/edgemongodb-finalizer
+    role: delete-edgemongodb
+  group: smartvillage.computate.org
+  kind: EdgeMongoDB
+  role: edgemongodb
+  snakeCaseParameters: false
+  version: v1
+  watchDependentResources: false
 #+kubebuilder:scaffold:watch

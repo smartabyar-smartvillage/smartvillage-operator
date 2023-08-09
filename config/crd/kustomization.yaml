@@ -10,4 +10,5 @@ resources:
 - bases/smartvillage.computate.org_edgeamqbrokers.yaml
 - bases/smartvillage.computate.org_scorpiobrokers.yaml
 - bases/smartvillage.computate.org_trafficsimulations.yaml
+- bases/smartvillage.computate.org_edgemongodbs.yaml
 #+kubebuilder:scaffold:crdkustomizeresource

@@ -1,5 +1,2 @@
 ---
 CRD_VARS_VALUES_PATH: "{{ playbook_dir }}/roles/smart-data-model-vars/vars/{{ ENTITY_TYPE }}.yaml"
-WATCHES_PATH: "{{ playbook_dir }}/watches.yaml"
-ROLE_DEFAULTS_PATH: "{{ playbook_dir }}/roles/apply-{{ ENTITY_TYPE | lower }}/defaults/main.yml"
-ROLE_TASKS_PATH: "{{ playbook_dir }}/roles/apply-{{ ENTITY_TYPE | lower }}/tasks/main.yml"

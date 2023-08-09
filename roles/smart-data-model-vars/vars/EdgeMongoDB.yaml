@@ -1,0 +1,8 @@
+---
+name: smartvillage
+description: |
+  
+schema:
+  edgemongodb:
+    type: object
+    properties: {}

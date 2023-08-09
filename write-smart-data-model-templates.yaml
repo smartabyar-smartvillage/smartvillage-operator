@@ -7,5 +7,6 @@
   connection: local
   roles:
     - smart-data-model-domain
+    - smart-data-model-write-vars
     - smart-data-model-vars
     - write-smart-data-model-templates

@@ -8,4 +8,5 @@ resources:
 - smartvillage_v1_edgeamqbroker.yaml
 - smartvillage_v1_scorpiobroker.yaml
 - smartvillage_v1_trafficsimulation.yaml
+- smartvillage_v1_edgemongodb.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples

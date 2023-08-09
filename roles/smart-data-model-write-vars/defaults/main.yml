@@ -1,0 +1,8 @@
+---
+CRD_VARS_VALUES_PATH: "{{ playbook_dir }}/roles/smart-data-model-vars/vars/{{ ENTITY_TYPE }}.yaml"
+WATCHES_PATH: "{{ playbook_dir }}/watches.yaml"
+MAIN_ROLE_TASKS_PATH: "{{ playbook_dir }}/roles/{{ ENTITY_TYPE | lower }}/tasks/main.yml"
+ROLE_DEFAULTS_PATH: "{{ playbook_dir }}/roles/apply-{{ ENTITY_TYPE | lower }}/defaults/main.yml"
+ROLE_TASKS_PATH: "{{ playbook_dir }}/roles/apply-{{ ENTITY_TYPE | lower }}/tasks/main.yml"
+DELETE_DEFAULTS_PATH: "{{ playbook_dir }}/roles/delete-{{ ENTITY_TYPE | lower }}/defaults/main.yml"
+DELETE_TASKS_PATH: "{{ playbook_dir }}/roles/delete-{{ ENTITY_TYPE | lower }}/tasks/main.yml"

@@ -1,0 +1,14 @@
+apiVersion: smartvillage.computate.org/v1
+kind: EdgeMongoDB
+metadata:
+  labels:
+    app.kubernetes.io/name: edgemongodb
+    app.kubernetes.io/instance: edgemongodb-sample
+    app.kubernetes.io/part-of: smartvillage-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: smartvillage-operator
+  name: smartvillage
+spec:
+  description: |
+    
+  edgemongodb:

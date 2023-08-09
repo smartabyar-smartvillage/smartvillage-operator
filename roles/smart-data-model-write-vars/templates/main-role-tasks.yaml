@@ -1,0 +1,13 @@
+---
+# tasks file for {{ ENTITY_TYPE }}
+
+- name: Run Ansible role smart-data-model-vars
+  include_role:
+    name: smart-data-model-vars
+  vars:
+    ENTITY_TYPE: {{ ENTITY_TYPE }}
+- name: Run Ansible role apply-{{ ENTITY_TYPE | lower }}
+  include_role:
+    name: apply-{{ ENTITY_TYPE | lower }}
+  vars:
+    ENTITY_TYPE: {{ ENTITY_TYPE }}

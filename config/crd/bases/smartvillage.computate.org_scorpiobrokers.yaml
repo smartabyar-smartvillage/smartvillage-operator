@@ -57,7 +57,7 @@ spec:
                     default: 9090
                     type: number
                   replicas:
-                    default: 2
+                    default: 1
                     description: "The number of Scorpio Broker pods to run. \n"
                     type: number
                   resources:
@@ -119,7 +119,7 @@ spec:
                     default: smartvillage-kafka
                     type: string
                   keystore_secret:
-                    default: smartvillage-kafka
+                    default: scorpiobroker-kafka
                     type: string
                   port:
                     default: 9093
@@ -154,34 +154,34 @@ spec:
                   topic_names:
                     properties:
                       entity:
-                        default: ENTITY
+                        default: scorpiobroker-entity
                         type: string
                       entitybatch:
-                        default: ENTITYBATCH
+                        default: scorpiobroker-entitybatch
                         type: string
                       inotify:
-                        default: I_NOTIFY
+                        default: scorpiobroker-i-notify
                         type: string
                       iregsub:
-                        default: I_REGSUB
+                        default: scorpiobroker-i-regsub
                         type: string
                       registry:
-                        default: REGISTRY
+                        default: scorpiobroker-registry
                         type: string
                       regsubalive:
-                        default: REG_SUB_ALIVE
+                        default: scorpiobroker-reg-sub-alive
                         type: string
                       regsubsync:
-                        default: REG_SUB_SYNC
+                        default: scorpiobroker-reg-sub-sync
                         type: string
                       subalive:
-                        default: SUB_ALIVE
+                        default: scorpiobroker-sub-alive
                         type: string
                       subsync:
-                        default: SUB_SYNC
+                        default: scorpiobroker-sub-sync
                         type: string
                       temporal:
-                        default: TEMPORAL
+                        default: scorpiobroker-temporal
                         type: string
                     type: object
                   truststore_secret:

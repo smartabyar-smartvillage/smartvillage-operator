@@ -291,4 +291,21 @@ rules:
       - patch
       - update
       - watch
+  ##
+  ## Rules for smartvillage.computate.org/v1, Kind: EdgeMongoDB
+  ##
+  - apiGroups:
+      - smartvillage.computate.org
+    resources:
+      - edgemongodbs
+      - edgemongodbs/status
+      - edgemongodbs/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
 #+kubebuilder:scaffold:rules
