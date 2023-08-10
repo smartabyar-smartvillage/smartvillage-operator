@@ -53,8 +53,8 @@ spec:
             - name: IOTA_MONGO_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: orion-ld
-                  key: dbPassword
+                  name: mongodb-orion
+                  key: mongodb-root-password
             - name: IOTA_MONGO_DB
               value: 'iotagentjson'
             - name: IOTA_HTTP_PORT

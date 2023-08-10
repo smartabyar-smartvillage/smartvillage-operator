@@ -18,3 +18,6 @@ attributes:
 {% endif %}
 {% endfor %}
 static_attributes: []
+"@context":
+  - https://computate.neocities.org/fiware/{{ ENTITY_TYPE }}.context-ngsi.jsonld
+  - https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld

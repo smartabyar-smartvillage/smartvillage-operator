@@ -109,7 +109,7 @@ spec:
       databases:
         - {{ site_name }}
     - name: scorpiobroker
-      options: "SUPERUSER"
+      options: "SUPERUSER CREATEDB"
       databases:
         - scorpiobroker
   patroni:
@@ -120,6 +120,6 @@ spec:
           - "local {{ values.sso.cluster_name | default('') }} {{ values.sso.cluster_name | default('') }} trust"
           - "host {{ site_name | default('') }} {{ site_name | default('') }} all md5"
           - "local {{ site_name | default('') }} {{ site_name | default('') }} trust"
-          - "host scorpiobroker scorpiobroker all md5"
-          - "local scorpiobroker scorpiobroker trust"
+          - "host all scorpiobroker all md5"
+          - "local all scorpiobroker trust"
         
