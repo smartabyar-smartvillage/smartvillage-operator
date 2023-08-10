@@ -35,6 +35,48 @@ spec:
             description: Spec defines the desired state of TrafficSimulation
             type: object
             properties:
+              attributes:
+                type: object
+                properties:
+                  object_id:
+                    type: string
+                  type:
+                    type: string
+                    default: |
+                      TrafficSimulation
+                  simulationName:
+                    type: string
+                    default: |
+                      Veberöd intersection 1
+                  sumocfgPath:
+                    type: string
+                    default: |
+                      /usr/local/src/TLC/input/Veberod_intersection_pedestrian.sumocfg
+                  fcdFilePath:
+                    type: string
+                    default: |
+                      /usr/local/src/TLC/output/veberod-fcd.xml
+                  startSeconds:
+                    type: number
+                    default: 0
+                  endSeconds:
+                    type: number
+                    default: 300
+                  stepSeconds:
+                    type: number
+                    default: 1
+                  paramStepSize:
+                    type: number
+                    default: 1
+                  paramRunTime:
+                    type: number
+                    default: 1000
+                  paramItersPerPar:
+                    type: number
+                    default: 3
+                  paramTotalIterNum:
+                    type: number
+                    default: 5
               iotagent:
                 type: object
                 properties:
@@ -51,7 +93,7 @@ spec:
                     default: http://scorpiobroker:9090
                     type: string
                   service_name:
-                    default: orion-ld
+                    default: scorpiobroker
                     type: string
 
               fiware:
@@ -68,7 +110,7 @@ spec:
                 type: object
                 properties:
                   apikey:
-                    default: VeberodIntersection1
+                    default: TrafficSimulation
                     type: string
                   resource:
                     default: /iot/json
@@ -113,48 +155,6 @@ spec:
                     type: string
                   smart_model_api:
                     default: /api/traffic-simulation
-                    type: string
-
-              trafficsimulation:
-                type: object
-                properties:
-                  endSeconds:
-                    default: 300
-                    type: number
-                  fcdFilePath:
-                    default: /usr/local/src/TLC/output/veberod-fcd.xml
-                    type: string
-                  paramItersPerPar:
-                    default: 3
-                    maximum: 30
-                    minimum: 1
-                    type: number
-                  paramRunTime:
-                    default: 1000
-                    maximum: 3600
-                    minimum: 500
-                    type: number
-                  paramStepSize:
-                    default: 1
-                    maximum: 2
-                    minimum: 0.5
-                    type: number
-                  paramTotalIterNum:
-                    default: 5
-                    maximum: 30
-                    minimum: 1
-                    type: number
-                  simulationName:
-                    default: Veberöd intersection 1
-                    type: string
-                  startSeconds:
-                    default: 0
-                    type: number
-                  stepSeconds:
-                    default: 1
-                    type: number
-                  sumocfgPath:
-                    default: /usr/local/src/TLC/input/Veberod_intersection_pedestrian.sumocfg
                     type: string
 
           status:

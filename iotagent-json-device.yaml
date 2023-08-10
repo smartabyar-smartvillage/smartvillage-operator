@@ -6,45 +6,41 @@
     - smart-data-model-vars
     - iotagent-json-device
   vars:
-    ENTITY_TYPE: TrafficFlowObserved
-    iotagent:
-      iot_host: http://iotagent-json-north-fiware.apps-crc.testing
-    fiware:
-      service: 
-      service_path: /
-    service_group:
-      cb_host: 'http://orion-ld-fiware.apps-crc.testing'
-      resource: /iot/json
-      apikey: VeberodIntersection1
-    device:
-      transport: MQTT
-      id: 'Sjobovagen-SE'
-      mqtt_host: fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
-      mqtt_port: 1883
-      mqtt_subscription_topic: iot/subscribe
-    sumo:
-      initial_parameters: [10, 20, 30, 50, 10, 10, 8, 8, 5, 5]
-      demand_scale: [1.4, 1.4]
-      fix_seed: false
-      lam: [0.11, 0.125, 0.01, 0.01]
-      routes:
-        - edges: '96027913#0 96027913#2 30186293 311389510#1'
-          id: r13
-      run_time: 0
-      v_types:
-        - accel: 2.6
-          decel: 4.5
-          id: v12
-          length: 5
-          max_speed: 55
-          min_gap: 1
-          sigma: 0.5
-    attributes:
-      address:
-        addressCountry: Sweden
-        addressLocality: Veberöd
-        streetAddress: Sjöbovägen
-      area_served: |
-        96027913#0 96027913#2 30186293 311389510#1
-      average_gap_distance: 1
+    ENTITY_TYPE: TrafficSimulation
+    crd:
+      iotagent:
+        service_name: iotagent-json
+      context_broker:
+        service_name: scorpiobroker
+        base_url: http://scorpiobroker:9090
+      fiware:
+        service: trafficsimulations
+        service_path: /Sweden/Veberod/CityCenter
+      service_group:
+        resource: /iot/json
+        apikey: VeberodIntersection1
+      device:
+        transport: MQTT
+        id: VeberodIntersection1
+        mqtt_host: fiware-broker-mqtt-0-svc
+        mqtt_port: 1883
+        mqtt_subscription_topic: iot/subscribe
+        subscription_url: http://orionld-smartvillage-sync:8080
+      smartabyar_smartvillage:
+        enabled: true
+        auth_secret_name: keycloak-client-secret-smartvillage
+        auth_token_url: https://keycloak-sso.apps-crc.testing/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+        site_base_url: https://smartvillage-web-smartvillage.apps-crc.testing
+        smart_model_api: /api/traffic-simulation
+      attributes:
+        simulationName: Veberöd intersection 1
+        sumocfgPath: /usr/local/src/TLC/input/Veberod_intersection_pedestrian.sumocfg
+        fcdFilePath: /usr/local/src/TLC/output/veberod-fcd.xml
+        startSeconds: 0
+        endSeconds: 300
+        stepSeconds: 1
+        paramStepSize: 1
+        paramRunTime: 1000
+        paramItersPerPar: 3
+        paramTotalIterNum: 5
     ENTITY_NAME: "urn:ngsi-ld:{{ ENTITY_TYPE }}:{{ device.id }}"

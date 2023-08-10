@@ -137,7 +137,7 @@ schema:
         default: 9093
       group:
         type: string
-        default: smartvillage-kafka
+        default: aio-runner
       security_protocol:
         type: string
         default: SSL

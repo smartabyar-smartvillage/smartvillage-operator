@@ -11,12 +11,28 @@ metadata:
 spec:
   description: |
     
+  attributes:
+    type: |
+      TrafficSimulation
+    simulationName: |
+      Veberöd intersection 1
+    sumocfgPath: |
+      /usr/local/src/TLC/input/Veberod_intersection_pedestrian.sumocfg
+    fcdFilePath: |
+      /usr/local/src/TLC/output/veberod-fcd.xml
+    startSeconds: 0
+    endSeconds: 300
+    stepSeconds: 1
+    paramStepSize: 1
+    paramRunTime: 1000
+    paramItersPerPar: 3
+    paramTotalIterNum: 5
   iotagent:
     service_name: |-
       iotagent-json
   context_broker:
     service_name: |-
-      orion-ld
+      scorpiobroker
     base_url: |-
       http://scorpiobroker:9090
   fiware:
@@ -28,7 +44,7 @@ spec:
     resource: |-
       /iot/json
     apikey: |-
-      VeberodIntersection1
+      TrafficSimulation
   device:
     transport: |-
       MQTT
@@ -51,17 +67,3 @@ spec:
       https://smartvillage-web-smartvillage.apps-crc.testing
     smart_model_api: |-
       /api/traffic-simulation
-  trafficsimulation:
-    simulationName: |-
-      Veberöd intersection 1
-    sumocfgPath: |-
-      /usr/local/src/TLC/input/Veberod_intersection_pedestrian.sumocfg
-    fcdFilePath: |-
-      /usr/local/src/TLC/output/veberod-fcd.xml
-    startSeconds: 0
-    endSeconds: 300
-    stepSeconds: 1
-    paramStepSize: 1
-    paramRunTime: 1000
-    paramItersPerPar: 3
-    paramTotalIterNum: 5

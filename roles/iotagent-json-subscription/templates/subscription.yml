@@ -1,17 +1,17 @@
 ---
 # if not given  it will be assigned during subscription process and returned to client
 id: "{{ ENTITY_NAME }}"
-#type: "Subscription"
+type: "Subscription"
 #name: "{{ ENTITY_NAME }}"
 description: "{{ ENTITY_NAME }}"
-subject:
-  entities:
-    - id: "{{ ENTITY_NAME }}"
-      type: "{{ ENTITY_TYPE }}"
+entities:
+  - id: "{{ ENTITY_NAME }}"
+    type: "{{ ENTITY_TYPE }}"
 notification:
-  http:
-    url: "{{ values.device.subscription_url }}"
-  attrs:
-{% for key, attribute in smart_data_model.attributes.items() %}
-    - "{{ smart_data_model.attributes[key].name | default(key) }}"
-{% endfor %}
+  endpoint:
+    uri: "{{ values.device.subscription_url }}"
+    accept: "application.json"
+#  attrs:
+#{% for key, attribute in smart_data_model.attributes.items() %}
+#    - "{{ smart_data_model.attributes[key].name | default(key) }}"
+#{% endfor %}

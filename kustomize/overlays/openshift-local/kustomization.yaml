@@ -6,4 +6,5 @@ resources:
   - scorpiobrokers/
   - iotagentjsons/
   - smartabyarsmartvillages/
+  - trafficsimulations/
   - trafficflowobserveds/

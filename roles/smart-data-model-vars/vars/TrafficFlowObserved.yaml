@@ -92,6 +92,13 @@ schema:
         default: SUMO
 smart_data_model:
   attributes:
+    type:
+      name: source
+      type: string
+      description: |
+        NGSI Entity type. It has to be TrafficFlowObserved
+      default: TrafficFlowObserved
+
     address:
       name: address
       type: object
@@ -272,12 +279,6 @@ smart_data_model:
       type: string
       description: |
         A sequence of characters giving the original source of the entity data as a URL. Recommended to be the fully qualified domain name of the source provider, or the URL to the source object.
-    type:
-      name: source
-      type: string
-      description: |
-        NGSI Entity type. It has to be TrafficFlowObserved
-      default: TrafficFlowObserved
     vehicleSubType:
       name: vehicleSubType
       type: string

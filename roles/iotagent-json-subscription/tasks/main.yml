@@ -3,11 +3,12 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ values.context_broker.base_url }}/v2/subscriptions"
+    url: "http://scorpiobroker-smartvillage.apps-crc.testing/ngsi-ld/v1/subscriptions"
     method: GET
     headers:
       Fiware-Service: "{{ values.fiware.service | lower }}"
       Fiware-ServicePath: "{{ values.fiware.service_path }}"
+      Accept: "*/*"
     validate_certs: false
     status_code: 
       - 200
@@ -25,12 +26,13 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ values.context_broker.base_url }}/v2/subscriptions"
+    url: "http://scorpiobroker-smartvillage.apps-crc.testing/ngsi-ld/v1/subscriptions"
     method: POST
     headers:
       Content-Type: "application/json"
       Fiware-Service: "{{ values.fiware.service | lower }}"
       Fiware-ServicePath: "{{ values.fiware.service_path }}"
+      Accept: "*/*"
     body_format: json
     body: "{{ SUBSCRIPTION_BODY }}"
     return_content: true
@@ -38,6 +40,7 @@
     status_code: 
       - 200
       - 201
+      - 409
   register: CREATE_SUBSCRIPTION
   ignore_errors: true
   when: SUBSCRIPTION is not defined or SUBSCRIPTION == ''

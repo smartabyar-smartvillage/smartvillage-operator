@@ -16,7 +16,7 @@ schema:
     properties:
       service_name:
         type: string
-        default: orion-ld
+        default: scorpiobroker
       base_url:
         type: string
         default: http://scorpiobroker:9090
@@ -37,7 +37,7 @@ schema:
         default: /iot/json
       apikey:
         type: string
-        default: VeberodIntersection1
+        default: TrafficSimulation
   device:
     type: object
     properties:
@@ -77,44 +77,60 @@ schema:
       smart_model_api:
         type: string
         default: /api/traffic-simulation
-  trafficsimulation:
-    type: object
-    properties:
-      simulationName:
-        type: string
-        default: Veberöd intersection 1
-      sumocfgPath:
-        type: string
-        default: /usr/local/src/TLC/input/Veberod_intersection_pedestrian.sumocfg
-      fcdFilePath:
-        type: string
-        default: /usr/local/src/TLC/output/veberod-fcd.xml
-      startSeconds:
-        type: number
-        default: 0
-      endSeconds:
-        type: number
-        default: 300
-      stepSeconds:
-        type: number
-        default: 1
-      paramStepSize:
-        type: number
-        default: 1
-        minimum: 0.5
-        maximum: 2
-      paramRunTime:
-        type: number
-        default: 1000
-        minimum: 500
-        maximum: 3600
-      paramItersPerPar:
-        type: number
-        default: 3
-        minimum: 1
-        maximum: 30
-      paramTotalIterNum:
-        type: number
-        default: 5
-        minimum: 1
-        maximum: 30
+smart_data_model:
+  attributes:
+    type:
+      name: source
+      type: string
+      description: |
+        NGSI Entity type. It has to be TrafficSimulation
+      default: TrafficSimulation
+
+    simulationName:
+      name: simulationName
+      type: string
+      default: Veberöd intersection 1
+    sumocfgPath:
+      name: sumocfgPath
+      type: string
+      default: /usr/local/src/TLC/input/Veberod_intersection_pedestrian.sumocfg
+    fcdFilePath:
+      name: fcdFilePath
+      type: string
+      default: /usr/local/src/TLC/output/veberod-fcd.xml
+    startSeconds:
+      name: startSeconds
+      type: number
+      default: 0
+    endSeconds:
+      name: endSeconds
+      type: number
+      default: 300
+    stepSeconds:
+      name: stepSeconds
+      type: number
+      default: 1
+    paramStepSize:
+      name: paramStepSize
+      type: number
+      default: 1
+      minimum: 0.5
+      maximum: 2
+    paramRunTime:
+      name: paramRunTime
+      type: number
+      default: 1000
+      minimum: 500
+      maximum: 3600
+    paramItersPerPar:
+      name: paramItersPerPar
+      type: number
+      default: 3
+      minimum: 1
+      maximum: 30
+    paramTotalIterNum:
+      name: paramTotalIterNum
+      type: number
+      default: 5
+      minimum: 1
+      maximum: 30

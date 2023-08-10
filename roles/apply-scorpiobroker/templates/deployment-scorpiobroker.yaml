@@ -24,6 +24,12 @@ spec:
       containers:
         - name: scorpiobroker
           env:
+            - name: QUARKUS_VERTX_MAX_EVENT_LOOP_EXECUTE_TIME
+              value: '60'
+            - name: QUARKUS_VERTX_MAX_WORKER_EXECUTE_TIME
+              value: '60'
+            - name: QUARKUS_VERTX_WARNING_EXCEPTION_TIME
+              value: '30'
 
             - name: DBHOST
               value: "{{ values.postgres.service_name }}"
@@ -45,80 +51,364 @@ spec:
                   key: password
                   name: "{{ values.postgres.secret_name }}"
 
-            - name: JAVA_TOOL_OPTIONS
-              value: "-Xmx3g"
-            - name: KAFKA_HEAP_OPTS
-              value: "-Xms512m -Xmx1g"
             - name: "BUSHOST"
               value: "{{ values.kafka.service_name }}"
             - name: "BUSPORT"
               value: "{{ values.kafka.port }}"
 
-#            - name: "MP_MESSAGING_INCOMING_REGISTRYRETRIEVE_GROUP_ID"
-#              value: "{{ values.kafka.group }}"
-#            - name: "MP_MESSAGING_INCOMING_ENTITYRETRIEVE_GROUP_ID"
-#              value: "{{ values.kafka.group }}"
-#            - name: "MP_MESSAGING_INCOMING_ENTITYBATCHRETRIEVE_GROUP_ID"
-#              value: "{{ values.kafka.group }}"
-#            - name: "MP_MESSAGING_INCOMING_ISUBSRETRIEVE_GROUP_ID"
-#              value: "{{ values.kafka.group }}"
-#            - name: "MP_MESSAGING_INCOMING_INOTIFICATIONRETRIEVE_GROUP_ID"
-#              value: "{{ values.kafka.group }}"
-#            - name: "MP_MESSAGING_INCOMING_SUBALIVERETRIEVE_GROUP_ID"
-#              value: "{{ values.kafka.group }}"
-#            - name: "MP_MESSAGING_INCOMING_SUBSYNCRETRIEVE_GROUP_ID"
-#              value: "{{ values.kafka.group }}"
-#            - name: "MP_MESSAGING_INCOMING_REGSUBALIVERETRIEVE_GROUP_ID"
-#              value: "{{ values.kafka.group }}"
-#            - name: "MP_MESSAGING_INCOMING_REGSUBSYNCRETRIEVE_GROUP_ID"
-#              value: "{{ values.kafka.group }}"
-#
-#            - name: "MP_MESSAGING_OUTGOING_REGISTRY_GROUP_ID"
-#              value: "{{ values.kafka.group }}"
-#            - name: "MP_MESSAGING_OUTGOING_ENTITY_GROUP_ID"
-#              value: "{{ values.kafka.group }}"
-#            - name: "MP_MESSAGING_OUTGOING_ENTITYBATCH_GROUP_ID"
-#              value: "{{ values.kafka.group }}"
-#            - name: "MP_MESSAGING_OUTGOING_HISTORY_GROUP_ID"
-#              value: "{{ values.kafka.group }}"
-#            - name: "MP_MESSAGING_OUTGOING_ISUBS_GROUP_ID"
-#              value: "{{ values.kafka.group }}"
-#            - name: "MP_MESSAGING_OUTGOING_INOTIFICATION_GROUP_ID"
-#              value: "{{ values.kafka.group }}"
-#            - name: "MP_MESSAGING_OUTGOING_SUBALIVE_GROUP_ID"
-#              value: "{{ values.kafka.group }}"
-#            - name: "MP_MESSAGING_OUTGOING_SUBSYNC_GROUP_ID"
-#              value: "{{ values.kafka.group }}"
-#            - name: "MP_MESSAGING_OUTGOING_REGSUBALIVE_GROUP_ID"
-#              value: "{{ values.kafka.group }}"
-#            - name: "MP_MESSAGING_OUTGOING_REGSUBSYNC_GROUP_ID"
-#              value: "{{ values.kafka.group }}"
-
-            - name: "MP_MESSAGING_CONNECTOR_SMALLRYEKAFKA_SECURITY_PROTOCOL"
-              value: "{{ values.kafka.security_protocol }}"
-            - name: "MP_MESSAGING_CONNECTOR_SMALLRYEKAFKA_GROUP_ID"
+            - name: "MP_MESSAGING_INCOMING_REGISTRYRETRIEVE_GROUP_ID"
               value: "{{ values.kafka.group }}"
-            - name: "MP_MESSAGING_CONNECTOR_SMALLRYEKAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM"
-              value: ""
-            - name: "MP_MESSAGING_CONNECTOR_SMALLRYEKAFKA_SSL_KEYSTORE_TYPE"
-              value: "{{ values.kafka.ssl_keystore_type }}"
-            - name: "MP_MESSAGING_CONNECTOR_SMALLRYEKAFKA_SSL_KEYSTORE_LOCATION"
-              value: "{{ values.kafka.ssl_keystore_location }}"
-            - name: "MP_MESSAGING_CONNECTOR_SMALLRYEKAFKA_SSL_KEYSTORE_PASSWORD"
-              valueFrom:
-                secretKeyRef:
-                  key: "user.password"
-                  name: "{{ values.kafka.keystore_secret }}"
+            - name: "MP_MESSAGING_INCOMING_ENTITYRETRIEVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_INCOMING_ENTITYBATCHRETRIEVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_INCOMING_ISUBSRETRIEVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_INCOMING_INOTIFICATIONRETRIEVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_INCOMING_SUBALIVERETRIEVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_INCOMING_SUBSYNCRETRIEVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_INCOMING_REGSUBALIVERETRIEVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_INCOMING_REGSUBSYNCRETRIEVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
 
-            - name: "MP_MESSAGING_CONNECTOR_SMALLRYEKAFKA_SSL_TRUSTSTORE_TYPE"
-              value: "{{ values.kafka.ssl_keystore_type }}"
-            - name: "MP_MESSAGING_CONNECTOR_SMALLRYEKAFKA_SSL_TRUSTSTORE_LOCATION"
-              value: "{{ values.kafka.ssl_truststore_location }}"
-            - name: "MP_MESSAGING_CONNECTOR_SMALLRYEKAFKA_SSL_TRUSTSTORE_PASSWORD"
+            - name: "MP_MESSAGING_OUTGOING_REGISTRY_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_OUTGOING_ENTITY_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_OUTGOING_ENTITYBATCH_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_OUTGOING_HISTORY_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_OUTGOING_ISUBS_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_OUTGOING_INOTIFICATION_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_OUTGOING_SUBALIVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_OUTGOING_SUBSYNC_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_OUTGOING_REGSUBALIVE_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+            - name: "MP_MESSAGING_OUTGOING_REGSUBSYNC_GROUP_ID"
+              value: "{{ values.kafka.group }}"
+
+            - name: "MP_MESSAGING_INCOMING_REGISTRYRETRIEVE_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+            - name: "MP_MESSAGING_INCOMING_ENTITYRETRIEVE_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+            - name: "MP_MESSAGING_INCOMING_ENTITYBATCHRETRIEVE_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+            - name: "MP_MESSAGING_INCOMING_ISUBSRETRIEVE_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+            - name: "MP_MESSAGING_INCOMING_INOTIFICATIONRETRIEVE_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+            - name: "MP_MESSAGING_INCOMING_SUBALIVERETRIEVE_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+            - name: "MP_MESSAGING_INCOMING_SUBSYNCRETRIEVE_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+            - name: "MP_MESSAGING_INCOMING_REGSUBALIVERETRIEVE_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+            - name: "MP_MESSAGING_INCOMING_REGSUBSYNCRETRIEVE_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+
+            - name: "MP_MESSAGING_OUTGOING_REGISTRY_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+            - name: "MP_MESSAGING_OUTGOING_ENTITY_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+            - name: "MP_MESSAGING_OUTGOING_ENTITYBATCH_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+            - name: "MP_MESSAGING_OUTGOING_HISTORY_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+            - name: "MP_MESSAGING_OUTGOING_ISUBS_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+            - name: "MP_MESSAGING_OUTGOING_INOTIFICATION_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+            - name: "MP_MESSAGING_OUTGOING_SUBALIVE_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+            - name: "MP_MESSAGING_OUTGOING_SUBSYNC_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+            - name: "MP_MESSAGING_OUTGOING_REGSUBALIVE_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+            - name: "MP_MESSAGING_OUTGOING_REGSUBSYNC_SECURITY_PROTOCOL"
+              value: "{{ values.kafka.security_protocol }}"
+
+            - name: "MP_MESSAGING_INCOMING_REGISTRYRETRIEVE_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+            - name: "MP_MESSAGING_INCOMING_ENTITYRETRIEVE_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+            - name: "MP_MESSAGING_INCOMING_ENTITYBATCHRETRIEVE_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+            - name: "MP_MESSAGING_INCOMING_ISUBSRETRIEVE_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+            - name: "MP_MESSAGING_INCOMING_INOTIFICATIONRETRIEVE_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+            - name: "MP_MESSAGING_INCOMING_SUBALIVERETRIEVE_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+            - name: "MP_MESSAGING_INCOMING_SUBSYNCRETRIEVE_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+            - name: "MP_MESSAGING_INCOMING_REGSUBALIVERETRIEVE_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+            - name: "MP_MESSAGING_INCOMING_REGSUBSYNCRETRIEVE_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+
+            - name: "MP_MESSAGING_OUTGOING_REGISTRY_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+            - name: "MP_MESSAGING_OUTGOING_ENTITY_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+            - name: "MP_MESSAGING_OUTGOING_ENTITYBATCH_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+            - name: "MP_MESSAGING_OUTGOING_HISTORY_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+            - name: "MP_MESSAGING_OUTGOING_ISUBS_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+            - name: "MP_MESSAGING_OUTGOING_INOTIFICATION_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+            - name: "MP_MESSAGING_OUTGOING_SUBALIVE_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+            - name: "MP_MESSAGING_OUTGOING_SUBSYNC_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+            - name: "MP_MESSAGING_OUTGOING_REGSUBALIVE_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+            - name: "MP_MESSAGING_OUTGOING_REGSUBSYNC_SSL_KEYSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_keystore_location }}"
+
+            - name: "MP_MESSAGING_INCOMING_REGISTRYRETRIEVE_SSL_KEYSTORE_PASSWORD"
               valueFrom:
                 secretKeyRef:
-                  key: "ca.password"
+                  name: "{{ values.kafka.keystore_secret }}"
+                  key: user.password
+            - name: "MP_MESSAGING_INCOMING_ENTITYRETRIEVE_SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.keystore_secret }}"
+                  key: user.password
+            - name: "MP_MESSAGING_INCOMING_ENTITYBATCHRETRIEVE_SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.keystore_secret }}"
+                  key: user.password
+            - name: "MP_MESSAGING_INCOMING_ISUBSRETRIEVE_SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.keystore_secret }}"
+                  key: user.password
+            - name: "MP_MESSAGING_INCOMING_INOTIFICATIONRETRIEVE_SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.keystore_secret }}"
+                  key: user.password
+            - name: "MP_MESSAGING_INCOMING_SUBALIVERETRIEVE_SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.keystore_secret }}"
+                  key: user.password
+            - name: "MP_MESSAGING_INCOMING_SUBSYNCRETRIEVE_SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.keystore_secret }}"
+                  key: user.password
+            - name: "MP_MESSAGING_INCOMING_REGSUBALIVERETRIEVE_SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.keystore_secret }}"
+                  key: user.password
+            - name: "MP_MESSAGING_INCOMING_REGSUBSYNCRETRIEVE_SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.keystore_secret }}"
+                  key: user.password
+
+            - name: "MP_MESSAGING_OUTGOING_REGISTRY_SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.keystore_secret }}"
+                  key: user.password
+            - name: "MP_MESSAGING_OUTGOING_ENTITY_SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.keystore_secret }}"
+                  key: user.password
+            - name: "MP_MESSAGING_OUTGOING_ENTITYBATCH_SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.keystore_secret }}"
+                  key: user.password
+            - name: "MP_MESSAGING_OUTGOING_HISTORY_SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.keystore_secret }}"
+                  key: user.password
+            - name: "MP_MESSAGING_OUTGOING_ISUBS_SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.keystore_secret }}"
+                  key: user.password
+            - name: "MP_MESSAGING_OUTGOING_INOTIFICATION_SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.keystore_secret }}"
+                  key: user.password
+            - name: "MP_MESSAGING_OUTGOING_SUBALIVE_SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.keystore_secret }}"
+                  key: user.password
+            - name: "MP_MESSAGING_OUTGOING_SUBSYNC_SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.keystore_secret }}"
+                  key: user.password
+            - name: "MP_MESSAGING_OUTGOING_REGSUBALIVE_SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.keystore_secret }}"
+                  key: user.password
+            - name: "MP_MESSAGING_OUTGOING_REGSUBSYNC_SSL_KEYSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.keystore_secret }}"
+                  key: user.password
+
+            - name: "MP_MESSAGING_INCOMING_REGISTRYRETRIEVE_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+            - name: "MP_MESSAGING_INCOMING_ENTITYRETRIEVE_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+            - name: "MP_MESSAGING_INCOMING_ENTITYBATCHRETRIEVE_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+            - name: "MP_MESSAGING_INCOMING_ISUBSRETRIEVE_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+            - name: "MP_MESSAGING_INCOMING_INOTIFICATIONRETRIEVE_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+            - name: "MP_MESSAGING_INCOMING_SUBALIVERETRIEVE_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+            - name: "MP_MESSAGING_INCOMING_SUBSYNCRETRIEVE_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+            - name: "MP_MESSAGING_INCOMING_REGSUBALIVERETRIEVE_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+            - name: "MP_MESSAGING_INCOMING_REGSUBSYNCRETRIEVE_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+
+            - name: "MP_MESSAGING_OUTGOING_REGISTRY_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+            - name: "MP_MESSAGING_OUTGOING_ENTITY_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+            - name: "MP_MESSAGING_OUTGOING_ENTITYBATCH_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+            - name: "MP_MESSAGING_OUTGOING_HISTORY_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+            - name: "MP_MESSAGING_OUTGOING_ISUBS_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+            - name: "MP_MESSAGING_OUTGOING_INOTIFICATION_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+            - name: "MP_MESSAGING_OUTGOING_SUBALIVE_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+            - name: "MP_MESSAGING_OUTGOING_SUBSYNC_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+            - name: "MP_MESSAGING_OUTGOING_REGSUBALIVE_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+            - name: "MP_MESSAGING_OUTGOING_REGSUBSYNC_SSL_TRUSTSTORE_LOCATION"
+              value: "{{ values.kafka.ssl_truststore_location }}"
+
+            - name: "MP_MESSAGING_INCOMING_REGISTRYRETRIEVE_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
                   name: "{{ values.kafka.truststore_secret }}"
+                  key: ca.password
+            - name: "MP_MESSAGING_INCOMING_ENTITYRETRIEVE_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.truststore_secret }}"
+                  key: ca.password
+            - name: "MP_MESSAGING_INCOMING_ENTITYBATCHRETRIEVE_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.truststore_secret }}"
+                  key: ca.password
+            - name: "MP_MESSAGING_INCOMING_ISUBSRETRIEVE_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.truststore_secret }}"
+                  key: ca.password
+            - name: "MP_MESSAGING_INCOMING_INOTIFICATIONRETRIEVE_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.truststore_secret }}"
+                  key: ca.password
+            - name: "MP_MESSAGING_INCOMING_SUBALIVERETRIEVE_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.truststore_secret }}"
+                  key: ca.password
+            - name: "MP_MESSAGING_INCOMING_SUBSYNCRETRIEVE_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.truststore_secret }}"
+                  key: ca.password
+            - name: "MP_MESSAGING_INCOMING_REGSUBALIVERETRIEVE_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.truststore_secret }}"
+                  key: ca.password
+            - name: "MP_MESSAGING_INCOMING_REGSUBSYNCRETRIEVE_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.truststore_secret }}"
+                  key: ca.password
+
+            - name: "MP_MESSAGING_OUTGOING_REGISTRY_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.truststore_secret }}"
+                  key: ca.password
+            - name: "MP_MESSAGING_OUTGOING_ENTITY_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.truststore_secret }}"
+                  key: ca.password
+            - name: "MP_MESSAGING_OUTGOING_ENTITYBATCH_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.truststore_secret }}"
+                  key: ca.password
+            - name: "MP_MESSAGING_OUTGOING_HISTORY_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.truststore_secret }}"
+                  key: ca.password
+            - name: "MP_MESSAGING_OUTGOING_ISUBS_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.truststore_secret }}"
+                  key: ca.password
+            - name: "MP_MESSAGING_OUTGOING_INOTIFICATION_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.truststore_secret }}"
+                  key: ca.password
+            - name: "MP_MESSAGING_OUTGOING_SUBALIVE_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.truststore_secret }}"
+                  key: ca.password
+            - name: "MP_MESSAGING_OUTGOING_SUBSYNC_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.truststore_secret }}"
+                  key: ca.password
+            - name: "MP_MESSAGING_OUTGOING_REGSUBALIVE_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.truststore_secret }}"
+                  key: ca.password
+            - name: "MP_MESSAGING_OUTGOING_REGSUBSYNC_SSL_TRUSTSTORE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.kafka.truststore_secret }}"
+                  key: ca.password
 
             - name: "SCORPIO_TOPICS_ENTITY"
               value: "{{ values.kafka.topic_names.entity }}"

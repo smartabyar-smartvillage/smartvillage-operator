@@ -25,14 +25,14 @@ spec:
     resources:
       limits:
         cpu: |-
-          250m
+          1
         memory: |-
-          1Gi
+          2Gi
       requests:
         cpu: |-
-          10m
+          500m
         memory: |-
-          50Mi
+          1Gi
   postgres:
     service_name: |-
       postgres-primary
@@ -69,7 +69,7 @@ spec:
       smartvillage-kafka-kafka-bootstrap
     port: 9093
     group: |-
-      smartvillage-kafka
+      aio-runner
     security_protocol: |-
       SSL
     ssl_keystore_type: |-

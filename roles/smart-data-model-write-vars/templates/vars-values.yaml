@@ -3,9 +3,12 @@ name: smartvillage
 description: |
   
 schema:
-  {{ ENTITY_TYPE | lower }}:
-    type: object
-    properties:
-      example_property:
-        type: string
-        default: example_default
+smart_data_model:
+  attributes:
+    type:
+      name: source
+      type: string
+      description: |
+        NGSI Entity type. It has to be {{ ENTITY_TYPE }}
+      default: {{ ENTITY_TYPE }}
+

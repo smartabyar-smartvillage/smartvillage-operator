@@ -22,12 +22,15 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ values.context_broker.base_url }}/v2/entities"
+    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/entities/{{ ENTITY_NAME | urlencode }}"
     method: GET
     headers:
       Fiware-Service: "{{ values.fiware.service }}"
       Fiware-ServicePath: "{{ values.fiware.service_path }}"
-      Cache-Control: no-cache
+      NGSILD-Tenant: "{{ values.fiware.service }}"
+      NGSILD-PATH: "{{ values.fiware.service_path }}"
+      Content-Type: "application/json"
+      Accept: "*/*"
     return_content: true
     validate_certs: false
     status_code: 

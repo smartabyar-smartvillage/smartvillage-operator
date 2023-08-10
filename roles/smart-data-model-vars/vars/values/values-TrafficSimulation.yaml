@@ -1,5 +1,17 @@
 values:
 
+  attributes:
+    type: "{{ crd.attributes.type | default(schema | community.general.json_query('type.default')) }}"
+    simulationName: "{{ crd.attributes.simulationName | default(schema | community.general.json_query('simulationName.default')) }}"
+    sumocfgPath: "{{ crd.attributes.sumocfgPath | default(schema | community.general.json_query('sumocfgPath.default')) }}"
+    fcdFilePath: "{{ crd.attributes.fcdFilePath | default(schema | community.general.json_query('fcdFilePath.default')) }}"
+    startSeconds: "{{ crd.attributes.startSeconds | default(schema | community.general.json_query('startSeconds.default')) }}"
+    endSeconds: "{{ crd.attributes.endSeconds | default(schema | community.general.json_query('endSeconds.default')) }}"
+    stepSeconds: "{{ crd.attributes.stepSeconds | default(schema | community.general.json_query('stepSeconds.default')) }}"
+    paramStepSize: "{{ crd.attributes.paramStepSize | default(schema | community.general.json_query('paramStepSize.default')) }}"
+    paramRunTime: "{{ crd.attributes.paramRunTime | default(schema | community.general.json_query('paramRunTime.default')) }}"
+    paramItersPerPar: "{{ crd.attributes.paramItersPerPar | default(schema | community.general.json_query('paramItersPerPar.default')) }}"
+    paramTotalIterNum: "{{ crd.attributes.paramTotalIterNum | default(schema | community.general.json_query('paramTotalIterNum.default')) }}"
 
   iotagent:
     service_name: "{{ crd.iotagent.service_name | default(schema | community.general.json_query('iotagent.properties.service_name.default')) }}"
@@ -26,14 +38,3 @@ values:
     auth_token_url: "{{ crd.smartabyar_smartvillage.auth_token_url | default(schema | community.general.json_query('smartabyar_smartvillage.properties.auth_token_url.default')) }}"
     site_base_url: "{{ crd.smartabyar_smartvillage.site_base_url | default(schema | community.general.json_query('smartabyar_smartvillage.properties.site_base_url.default')) }}"
     smart_model_api: "{{ crd.smartabyar_smartvillage.smart_model_api | default(schema | community.general.json_query('smartabyar_smartvillage.properties.smart_model_api.default')) }}"
-  trafficsimulation:
-    simulationName: "{{ crd.trafficsimulation.simulationName | default(schema | community.general.json_query('trafficsimulation.properties.simulationName.default')) }}"
-    sumocfgPath: "{{ crd.trafficsimulation.sumocfgPath | default(schema | community.general.json_query('trafficsimulation.properties.sumocfgPath.default')) }}"
-    fcdFilePath: "{{ crd.trafficsimulation.fcdFilePath | default(schema | community.general.json_query('trafficsimulation.properties.fcdFilePath.default')) }}"
-    startSeconds: "{{ crd.trafficsimulation.startSeconds | default(schema | community.general.json_query('trafficsimulation.properties.startSeconds.default')) }}"
-    endSeconds: "{{ crd.trafficsimulation.endSeconds | default(schema | community.general.json_query('trafficsimulation.properties.endSeconds.default')) }}"
-    stepSeconds: "{{ crd.trafficsimulation.stepSeconds | default(schema | community.general.json_query('trafficsimulation.properties.stepSeconds.default')) }}"
-    paramStepSize: "{{ crd.trafficsimulation.paramStepSize | default(schema | community.general.json_query('trafficsimulation.properties.paramStepSize.default')) }}"
-    paramRunTime: "{{ crd.trafficsimulation.paramRunTime | default(schema | community.general.json_query('trafficsimulation.properties.paramRunTime.default')) }}"
-    paramItersPerPar: "{{ crd.trafficsimulation.paramItersPerPar | default(schema | community.general.json_query('trafficsimulation.properties.paramItersPerPar.default')) }}"
-    paramTotalIterNum: "{{ crd.trafficsimulation.paramTotalIterNum | default(schema | community.general.json_query('trafficsimulation.properties.paramTotalIterNum.default')) }}"
