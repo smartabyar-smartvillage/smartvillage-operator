@@ -48,6 +48,48 @@
   register: CREATE_SUBSCRIPTION
   ignore_errors: true
   when: SUBSCRIPTION is not defined or SUBSCRIPTION == ''
+- name: "Provision the {{ ENTITY_NAME }} subscription"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/subscriptions/{{ SUBSCRIPTION_NAME | urlencode }}"
+    method: DELETE
+    headers:
+      Fiware-Service: "{{ values.fiware.service | lower }}"
+      Fiware-ServicePath: "{{ values.fiware.service_path }}"
+      NGSILD-Tenant: "{{ values.fiware.service }}"
+      NGSILD-PATH: "{{ values.fiware.service_path }}"
+      Accept: "*/*"
+    validate_certs: false
+    status_code: 
+      - 200
+      - 202
+      - 204
+  register: DELETE_SUBSCRIPTION
+  when: CREATE_SUBSCRIPTION is defined and CREATE_SUBSCRIPTION.failed is defined and CREATE_SUBSCRIPTION.failed
+- name: "Update the {{ ENTITY_NAME }} subscription"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/subscriptions"
+    method: POST
+    headers:
+      Content-Type: "application/ld+json"
+      Fiware-Service: "{{ values.fiware.service | lower }}"
+      Fiware-ServicePath: "{{ values.fiware.service_path }}"
+      NGSILD-Tenant: "{{ values.fiware.service }}"
+      NGSILD-PATH: "{{ values.fiware.service_path }}"
+      Accept: "*/*"
+    body_format: json
+    body: "{{ SUBSCRIPTION_BODY }}"
+    return_content: true
+    validate_certs: false
+    status_code: 
+      - 200
+      - 201
+      - 409
+  register: UPDATE_SUBSCRIPTION
+  when: CREATE_SUBSCRIPTION is defined and CREATE_SUBSCRIPTION.failed is defined and CREATE_SUBSCRIPTION.failed
 - fail:
     msg: "Failed to create subscription"
   when: CREATE_SUBSCRIPTION is defined and CREATE_SUBSCRIPTION.failed is defined and CREATE_SUBSCRIPTION.failed

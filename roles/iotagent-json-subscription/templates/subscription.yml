@@ -1,6 +1,6 @@
 ---
 # if not given  it will be assigned during subscription process and returned to client
-id: "urn:subscription:{{ ENTITY_TYPE }}-{{ values.device.id }}"
+id: "{{ SUBSCRIPTION_NAME }}"
 type: "Subscription"
 #name: "{{ ENTITY_NAME }}"
 description: "{{ ENTITY_NAME }}"
@@ -12,7 +12,7 @@ notification:
     uri: "{{ values.device.subscription_url }}"
     accept: "application.json"
 "@context":
-  - https://computate.neocities.org/fiware/TrafficFlowObserved.context-ngsi.jsonld
+  - https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
   - https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld
 #  attrs:
 #{% for key, attribute in smart_data_model.attributes.items() %}

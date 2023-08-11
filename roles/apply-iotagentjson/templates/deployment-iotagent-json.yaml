@@ -43,7 +43,7 @@ spec:
               value: 'ld'
             - name: IOTA_JSON_LD_CONTEXT
               value: >-
-                https://computate.neocities.org/fiware/TrafficFlowObserved.context-ngsi.jsonld
+                https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
                 ,https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld
             - name: IOTA_AUTOCAST
               value: 'true'
