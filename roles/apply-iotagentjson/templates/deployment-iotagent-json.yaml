@@ -42,7 +42,9 @@ spec:
             - name: IOTA_CB_NGSI_VERSION
               value: 'ld'
             - name: IOTA_JSON_LD_CONTEXT
-              value: 'https://computate.neocities.org/fiware/TrafficFlowObserved.context-ngsi.jsonld,https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld'
+              value: >-
+                https://computate.neocities.org/fiware/TrafficFlowObserved.context-ngsi.jsonld
+                ,https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld
             - name: IOTA_AUTOCAST
               value: 'true'
             - name: IOTA_MONGO_HOST

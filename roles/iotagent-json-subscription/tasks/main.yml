@@ -3,11 +3,13 @@
   connection: local
   uri:
     timeout: 90
-    url: "http://scorpiobroker-smartvillage.apps-crc.testing/ngsi-ld/v1/subscriptions"
+    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/subscriptions"
     method: GET
     headers:
       Fiware-Service: "{{ values.fiware.service | lower }}"
       Fiware-ServicePath: "{{ values.fiware.service_path }}"
+      NGSILD-Tenant: "{{ values.fiware.service }}"
+      NGSILD-PATH: "{{ values.fiware.service_path }}"
       Accept: "*/*"
     validate_certs: false
     status_code: 
@@ -26,12 +28,14 @@
   connection: local
   uri:
     timeout: 90
-    url: "http://scorpiobroker-smartvillage.apps-crc.testing/ngsi-ld/v1/subscriptions"
+    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/subscriptions"
     method: POST
     headers:
-      Content-Type: "application/json"
+      Content-Type: "application/ld+json"
       Fiware-Service: "{{ values.fiware.service | lower }}"
       Fiware-ServicePath: "{{ values.fiware.service_path }}"
+      NGSILD-Tenant: "{{ values.fiware.service }}"
+      NGSILD-PATH: "{{ values.fiware.service_path }}"
       Accept: "*/*"
     body_format: json
     body: "{{ SUBSCRIPTION_BODY }}"

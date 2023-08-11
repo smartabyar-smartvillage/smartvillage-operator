@@ -25,11 +25,11 @@ spec:
         - name: scorpiobroker
           env:
             - name: QUARKUS_VERTX_MAX_EVENT_LOOP_EXECUTE_TIME
-              value: '60'
+              value: '60000'
             - name: QUARKUS_VERTX_MAX_WORKER_EXECUTE_TIME
-              value: '60'
+              value: '60000'
             - name: QUARKUS_VERTX_WARNING_EXCEPTION_TIME
-              value: '30'
+              value: '30000'
 
             - name: DBHOST
               value: "{{ values.postgres.service_name }}"
