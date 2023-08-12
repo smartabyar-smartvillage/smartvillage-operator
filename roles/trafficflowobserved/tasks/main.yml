@@ -1,5 +1,6 @@
 ---
 # tasks file for TrafficFlowObserved
+
 - name: Run Ansible role smart-data-model-vars
   include_role:
     name: smart-data-model-vars

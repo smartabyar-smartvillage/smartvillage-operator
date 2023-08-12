@@ -12,9 +12,9 @@ spec:
   description: |
     An observation of traffic flow conditions at a certain place and time.
   attributes:
-    averageGapDistance: 1
     type: |
       TrafficFlowObserved
+    averageGapDistance: 1
     customVehicleQueueThreshold: 8
   iotagent:
     service_name: |-

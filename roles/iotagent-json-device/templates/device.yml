@@ -1,6 +1,6 @@
 ---
 device_id: "{{ values.device.id }}"
-entity_name: "{{ ENTITY_NAME }}"
+entity_name: "{{ values.device.id }}"
 entity_type: "{{ENTITY_TYPE }}"
 transport: "{{ values.device.transport }}"
 attributes:
@@ -17,4 +17,22 @@ attributes:
       {{ attribute.reverse | to_nice_yaml(indent=2) | indent(6, False) }}
 {% endif %}
 {% endfor %}
-static_attributes: []
+static_attributes:
+{% for key, attribute in smart_data_model.attributes.items() %}
+{% if values.attributes[key] != '' %}
+  - object_id: {{ key }}
+    name: {{ attribute.name | default(key) }}
+    type: {{ attribute.type }}
+{% if (values.attributes[key] | type_debug) == 'AnsibleUnicode' %}
+    value: |
+      {{ values.attributes[key] | indent(2, False) }}
+{% else %}
+{% if (values.attributes[key] | type_debug) == 'dict' %}
+    value:
+      {{ values.attributes[key] | to_nice_yaml(indent=2) | indent(2, False) }}
+{% else %}
+    value: {{ values.attributes[key] }}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endfor %}

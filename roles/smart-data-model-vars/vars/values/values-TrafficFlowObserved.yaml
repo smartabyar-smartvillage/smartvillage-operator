@@ -1,6 +1,7 @@
 values:
 
   attributes:
+    type: "{{ crd.attributes.type | default(schema | community.general.json_query('type.default')) }}"
     address: "{{ crd.attributes.address | default('') }}"
     alternateName: "{{ crd.attributes.alternateName | default('') }}"
     areaServed: "{{ crd.attributes.areaServed | default('') }}"
@@ -27,7 +28,6 @@ values:
     reversedLane: "{{ crd.attributes.reversedLane | default('') }}"
     seeAlso: "{{ crd.attributes.seeAlso | default('') }}"
     source: "{{ crd.attributes.source | default('') }}"
-    type: "{{ crd.attributes.type | default(schema | community.general.json_query('type.default')) }}"
     vehicleSubType: "{{ crd.attributes.vehicleSubType | default('') }}"
     vehicleType: "{{ crd.attributes.vehicleType | default('') }}"
     customRouteId: "{{ crd.attributes.customRouteId | default('') }}"
