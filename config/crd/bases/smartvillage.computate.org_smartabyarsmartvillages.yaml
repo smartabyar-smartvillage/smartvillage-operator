@@ -540,22 +540,6 @@ spec:
                     default: false
                     type: boolean
 
-              fiware:
-                type: object
-                properties:
-                  api_uri:
-                    default: /v2
-                    type: string
-                  host_name:
-                    default: orion-ld
-                    type: string
-                  port:
-                    default: 80
-                    type: number
-                  ssl:
-                    default: false
-                    type: boolean
-
               kafka:
                 type: object
                 properties:
@@ -676,9 +660,42 @@ spec:
                     default: fiware-broker-mqtt-0-svc
                     type: string
 
-              orionld:
+              ngsi_ld:
                 type: object
                 properties:
+                  context:
+                    default: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
+                    type: string
+                  port:
+                    default: 9090
+                    type: number
+                  resources:
+                    properties:
+                      limits:
+                        properties:
+                          cpu:
+                            default: 500m
+                            type: string
+                          memory:
+                            default: 500Mi
+                            type: string
+                        type: object
+                      requests:
+                        properties:
+                          cpu:
+                            default: 200m
+                            type: string
+                          memory:
+                            default: 200Mi
+                            type: string
+                        type: object
+                    type: object
+                  service_name:
+                    default: scorpiobroker
+                    type: string
+                  ssl:
+                    default: false
+                    type: boolean
                   sync:
                     default: true
                     description: "Determines if the orionld-smartvillage-sync application will be created.\

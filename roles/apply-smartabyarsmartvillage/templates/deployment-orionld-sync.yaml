@@ -1,5 +1,5 @@
 spec:
-  replicas: {{ values.orionld.sync_replicas }}
+  replicas: {{ values.ngsi_ld.sync_replicas }}
   selector:
     matchLabels:
       app: orionld-smartvillage-sync
@@ -26,11 +26,11 @@ spec:
               protocol: TCP
           resources:
             limits:
-              memory: '{{ values.site.web_resources.limits.memory }}'
-              cpu: '{{ values.site.web_resources.limits.cpu }}'
+              memory: '{{ values.ngsi_ld.resources.limits.memory }}'
+              cpu: '{{ values.ngsi_ld.resources.limits.cpu }}'
             requests:
-              memory: '{{ values.site.web_resources.limits.memory }}'
-              cpu: '{{ values.site.web_resources.limits.cpu }}'
+              memory: '{{ values.ngsi_ld.resources.limits.memory }}'
+              cpu: '{{ values.ngsi_ld.resources.limits.cpu }}'
           env:
 
             - name: SITE_PORT
@@ -38,7 +38,15 @@ spec:
             - name: SITE_INSTANCES
               value: "{{ values.site.instances }}"
             - name: SITE_BASE_URL
-              value: "http://orionld-smartvillage-sync:8080"
+              value: "http://orionld-smartvillage-sync.{{ ansible_operator_meta.namespace }}.svc:8080"
+            - name: NGSI_LD_HOST_NAME
+              value: "{{ values.ngsi_ld.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
+            - name: NGSI_LD_PORT
+              value: "{{ values.ngsi_ld.port }}"
+            - name: NGSI_LD_SSL
+              value: "{{ values.ngsi_ld.ssl | lower }}"
+            - name: NGSI_LD_CONTEXT
+              value: "{{ values.ngsi_ld.context }}"
 
             - name: AUTH_REALM
               value: "{{ values.auth.realm }}"

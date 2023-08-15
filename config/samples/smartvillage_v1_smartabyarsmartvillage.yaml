@@ -239,13 +239,6 @@ spec:
       /api/iotnodes
     auth_local_uri: |-
       /api/auth/local
-  fiware:
-    ssl: False
-    port: 80
-    host_name: |-
-      orion-ld
-    api_uri: |-
-      /v2
   kafka:
     topic_names:
       entity: |-
@@ -314,6 +307,23 @@ spec:
     amqp_port: 5672
     iot_subscribe_topic: |-
       iot-subscribe
-  orionld:
+  ngsi_ld:
     sync: True
     sync_replicas: 1
+    context: |-
+      https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
+    ssl: False
+    service_name: |-
+      scorpiobroker
+    port: 9090
+    resources:
+      limits:
+        memory: |-
+          500Mi
+        cpu: |-
+          500m
+      requests:
+        memory: |-
+          200Mi
+        cpu: |-
+          200m

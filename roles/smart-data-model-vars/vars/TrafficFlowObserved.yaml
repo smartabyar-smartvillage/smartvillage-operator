@@ -21,7 +21,7 @@ schema:
       base_url:
         type: string
         default: http://scorpiobroker:9090
-  fiware:
+  ngsi_ld:
     type: object
     properties:
       service:
@@ -30,6 +30,9 @@ schema:
       service_path:
         type: string
         default: /Sweden/Veberod/CityCenter
+      context:
+        type: string
+        default: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
   service_group:
     type: object
     properties:
@@ -77,7 +80,7 @@ schema:
         default: https://smartvillage-web-smartvillage.apps-crc.testing
       smart_model_api:
         type: string
-        default: /api/traffic-flow-observed-import
+        default: /api/traffic-flow-observed
   alternate_model:
     type: object
     properties:

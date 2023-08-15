@@ -30,14 +30,14 @@ spec:
   context_broker:
     base_url: http://scorpiobroker.smartvillage.svc:9090
   fiware:
-    service: smarttrafficlights
+    service: trafficflowobserveds
     service_path: /Sweden/Veberod/CityCenter
   service_group:
     resource: /iot/json
     apikey: VeberodIntersection1
   device:
     transport: MQTT
-    id: Intersection1-Lakaregatan-NE
+    id: TrafficFlowObserved-Intersection1-Lakaregatan-NE
     mqtt_host: fiware-broker-mqtt-0-svc
     mqtt_port: 1883
     mqtt_subscription_topic: iot/subscribe

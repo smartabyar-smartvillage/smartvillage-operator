@@ -157,11 +157,6 @@ values:
     enabled: "{{ crd.yggio.enabled | default(schema | community.general.json_query('yggio.properties.enabled.default')) }}"
     api_relative_uri_iotnode: "{{ crd.yggio.api_relative_uri_iotnode | default(schema | community.general.json_query('yggio.properties.api_relative_uri_iotnode.default')) }}"
     auth_local_uri: "{{ crd.yggio.auth_local_uri | default(schema | community.general.json_query('yggio.properties.auth_local_uri.default')) }}"
-  fiware:
-    ssl: "{{ crd.fiware.ssl | default(schema | community.general.json_query('fiware.properties.ssl.default')) }}"
-    port: "{{ crd.fiware.port | default(schema | community.general.json_query('fiware.properties.port.default')) }}"
-    host_name: "{{ crd.fiware.host_name | default(schema | community.general.json_query('fiware.properties.host_name.default')) }}"
-    api_uri: "{{ crd.fiware.api_uri | default(schema | community.general.json_query('fiware.properties.api_uri.default')) }}"
   kafka:
     topic_names:
       entity: "{{ crd.kafka.topic_names.entity | default(schema | community.general.json_query('kafka.properties.topic_names.properties.entity.default')) }}"
@@ -201,6 +196,17 @@ values:
     amqp_service_name: "{{ crd.amq_broker.amqp_service_name | default(schema | community.general.json_query('amq_broker.properties.amqp_service_name.default')) }}"
     amqp_port: "{{ crd.amq_broker.amqp_port | default(schema | community.general.json_query('amq_broker.properties.amqp_port.default')) }}"
     iot_subscribe_topic: "{{ crd.amq_broker.iot_subscribe_topic | default(schema | community.general.json_query('amq_broker.properties.iot_subscribe_topic.default')) }}"
-  orionld:
-    sync: "{{ crd.orionld.sync | default(schema | community.general.json_query('orionld.properties.sync.default')) }}"
-    sync_replicas: "{{ crd.orionld.sync_replicas | default(schema | community.general.json_query('orionld.properties.sync_replicas.default')) }}"
+  ngsi_ld:
+    sync: "{{ crd.ngsi_ld.sync | default(schema | community.general.json_query('ngsi_ld.properties.sync.default')) }}"
+    sync_replicas: "{{ crd.ngsi_ld.sync_replicas | default(schema | community.general.json_query('ngsi_ld.properties.sync_replicas.default')) }}"
+    context: "{{ crd.ngsi_ld.context | default(schema | community.general.json_query('ngsi_ld.properties.context.default')) }}"
+    ssl: "{{ crd.ngsi_ld.ssl | default(schema | community.general.json_query('ngsi_ld.properties.ssl.default')) }}"
+    service_name: "{{ crd.ngsi_ld.service_name | default(schema | community.general.json_query('ngsi_ld.properties.service_name.default')) }}"
+    port: "{{ crd.ngsi_ld.port | default(schema | community.general.json_query('ngsi_ld.properties.port.default')) }}"
+    resources:
+      limits:
+        memory: "{{ crd.ngsi_ld.resources.limits.memory | default(schema | community.general.json_query('ngsi_ld.properties.resources.properties.limits.properties.memory.default')) }}"
+        cpu: "{{ crd.ngsi_ld.resources.limits.cpu | default(schema | community.general.json_query('ngsi_ld.properties.resources.properties.limits.properties.cpu.default')) }}"
+      requests:
+        memory: "{{ crd.ngsi_ld.resources.requests.memory | default(schema | community.general.json_query('ngsi_ld.properties.resources.properties.requests.properties.memory.default')) }}"
+        cpu: "{{ crd.ngsi_ld.resources.requests.cpu | default(schema | community.general.json_query('ngsi_ld.properties.resources.properties.requests.properties.cpu.default')) }}"

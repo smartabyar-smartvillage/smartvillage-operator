@@ -373,7 +373,7 @@ operator-sdk init --plugins=ansible --domain computate.org
 # Build and deploy the operator to an OpenShift environment
 ```bash
 oc login ...
-make docker-build docker-push deploy
+make docker-build docker-push deploy && oc -n smartvillage-operator-system delete pod -l 'control-plane=controller-manager'
 ```
 
 ## Initialize TrafficFlowObserved model
@@ -450,7 +450,7 @@ ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=TrafficSim
 - Build and deploy the new version of the operator
 
 ```bash
-make docker-build docker-push deploy
+make docker-build docker-push deploy && oc -n smartvillage-operator-system delete pod -l 'control-plane=controller-manager'
 ```
 
 - View the logs of the operator
@@ -477,7 +477,7 @@ ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=EdgeMongoD
 - Build and deploy the new version of the operator
 
 ```bash
-make docker-build docker-push deploy
+make docker-build docker-push deploy && oc -n smartvillage-operator-system delete pod -l 'control-plane=controller-manager'
 ```
 
 - View the logs of the operator

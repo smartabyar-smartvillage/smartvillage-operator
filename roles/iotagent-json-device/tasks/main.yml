@@ -9,8 +9,8 @@
     method: POST
     headers:
       Content-Type: "application/json"
-      Fiware-Service: "{{ values.fiware.service | lower }}"
-      Fiware-ServicePath: "{{ values.fiware.service_path }}"
+      Fiware-Service: "{{ values.ngsi_ld.service | lower }}"
+      Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
       Cache-Control: no-cache
     body_format: json
     body:
@@ -35,8 +35,8 @@
     method: PUT
     headers:
       Content-Type: "application/json"
-      Fiware-Service: "{{ values.fiware.service | lower }}"
-      Fiware-ServicePath: "{{ values.fiware.service_path }}"
+      Fiware-Service: "{{ values.ngsi_ld.service | lower }}"
+      Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
       Cache-Control: no-cache
     body_format: json
     body: "{{ lookup('template', 'device.yml') | from_yaml | ansible.utils.remove_keys(target=['device_id', 'entity_name', 'entity_type', 'transport']) }}"
@@ -71,10 +71,10 @@
     url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/entities/{{ ENTITY_NAME | urlencode }}"
     method: GET
     headers:
-      Fiware-Service: "{{ values.fiware.service }}"
-      Fiware-ServicePath: "{{ values.fiware.service_path }}"
-      NGSILD-Tenant: "{{ values.fiware.service }}"
-      NGSILD-PATH: "{{ values.fiware.service_path }}"
+      Fiware-Service: "{{ values.ngsi_ld.service }}"
+      Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
+      NGSILD-Tenant: "{{ values.ngsi_ld.service }}"
+      NGSILD-Path: "{{ values.ngsi_ld.service_path }}"
       Content-Type: "application/json"
       Accept: "*/*"
     return_content: true

@@ -24,11 +24,13 @@ spec:
       orion-ld
     base_url: |-
       http://scorpiobroker:9090
-  fiware:
+  ngsi_ld:
     service: |-
       smarttrafficlights
     service_path: |-
       /Sweden/Veberod/CityCenter
+    context: |-
+      https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
   service_group:
     resource: |-
       /iot/json
@@ -55,7 +57,7 @@ spec:
     site_base_url: |-
       https://smartvillage-web-smartvillage.apps-crc.testing
     smart_model_api: |-
-      /api/traffic-flow-observed-import
+      /api/traffic-flow-observed
   alternate_model:
     enabled: True
     id: |-

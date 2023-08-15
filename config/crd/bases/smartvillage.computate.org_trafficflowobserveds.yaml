@@ -162,9 +162,12 @@ spec:
                     default: orion-ld
                     type: string
 
-              fiware:
+              ngsi_ld:
                 type: object
                 properties:
+                  context:
+                    default: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
+                    type: string
                   service:
                     default: smarttrafficlights
                     type: string
@@ -220,7 +223,7 @@ spec:
                     default: https://smartvillage-web-smartvillage.apps-crc.testing
                     type: string
                   smart_model_api:
-                    default: /api/traffic-flow-observed-import
+                    default: /api/traffic-flow-observed
                     type: string
 
               alternate_model:

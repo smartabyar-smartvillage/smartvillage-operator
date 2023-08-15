@@ -96,9 +96,12 @@ spec:
                     default: scorpiobroker
                     type: string
 
-              fiware:
+              ngsi_ld:
                 type: object
                 properties:
+                  context:
+                    default: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
+                    type: string
                   service:
                     default: trafficsimulations
                     type: string

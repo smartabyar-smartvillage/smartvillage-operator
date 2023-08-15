@@ -7,8 +7,8 @@
     method: POST
     headers:
       Content-Type: "application/json"
-      Fiware-Service: "{{ values.fiware.service | lower }}"
-      Fiware-ServicePath: "{{ values.fiware.service_path }}"
+      Fiware-Service: "{{ values.ngsi_ld.service | lower }}"
+      Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
     body_format: json
     body:
       services:
@@ -30,8 +30,8 @@
     method: PUT
     headers:
       Content-Type: "application/json"
-      Fiware-Service: "{{ values.fiware.service }}"
-      Fiware-ServicePath: "{{ values.fiware.service_path }}"
+      Fiware-Service: "{{ values.ngsi_ld.service }}"
+      Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
       Cache-Control: no-cache
     body_format: json
     body: "{{ SERVICE_GROUP_BODY | ansible.utils.remove_keys(target=['apikey', 'resource']) }}"
