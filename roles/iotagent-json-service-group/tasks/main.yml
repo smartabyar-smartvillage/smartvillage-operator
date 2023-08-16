@@ -9,6 +9,8 @@
       Content-Type: "application/json"
       Fiware-Service: "{{ values.ngsi_ld.service | lower }}"
       Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
+      NGSILD-Tenant: "{{ values.ngsi_ld.service }}"
+      NGSILD-Path: "{{ values.ngsi_ld.service_path }}"
     body_format: json
     body:
       services:
@@ -32,6 +34,8 @@
       Content-Type: "application/json"
       Fiware-Service: "{{ values.ngsi_ld.service }}"
       Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
+      NGSILD-Tenant: "{{ values.ngsi_ld.service }}"
+      NGSILD-Path: "{{ values.ngsi_ld.service_path }}"
       Cache-Control: no-cache
     body_format: json
     body: "{{ SERVICE_GROUP_BODY | ansible.utils.remove_keys(target=['apikey', 'resource']) }}"

@@ -5,6 +5,7 @@ metadata:
   namespace: smartvillage
 spec:
   attributes:
+    location: 55.633703, 13.492540
     address:
       addressCountry: Sweden
       addressLocality: Veberöd
@@ -24,7 +25,6 @@ spec:
     customDemandScalingFactor: 1.00
     customQueueLengthThreshold: 8.00
     customTrafficLightId: veberod-intersection-1
-    location: 55.633703, 13.492540
   iotagent:
     base_url: http://iotagent-json.smartvillage.svc:4041
   context_broker:

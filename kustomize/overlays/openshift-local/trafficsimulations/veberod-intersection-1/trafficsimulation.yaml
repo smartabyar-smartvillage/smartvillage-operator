@@ -31,6 +31,7 @@ spec:
     site_base_url: https://smartvillage-web-smartvillage.apps-crc.testing
     smart_model_api: /api/traffic-simulation
   attributes:
+    location: 55.633703, 13.492540
     simulationName: Veberöd intersection 1
     sumocfgPath: /usr/local/src/TLC/input/Veberod_intersection_pedestrian.sumocfg
     fcdFilePath: /usr/local/src/TLC/output/veberod-fcd.xml

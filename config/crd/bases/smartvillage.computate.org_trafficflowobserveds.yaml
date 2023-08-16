@@ -40,10 +40,8 @@ spec:
                 properties:
                   object_id:
                     type: string
-                  type:
+                  location:
                     type: string
-                    default: |
-                      TrafficFlowObserved
                   address:
                     type: object
                     properties:
@@ -104,8 +102,6 @@ spec:
                     type: string
                   laneId:
                     type: number
-                  location:
-                    type: string
                   name:
                     type: string
                   occupancy:

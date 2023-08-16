@@ -1,7 +1,7 @@
 values:
 
   attributes:
-    type: "{{ crd.attributes.type | default(schema | community.general.json_query('type.default')) }}"
+    location: "{{ crd.attributes.location | default('') }}"
     address: "{{ crd.attributes.address | default('') }}"
     alternateName: "{{ crd.attributes.alternateName | default('') }}"
     areaServed: "{{ crd.attributes.areaServed | default('') }}"
@@ -20,7 +20,6 @@ values:
     intensity: "{{ crd.attributes.intensity | default('') }}"
     laneDirection: "{{ crd.attributes.laneDirection | default('') }}"
     laneId: "{{ crd.attributes.laneId | default('') }}"
-    location: "{{ crd.attributes.location | default('') }}"
     name: "{{ crd.attributes.name | default('') }}"
     occupancy: "{{ crd.attributes.occupancy | default('') }}"
     owner: "{{ crd.attributes.owner | default('') }}"

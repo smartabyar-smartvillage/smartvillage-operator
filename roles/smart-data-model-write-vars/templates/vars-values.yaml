@@ -5,10 +5,10 @@ description: |
 schema:
 smart_data_model:
   attributes:
-    type:
-      name: source
-      type: string
+    location:
+      name: location
+      type: "geo:point"
+      required: true
       description: |
-        NGSI Entity type. It has to be {{ ENTITY_TYPE }}
-      default: {{ ENTITY_TYPE }}
+        Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon
 

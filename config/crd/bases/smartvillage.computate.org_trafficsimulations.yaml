@@ -40,10 +40,8 @@ spec:
                 properties:
                   object_id:
                     type: string
-                  type:
+                  location:
                     type: string
-                    default: |
-                      TrafficSimulation
                   simulationName:
                     type: string
                     default: |

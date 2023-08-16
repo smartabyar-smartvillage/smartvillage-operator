@@ -82,13 +82,12 @@ schema:
         default: /api/traffic-simulation
 smart_data_model:
   attributes:
-    type:
-      name: source
-      type: string
+    location:
+      required: true
+      name: location
+      type: "geo:point"
       description: |
-        NGSI Entity type. It has to be TrafficSimulation
-      default: TrafficSimulation
-
+        Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon
     simulationName:
       name: simulationName
       type: string

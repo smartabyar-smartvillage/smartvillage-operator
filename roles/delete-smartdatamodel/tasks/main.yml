@@ -1,0 +1,75 @@
+---
+
+- name: "Delete the {{ values.service_group.apikey }} service group"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ values.iotagent.base_url }}/iot/services?apikey={{ values.service_group.apikey | urlencode }}&resource={{ values.service_group.resource | urlencode }}"
+    method: DELETE
+    headers:
+      Fiware-Service: "{{ values.ngsi_ld.service }}"
+      Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
+      NGSILD-Tenant: "{{ values.ngsi_ld.service }}"
+      NGSILD-Path: "{{ values.ngsi_ld.service_path }}"
+    validate_certs: false
+    status_code: 
+      - 200
+      - 202
+      - 204
+  ignore_errors: true
+
+- name: "Delete the {{ values.device.id }} device"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ values.iotagent.base_url }}/iot/devices/{{ values.device.id | urlencode }}"
+    method: DELETE
+    headers:
+      Fiware-Service: "{{ values.ngsi_ld.service | lower }}"
+      Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
+      NGSILD-Tenant: "{{ values.ngsi_ld.service }}"
+      NGSILD-Path: "{{ values.ngsi_ld.service_path }}"
+    validate_certs: false
+    status_code: 
+      - 200
+      - 202
+      - 204
+  ignore_errors: true
+
+- name: "Delete the {{ ENTITY_NAME }} subscription"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/subscriptions/{{ SUBSCRIPTION_NAME | urlencode }}"
+    method: DELETE
+    headers:
+      Fiware-Service: "{{ values.ngsi_ld.service | lower }}"
+      Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
+      NGSILD-Tenant: "{{ values.ngsi_ld.service }}"
+      NGSILD-PATH: "{{ values.ngsi_ld.service_path }}"
+      Accept: "*/*"
+    validate_certs: false
+    status_code: 
+      - 200
+      - 202
+      - 204
+  ignore_errors: true
+
+- name: "Delete the {{ ENTITY_NAME }} entity {{ ENTITY_NAME }}"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/entities/{{ ENTITY_NAME | urlencode }}"
+    method: DELETE
+    headers:
+      Fiware-Service: "{{ values.ngsi_ld.service | lower }}"
+      Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
+      NGSILD-Tenant: "{{ values.ngsi_ld.service }}"
+      NGSILD-PATH: "{{ values.ngsi_ld.service_path }}"
+      Accept: "*/*"
+    validate_certs: false
+    status_code: 
+      - 200
+      - 202
+      - 204
+  ignore_errors: true

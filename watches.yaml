@@ -1,6 +1,9 @@
 ---
 # Use the 'create api' subcommand to add watches to this file.
-- group: smartvillage.computate.org
+- finalizer:
+    name: smartvillage.computate.org/trafficflowobserved-finalizer
+    role: delete-trafficflowobserved
+  group: smartvillage.computate.org
   kind: TrafficFlowObserved
   role: trafficflowobserved
   snakeCaseParameters: false

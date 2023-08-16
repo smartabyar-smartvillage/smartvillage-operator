@@ -12,8 +12,6 @@ spec:
   description: |
     
   attributes:
-    type: |
-      TrafficSimulation
     simulationName: |
       Veberöd intersection 1
     sumocfgPath: |

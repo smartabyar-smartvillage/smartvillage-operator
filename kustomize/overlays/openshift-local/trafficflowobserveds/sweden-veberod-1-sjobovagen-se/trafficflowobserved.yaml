@@ -5,6 +5,7 @@ metadata:
   namespace: smartvillage
 spec:
   attributes:
+    location: 55.633825, 13.492458
     area_served: |
       96027913#0 96027913#2 30186293 311389510#1
     averageVehicleLength: 5
@@ -20,13 +21,12 @@ spec:
     customDemandScalingFactor: 1.00
     customQueueLengthThreshold: 2.00
     customTrafficLightId: veberod-intersection-1
-    location: 55.633825, 13.492458
   iotagent:
     base_url: http://iotagent-json.smartvillage.svc:4041
   context_broker:
     base_url: http://scorpiobroker.smartvillage.svc:9090
   fiware:
-    service: smarttrafficlights
+    service: trafficflowobserveds
     service_path: /Sweden/Veberod/CityCenter
   service_group:
     resource: /iot/json

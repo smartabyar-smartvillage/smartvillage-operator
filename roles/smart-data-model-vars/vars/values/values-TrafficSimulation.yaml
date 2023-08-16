@@ -1,7 +1,7 @@
 values:
 
   attributes:
-    type: "{{ crd.attributes.type | default(schema | community.general.json_query('type.default')) }}"
+    location: "{{ crd.attributes.location | default('') }}"
     simulationName: "{{ crd.attributes.simulationName | default(schema | community.general.json_query('simulationName.default')) }}"
     sumocfgPath: "{{ crd.attributes.sumocfgPath | default(schema | community.general.json_query('sumocfgPath.default')) }}"
     fcdFilePath: "{{ crd.attributes.fcdFilePath | default(schema | community.general.json_query('fcdFilePath.default')) }}"
