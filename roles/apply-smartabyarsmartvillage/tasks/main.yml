@@ -16,17 +16,9 @@
       You need to deploy a {{ ENTITY_TYPE }} to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_smartabyarsmartvillage.yaml
   when: crd is not defined
 
-- name: "{{ 'Install' if values.site.enable_dev_nodeports else 'Skip' }} postgres-nodeport NodePort service on OpenShift"
-  k8s:
-    state: "{{ 'present' if values.site.enable_dev_nodeports and values.postgres.create else 'absent' }}"
-    api_version: v1
-    kind: Service
-    name: "postgres-nodeport"
-    namespace: "{{ ansible_operator_meta.namespace }}"
-    definition: "{{ lookup('template', 'service-postgres-nodeport.yaml') }}"
 - name: "{{ 'Install' if values.site.enable_dev_nodeports else 'Skip' }} zookeeper-nodeport NodePort service on OpenShift"
   k8s:
-    state: "{{ 'present' if values.site.enable_dev_nodeports and values.postgres.create else 'absent' }}"
+    state: "{{ 'present' if values.site.enable_dev_nodeports and values.zookeeper.create else 'absent' }}"
     api_version: v1
     kind: Service
     name: "zookeeper-nodeport"
@@ -66,15 +58,6 @@
     name: "{{ site_name }}-db-create"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'configmap-db-create.yaml') }}"
-  when: values.postgres.create
-- name: Install {{ site_name }} PostgreSQL cluster on OpenShift
-  k8s:
-    state: "{{ 'present' if values.postgres.create else 'absent' }}"
-    api_version: postgres-operator.crunchydata.com/v1beta1
-    kind: PostgresCluster
-    name: postgres
-    namespace: "{{ ansible_operator_meta.namespace }}"
-    definition: "{{ lookup('template', 'postgrescluster.yaml') }}"
   when: values.postgres.create
 
 # Install Red Hat SSO
@@ -374,27 +357,6 @@
     definition: "{{ lookup('template', 'route-solr.yaml') }}"
   when: values.openshift and values.solr.create
   ignore_errors: true
-
-- name: "Query prerequisite host names"
-  set_fact:
-    POSTGRES_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.postgres.secret_name, namespace=ansible_operator_meta.namespace)[0].data }}"
-  ignore_errors: true
-
-- name: "Verify PostgreSQL"
-  wait_for:
-    host: "{{ values.postgres.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
-    port: "{{ values.postgres.port }}"
-    state: started
-    delay: 0
-    timeout: 5
-  register: verify_postgresql
-  ignore_errors: yes
-  when: verify_connections and values.postgres.create
-- name: "Verify PostgreSQL is running"
-  fail:
-    msg: |-
-      The PostgreSQL service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
-  when: verify_connections and postgres.create and verify_postgresql.failed
 
 - name: "Verify Kafka"
   wait_for:

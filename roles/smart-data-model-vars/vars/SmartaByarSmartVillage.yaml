@@ -7,12 +7,6 @@ description: |
   as the test village, supported by Smarta Byar.
 schema:
 
-  openshift:
-    type: boolean
-    default: true
-    description: |
-      true if deploying applications to OpenShift, 
-      false if deploying applications to kubernetes. 
   site:
     type: object
     properties:

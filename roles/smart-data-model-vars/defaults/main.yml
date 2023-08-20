@@ -1,2 +1,3 @@
 ---
-CRD_VARS_VALUES_PATH: "{{ playbook_dir }}/roles/smart-data-model-vars/vars/{{ ENTITY_TYPE }}.yaml"
+CRD_VARS_PATH: "{{ playbook_dir }}/roles/smart-data-model-vars/vars/{{ ENTITY_TYPE }}.yaml"
+CRD_VARS_VALUES_PATH: "{{ playbook_dir }}/roles/smart-data-model-vars/vars/values/values-{{ ENTITY_TYPE }}.yaml"

@@ -1,0 +1,19 @@
+---
+# tasks to delete EdgePostgres
+
+- name: "Remove Postgres NodePort service on OpenShift"
+  k8s:
+    state: absent
+    api_version: v1
+    kind: Service
+    name: "postgres-nodeport"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
+- name: Remove Postgres cluster on OpenShift
+  k8s:
+    state: absent
+    api_version: postgres-operator.crunchydata.com/v1beta1
+    kind: PostgresCluster
+    name: "{{ ansible_operator_meta.name }}"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true

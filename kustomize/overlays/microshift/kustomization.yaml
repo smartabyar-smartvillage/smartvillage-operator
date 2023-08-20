@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
 
   - operators/
+  - edgepostgress/
   - edgeamqbrokers/
   - orionldcontextbrokers/
   - iotagentjsons/

@@ -1,0 +1,14 @@
+---
+name: smartvillage
+description: |
+  
+schema: {}
+smart_data_model:
+  attributes:
+    location:
+      name: location
+      type: "geo:point"
+      required: true
+      description: |
+        Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon
+

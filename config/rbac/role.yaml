@@ -308,4 +308,21 @@ rules:
       - patch
       - update
       - watch
+  ##
+  ## Rules for smartvillage.computate.org/v1, Kind: EdgePostgres
+  ##
+  - apiGroups:
+      - smartvillage.computate.org
+    resources:
+      - edgepostgres
+      - edgepostgres/status
+      - edgepostgres/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
 #+kubebuilder:scaffold:rules

@@ -1,3 +1,3 @@
 ---
 ENTITY_TYPE: {{ ENTITY_TYPE }}
-SUBSCRIPTION_NAME: "urn:subscription:{{ ENTITY_TYPE }}-{{ values.device.id }}"
+SUBSCRIPTION_NAME: "urn:subscription:{{ ENTITY_TYPE }}-\{\{ values.device.id \}\}"

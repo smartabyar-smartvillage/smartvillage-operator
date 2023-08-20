@@ -4,13 +4,6 @@
     state: absent
     api_version: v1
     kind: Service
-    name: "postgres-nodeport"
-    namespace: "{{ ansible_operator_meta.namespace }}"
-- name: "Remove fiware-broker-mqtt-nodeport NodePort service on OpenShift"
-  k8s:
-    state: absent
-    api_version: v1
-    kind: Service
     name: "zookeeper-nodeport"
     namespace: "{{ ansible_operator_meta.namespace }}"
 - name: "Remove fiware-broker-mqtt-nodeport NodePort service on OpenShift"
@@ -20,16 +13,6 @@
     kind: Service
     name: "fiware-broker-mqtt-nodeport"
     namespace: "{{ ansible_operator_meta.namespace }}"
-
-# Remove PostgreSQL
-- name: Remove {{ site_name }} PostgreSQL cluster on OpenShift
-  k8s:
-    state: absent
-    api_version: postgres-operator.crunchydata.com/v1beta1
-    kind: PostgresCluster
-    name: postgres
-    namespace: "{{ ansible_operator_meta.namespace }}"
-  ignore_errors: true
 
 # Remove Red Hat SSO
 - name: "Remove keycloak-db-secret on OpenShift"

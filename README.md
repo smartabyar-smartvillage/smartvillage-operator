@@ -14,6 +14,35 @@ Clone the Smart Village Operator source code:
 git clone git@github.com:computate-org/smartvillage-operator.git ~/.local/src/smartvillage-operator
 ```
 
+# Install Ansible dependencies on Linux
+
+```bash
+pkcon install -y git
+pkcon install -y python3
+pkcon install -y python3-pip
+pip install virtualenv openshift jmespath
+```
+
+## Install the latest Python and setup a new Python virtualenv
+
+This step might be virtualenv-3 for you. 
+
+```bash
+virtualenv ~/python
+
+source ~/python/bin/activate
+echo "source ~/python/bin/activate" | tee -a ~/.bashrc
+source ~/.bashrc
+```
+
+## Install the latest Ansible
+
+```bash
+pip install setuptools_rust wheel
+pip install --upgrade pip
+pip install ansible
+```
+
 # Install Smart Village Operator on Kubernetes Kind
 
 ## Install Kubernetes Kind
@@ -483,7 +512,34 @@ make docker-build docker-push deploy && oc -n smartvillage-operator-system delet
 - View the logs of the operator
 
 ```bash
-kubectl logs -n smartvillage-operator-system deployment/smartvillage-operator-controller-manager -f
+oc logs -n smartvillage-operator-system deployment/smartvillage-operator-controller-manager -f
+```
+
+## Initialize EdgePostgres model
+
+```bash
+operator-sdk create api --group smartvillage --version v1 --kind EdgePostgres --generate-role
+ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=EdgePostgres
+```
+
+- Edit the newly generated vars values file: `smartvillage-operator/roles/smart-data-model-vars/vars/EdgePostgres.yaml`. 
+- Re-run the playbook to regenerate the latest model. 
+
+```bash
+ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=EdgePostgres
+```
+
+- Increment the VERSION in the smartvillage-operator/Makefile
+- Build and deploy the new version of the operator
+
+```bash
+make docker-build docker-push deploy && oc -n smartvillage-operator-system delete pod -l 'control-plane=controller-manager'
+```
+
+- View the logs of the operator
+
+```bash
+oc logs -n smartvillage-operator-system deployment/smartvillage-operator-controller-manager -f
 ```
 
 # Install the latest AMQ Broker on MicroShift manually

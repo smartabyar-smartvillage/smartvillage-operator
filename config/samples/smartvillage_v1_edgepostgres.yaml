@@ -1,0 +1,17 @@
+apiVersion: smartvillage.computate.org/v1
+kind: EdgePostgres
+metadata:
+  labels:
+    app.kubernetes.io/name: edgepostgres
+    app.kubernetes.io/instance: edgepostgres-sample
+    app.kubernetes.io/part-of: smartvillage-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: smartvillage-operator
+  name: sweden-veberod-1-sjobovagen-se
+spec:
+  description: |
+    
+  postgres:
+    enable_dev_nodeports: False
+    backup_storage: |-
+      10Gi

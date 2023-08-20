@@ -1,0 +1,103 @@
+spec:
+  backups:
+    pgbackrest:
+      image: registry.developers.crunchydata.com/crunchydata/crunchy-pgbackrest:ubi8-2.41-2
+      jobs:
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+      repoHost:
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+      sidecars:
+        pgbackrest:
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+        pgbackrestConfig:
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+      repos:
+      - name: repo1
+        volume:
+          volumeClaimSpec:
+            accessModes:
+            - "ReadWriteOnce"
+            resources:
+              requests:
+                storage: '{{ values.postgres.backup_storage }}'
+  image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres-gis:ubi8-15.1-3.3-0
+  postgresVersion: 15
+  postGISVersion: 3.3.0
+  openshift: true
+{% if values.postgres.instances %}
+  instances:
+{% for instance in values.postgres.instances %}
+    - name: '{{ instance.name }}'
+      dataVolumeClaimSpec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: '{{ instance.storage }}'
+      replicas: {{ instance.replicas }}
+      resources:
+        limits:
+          memory: '{{ instance.resources.limits.memory }}'
+          cpu: '{{ instance.resources.limits.cpu }}'
+        requests:
+          memory: '{{ instance.resources.requests.memory }}'
+          cpu: '{{ instance.resources.requests.cpu }}'
+      sidecars:
+        replicaCertCopy:
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+{% endfor %}
+{% endif %}
+{% if values.postgres.users %}
+  users:
+{% for user in values.postgres.users %}
+    - name: {{ user.name }}
+{% if user.options %}
+      options: "{{ user.options }}"
+{% endif %}
+{% if user.databases %}
+      databases:
+{% for database in user.databases %}
+        - {{ database }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if values.postgres.pg_hba %}
+  patroni:
+    dynamicConfiguration:
+      postgresql:
+        pg_hba:
+{% for pg_hba_entry in values.postgres.pg_hba %}
+          - "{{ pg_hba_entry }}"
+{% endfor %}
+{% endif %}

@@ -1,0 +1,13 @@
+---
+# tasks file for EdgePostgres
+
+- name: Run Ansible role smart-data-model-vars
+  include_role:
+    name: smart-data-model-vars
+  vars:
+    ENTITY_TYPE: EdgePostgres
+- name: Run Ansible role apply-edgepostgres
+  include_role:
+    name: apply-edgepostgres
+  vars:
+    ENTITY_TYPE: EdgePostgres

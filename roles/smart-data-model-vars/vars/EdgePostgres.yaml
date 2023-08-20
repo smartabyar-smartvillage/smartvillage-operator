@@ -1,0 +1,64 @@
+---
+description: |
+  
+schema:
+  postgres:
+    type: object
+    properties:
+      enable_dev_nodeports:
+        type: boolean
+        default: false
+      backup_storage:
+        type: string
+        default: '10Gi'
+      instances:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+            replicas:
+              type: number
+              default: 1
+            storage:
+              type: string
+              default: '10Gi'
+            resources:
+              type: object
+              properties:
+                limits:
+                  type: object
+                  properties:
+                    memory:
+                      type: string
+                      default: '500Mi'
+                    cpu:
+                      type: string
+                      default: '500m'
+                requests:
+                  type: object
+                  properties:
+                    memory:
+                      type: string
+                      default: '200Mi'
+                    cpu:
+                      type: string
+                      default: '200m'
+      users:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+            options:
+              type: string
+            databases:
+              type: array
+              items:
+                type: string
+      pg_hba:
+        type: array
+        items:
+          type: string

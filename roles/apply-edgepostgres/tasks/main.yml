@@ -1,0 +1,53 @@
+---
+# tasks file for EdgePostgres
+
+- name: "Query {{ ENTITY_TYPE }}"
+  set_fact:
+    crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
+  ignore_errors: true
+  when: crd_path is defined
+- name: "Query {{ ENTITY_TYPE }}"
+  set_fact:
+    crd: "{{ query('kubernetes.core.k8s', kind=ENTITY_TYPE, resource_name=ansible_operator_meta.name, namespace=ansible_operator_meta.namespace)[0].spec }}"
+  ignore_errors: true
+  when: crd_path is not defined
+- name: "Verify {{ ENTITY_TYPE }} exists"
+  fail:
+    msg: |-
+      You need to deploy a {{ ENTITY_TYPE }} to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_{{ ENTITY_TYPE | lower }}.yaml
+  when: crd is not defined
+
+- name: "{{ 'Install' if values.postgres.enable_dev_nodeports else 'Skip' }} postgres-nodeport NodePort service on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.postgres.enable_dev_nodeports else 'absent' }}"
+    api_version: v1
+    kind: Service
+    name: "postgres-nodeport"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'service-postgres-nodeport.yaml') }}"
+
+# Install PostgreSQL
+- name: Install {{ ansible_operator_meta.name }} PostgreSQL cluster on OpenShift
+  k8s:
+    state: "present"
+    api_version: postgres-operator.crunchydata.com/v1beta1
+    kind: PostgresCluster
+    name: postgres
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'postgrescluster.yaml') }}"
+
+- name: "Verify PostgreSQL"
+  wait_for:
+    host: "{{ ansible_operator_meta.name + '-primary.' + ansible_operator_meta.namespace + '.svc' }}"
+    port: "5432"
+    state: started
+    delay: 0
+    timeout: 5
+  register: verify_postgresql
+  ignore_errors: yes
+  when: verify_connections
+- name: "Verify PostgreSQL is running"
+  fail:
+    msg: |-
+      The PostgreSQL service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
+  when: verify_connections and verify_postgresql.failed
