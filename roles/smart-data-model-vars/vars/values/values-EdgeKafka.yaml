@@ -1,0 +1,47 @@
+values:
+
+
+  kafka:
+    enable_dev_nodeports: "{{ crd.kafka.enable_dev_nodeports | default(schema | community.general.json_query('kafka.properties.enable_dev_nodeports.default')) }}"
+    topic_names:
+      entity: "{{ crd.kafka.topic_names.entity | default(schema | community.general.json_query('kafka.properties.topic_names.properties.entity.default')) }}"
+      entitybatch: "{{ crd.kafka.topic_names.entitybatch | default(schema | community.general.json_query('kafka.properties.topic_names.properties.entitybatch.default')) }}"
+      registry: "{{ crd.kafka.topic_names.registry | default(schema | community.general.json_query('kafka.properties.topic_names.properties.registry.default')) }}"
+      temporal: "{{ crd.kafka.topic_names.temporal | default(schema | community.general.json_query('kafka.properties.topic_names.properties.temporal.default')) }}"
+      inotify: "{{ crd.kafka.topic_names.inotify | default(schema | community.general.json_query('kafka.properties.topic_names.properties.inotify.default')) }}"
+      iregsub: "{{ crd.kafka.topic_names.iregsub | default(schema | community.general.json_query('kafka.properties.topic_names.properties.iregsub.default')) }}"
+      subalive: "{{ crd.kafka.topic_names.subalive | default(schema | community.general.json_query('kafka.properties.topic_names.properties.subalive.default')) }}"
+      subsync: "{{ crd.kafka.topic_names.subsync | default(schema | community.general.json_query('kafka.properties.topic_names.properties.subsync.default')) }}"
+      regsubalive: "{{ crd.kafka.topic_names.regsubalive | default(schema | community.general.json_query('kafka.properties.topic_names.properties.regsubalive.default')) }}"
+      regsubsync: "{{ crd.kafka.topic_names.regsubsync | default(schema | community.general.json_query('kafka.properties.topic_names.properties.regsubsync.default')) }}"
+    keystore_secret: "{{ crd.kafka.keystore_secret | default(schema | community.general.json_query('kafka.properties.keystore_secret.default')) }}"
+    truststore_secret: "{{ crd.kafka.truststore_secret | default(schema | community.general.json_query('kafka.properties.truststore_secret.default')) }}"
+    service_name: "{{ crd.kafka.service_name | default(schema | community.general.json_query('kafka.properties.service_name.default')) }}"
+    port: "{{ crd.kafka.port | default(schema | community.general.json_query('kafka.properties.port.default')) }}"
+    group: "{{ crd.kafka.group | default(schema | community.general.json_query('kafka.properties.group.default')) }}"
+    security_protocol: "{{ crd.kafka.security_protocol | default(schema | community.general.json_query('kafka.properties.security_protocol.default')) }}"
+    ssl_keystore_type: "{{ crd.kafka.ssl_keystore_type | default(schema | community.general.json_query('kafka.properties.ssl_keystore_type.default')) }}"
+    ssl_keystore_location: "{{ crd.kafka.ssl_keystore_location | default(schema | community.general.json_query('kafka.properties.ssl_keystore_location.default')) }}"
+    ssl_user_crt_location: "{{ crd.kafka.ssl_user_crt_location | default(schema | community.general.json_query('kafka.properties.ssl_user_crt_location.default')) }}"
+    ssl_user_key_location: "{{ crd.kafka.ssl_user_key_location | default(schema | community.general.json_query('kafka.properties.ssl_user_key_location.default')) }}"
+    ssl_truststore_type: "{{ crd.kafka.ssl_truststore_type | default(schema | community.general.json_query('kafka.properties.ssl_truststore_type.default')) }}"
+    ssl_truststore_location: "{{ crd.kafka.ssl_truststore_location | default(schema | community.general.json_query('kafka.properties.ssl_truststore_location.default')) }}"
+    ssl_ca_crt_location: "{{ crd.kafka.ssl_ca_crt_location | default(schema | community.general.json_query('kafka.properties.ssl_ca_crt_location.default')) }}"
+    resources:
+      limits:
+        memory: "{{ crd.kafka.resources.limits.memory | default(schema | community.general.json_query('kafka.properties.resources.properties.limits.properties.memory.default')) }}"
+        cpu: "{{ crd.kafka.resources.limits.cpu | default(schema | community.general.json_query('kafka.properties.resources.properties.limits.properties.cpu.default')) }}"
+      requests:
+        memory: "{{ crd.kafka.resources.requests.memory | default(schema | community.general.json_query('kafka.properties.resources.properties.requests.properties.memory.default')) }}"
+        cpu: "{{ crd.kafka.resources.requests.cpu | default(schema | community.general.json_query('kafka.properties.resources.properties.requests.properties.cpu.default')) }}"
+    users: "{{ crd.kafka.users | default('') }}"
+  zookeeper:
+    volume_size: "{{ crd.zookeeper.volume_size | default(schema | community.general.json_query('zookeeper.properties.volume_size.default')) }}"
+    replicas: "{{ crd.zookeeper.replicas | default(schema | community.general.json_query('zookeeper.properties.replicas.default')) }}"
+    resources:
+      limits:
+        memory: "{{ crd.zookeeper.resources.limits.memory | default(schema | community.general.json_query('zookeeper.properties.resources.properties.limits.properties.memory.default')) }}"
+        cpu: "{{ crd.zookeeper.resources.limits.cpu | default(schema | community.general.json_query('zookeeper.properties.resources.properties.limits.properties.cpu.default')) }}"
+      requests:
+        memory: "{{ crd.zookeeper.resources.requests.memory | default(schema | community.general.json_query('zookeeper.properties.resources.properties.requests.properties.memory.default')) }}"
+        cpu: "{{ crd.zookeeper.resources.requests.cpu | default(schema | community.general.json_query('zookeeper.properties.resources.properties.requests.properties.cpu.default')) }}"

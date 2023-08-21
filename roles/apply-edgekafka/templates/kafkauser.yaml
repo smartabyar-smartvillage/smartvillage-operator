@@ -1,0 +1,10 @@
+metadata:
+  labels:
+    strimzi.io/cluster: "{{ item.cluster }}"
+spec:
+  authentication:
+    type: tls
+  authorization:
+    type: simple
+    acls:
+{{ item.acls | to_nice_yaml(indent=2) | indent(6, True) }}

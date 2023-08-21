@@ -1,0 +1,218 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: edgekafkas.smartvillage.computate.org
+spec:
+  group: smartvillage.computate.org
+  names:
+    kind: EdgeKafka
+    listKind: EdgeKafkaList
+    plural: edgekafkas
+    singular: edgekafka
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: |
+          EdgeKafka is the Schema for the edgekafkas API
+          
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: Spec defines the desired state of EdgeKafka
+            type: object
+            properties:
+              kafka:
+                type: object
+                properties:
+                  enable_dev_nodeports:
+                    default: false
+                    type: boolean
+                  group:
+                    default: smartvillage-kafka
+                    type: string
+                  keystore_secret:
+                    default: smartvillage-kafka
+                    type: string
+                  port:
+                    default: 9093
+                    type: number
+                  resources:
+                    properties:
+                      limits:
+                        properties:
+                          cpu:
+                            default: 500m
+                            type: string
+                          memory:
+                            default: 500Mi
+                            type: string
+                        type: object
+                      requests:
+                        properties:
+                          cpu:
+                            default: 200m
+                            type: string
+                          memory:
+                            default: 200Mi
+                            type: string
+                        type: object
+                    type: object
+                  security_protocol:
+                    default: SSL
+                    type: string
+                  service_name:
+                    default: smartvillage-kafka-kafka-bootstrap
+                    type: string
+                  ssl_ca_crt_location:
+                    default: /opt/kafka/truststore/ca.crt
+                    type: string
+                  ssl_keystore_location:
+                    default: /opt/kafka/keystore/user.p12
+                    type: string
+                  ssl_keystore_type:
+                    default: PKCS12
+                    type: string
+                  ssl_truststore_location:
+                    default: /opt/kafka/truststore/ca.p12
+                    type: string
+                  ssl_truststore_type:
+                    default: PKCS12
+                    type: string
+                  ssl_user_crt_location:
+                    default: /opt/kafka/keystore/user.crt
+                    type: string
+                  ssl_user_key_location:
+                    default: /opt/kafka/keystore/user.key
+                    type: string
+                  topic_names:
+                    properties:
+                      entity:
+                        default: ENTITY
+                        type: string
+                      entitybatch:
+                        default: ENTITYBATCH
+                        type: string
+                      inotify:
+                        default: I_NOTIFY
+                        type: string
+                      iregsub:
+                        default: I_REGSUB
+                        type: string
+                      registry:
+                        default: REGISTRY
+                        type: string
+                      regsubalive:
+                        default: REG_SUB_ALIVE
+                        type: string
+                      regsubsync:
+                        default: REG_SUB_SYNC
+                        type: string
+                      subalive:
+                        default: SUB_ALIVE
+                        type: string
+                      subsync:
+                        default: SUB_SYNC
+                        type: string
+                      temporal:
+                        default: TEMPORAL
+                        type: string
+                    type: object
+                  truststore_secret:
+                    default: smartvillage-kafka-cluster-ca-cert
+                    type: string
+                  users:
+                    items:
+                      properties:
+                        acls:
+                          items:
+                            properties:
+                              host:
+                                default: '*'
+                                type: string
+                              operations:
+                                items:
+                                  type: string
+                                type: array
+                              resource:
+                                properties:
+                                  name:
+                                    type: string
+                                  patternType:
+                                    default: prefix
+                                    enum:
+                                    - prefix
+                                    - suffix
+                                    type: string
+                                  type:
+                                    enum:
+                                    - topic
+                                    - group
+                                    type: string
+                                type: object
+                              type:
+                                default: allow
+                                type: string
+                            type: object
+                          type: array
+                        cluster:
+                          default: smartvillage-kafka
+                          type: string
+                        name:
+                          type: string
+                      type: object
+                    type: array
+
+              zookeeper:
+                type: object
+                properties:
+                  replicas:
+                    default: 3
+                    type: number
+                  resources:
+                    properties:
+                      limits:
+                        properties:
+                          cpu:
+                            default: 500m
+                            type: string
+                          memory:
+                            default: 500Mi
+                            type: string
+                        type: object
+                      requests:
+                        properties:
+                          cpu:
+                            default: 200m
+                            type: string
+                          memory:
+                            default: 200Mi
+                            type: string
+                        type: object
+                    type: object
+                  volume_size:
+                    default: 1Gi
+                    type: string
+
+          status:
+            description: Status defines the observed state of EdgeKafka
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

@@ -325,4 +325,21 @@ rules:
       - patch
       - update
       - watch
+  ##
+  ## Rules for smartvillage.computate.org/v1, Kind: EdgeKafka
+  ##
+  - apiGroups:
+      - smartvillage.computate.org
+    resources:
+      - edgekafkas
+      - edgekafkas/status
+      - edgekafkas/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
 #+kubebuilder:scaffold:rules

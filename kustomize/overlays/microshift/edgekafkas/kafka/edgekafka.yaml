@@ -1,0 +1,51 @@
+apiVersion: smartvillage.computate.org/v1
+kind: EdgeKafka
+metadata:
+  name: kafka
+  namespace: smartvillage
+spec:
+  kafka:
+    keystore_secret: smartvillage-kafka
+    truststore_secret: smartvillage-kafka-cluster-ca-cert
+    service_name: smartvillage-kafka-kafka-bootstrap
+    port: 9093
+    group: smartvillage-kafka
+    security_protocol: SSL
+    ssl_keystore_type: PKCS12
+    ssl_keystore_location: /opt/kafka/keystore/user.p12
+    ssl_truststore_type: PKCS12
+    ssl_truststore_location: /opt/kafka/truststore/ca.p12
+    users:
+      - name: smartvillage-kafka
+        cluster: smartvillage-kafka
+        acls:
+          - resource:
+              name: smartvillage-
+              patternType: prefix
+              type: topic
+            type: allow
+          - resource:
+              name: smartvillage-
+              patternType: prefix
+              type: group
+            type: allow
+      - name: scorpiobroker-kafka
+        cluster: smartvillage-kafka
+        acls:
+          - resource:
+              name: scorpiobroker-
+              patternType: prefix
+              type: topic
+            type: allow
+          - resource:
+              name: aio-runner
+              patternType: prefix
+              type: group
+            type: allow
+    resources:
+      limits:
+        memory: 500Mi
+        cpu: 500m
+      requests:
+        memory: 200Mi
+        cpu: 200m

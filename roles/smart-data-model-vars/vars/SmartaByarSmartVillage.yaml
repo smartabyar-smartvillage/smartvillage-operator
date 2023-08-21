@@ -562,11 +562,6 @@ schema:
           regsubsync:
             type: string
             default: REG_SUB_SYNC
-      create:
-        type: boolean
-        default: true
-        description: |
-          Determines if a new Apache Kafka cluster will be created. 
       keystore_secret:
         type: string
         default: smartvillage-kafka
@@ -606,27 +601,6 @@ schema:
       ssl_ca_crt_location:
         type: string
         default: /opt/kafka/truststore/ca.crt
-      resources:
-        type: object
-        properties:
-          limits:
-            type: object
-            properties:
-              memory:
-                type: string
-                default: '500Mi'
-              cpu:
-                type: string
-                default: '500m'
-          requests:
-            type: object
-            properties:
-              memory:
-                type: string
-                default: '200Mi'
-              cpu:
-                type: string
-                default: '200m'
 
   amq_broker:
     type: object

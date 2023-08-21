@@ -108,6 +108,26 @@
     dest: "{{ DELETE_TASKS_PATH }}"
   when: not DELETE_TASKS_STAT.stat.exists
 
+- name: "Check for apply playbook file: {{ APPLY_PLAYBOOK_PATH }}"
+  ansible.builtin.stat:
+    path: "{{ APPLY_PLAYBOOK_PATH }}"
+  register: APPLY_PLAYBOOK_STAT
+- name: "Write apply playbook: {{ APPLY_PLAYBOOK_PATH }}"
+  copy:
+    content: "{{ lookup('template', 'apply-playbook.yaml') | replace('\\{\\{', '{{') | replace('\\}\\}', '}}') }}"
+    dest: "{{ APPLY_PLAYBOOK_PATH }}"
+  when: not APPLY_PLAYBOOK_STAT.stat.exists
+
+- name: "Check for delete playbook file: {{ DELETE_PLAYBOOK_PATH }}"
+  ansible.builtin.stat:
+    path: "{{ DELETE_PLAYBOOK_PATH }}"
+  register: DELETE_PLAYBOOK_STAT
+- name: "Write delete playbook: {{ DELETE_PLAYBOOK_PATH }}"
+  copy:
+    content: "{{ lookup('template', 'delete-playbook.yaml') | replace('\\{\\{', '{{') | replace('\\}\\}', '}}') }}"
+    dest: "{{ DELETE_PLAYBOOK_PATH }}"
+  when: not DELETE_PLAYBOOK_STAT.stat.exists
+
 - name: "Write CRD vars file: {{ CRD_VARS_PATH }}"
   ansible.builtin.copy:
     content: "{{ lookup('template', 'vars.yaml') | replace('\\{\\{', '{{') | replace('\\}\\}', '}}') }}"

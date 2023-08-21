@@ -1,0 +1,13 @@
+---
+# tasks file for EdgeKafka
+
+- name: Run Ansible role smart-data-model-vars
+  include_role:
+    name: smart-data-model-vars
+  vars:
+    ENTITY_TYPE: EdgeKafka
+- name: Run Ansible role apply-edgekafka
+  include_role:
+    name: apply-edgekafka
+  vars:
+    ENTITY_TYPE: EdgeKafka

@@ -1,0 +1,176 @@
+---
+name: smartvillage
+description: |
+  
+schema:
+  
+  kafka:
+    type: object
+    properties:
+      enable_dev_nodeports:
+        type: boolean
+        default: false
+      topic_names:
+        type: object
+        properties:
+          entity:
+            type: string
+            default: ENTITY
+          entitybatch:
+            type: string
+            default: ENTITYBATCH
+          registry:
+            type: string
+            default: REGISTRY
+          temporal:
+            type: string
+            default: TEMPORAL
+          inotify:
+            type: string
+            default: I_NOTIFY
+          iregsub:
+            type: string
+            default: I_REGSUB
+          subalive:
+            type: string
+            default: SUB_ALIVE
+          subsync:
+            type: string
+            default: SUB_SYNC
+          regsubalive:
+            type: string
+            default: REG_SUB_ALIVE
+          regsubsync:
+            type: string
+            default: REG_SUB_SYNC
+      keystore_secret:
+        type: string
+        default: smartvillage-kafka
+      truststore_secret:
+        type: string
+        default: smartvillage-kafka-cluster-ca-cert
+      service_name:
+        type: string
+        default: smartvillage-kafka-kafka-bootstrap
+      port:
+        type: number
+        default: 9093
+      group:
+        type: string
+        default: smartvillage-kafka
+      security_protocol:
+        type: string
+        default: SSL
+      ssl_keystore_type:
+        type: string
+        default: PKCS12
+      ssl_keystore_location:
+        type: string
+        default: /opt/kafka/keystore/user.p12
+      ssl_user_crt_location:
+        type: string
+        default: /opt/kafka/keystore/user.crt
+      ssl_user_key_location:
+        type: string
+        default: /opt/kafka/keystore/user.key
+      ssl_truststore_type:
+        type: string
+        default: PKCS12
+      ssl_truststore_location:
+        type: string
+        default: /opt/kafka/truststore/ca.p12
+      ssl_ca_crt_location:
+        type: string
+        default: /opt/kafka/truststore/ca.crt
+      resources:
+        type: object
+        properties:
+          limits:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '500Mi'
+              cpu:
+                type: string
+                default: '500m'
+          requests:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '200Mi'
+              cpu:
+                type: string
+                default: '200m'
+      users:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+            cluster:
+              type: string
+              default: smartvillage-kafka
+            acls:
+              type: array
+              items:
+                type: object
+                properties:
+                  host:
+                    type: string
+                    default: '*'
+                  operations:
+                    type: array
+                    items:
+                      type: string
+                  type:
+                    type: string
+                    default: allow
+                  resource:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      patternType:
+                        type: string
+                        default: prefix
+                        enum:
+                          - prefix
+                          - suffix
+                      type:
+                        type: string
+                        enum:
+                          - topic
+                          - group
+  zookeeper:
+    type: object
+    properties:
+      volume_size:
+        type: string
+        default: '1Gi'
+      replicas:
+        type: number
+        default: 3
+      resources:
+        type: object
+        properties:
+          limits:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '500Mi'
+              cpu:
+                type: string
+                default: '500m'
+          requests:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '200Mi'
+              cpu:
+                type: string
+                default: '200m'

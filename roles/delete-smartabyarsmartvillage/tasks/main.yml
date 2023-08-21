@@ -49,46 +49,6 @@
   ignore_errors: true
 
 # Remove Kafka
-- name: "Remove {{ site_name }} Kafka cluster on OpenShift"
-  k8s:
-    state: absent
-    kind: Kafka
-    api_version: kafka.strimzi.io/v1beta2
-    name: smartvillage-kafka
-    namespace: "{{ ansible_operator_meta.namespace }}"
-  ignore_errors: true
-- name: "Remove {{ site_name }} Kafka user on OpenShift"
-  k8s:
-    state: absent
-    api_version: kafka.strimzi.io/v1beta2
-    kind: KafkaUser
-    name: smartvillage-kafka
-    namespace: "{{ ansible_operator_meta.namespace }}"
-  ignore_errors: true
-- name: "Remove {{ site_name }} Kafka Topic smartvillage-sumo-run on OpenShift"
-  k8s:
-    state: absent
-    kind: KafkaTopic
-    api_version: kafka.strimzi.io/v1beta2
-    name: smartvillage-sumo-run
-    namespace: "{{ ansible_operator_meta.namespace }}"
-  ignore_errors: true
-- name: "Remove {{ site_name }} Kafka Topic smartvillage-sumo-run-report on OpenShift"
-  k8s:
-    state: absent
-    kind: KafkaTopic
-    api_version: kafka.strimzi.io/v1beta2
-    name: smartvillage-sumo-run-report
-    namespace: "{{ ansible_operator_meta.namespace }}"
-  ignore_errors: true
-- name: "Remove {{ site_name }} Kafka Topic smartvillage-sumo-stop on OpenShift"
-  k8s:
-    state: absent
-    kind: KafkaTopic
-    api_version: kafka.strimzi.io/v1beta2
-    name: smartvillage-sumo-stop
-    namespace: "{{ ansible_operator_meta.namespace }}"
-  ignore_errors: true
 
 # Install Zookeeper
 - name: "Remove Zookeeper persistent volume claim on OpenShift"

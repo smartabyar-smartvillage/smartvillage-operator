@@ -24,7 +24,7 @@ spec:
         tls: true
         authentication:
           type: tls
-{% if values.site.enable_dev_nodeports %}
+{% if values.kafka.enable_dev_nodeports %}
       - name: external
         port: 9094
         tls: true
@@ -65,7 +65,7 @@ spec:
     storage:
       type: ephemeral
   zookeeper:
-    replicas: 3
+    replicas: {{ values.zookeeper.replicas }}
     storage:
       type: ephemeral
     resources:

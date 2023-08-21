@@ -10,4 +10,5 @@ resources:
 - smartvillage_v1_trafficsimulation.yaml
 - smartvillage_v1_edgemongodb.yaml
 - smartvillage_v1_edgepostgres.yaml
+- smartvillage_v1_edgekafka.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples

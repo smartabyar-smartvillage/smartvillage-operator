@@ -12,4 +12,5 @@ resources:
 - bases/smartvillage.computate.org_trafficsimulations.yaml
 - bases/smartvillage.computate.org_edgemongodbs.yaml
 - bases/smartvillage.computate.org_edgepostgres.yaml
+- bases/smartvillage.computate.org_edgekafkas.yaml
 #+kubebuilder:scaffold:crdkustomizeresource

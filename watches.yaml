@@ -1,5 +1,5 @@
 ---
- Use the 'create api' subcommand to add watches to this file.
+# Use the 'create api' subcommand to add watches to this file.
 - finalizer:
     name: smartvillage.computate.org/trafficflowobserved-finalizer
     role: delete-trafficflowobserved
@@ -84,6 +84,15 @@
   group: smartvillage.computate.org
   kind: EdgePostgres
   role: edgepostgres
+  snakeCaseParameters: false
+  version: v1
+  watchDependentResources: false
+- finalizer:
+    name: smartvillage.computate.org/edgekafka-finalizer
+    role: delete-edgekafka
+  group: smartvillage.computate.org
+  kind: EdgeKafka
+  role: edgekafka
   snakeCaseParameters: false
   version: v1
   watchDependentResources: false
