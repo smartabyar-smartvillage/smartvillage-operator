@@ -81,6 +81,20 @@
     namespace: "{{ ansible_operator_meta.namespace }}"
 
 # Remove Solr
+- name: Delete Zookeeper helm chart
+  kubernetes.core.helm:
+    name: zookeeper-operator
+    chart_ref: zookeeper/zookeeper-operator
+    release_namespace: "{{ ansible_operator_meta.namespace }}"
+    release_state: absent
+    skip_crds: true
+- name: Delete Solr helm chart
+  kubernetes.core.helm:
+    name: solr-operator
+    chart_ref: solr/solr-operator
+    release_namespace: "{{ ansible_operator_meta.namespace }}"
+    release_state: absent
+    skip_crds: true
 - name: "Remove Solr configmap-computate-configset configmap on OpenShift"
   k8s:
     state: absent

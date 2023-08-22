@@ -11,7 +11,7 @@ metadata:
   namespace: smartvillage
 spec:
   site:
-    create: true
+    create: false
     enable_dev_nodeports: true
     web_replicas: 0
     sumo_replicas: 1
@@ -65,25 +65,22 @@ spec:
     route:
       create: false
   zookeeper:
-    create: true
-    service_name: |-
-      zookeeper
+    create: false
+    service_name: zookeeper
     port: 2181
     max_retries: 0
     base_sleep_time_millis: 5000
     max_sleep_millis: 5000
     connection_timeout_millis: 3000
     session_timeout_millis: 5000
+    storage: 1Gi
+    replicas: 1
     limits:
-      memory: |-
-        500Mi
-      cpu: |-
-        500m
+      memory: 500Mi
+      cpu: 500m
     requests:
-      memory: |-
-        200Mi
-      cpu: |-
-        200m
+      memory: 200Mi
+      cpu: 200m
   sso:
     create: false
     host_name: |-
@@ -105,7 +102,7 @@ spec:
     token_uri: |-
       /auth/realms/SMARTVILLAGE/protocol/openid-connect/token
   postgres:
-    create: true
+    create: false
     service_name: |-
       postgres-primary
     port: 5432
@@ -126,27 +123,22 @@ spec:
           200m
   solr:
     create: true
-    service_name: |-
-      default-solrcloud-common
+    service_name: default-solrcloud-common
     port: 80
     ssl: False
+    storage: 1Gi
+    replicas: 1
     route:
       create: false
-      host_name: |-
-        solr.apps-crc.testing
-    collection: |-
-      smartvillage
+      host_name: solr.apps-crc.testing
+    collection: smartvillage
     resources:
       limits:
-        memory: |-
-          2Gi
-        cpu: |-
-          2
+        memory: 2Gi
+        cpu: 2
       requests:
-        memory: |-
-          200Mi
-        cpu: |-
-          200m
+        memory: 200Mi
+        cpu: 200m
   email:
     enabled: true
     secret_name: smartvillage
@@ -233,7 +225,7 @@ spec:
     api_uri: |-
       /v2
   kafka:
-    create: true
+    create: false
     keystore_secret: |-
       smartvillage-kafka
     truststore_secret: |-
@@ -265,5 +257,5 @@ spec:
         cpu: |-
           200m
   amq_broker:
-    create: true
+    create: false
     enabled: True

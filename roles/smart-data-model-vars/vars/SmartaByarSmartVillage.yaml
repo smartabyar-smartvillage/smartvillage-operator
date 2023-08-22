@@ -143,9 +143,6 @@ schema:
         default: true
         description: |
           Determines if a new Zookeeper cluster will be created. 
-      volume_size:
-        type: string
-        default: '1Gi'
       service_name:
         type: string
         default: zookeeper
@@ -167,6 +164,12 @@ schema:
       session_timeout_millis:
         type: number
         default: 5000
+      storage:
+        type: string
+        default: '1Gi'
+      replicas:
+        type: number
+        default: 2
       resources:
         type: object
         properties:
@@ -327,6 +330,12 @@ schema:
       collection:
         type: string
         default: "smartvillage"
+      replicas:
+        type: number
+        default: 2
+      storage:
+        type: string
+        default: '1Gi'
       resources:
         type: object
         properties:

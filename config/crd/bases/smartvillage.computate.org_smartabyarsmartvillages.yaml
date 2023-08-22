@@ -39,9 +39,6 @@ spec:
             description: Spec defines the desired state of SmartaByarSmartVillage
             type: object
             properties:
-              openshift:
-                type: boolean
-                default: True
               site:
                 type: object
                 properties:
@@ -90,8 +87,8 @@ spec:
                     type: object
                   secret_name:
                     default: smartvillage
-                    description: "The secret name to store site secrets. \nIf empty, \"smartvillage\"\
-                      \ will be used. \n"
+                    description: "The secret name to store site secrets. \nIf empty, \"smartvillage\"
+                      will be used. \n"
                     type: string
                   site_base_url:
                     type: string
@@ -188,6 +185,9 @@ spec:
                   port:
                     default: 2181
                     type: number
+                  replicas:
+                    default: 2
+                    type: number
                   resources:
                     properties:
                       limits:
@@ -215,7 +215,7 @@ spec:
                   session_timeout_millis:
                     default: 5000
                     type: number
-                  volume_size:
+                  storage:
                     default: 1Gi
                     type: string
 
@@ -224,8 +224,8 @@ spec:
                 properties:
                   client_secret_name:
                     default: keycloak-client-secret-smartvillage
-                    description: "Optional secret name where the SSO secrets are stored. \nIf empty,\
-                      \ \"keycloak-client-secret-smartvillage\" will be used. \n"
+                    description: "Optional secret name where the SSO secrets are stored. \nIf empty,
+                      \"keycloak-client-secret-smartvillage\" will be used. \n"
                     type: string
                   cluster_name:
                     default: sso
@@ -240,8 +240,8 @@ spec:
                     type: string
                   postgres_secret_name:
                     default: postgres-pguser-sso
-                    description: "Optional secret name where the SSO secrets are stored. \nIf empty,\
-                      \ \"postgres-pguser-sso\" will be used. \n"
+                    description: "Optional secret name where the SSO secrets are stored. \nIf empty,
+                      \"postgres-pguser-sso\" will be used. \n"
                     type: string
 
               auth:
@@ -272,8 +272,8 @@ spec:
                 properties:
                   cluster_name:
                     default: postgres
-                    description: "Crunchy Postgres cluster name. \nIf empty, \"postgres\" will be used.\
-                      \ \n"
+                    description: "Crunchy Postgres cluster name. \nIf empty, \"postgres\" will be used.
+                      \n"
                     type: string
                   create:
                     default: true
@@ -306,8 +306,8 @@ spec:
                     type: object
                   secret_name:
                     default: postgres-pguser-smartvillage
-                    description: "Optional secret name where the postgres secrets are stored. \nIf empty,\
-                      \ \"postgres-pguser-smartvillage\" will be used. \n"
+                    description: "Optional secret name where the postgres secrets are stored. \nIf empty,
+                      \"postgres-pguser-smartvillage\" will be used. \n"
                     type: string
                   service_name:
                     default: postgres-primary
@@ -326,6 +326,9 @@ spec:
                     type: boolean
                   port:
                     default: 80
+                    type: number
+                  replicas:
+                    default: 2
                     type: number
                   resources:
                     properties:
@@ -365,6 +368,9 @@ spec:
                   ssl:
                     default: false
                     type: boolean
+                  storage:
+                    default: 1Gi
+                    type: string
 
               email:
                 type: object
@@ -374,8 +380,8 @@ spec:
                     type: boolean
                   secret_name:
                     default: smartvillage
-                    description: "The secret name to store SMTP email secrets. \nIf empty, \"smartvillage\"\
-                      \ will be used. \n"
+                    description: "The secret name to store SMTP email secrets. \nIf empty, \"smartvillage\"
+                      will be used. \n"
                     type: string
 
               import_data:
@@ -543,10 +549,6 @@ spec:
               kafka:
                 type: object
                 properties:
-                  create:
-                    default: true
-                    description: "Determines if a new Apache Kafka cluster will be created. \n"
-                    type: boolean
                   group:
                     default: smartvillage-kafka
                     type: string
@@ -556,27 +558,6 @@ spec:
                   port:
                     default: 9093
                     type: number
-                  resources:
-                    properties:
-                      limits:
-                        properties:
-                          cpu:
-                            default: 500m
-                            type: string
-                          memory:
-                            default: 500Mi
-                            type: string
-                        type: object
-                      requests:
-                        properties:
-                          cpu:
-                            default: 200m
-                            type: string
-                          memory:
-                            default: 200Mi
-                            type: string
-                        type: object
-                    type: object
                   security_protocol:
                     default: SSL
                     type: string
@@ -698,8 +679,8 @@ spec:
                     type: boolean
                   sync:
                     default: true
-                    description: "Determines if the orionld-smartvillage-sync application will be created.\
-                      \ \n"
+                    description: "Determines if the orionld-smartvillage-sync application will be created.
+                      \n"
                     type: boolean
                   sync_replicas:
                     default: 1

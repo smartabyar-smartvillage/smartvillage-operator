@@ -1,5 +1,5 @@
 spec:
-  replicas: 2
+  replicas: {{ values.solr.replicas }}
   busyBoxImage:
     repository: docker.io/library/busybox
     tag: 1.36.0-glibc
@@ -12,16 +12,15 @@ spec:
         spec:
           resources:
             requests:
-              storage: 20Gi
+              storage: {{ values.solr.storage }}
   customSolrKubeOptions:
     podOptions:
       podSecurityContext:
         runAsNonRoot: true
-{% if values.openshift %}
-{% else %}
         runAsUser: 8983
         fsGroup: 8983
-{% endif %}
+        seccompProfile:
+          type: RuntimeDefault
       serviceAccountName: solr
       resources:
         limits:
@@ -41,10 +40,12 @@ spec:
               name: computate-configset
   zookeeperRef:
     provided:
-      replicas: 2
+      replicas: {{ values.zookeeper.replicas }}
       persistence:
         spec:
-          storage: 5Gi
+          resources:
+            requests:
+              storage: {{ values.zookeeper.storage }}
       zookeeperPodPolicy:
         resources:
           limits:

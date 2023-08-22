@@ -15,7 +15,6 @@ spec:
     to study what social sustainability means by using a digital twin of Veberöd, Sweden 
     as the test village, supported by Smarta Byar.
 
-  openshift: True
   site:
     create: True
     enable_dev_nodeports: False
@@ -70,8 +69,6 @@ spec:
       create: True
   zookeeper:
     create: True
-    volume_size: |-
-      1Gi
     service_name: |-
       zookeeper
     port: 2181
@@ -80,6 +77,9 @@ spec:
     max_sleep_millis: 5000
     connection_timeout_millis: 3000
     session_timeout_millis: 5000
+    storage: |-
+      1Gi
+    replicas: 2
     resources:
       limits:
         memory: |-
@@ -142,6 +142,9 @@ spec:
         solr.apps-crc.testing
     collection: |-
       smartvillage
+    replicas: 2
+    storage: |-
+      1Gi
     resources:
       limits:
         memory: |-
@@ -261,7 +264,6 @@ spec:
         REG_SUB_ALIVE
       regsubsync: |-
         REG_SUB_SYNC
-    create: True
     keystore_secret: |-
       smartvillage-kafka
     truststore_secret: |-
@@ -287,17 +289,6 @@ spec:
       /opt/kafka/truststore/ca.p12
     ssl_ca_crt_location: |-
       /opt/kafka/truststore/ca.crt
-    resources:
-      limits:
-        memory: |-
-          500Mi
-        cpu: |-
-          500m
-      requests:
-        memory: |-
-          200Mi
-        cpu: |-
-          200m
   amq_broker:
     mqtt_service_name: |-
       fiware-broker-mqtt-0-svc
