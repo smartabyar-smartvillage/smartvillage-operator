@@ -4,6 +4,12 @@ description: |
   An Internet of Things Agent for a JSON based protocol (with AMQP, HTTP and MQTT transports). 
   This IoT Agent is designed to be a bridge between JSON and the NGSI interface of a context broker. 
 schema:
+  managementState:
+    type: string
+    default: Managed
+    enum:
+      - Managed
+      - Unmanaged
   amq_broker:
     type: object
     properties:

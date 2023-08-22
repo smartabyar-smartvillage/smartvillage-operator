@@ -156,6 +156,25 @@ rules:
       - patch
       - update
       - watch
+  - apiGroups:
+      - extensions
+    resources:
+      - deployments
+    verbs:
+      - get
+  - apiGroups:
+      - zookeeper.pravega.io
+    resources:
+      - '*'
+    verbs:
+      - get
+  - apiGroups:
+      - batch
+    resources:
+      - 'jobs'
+    verbs:
+      - delete
+      - create
   ##
   ## Rules for smartvillage.computate.org/v1, Kind: TrafficFlowObserved
   ##
