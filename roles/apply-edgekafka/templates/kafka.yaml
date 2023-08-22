@@ -34,13 +34,7 @@ spec:
         configuration:
           bootstrap:
             nodePort: 32100
-{% if values.openshift %}
-{% else %}
-            alternativeNames:
-              - 127.0.0.1
-{% endif %}
           brokers:
-{% if values.openshift %}
             - broker: 0
               nodePort: 32000
               advertisedHost: kafka0.apps-crc.testing
@@ -50,17 +44,6 @@ spec:
             - broker: 2
               nodePort: 32002
               advertisedHost: kafka2.apps-crc.testing
-{% else %}
-            - broker: 0
-              nodePort: 32000
-              advertisedHost: 127.0.0.1
-            - broker: 1
-              nodePort: 32001
-              advertisedHost: 127.0.0.1
-            - broker: 2
-              nodePort: 32002
-              advertisedHost: 127.0.0.1
-{% endif %}
 {% endif %}
     storage:
       type: ephemeral

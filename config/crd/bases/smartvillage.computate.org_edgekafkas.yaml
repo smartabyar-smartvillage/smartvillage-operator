@@ -41,12 +41,6 @@ spec:
                   enable_dev_nodeports:
                     default: false
                     type: boolean
-                  group:
-                    default: smartvillage-kafka
-                    type: string
-                  keystore_secret:
-                    default: smartvillage-kafka
-                    type: string
                   port:
                     default: 9093
                     type: number
@@ -71,68 +65,8 @@ spec:
                             type: string
                         type: object
                     type: object
-                  security_protocol:
-                    default: SSL
-                    type: string
                   service_name:
                     default: smartvillage-kafka-kafka-bootstrap
-                    type: string
-                  ssl_ca_crt_location:
-                    default: /opt/kafka/truststore/ca.crt
-                    type: string
-                  ssl_keystore_location:
-                    default: /opt/kafka/keystore/user.p12
-                    type: string
-                  ssl_keystore_type:
-                    default: PKCS12
-                    type: string
-                  ssl_truststore_location:
-                    default: /opt/kafka/truststore/ca.p12
-                    type: string
-                  ssl_truststore_type:
-                    default: PKCS12
-                    type: string
-                  ssl_user_crt_location:
-                    default: /opt/kafka/keystore/user.crt
-                    type: string
-                  ssl_user_key_location:
-                    default: /opt/kafka/keystore/user.key
-                    type: string
-                  topic_names:
-                    properties:
-                      entity:
-                        default: ENTITY
-                        type: string
-                      entitybatch:
-                        default: ENTITYBATCH
-                        type: string
-                      inotify:
-                        default: I_NOTIFY
-                        type: string
-                      iregsub:
-                        default: I_REGSUB
-                        type: string
-                      registry:
-                        default: REGISTRY
-                        type: string
-                      regsubalive:
-                        default: REG_SUB_ALIVE
-                        type: string
-                      regsubsync:
-                        default: REG_SUB_SYNC
-                        type: string
-                      subalive:
-                        default: SUB_ALIVE
-                        type: string
-                      subsync:
-                        default: SUB_SYNC
-                        type: string
-                      temporal:
-                        default: TEMPORAL
-                        type: string
-                    type: object
-                  truststore_secret:
-                    default: smartvillage-kafka-cluster-ca-cert
                     type: string
                   users:
                     items:
@@ -203,9 +137,6 @@ spec:
                             type: string
                         type: object
                     type: object
-                  volume_size:
-                    default: 1Gi
-                    type: string
 
           status:
             description: Status defines the observed state of EdgeKafka

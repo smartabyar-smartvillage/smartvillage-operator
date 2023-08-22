@@ -13,52 +13,9 @@ spec:
     
   kafka:
     enable_dev_nodeports: False
-    topic_names:
-      entity: |-
-        ENTITY
-      entitybatch: |-
-        ENTITYBATCH
-      registry: |-
-        REGISTRY
-      temporal: |-
-        TEMPORAL
-      inotify: |-
-        I_NOTIFY
-      iregsub: |-
-        I_REGSUB
-      subalive: |-
-        SUB_ALIVE
-      subsync: |-
-        SUB_SYNC
-      regsubalive: |-
-        REG_SUB_ALIVE
-      regsubsync: |-
-        REG_SUB_SYNC
-    keystore_secret: |-
-      smartvillage-kafka
-    truststore_secret: |-
-      smartvillage-kafka-cluster-ca-cert
     service_name: |-
       smartvillage-kafka-kafka-bootstrap
     port: 9093
-    group: |-
-      smartvillage-kafka
-    security_protocol: |-
-      SSL
-    ssl_keystore_type: |-
-      PKCS12
-    ssl_keystore_location: |-
-      /opt/kafka/keystore/user.p12
-    ssl_user_crt_location: |-
-      /opt/kafka/keystore/user.crt
-    ssl_user_key_location: |-
-      /opt/kafka/keystore/user.key
-    ssl_truststore_type: |-
-      PKCS12
-    ssl_truststore_location: |-
-      /opt/kafka/truststore/ca.p12
-    ssl_ca_crt_location: |-
-      /opt/kafka/truststore/ca.crt
     resources:
       limits:
         memory: |-
@@ -71,8 +28,6 @@ spec:
         cpu: |-
           200m
   zookeeper:
-    volume_size: |-
-      1Gi
     replicas: 3
     resources:
       limits:
