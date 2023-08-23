@@ -13,6 +13,7 @@ values:
     paramItersPerPar: "{{ crd.attributes.paramItersPerPar | default(schema | community.general.json_query('paramItersPerPar.default')) }}"
     paramTotalIterNum: "{{ crd.attributes.paramTotalIterNum | default(schema | community.general.json_query('paramTotalIterNum.default')) }}"
 
+  managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
   iotagent:
     service_name: "{{ crd.iotagent.service_name | default(schema | community.general.json_query('iotagent.properties.service_name.default')) }}"
     base_url: "{{ crd.iotagent.base_url | default('') }}"

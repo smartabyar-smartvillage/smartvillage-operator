@@ -1,0 +1,28 @@
+kind: SecurityContextConstraints
+apiVersion: security.openshift.io/v1
+metadata:
+  name: zookeeper
+users:
+- system:serviceaccount:smartvillage:zookeeper
+
+# required fields:
+allowHostDirVolumePlugin: false
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: false
+allowPrivilegedContainer: false
+readOnlyRootFilesystem: false
+
+# configured fields
+runAsUser:
+  type: RunAsAny
+seLinuxContext:
+  type: RunAsAny
+fsGroup:
+  type: RunAsAny
+requiredDropCapabilities:
+- ALL
+seccompProfiles:
+- '*'

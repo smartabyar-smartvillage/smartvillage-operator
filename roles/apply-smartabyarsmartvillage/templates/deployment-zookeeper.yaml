@@ -20,6 +20,7 @@ spec:
         application: zookeeper
         deploymentConfig: zookeeper
     spec:
+      serviceAccountName: zookeeper
       volumes:
         - name: volume-zookeeper-data
           persistentVolumeClaim:
@@ -73,6 +74,9 @@ spec:
       dnsPolicy: ClusterFirst
 #      securityContext: {}
       securityContext:
-        runAsNonRoot: true
         runAsUser: 1001
+        runAsNonRoot: true
+        fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
       schedulerName: default-scheduler

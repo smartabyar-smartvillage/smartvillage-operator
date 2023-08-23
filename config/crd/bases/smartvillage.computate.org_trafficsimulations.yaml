@@ -75,6 +75,10 @@ spec:
                   paramTotalIterNum:
                     type: number
                     default: 5
+              managementState:
+                type: string
+                default: |
+                  Managed
               iotagent:
                 type: object
                 properties:

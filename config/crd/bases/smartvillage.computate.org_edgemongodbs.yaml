@@ -35,6 +35,10 @@ spec:
             description: Spec defines the desired state of EdgeMongoDB
             type: object
             properties:
+              managementState:
+                type: string
+                default: |
+                  Managed
               edgemongodb:
                 type: object
                 properties:

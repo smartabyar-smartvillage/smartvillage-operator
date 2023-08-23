@@ -1,21 +1,5 @@
 ---
 
-- name: "Query {{ ENTITY_TYPE }}"
-  set_fact:
-    crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
-  ignore_errors: true
-  when: crd_path is defined
-- name: "Query {{ ENTITY_TYPE }}"
-  set_fact:
-    crd: "{{ query('kubernetes.core.k8s', kind=ENTITY_TYPE, resource_name=ansible_operator_meta.name, namespace=ansible_operator_meta.namespace)[0].spec }}"
-  ignore_errors: true
-  when: crd_path is not defined
-- name: "Verify {{ ENTITY_TYPE }} exists"
-  fail:
-    msg: |-
-      You need to deploy a {{ ENTITY_TYPE }} to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_smartabyarsmartvillage.yaml
-  when: crd is not defined
-
 - block:
     - name: "{{ 'Install' if values.site.enable_dev_nodeports else 'Skip' }} zookeeper-nodeport NodePort service on OpenShift"
       k8s:
@@ -156,7 +140,13 @@
       kubernetes.core.helm:
         name: zookeeper-operator
         chart_ref: pravega/zookeeper-operator
+        history_max: 1
+        force: true
+        disable_hook: true
         set_values:
+          - value: disableFinalizer=true
+          - value: hooks.delete=false
+          - value: hooks.backoffLimit=1
           - value: crd.create=false
           - value: rbac.create=false
           - value: watchNamespace={{ ansible_operator_meta.namespace }}
@@ -164,11 +154,29 @@
         release_state: present
         skip_crds: true
       changed_when: false
+      register: helm_zookeeper
+      ignore_errors: true
+    - k8s:
+        state: absent
+        api_version: v1
+        kind: Secret
+        label_selectors:
+          - 'owner=helm'
+        namespace: "{{ ansible_operator_meta.namespace }}"
+      when: helm_zookeeper.failed
+    - fail:
+        msg: "Installing zookeeper helm chart failed: {{ helm_zookeeper }}"
+      when: helm_zookeeper.failed
     - name: Install Solr helm chart
       kubernetes.core.helm:
         name: solr-operator
         chart_ref: solr/solr-operator
+        history_max: 1
+        force: true
+        disable_hook: true
         set_values:
+          - value: leaderElection.enable=false
+          - value: rbac.create=false
           - value: serviceAccount.create=true
           - value: serviceAccount.name=solr
           - value: podOptions.serviceAccountName=solr
@@ -179,6 +187,19 @@
         release_state: present
         skip_crds: true
       changed_when: false
+      register: helm_solr
+      ignore_errors: true
+    - k8s:
+        state: absent
+        api_version: v1
+        kind: Secret
+        label_selectors:
+          - 'owner=helm'
+        namespace: "{{ ansible_operator_meta.namespace }}"
+      when: helm_solr.failed
+    - fail:
+        msg: "Installing solr helm chart failed: {{ helm_solr }}"
+      when: helm_solr.failed
     
     - name: "Install Solr configmap-computate-configset configmap on OpenShift"
       k8s:

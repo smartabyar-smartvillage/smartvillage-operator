@@ -6,8 +6,30 @@
     name: smart-data-model-vars
   vars:
     ENTITY_TYPE: EdgeKafka
+- name: "Query EdgeKafka"
+  set_fact:
+    crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
+  ignore_errors: true
+  vars:
+    ENTITY_TYPE: EdgeKafka
+  when: crd_path is defined
+- name: "Query EdgeKafka"
+  set_fact:
+    crd: "{{ query('kubernetes.core.k8s', kind='EdgeKafka', resource_name=ansible_operator_meta.name, namespace=ansible_operator_meta.namespace)[0].spec }}"
+  ignore_errors: true
+  vars:
+    ENTITY_TYPE: EdgeKafka
+  when: crd_path is not defined
+- name: "Verify EdgeKafka exists"
+  fail:
+    msg: |-
+      You need to deploy a EdgeKafka to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_{{ 'EdgeKafka' | lower }}.yaml
+  vars:
+    ENTITY_TYPE: EdgeKafka
+  when: crd is not defined
 - name: Run Ansible role apply-edgekafka
   include_role:
     name: apply-edgekafka
   vars:
     ENTITY_TYPE: EdgeKafka
+  when: values.managementState == 'Managed'

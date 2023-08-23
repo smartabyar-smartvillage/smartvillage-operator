@@ -1,6 +1,7 @@
 values:
 
 
+  managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
   kafka:
     enable_dev_nodeports: "{{ crd.kafka.enable_dev_nodeports | default(schema | community.general.json_query('kafka.properties.enable_dev_nodeports.default')) }}"
     service_name: "{{ crd.kafka.service_name | default(schema | community.general.json_query('kafka.properties.service_name.default')) }}"

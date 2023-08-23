@@ -2,6 +2,12 @@
 description: |
   
 schema:
+  managementState:
+    type: string
+    default: Managed
+    enum:
+      - Managed
+      - Unmanaged
   postgres:
     type: object
     properties:

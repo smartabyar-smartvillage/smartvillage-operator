@@ -139,6 +139,10 @@ spec:
                   customVehicleQueueThreshold:
                     type: number
                     default: 8
+              managementState:
+                type: string
+                default: |
+                  Managed
               iotagent:
                 type: object
                 properties:

@@ -4,6 +4,12 @@ description: |
   Scorpio is an NGSI-LD compliant context broker developed by NEC Laboratories Europe and NEC Technologies India. 
   It implements the full NGSI-LD API as specified by the ETSI Industry Specification Group on cross cutting Context Information Management (ETSI ISG CIM).
 schema:
+  managementState:
+    type: string
+    default: Managed
+    enum:
+      - Managed
+      - Unmanaged
   scorpiobroker:
     type: object
     properties:

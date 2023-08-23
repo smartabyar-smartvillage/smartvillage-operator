@@ -1,6 +1,7 @@
 values:
 
 
+  managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
   site:
     create: "{{ crd.site.create | default(schema | community.general.json_query('site.properties.create.default')) }}"
     enable_dev_nodeports: "{{ crd.site.enable_dev_nodeports | default(schema | community.general.json_query('site.properties.enable_dev_nodeports.default')) }}"

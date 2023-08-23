@@ -1,4 +1,5 @@
 values:
 
 
+  managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
   edgemongodb:

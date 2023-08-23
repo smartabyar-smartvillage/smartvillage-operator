@@ -11,4 +11,6 @@ metadata:
 spec:
   description: |
     
+  managementState: |-
+    Managed
   edgemongodb:

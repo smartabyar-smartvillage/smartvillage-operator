@@ -17,6 +17,7 @@ rules:
       - pods/exec
       - pods/log
       - services
+      - events
       - persistentvolumeclaims
     verbs:
       - create
@@ -175,6 +176,11 @@ rules:
     verbs:
       - delete
       - create
+      - list
+      - get
+      - patch
+      - update
+      - watch
   ##
   ## Rules for smartvillage.computate.org/v1, Kind: TrafficFlowObserved
   ##

@@ -11,6 +11,8 @@ metadata:
 spec:
   description: |
     
+  managementState: |-
+    Managed
   postgres:
     enable_dev_nodeports: False
     backup_storage: |-

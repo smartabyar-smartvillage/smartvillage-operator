@@ -25,6 +25,8 @@ spec:
     paramRunTime: 1000
     paramItersPerPar: 3
     paramTotalIterNum: 5
+  managementState: |-
+    Managed
   iotagent:
     service_name: |-
       iotagent-json

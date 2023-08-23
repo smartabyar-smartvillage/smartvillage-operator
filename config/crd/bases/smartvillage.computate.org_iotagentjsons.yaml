@@ -37,6 +37,10 @@ spec:
             description: Spec defines the desired state of IoTAgentJson
             type: object
             properties:
+              managementState:
+                type: string
+                default: |
+                  Managed
               amq_broker:
                 type: object
                 properties:
@@ -51,10 +55,10 @@ spec:
                 type: object
                 properties:
                   port:
-                    default: 1026
+                    default: 9090
                     type: number
                   service_name:
-                    default: orion-ld
+                    default: scorpiobroker
                     type: string
 
               iotagent:

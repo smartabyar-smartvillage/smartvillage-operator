@@ -1,15 +1,5 @@
 ---
 
-- name: "Query {{ ENTITY_TYPE }}"
-  set_fact:
-    crd: "{{ query('kubernetes.core.k8s', kind=ENTITY_TYPE, resource_name=ansible_operator_meta.name, namespace=ansible_operator_meta.namespace)[0].spec }}"
-  ignore_errors: true
-- name: "Verify {{ ENTITY_TYPE }} exists"
-  fail:
-    msg: |-
-      You need to deploy a {{ ENTITY_TYPE }} to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_smartabyarsmartvillage.yaml
-  when: crd is not defined
-
 - name: Add bitnami chart repo
   kubernetes.core.helm_repository:
     name: bitnami

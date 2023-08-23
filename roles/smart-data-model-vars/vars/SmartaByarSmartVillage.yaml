@@ -6,7 +6,12 @@ description: |
   to study what social sustainability means by using a digital twin of Veberöd, Sweden 
   as the test village, supported by Smarta Byar.
 schema:
-
+  managementState:
+    type: string
+    default: Managed
+    enum:
+      - Managed
+      - Unmanaged
   site:
     type: object
     properties:

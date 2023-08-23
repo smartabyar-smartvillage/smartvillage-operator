@@ -3,6 +3,12 @@ name: smartvillage
 description: |
   An AMQ Broker that provides AMQP and MQTT messaging
 schema:
+  managementState:
+    type: string
+    default: Managed
+    enum:
+      - Managed
+      - Unmanaged
   amq_broker:
     type: object
     properties:

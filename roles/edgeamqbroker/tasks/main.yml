@@ -1,12 +1,35 @@
 ---
 # tasks file for EdgeAmqBroker
+
 - name: Run Ansible role smart-data-model-vars
   include_role:
     name: smart-data-model-vars
   vars:
     ENTITY_TYPE: EdgeAmqBroker
+- name: "Query EdgeAmqBroker"
+  set_fact:
+    crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
+  ignore_errors: true
+  vars:
+    ENTITY_TYPE: EdgeAmqBroker
+  when: crd_path is defined
+- name: "Query EdgeAmqBroker"
+  set_fact:
+    crd: "{{ query('kubernetes.core.k8s', kind='EdgeAmqBroker', resource_name=ansible_operator_meta.name, namespace=ansible_operator_meta.namespace)[0].spec }}"
+  ignore_errors: true
+  vars:
+    ENTITY_TYPE: EdgeAmqBroker
+  when: crd_path is not defined
+- name: "Verify EdgeAmqBroker exists"
+  fail:
+    msg: |-
+      You need to deploy a EdgeAmqBroker to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_{{ 'EdgeAmqBroker' | lower }}.yaml
+  vars:
+    ENTITY_TYPE: EdgeAmqBroker
+  when: crd is not defined
 - name: Run Ansible role apply-edgeamqbroker
   include_role:
     name: apply-edgeamqbroker
   vars:
     ENTITY_TYPE: EdgeAmqBroker
+  when: values.managementState == 'Managed'

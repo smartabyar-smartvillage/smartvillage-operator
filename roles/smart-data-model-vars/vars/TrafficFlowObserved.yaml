@@ -3,7 +3,12 @@ MODEL_NAME: TrafficFlowObserved
 SUBMODULE_SHORT_NAME: Transportation
 DOMAIN_NAME: Smart Cities
 schema:
-
+  managementState:
+    type: string
+    default: Managed
+    enum:
+      - Managed
+      - Unmanaged
   iotagent:
     type: object
     properties:

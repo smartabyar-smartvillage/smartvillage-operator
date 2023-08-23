@@ -38,6 +38,10 @@ spec:
             description: Spec defines the desired state of OrionLDContextBroker
             type: object
             properties:
+              managementState:
+                type: string
+                default: |
+                  Managed
               orionld:
                 type: object
                 properties:

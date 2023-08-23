@@ -13,14 +13,16 @@ spec:
     An Internet of Things Agent for a JSON based protocol (with AMQP, HTTP and MQTT transports). 
     This IoT Agent is designed to be a bridge between JSON and the NGSI interface of a context broker. 
 
+  managementState: |-
+    Managed
   amq_broker:
     mqtt_service_name: |-
       fiware-broker-mqtt-0-svc
     mqtt_port: 1883
   orionld:
     service_name: |-
-      orion-ld
-    port: 1026
+      scorpiobroker
+    port: 9090
   iotagent:
     http_port: 7896
     north_port: 4041

@@ -2,7 +2,13 @@
 name: smartvillage
 description: |
   
-schema: {}
+schema:
+  managementState:
+    type: string
+    default: Managed
+    enum:
+      - Managed
+      - Unmanaged
 smart_data_model:
   attributes:
     location:

@@ -1,6 +1,7 @@
 values:
 
 
+  managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
   postgres:
     enable_dev_nodeports: "{{ crd.postgres.enable_dev_nodeports | default(schema | community.general.json_query('postgres.properties.enable_dev_nodeports.default')) }}"
     backup_storage: "{{ crd.postgres.backup_storage | default(schema | community.general.json_query('postgres.properties.backup_storage.default')) }}"

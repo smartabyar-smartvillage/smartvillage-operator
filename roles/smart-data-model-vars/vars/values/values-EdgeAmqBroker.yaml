@@ -1,5 +1,7 @@
 values:
 
+
+  managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
   amq_broker:
     create: "{{ crd.amq_broker.create | default(schema | community.general.json_query('amq_broker.properties.create.default')) }}"
     enabled: "{{ crd.amq_broker.enabled | default(schema | community.general.json_query('amq_broker.properties.enabled.default')) }}"

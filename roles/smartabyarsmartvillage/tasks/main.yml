@@ -6,8 +6,30 @@
     name: smart-data-model-vars
   vars:
     ENTITY_TYPE: SmartaByarSmartVillage
+- name: "Query SmartaByarSmartVillage"
+  set_fact:
+    crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
+  ignore_errors: true
+  vars:
+    ENTITY_TYPE: SmartaByarSmartVillage
+  when: crd_path is defined
+- name: "Query SmartaByarSmartVillage"
+  set_fact:
+    crd: "{{ query('kubernetes.core.k8s', kind='SmartaByarSmartVillage', resource_name=ansible_operator_meta.name, namespace=ansible_operator_meta.namespace)[0].spec }}"
+  ignore_errors: true
+  vars:
+    ENTITY_TYPE: SmartaByarSmartVillage
+  when: crd_path is not defined
+- name: "Verify SmartaByarSmartVillage exists"
+  fail:
+    msg: |-
+      You need to deploy a SmartaByarSmartVillage to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_{{ 'SmartaByarSmartVillage' | lower }}.yaml
+  vars:
+    ENTITY_TYPE: SmartaByarSmartVillage
+  when: crd is not defined
 - name: Run Ansible role apply-smartabyarsmartvillage
   include_role:
     name: apply-smartabyarsmartvillage
   vars:
     ENTITY_TYPE: SmartaByarSmartVillage
+  when: values.managementState == 'Managed'

@@ -12,6 +12,8 @@ spec:
   description: |
     An AMQ Broker that provides AMQP and MQTT messaging
 
+  managementState: |-
+    Managed
   amq_broker:
     create: True
     enabled: True

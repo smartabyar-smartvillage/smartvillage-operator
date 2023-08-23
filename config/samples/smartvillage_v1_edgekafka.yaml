@@ -11,6 +11,8 @@ metadata:
 spec:
   description: |
     
+  managementState: |-
+    Managed
   kafka:
     enable_dev_nodeports: False
     service_name: |-

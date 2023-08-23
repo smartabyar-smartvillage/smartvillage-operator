@@ -3,7 +3,12 @@ name: smartvillage
 description: |
   
 schema:
-  
+  managementState:
+    type: string
+    default: Managed
+    enum:
+      - Managed
+      - Unmanaged
   kafka:
     type: object
     properties:

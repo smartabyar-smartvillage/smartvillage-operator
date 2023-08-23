@@ -37,6 +37,10 @@ spec:
             description: Spec defines the desired state of ScorpioBroker
             type: object
             properties:
+              managementState:
+                type: string
+                default: |
+                  Managed
               scorpiobroker:
                 type: object
                 properties:

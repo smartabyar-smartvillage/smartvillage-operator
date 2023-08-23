@@ -14,6 +14,8 @@ spec:
   attributes:
     averageGapDistance: 1
     customVehicleQueueThreshold: 8
+  managementState: |-
+    Managed
   iotagent:
     service_name: |-
       iotagent-json

@@ -17,13 +17,11 @@ readOnlyRootFilesystem: false
 
 # configured fields
 runAsUser:
-  type: MustRunAs
-  uid: 8983
+  type: RunAsAny
 seLinuxContext:
   type: RunAsAny
 fsGroup:
   type: RunAsAny
-  uid: 8983
 requiredDropCapabilities:
 - ALL
 seccompProfiles:

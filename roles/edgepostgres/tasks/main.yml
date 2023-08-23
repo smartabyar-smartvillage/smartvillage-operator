@@ -6,8 +6,30 @@
     name: smart-data-model-vars
   vars:
     ENTITY_TYPE: EdgePostgres
+- name: "Query EdgePostgres"
+  set_fact:
+    crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
+  ignore_errors: true
+  vars:
+    ENTITY_TYPE: EdgePostgres
+  when: crd_path is defined
+- name: "Query EdgePostgres"
+  set_fact:
+    crd: "{{ query('kubernetes.core.k8s', kind='EdgePostgres', resource_name=ansible_operator_meta.name, namespace=ansible_operator_meta.namespace)[0].spec }}"
+  ignore_errors: true
+  vars:
+    ENTITY_TYPE: EdgePostgres
+  when: crd_path is not defined
+- name: "Verify EdgePostgres exists"
+  fail:
+    msg: |-
+      You need to deploy a EdgePostgres to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_{{ 'EdgePostgres' | lower }}.yaml
+  vars:
+    ENTITY_TYPE: EdgePostgres
+  when: crd is not defined
 - name: Run Ansible role apply-edgepostgres
   include_role:
     name: apply-edgepostgres
   vars:
     ENTITY_TYPE: EdgePostgres
+  when: values.managementState == 'Managed'

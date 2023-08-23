@@ -1,5 +1,7 @@
 values:
 
+
+  managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
   amq_broker:
     mqtt_service_name: "{{ crd.amq_broker.mqtt_service_name | default(schema | community.general.json_query('amq_broker.properties.mqtt_service_name.default')) }}"
     mqtt_port: "{{ crd.amq_broker.mqtt_port | default(schema | community.general.json_query('amq_broker.properties.mqtt_port.default')) }}"

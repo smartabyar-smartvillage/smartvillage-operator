@@ -41,6 +41,7 @@ values:
     customTrafficLightId: "{{ crd.attributes.customTrafficLightId | default('') }}"
     customVehicleQueueThreshold: "{{ crd.attributes.customVehicleQueueThreshold | default(schema | community.general.json_query('customVehicleQueueThreshold.default')) }}"
 
+  managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
   iotagent:
     service_name: "{{ crd.iotagent.service_name | default(schema | community.general.json_query('iotagent.properties.service_name.default')) }}"
     base_url: "{{ crd.iotagent.base_url | default('') }}"
