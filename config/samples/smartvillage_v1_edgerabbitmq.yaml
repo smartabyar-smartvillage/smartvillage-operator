@@ -1,0 +1,24 @@
+apiVersion: smartvillage.computate.org/v1
+kind: EdgeRabbitMQ
+metadata:
+  labels:
+    app.kubernetes.io/name: edgerabbitmq
+    app.kubernetes.io/instance: edgerabbitmq-sample
+    app.kubernetes.io/part-of: smartvillage-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: smartvillage-operator
+  name: smartvillage
+spec:
+  description: |
+    
+  managementState: |-
+    Managed
+  rabbitmq:
+    mqtt_service_name: |-
+      fiware-broker-mqtt-0-svc
+    mqtt_port: 1883
+    amqp_service_name: |-
+      fiware-broker-amqp-0-svc
+    amqp_port: 5672
+    iot_subscribe_topic: |-
+      iot-subscribe

@@ -11,4 +11,5 @@ resources:
 - smartvillage_v1_edgemongodb.yaml
 - smartvillage_v1_edgepostgres.yaml
 - smartvillage_v1_edgekafka.yaml
+- smartvillage_v1_edgerabbitmq.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples

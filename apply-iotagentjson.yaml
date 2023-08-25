@@ -1,7 +1,16 @@
 ---
+
+
 - name: Install a IoTAgentJson resource to OpenShift
   hosts: localhost
   connection: local
+  pre_tasks:
+    - name: "Query IoTAgentJson"
+      set_fact:
+        crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
+      ignore_errors: true
+      vars:
+        ENTITY_TYPE: IoTAgentJson
   roles:
     - smart-data-model-vars
     - apply-iotagentjson

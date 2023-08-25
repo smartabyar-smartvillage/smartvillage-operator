@@ -1,0 +1,10 @@
+values:
+
+
+  managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
+  rabbitmq:
+    mqtt_service_name: "{{ crd.rabbitmq.mqtt_service_name | default(schema | community.general.json_query('rabbitmq.properties.mqtt_service_name.default')) }}"
+    mqtt_port: "{{ crd.rabbitmq.mqtt_port | default(schema | community.general.json_query('rabbitmq.properties.mqtt_port.default')) }}"
+    amqp_service_name: "{{ crd.rabbitmq.amqp_service_name | default(schema | community.general.json_query('rabbitmq.properties.amqp_service_name.default')) }}"
+    amqp_port: "{{ crd.rabbitmq.amqp_port | default(schema | community.general.json_query('rabbitmq.properties.amqp_port.default')) }}"
+    iot_subscribe_topic: "{{ crd.rabbitmq.iot_subscribe_topic | default(schema | community.general.json_query('rabbitmq.properties.iot_subscribe_topic.default')) }}"

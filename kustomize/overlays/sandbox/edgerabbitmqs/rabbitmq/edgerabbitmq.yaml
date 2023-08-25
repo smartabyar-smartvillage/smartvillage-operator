@@ -1,6 +1,6 @@
 apiVersion: smartvillage.computate.org/v1
-kind: EdgeAmqBroker
+kind: EdgeRabbitMQ
 metadata:
-  name: amqbroker
+  name: rabbitmq
   namespace: smartvillage
 spec: {}

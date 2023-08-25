@@ -37,13 +37,19 @@ oc create rolebinding default-edit --clusterrole=edit --serviceaccount=$(oc get 
 oc debug --image quay.io/computateorg/smartvillage-operator
 ```
 
+- Load the name of your namespace into an environment variable. 
+
+```bash
+export OPENSHIFT_NAMESPACE=$(oc get project -o jsonpath={.items[0].metadata.name})
+```
+
 ## Install the MongoDB NOSQL Database in the OpenShift Developer Sandbox
 
 ```bash
 ansible-playbook apply-edgemongodb.yaml \
   -e ansible_operator_meta_name=mongodb \
   -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/kustomize/overlays/sandbox/edgemongodbs/mongodb/edgemongodb.yaml
+  -e crd_path=kustomize/overlays/sandbox/edgemongodbs/mongodb/edgemongodb.yaml
 ```
 
 ## Install the Orion-LD Context Broker in the OpenShift Developer Sandbox
@@ -52,7 +58,7 @@ ansible-playbook apply-edgemongodb.yaml \
 ansible-playbook apply-orionldcontextbroker.yaml \
   -e ansible_operator_meta_name=orion-ld \
   -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/kustomize/overlays/sandbox/orionldcontextbrokers/orion-ld/orionldcontextbroker.yaml
+  -e crd_path=kustomize/overlays/sandbox/orionldcontextbrokers/orion-ld/orionldcontextbroker.yaml
 ```
 
 ## Install the RabbitMQ in the OpenShift Developer Sandbox
@@ -61,7 +67,7 @@ ansible-playbook apply-orionldcontextbroker.yaml \
 ansible-playbook apply-edgerabbitmq.yaml \
   -e ansible_operator_meta_name=rabbitmq \
   -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/kustomize/overlays/sandbox/edgerabbitmqs/rabbitmq/edgerabbitmq.yaml
+  -e crd_path=kustomize/overlays/sandbox/edgerabbitmqs/rabbitmq/edgerabbitmq.yaml
 ```
 
 ## Install the IoT Agent JSON in the OpenShift Developer Sandbox
@@ -70,7 +76,7 @@ ansible-playbook apply-edgerabbitmq.yaml \
 ansible-playbook apply-iotagentjson.yaml \
   -e ansible_operator_meta_name=iotagentjson \
   -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/kustomize/overlays/sandbox/iotagentjsons/iotagent-json/iotagentjson.yaml
+  -e crd_path=kustomize/overlays/sandbox/iotagentjsons/iotagent-json/iotagentjson.yaml
 ```
 
 - [Install Red Hat MicroShift following the official documentation here](https://access.redhat.com/documentation/en-us/red_hat_build_of_microshift). 
@@ -163,12 +169,12 @@ type: Opaque
 You can run the same ansible roles that the operator uses without deploying the operator. 
 You will need to set the following ansible variables: 
 
-- ` -e crd_path=~/.local/src/smartabyar-smartvillage/openshift/kustomize/overlays/nerc-ocp-prod/smartabyarsmartvillages/smartvillage/smartabyarsmartvillage.yaml` to point to the `SmartaByarSmartVillage` instance you wish to deploy. 
+- ` -e crd_path=.local/src/smartabyar-smartvillage/openshift/kustomize/overlays/nerc-ocp-prod/smartabyarsmartvillages/smartvillage/smartabyarsmartvillage.yaml` to point to the `SmartaByarSmartVillage` instance you wish to deploy. 
 ` ` -e ansible_operator_meta_namespace=smart-village-faeeb6c` the namespace where you wish to deploy the resources. 
 
 For example: 
 
-`ansible-playbook apply-smartabyarsmartvillage.yaml -e crd_path=~/.local/src/smartabyar-smartvillage/openshift/kustomize/overlays/nerc-ocp-prod/smartabyarsmartvillages/smartvillage/smartabyarsmartvillage.yaml -e ansible_operator_meta_namespace=smart-village-faeeb6c`
+`ansible-playbook apply-smartabyarsmartvillage.yaml -e crd_path=.local/src/smartabyar-smartvillage/openshift/kustomize/overlays/nerc-ocp-prod/smartabyarsmartvillages/smartvillage/smartabyarsmartvillage.yaml -e ansible_operator_meta_namespace=smart-village-faeeb6c`
 
 # How the operator was initialized
 

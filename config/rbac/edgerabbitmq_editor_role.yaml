@@ -1,0 +1,31 @@
+# permissions for end users to edit edgerabbitmqs.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: edgerabbitmq-editor-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: smartvillage-operator
+    app.kubernetes.io/part-of: smartvillage-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: edgerabbitmq-editor-role
+rules:
+- apiGroups:
+  - smartvillage.computate.org
+  resources:
+  - edgerabbitmqs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - smartvillage.computate.org
+  resources:
+  - edgerabbitmqs/status
+  verbs:
+  - get

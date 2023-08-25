@@ -1,11 +1,6 @@
 ---
 # tasks file for IoTAgentJson
 
-- name: Run Ansible role smart-data-model-vars
-  include_role:
-    name: smart-data-model-vars
-  vars:
-    ENTITY_TYPE: IoTAgentJson
 - name: "Query IoTAgentJson"
   set_fact:
     crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
@@ -20,6 +15,11 @@
   vars:
     ENTITY_TYPE: IoTAgentJson
   when: crd_path is not defined
+- name: Run Ansible role smart-data-model-vars
+  include_role:
+    name: smart-data-model-vars
+  vars:
+    ENTITY_TYPE: IoTAgentJson
 - name: "Verify IoTAgentJson exists"
   fail:
     msg: |-

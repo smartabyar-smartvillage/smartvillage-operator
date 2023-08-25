@@ -1,5 +1,7 @@
 ---
 
+- debug:
+    var: values
 - name: "Query MongoDB pod"
   set_fact:
     mongodb_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector='app.kubernetes.io/component=mongodb,app.kubernetes.io/instance=mongodb-orion,app.kubernetes.io/name=mongodb-orion', namespace=ansible_operator_meta.namespace)[0].metadata.name }}"

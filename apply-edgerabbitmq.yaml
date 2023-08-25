@@ -1,5 +1,5 @@
 ---
-- name: Delete a {{ ENTITY_TYPE }} resource from OpenShift
+- name: Delete a EdgeRabbitMQ resource from OpenShift
   hosts: localhost
   connection: local
   tasks:
@@ -12,20 +12,13 @@
     - fail:
         msg: Variable crd_path is not defined
       when: crd_path is not defined
-    - name: "Query {{ ENTITY_TYPE }}"
-      set_fact:
-        crd: "\{\{ (lookup('file', crd_path) | from_yaml).spec \}\}"
-      ignore_errors: true
-      vars:
-        ENTITY_TYPE: {{ ENTITY_TYPE }}
-      when: crd_path is defined
     - include_role:
         name: smart-data-model-vars
     - include_role:
-        name: apply-{{ ENTITY_TYPE | lower }}
+        name: apply-edgerabbitmq
   vars:
-    ENTITY_TYPE: {{ ENTITY_TYPE }}
+    ENTITY_TYPE: EdgeRabbitMQ
     ansible_operator_meta:
-      name: "\{\{ ansible_operator_meta_name \}\}"
-      namespace: "\{\{ ansible_operator_meta_namespace \}\}"
+      name: "{{ ansible_operator_meta_name }}"
+      namespace: "{{ ansible_operator_meta_namespace }}"
     verify_connections: false

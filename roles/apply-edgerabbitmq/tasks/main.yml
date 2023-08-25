@@ -1,0 +1,36 @@
+---
+# tasks file for EdgeRabbitMQ
+
+- name: Add rabbitmq chart repo
+  kubernetes.core.helm_repository:
+    name: bitnami
+    repo_url: https://charts.bitnami.com/bitnami
+  changed_when: false
+- name: Install rabbitmq helm chart
+  kubernetes.core.helm:
+    name: rabbitmq
+    chart_ref: bitnami/rabbitmq
+    history_max: 1
+    force: true
+    disable_hook: true
+    set_values:
+      - value: extraPlugins=rabbitmq_mqtt
+      - value: podSecurityContext.enabled=false
+      - value: containerSecurityContext.enabled=false
+    release_namespace: "{{ ansible_operator_meta.namespace }}"
+    release_state: present
+    skip_crds: true
+  changed_when: false
+  register: rabbitmq
+  ignore_errors: true
+- k8s:
+    state: absent
+    api_version: v1
+    kind: Secret
+    label_selectors:
+      - 'owner=helm'
+    namespace: "{{ ansible_operator_meta.namespace }}"
+  when: rabbitmq.failed
+- fail:
+    msg: "Installing rabbitmq helm chart failed: {{ rabbitmq }}"
+  when: rabbitmq.failed

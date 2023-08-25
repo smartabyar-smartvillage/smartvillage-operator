@@ -96,4 +96,13 @@
   snakeCaseParameters: false
   version: v1
   watchDependentResources: false
+- finalizer:
+    name: smartvillage.computate.org/edgerabbitmq-finalizer
+    role: delete-edgerabbitmq
+  group: smartvillage.computate.org
+  kind: EdgeRabbitMQ
+  role: edgerabbitmq
+  snakeCaseParameters: false
+  version: v1
+  watchDependentResources: false
 #+kubebuilder:scaffold:watch

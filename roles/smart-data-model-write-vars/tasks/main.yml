@@ -58,7 +58,7 @@
     content: "{{ lookup('template', 'role-defaults.yaml') | replace('\\{\\{', '{{') | replace('\\}\\}', '}}') }}"
     dest: "{{ ROLE_DEFAULTS_PATH }}"
   when: not ROLE_DEFAULTS_STAT.stat.exists
-- name: "Write role defaults: {{ MAIN_ROLE_TASKS_PATH }}"
+- name: "Write main role tasks: {{ MAIN_ROLE_TASKS_PATH }}"
   copy:
     content: "{{ lookup('template', 'main-role-tasks.yaml') | replace('\\{\\{', '{{') | replace('\\}\\}', '}}') }}"
     dest: "{{ MAIN_ROLE_TASKS_PATH }}"

@@ -8,3 +8,5 @@ spec:
     replicas: 1
     route:
       create: true
+  amq_broker:
+    mqtt_service_name: rabbitmq-mqtt
