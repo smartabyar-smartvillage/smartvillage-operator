@@ -16,7 +16,7 @@
 - Click the download link for your operating system. 
 - You'll need to extract the `oc` command and place it in your path, for example in a `bin` directory in your `$HOME` directory. 
 
-# Log into the Developer Sandbox in your terminal
+# Log into the OpenShift Developer Sandbox in your terminal
 
 - Click your username in the top right corner of the Developer Sandbox. 
 - Click [ Copy login command ]. 
@@ -25,63 +25,52 @@
 - Copy the line to the clipboard that looks like this `oc login --token=sha256~DFEbJlutndAeZi4VABjJyfXeov1C3ZtSJypVq4DJvFg --server=https://api.sandbox-m2.ll9k.p1.openshiftapps.com:6443`. 
 - Paste the command into your terminal to log in to the Developer Sandbox in the terminal. 
 
-- Load the name of your namespace into an environment variable. 
+## Grant the default service account edit privileges in your namespace. 
 
 ```bash
-OPENSHIFT_NAMESPACE=$(oc get project -o jsonpath={.items[0].metadata.name})
-```
-
-- Grant the default service account edit privileges in your namespace. 
-
-```bash
-oc create rolebinding default-edit --clusterrole=edit --serviceaccount=$OPENSHIFT_NAMESPACE:default
+oc create rolebinding default-edit --clusterrole=edit --serviceaccount=$(oc get project -o jsonpath={.items[0].metadata.name}):default
 ```
 
 - Run a debug pod that can run Ansible and OpenShift
 
 ```bash
-oc debug --image registry.redhat.io/openshift3/apb-base
+oc debug --image quay.io/computateorg/smartvillage-operator
 ```
 
-- Load the name of your namespace into an environment variable again. 
+## Install the MongoDB NOSQL Database in the OpenShift Developer Sandbox
 
 ```bash
-OPENSHIFT_NAMESPACE=$(oc get project -o jsonpath={.items[0].metadata.name})
-```
-
-# Installation on the Developer Sandbox
-
-# Clone the Smart Village Operator
-
-Create a directory for the Smart Village Operator source code: 
-
-
-```bash
-mkdir -p ~/.local/src
-```
-
-Clone the Smart Village Operator source code: 
-
-```bash
-git clone https://github.com/computate-org/smartvillage-operator.git ~/.local/src/smartvillage-operator
-```
-
-- Install MongoDB NOSQL Database
-
-```bash
-ansible-playbook ~/.local/src/smartvillage-operator/apply-edgemongodb.yaml \
+ansible-playbook apply-edgemongodb.yaml \
   -e ansible_operator_meta_name=mongodb \
-  -e ansible_operator_meta_namespace=$OPENSHIFT_NAMESPACE \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/sandbox/edgemongodbs/mongodb/edgemongodb.yaml
+  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=~/kustomize/overlays/sandbox/edgemongodbs/mongodb/edgemongodb.yaml
 ```
 
-- Install Orion-LD Context Broker
+## Install the Orion-LD Context Broker in the OpenShift Developer Sandbox
 
 ```bash
-ansible-playbook ~/.local/src/smartvillage-operator/apply-orionldcontextbroker.yaml \
+ansible-playbook apply-orionldcontextbroker.yaml \
   -e ansible_operator_meta_name=orion-ld \
-  -e ansible_operator_meta_namespace=$OPENSHIFT_NAMESPACE \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/sandbox/orionldcontextbrokers/orion-ld/orionldcontextbroker.yaml
+  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=~/kustomize/overlays/sandbox/orionldcontextbrokers/orion-ld/orionldcontextbroker.yaml
+```
+
+## Install the RabbitMQ in the OpenShift Developer Sandbox
+
+```bash
+ansible-playbook apply-edgerabbitmq.yaml \
+  -e ansible_operator_meta_name=rabbitmq \
+  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=~/kustomize/overlays/sandbox/edgerabbitmqs/rabbitmq/edgerabbitmq.yaml
+```
+
+## Install the IoT Agent JSON in the OpenShift Developer Sandbox
+
+```bash
+ansible-playbook apply-iotagentjson.yaml \
+  -e ansible_operator_meta_name=iotagentjson \
+  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=~/kustomize/overlays/sandbox/iotagentjsons/iotagent-json/iotagentjson.yaml
 ```
 
 - [Install Red Hat MicroShift following the official documentation here](https://access.redhat.com/documentation/en-us/red_hat_build_of_microshift). 

@@ -75,7 +75,7 @@
   changed_when: false
 - name: Test create_user success
   fail:
-    msg: "{{ command_status }}"
+    msg: "{{ create_user }}"
   when: create_user.failed and create_user is not search("already exists")
 
 - name: "Query MongoDB secret"

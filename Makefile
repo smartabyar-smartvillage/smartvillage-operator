@@ -48,6 +48,7 @@ endif
 
 # Image URL to use all building/pushing image targets
 IMG ?= quay.io/$(IMAGE_TAG_BASE):$(VERSION)
+IMG_LATEST ?= quay.io/$(IMAGE_TAG_BASE):latest
 
 .PHONY: all
 all: docker-build
@@ -79,10 +80,12 @@ run: ansible-operator ## Run against the configured Kubernetes cluster in ~/.kub
 .PHONY: docker-build
 docker-build: ## Build docker image with the manager.
 	podman build -t ${IMG} .
+	podman build -t ${IMG_LATEST} .
 
 .PHONY: docker-push
 docker-push: ## Push docker image with the manager.
 	podman push ${IMG}
+	podman push ${IMG_LATEST}
 
 # PLATFORMS defines the target platforms for  the manager image be build to provide support to multiple
 # architectures. (i.e. make docker-buildx IMG=myregistry/mypoperator:0.0.1). To use this option you need to:

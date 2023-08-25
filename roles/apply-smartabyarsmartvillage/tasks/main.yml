@@ -314,7 +314,7 @@
   changed_when: create_collection is not search("already exists")
 - name: Test create_collection success
   fail:
-    msg: "{{ command_status }}"
+    msg: "{{ create_collection }}"
   when: verify_connections and values.solr.create and create_collection.failed and create_collection is not search("already exists")
 
 # Install site

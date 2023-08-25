@@ -44,9 +44,9 @@
       /opt/solr/bin/solr create_collection -c {{ solr.collection }} -n computate
     namespace: "{{ ansible_operator_meta.namespace }}"
     container: solrcloud-node
-  register: command_status
+  register: create_solr_collection
   ignore_errors: True
 - name: Test create_collection success
   fail:
-    msg: "{{ command_status }}"
-  when: command_status.failed and command_status is not search("already exists")
+    msg: "{{ create_solr_collection }}"
+  when: create_solr_collection.failed and create_solr_collection is not search("already exists")
