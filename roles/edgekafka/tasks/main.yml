@@ -1,11 +1,6 @@
 ---
 # tasks file for EdgeKafka
 
-- name: Run Ansible role smart-data-model-vars
-  include_role:
-    name: smart-data-model-vars
-  vars:
-    ENTITY_TYPE: EdgeKafka
 - name: "Query EdgeKafka"
   set_fact:
     crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
@@ -20,10 +15,15 @@
   vars:
     ENTITY_TYPE: EdgeKafka
   when: crd_path is not defined
+- name: Run Ansible role smart-data-model-vars
+  include_role:
+    name: smart-data-model-vars
+  vars:
+    ENTITY_TYPE: EdgeKafka
 - name: "Verify EdgeKafka exists"
   fail:
     msg: |-
-      You need to deploy a EdgeKafka to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_{{ 'EdgeKafka' | lower }}.yaml
+      You need to deploy a EdgeKafka to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_edgekafka.yaml
   vars:
     ENTITY_TYPE: EdgeKafka
   when: crd is not defined

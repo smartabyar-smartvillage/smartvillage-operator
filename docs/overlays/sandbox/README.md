@@ -40,7 +40,7 @@ oc debug --image quay.io/computateorg/smartvillage-operator
 - Load the name of your namespace into an environment variable. 
 
 ```bash
-export OPENSHIFT_NAMESPACE=$(oc get project -o jsonpath={.items[0].metadata.name})
+export OPENSHIFT_NAMESPACE=$(kubectl get project -o jsonpath={.items[0].metadata.name})
 ```
 
 ## Install the MongoDB NOSQL Database in the OpenShift Developer Sandbox

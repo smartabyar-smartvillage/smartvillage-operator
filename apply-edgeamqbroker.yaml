@@ -1,14 +1,29 @@
 ---
-- name: Install a EdgeAmqBroker resource to OpenShift
+- name: Delete a EdgeAmqBroker resource from OpenShift
   hosts: localhost
   connection: local
+  tasks:
+    - fail:
+        msg: Variable ansible_operator_meta_name is not defined
+      when: ansible_operator_meta_name is not defined
+    - fail:
+        msg: Variable ansible_operator_meta_namespace is not defined
+      when: ansible_operator_meta_namespace is not defined
+    - fail:
+        msg: Variable crd_path is not defined
+      when: crd_path is not defined
+    - name: "Query EdgeAmqBroker"
+      set_fact:
+        crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
+      ignore_errors: true
+      vars:
+        ENTITY_TYPE: EdgeAmqBroker
+      when: crd_path is defined
   roles:
     - smart-data-model-vars
     - apply-edgeamqbroker
   vars:
     ENTITY_TYPE: EdgeAmqBroker
-    ansible_operator_meta_name: amqbroker
-    ansible_operator_meta_namespace: smartvillage
     ansible_operator_meta:
       name: "{{ ansible_operator_meta_name }}"
       namespace: "{{ ansible_operator_meta_namespace }}"

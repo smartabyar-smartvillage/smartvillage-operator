@@ -1,5 +1,5 @@
 ---
-- name: Delete a TrafficSimulation resource from OpenShift
+- name: Install a TrafficSimulation resource from OpenShift
   hosts: localhost
   connection: local
   tasks:
@@ -12,10 +12,16 @@
     - fail:
         msg: Variable crd_path is not defined
       when: crd_path is not defined
-    - include_role:
-        name: smart-data-model-vars
-    - include_role:
-        name: apply-trafficsimulation
+    - name: "Query TrafficSimulation"
+      set_fact:
+        crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
+      ignore_errors: true
+      vars:
+        ENTITY_TYPE: TrafficSimulation
+      when: crd_path is defined
+  roles:
+    - smart-data-model-vars
+    - apply-trafficsimulation
   vars:
     ENTITY_TYPE: TrafficSimulation
     ansible_operator_meta:

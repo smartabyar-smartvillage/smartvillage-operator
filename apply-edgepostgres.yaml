@@ -1,5 +1,5 @@
 ---
-- name: Install a EdgePostgres resource to OpenShift
+- name: Install a EdgePostgres resource from OpenShift
   hosts: localhost
   connection: local
   tasks:
@@ -12,10 +12,16 @@
     - fail:
         msg: Variable crd_path is not defined
       when: crd_path is not defined
-    - include_role:
-        name: smart-data-model-vars
-    - include_role:
-        name: apply-edgepostgres
+    - name: "Query EdgePostgres"
+      set_fact:
+        crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
+      ignore_errors: true
+      vars:
+        ENTITY_TYPE: EdgePostgres
+      when: crd_path is defined
+  roles:
+    - smart-data-model-vars
+    - apply-edgepostgres
   vars:
     ENTITY_TYPE: EdgePostgres
     ansible_operator_meta:

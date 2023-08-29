@@ -23,7 +23,7 @@
 - name: "Verify IoTAgentJson exists"
   fail:
     msg: |-
-      You need to deploy a IoTAgentJson to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_{{ 'IoTAgentJson' | lower }}.yaml
+      You need to deploy a IoTAgentJson to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_iotagentjson.yaml
   vars:
     ENTITY_TYPE: IoTAgentJson
   when: crd is not defined

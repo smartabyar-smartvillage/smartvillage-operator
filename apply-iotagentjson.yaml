@@ -1,23 +1,30 @@
 ---
-
-
-- name: Install a IoTAgentJson resource to OpenShift
+- name: Install a IoTAgentJson resource from OpenShift
   hosts: localhost
   connection: local
-  pre_tasks:
+  tasks:
+    - fail:
+        msg: Variable ansible_operator_meta_name is not defined
+      when: ansible_operator_meta_name is not defined
+    - fail:
+        msg: Variable ansible_operator_meta_namespace is not defined
+      when: ansible_operator_meta_namespace is not defined
+    - fail:
+        msg: Variable crd_path is not defined
+      when: crd_path is not defined
     - name: "Query IoTAgentJson"
       set_fact:
         crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
       ignore_errors: true
       vars:
         ENTITY_TYPE: IoTAgentJson
+      when: crd_path is defined
   roles:
     - smart-data-model-vars
     - apply-iotagentjson
   vars:
     ENTITY_TYPE: IoTAgentJson
-    ansible_operator_meta_name: iotagent-json
-    ansible_operator_meta_namespace: smartvillage
     ansible_operator_meta:
       name: "{{ ansible_operator_meta_name }}"
       namespace: "{{ ansible_operator_meta_namespace }}"
+    verify_connections: false

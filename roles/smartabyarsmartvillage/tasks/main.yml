@@ -1,11 +1,6 @@
 ---
 # tasks file for SmartaByarSmartVillage
 
-- name: Run Ansible role smart-data-model-vars
-  include_role:
-    name: smart-data-model-vars
-  vars:
-    ENTITY_TYPE: SmartaByarSmartVillage
 - name: "Query SmartaByarSmartVillage"
   set_fact:
     crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
@@ -20,10 +15,15 @@
   vars:
     ENTITY_TYPE: SmartaByarSmartVillage
   when: crd_path is not defined
+- name: Run Ansible role smart-data-model-vars
+  include_role:
+    name: smart-data-model-vars
+  vars:
+    ENTITY_TYPE: SmartaByarSmartVillage
 - name: "Verify SmartaByarSmartVillage exists"
   fail:
     msg: |-
-      You need to deploy a SmartaByarSmartVillage to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_{{ 'SmartaByarSmartVillage' | lower }}.yaml
+      You need to deploy a SmartaByarSmartVillage to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_smartabyarsmartvillage.yaml
   vars:
     ENTITY_TYPE: SmartaByarSmartVillage
   when: crd is not defined

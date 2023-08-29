@@ -1,5 +1,5 @@
 ---
-- name: Delete a {{ ENTITY_TYPE }} resource from OpenShift
+- name: Install a {{ ENTITY_TYPE }} resource from OpenShift
   hosts: localhost
   connection: local
   tasks:
@@ -19,10 +19,9 @@
       vars:
         ENTITY_TYPE: {{ ENTITY_TYPE }}
       when: crd_path is defined
-    - include_role:
-        name: smart-data-model-vars
-    - include_role:
-        name: apply-{{ ENTITY_TYPE | lower }}
+  roles:
+    - smart-data-model-vars
+    - apply-{{ ENTITY_TYPE | lower }}
   vars:
     ENTITY_TYPE: {{ ENTITY_TYPE }}
     ansible_operator_meta:
