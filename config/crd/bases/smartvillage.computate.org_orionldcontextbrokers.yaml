@@ -40,7 +40,7 @@ spec:
             properties:
               managementState:
                 type: string
-                default: |
+                default: |-
                   Managed
               orionld:
                 type: object

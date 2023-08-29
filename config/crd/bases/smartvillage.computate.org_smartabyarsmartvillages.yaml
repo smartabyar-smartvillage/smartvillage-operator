@@ -41,7 +41,7 @@ spec:
             properties:
               managementState:
                 type: string
-                default: |
+                default: |-
                   Managed
               site:
                 type: object

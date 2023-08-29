@@ -141,7 +141,7 @@ spec:
                     default: 8
               managementState:
                 type: string
-                default: |
+                default: |-
                   Managed
               iotagent:
                 type: object

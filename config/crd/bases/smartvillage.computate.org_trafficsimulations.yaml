@@ -44,15 +44,15 @@ spec:
                     type: string
                   simulationName:
                     type: string
-                    default: |
+                    default: |-
                       Veberöd intersection 1
                   sumocfgPath:
                     type: string
-                    default: |
+                    default: |-
                       /usr/local/src/TLC/input/Veberod_intersection_pedestrian.sumocfg
                   fcdFilePath:
                     type: string
-                    default: |
+                    default: |-
                       /usr/local/src/TLC/output/veberod-fcd.xml
                   startSeconds:
                     type: number
@@ -77,7 +77,7 @@ spec:
                     default: 5
               managementState:
                 type: string
-                default: |
+                default: |-
                   Managed
               iotagent:
                 type: object

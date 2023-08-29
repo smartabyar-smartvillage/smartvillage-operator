@@ -39,7 +39,7 @@ spec:
             properties:
               managementState:
                 type: string
-                default: |
+                default: |-
                   Managed
               scorpiobroker:
                 type: object

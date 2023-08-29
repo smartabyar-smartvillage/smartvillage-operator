@@ -51,7 +51,7 @@ spec:
 {% endif %}
 {% if attribute.default is defined %}
 {% if (attribute.default | type_debug) == 'AnsibleUnicode' %}
-                    default: |
+                    default: |-
                       {{ attribute.default | indent(22, False) }}
 {% else %}
 {% if (attribute.default | type_debug) == 'dict' %}
@@ -99,7 +99,7 @@ spec:
                 type: {{ var.type }}
 {% if var.default is defined %}
 {% if (var.default | type_debug) == 'AnsibleUnicode' %}
-                default: |
+                default: |-
                   {{ var.default | indent(18, False) }}
 {% else %}
 {% if (var.default | type_debug) == 'dict' %}
