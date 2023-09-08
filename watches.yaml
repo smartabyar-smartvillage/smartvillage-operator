@@ -105,4 +105,13 @@
   snakeCaseParameters: false
   version: v1
   watchDependentResources: false
+- finalizer:
+    name: smartvillage.computate.org/edgesolr-finalizer
+    role: delete-edgesolr
+  group: smartvillage.computate.org
+  kind: EdgeSolr
+  role: edgesolr
+  snakeCaseParameters: false
+  version: v1
+  watchDependentResources: false
 #+kubebuilder:scaffold:watch

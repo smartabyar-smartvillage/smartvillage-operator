@@ -1,0 +1,15 @@
+---
+
+- name: Create Solr collection
+  kubernetes.core.k8s_exec:
+    pod: "{{ values.solr.name }}-solrcloud-0"
+    command: >-
+      /opt/solr/bin/solr create_collection -c {{ item.name }} -n {{ item.configset }}
+    namespace: "{{ ansible_operator_meta.namespace }}"
+  register: create_collection
+  ignore_errors: True
+  changed_when: create_collection is not search("already exists")
+- name: Test create_collection success
+  fail:
+    msg: "{{ create_collection }}"
+  when: create_collection.failed and create_collection is not search("already exists")

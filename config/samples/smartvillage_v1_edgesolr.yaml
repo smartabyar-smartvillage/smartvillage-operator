@@ -1,0 +1,54 @@
+apiVersion: smartvillage.computate.org/v1
+kind: EdgeSolr
+metadata:
+  labels:
+    app.kubernetes.io/name: edgesolr
+    app.kubernetes.io/instance: edgesolr-sample
+    app.kubernetes.io/part-of: smartvillage-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: smartvillage-operator
+  name: smartvillage
+spec:
+  description: |
+    
+  managementState: |-
+    Managed
+  enable_dev_nodeports: False
+  solr:
+    name: |-
+      default
+    port: 80
+    ssl: False
+    route:
+      create: False
+      host_name: |-
+        solr.apps-crc.testing
+    replicas: 1
+    storage: |-
+      10Gi
+    resources:
+      limits:
+        memory: |-
+          2Gi
+        cpu: |-
+          1
+      requests:
+        memory: |-
+          1Gi
+        cpu: |-
+          1
+  zookeeper:
+    replicas: 1
+    storage: |-
+      5Gi
+    resources:
+      limits:
+        memory: |-
+          500Mi
+        cpu: |-
+          500m
+      requests:
+        memory: |-
+          500Mi
+        cpu: |-
+          500m

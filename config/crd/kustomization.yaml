@@ -14,4 +14,5 @@ resources:
 - bases/smartvillage.computate.org_edgepostgres.yaml
 - bases/smartvillage.computate.org_edgekafkas.yaml
 - bases/smartvillage.computate.org_edgerabbitmqs.yaml
+- bases/smartvillage.computate.org_edgesolrs.yaml
 #+kubebuilder:scaffold:crdkustomizeresource

@@ -4,6 +4,7 @@ resources:
   - edgeamqbrokers/
   - edgekafkas/
   - edgepostgress/
+  - edgesolrs/
   - orionldcontextbrokers/
   - scorpiobrokers/
   - iotagentjsons/

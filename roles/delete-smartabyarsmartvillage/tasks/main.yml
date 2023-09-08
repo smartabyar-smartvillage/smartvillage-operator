@@ -1,5 +1,5 @@
 ---
-- name: "Remove fiware-broker-mqtt-nodeport NodePort service on OpenShift"
+- name: "Remove zookeeper-nodeport NodePort service on OpenShift"
   k8s:
     state: absent
     api_version: v1
@@ -79,62 +79,6 @@
     api_version: v1
     name: zookeeper
     namespace: "{{ ansible_operator_meta.namespace }}"
-
-# Remove Solr
-- name: Delete Zookeeper helm chart
-  kubernetes.core.helm:
-    name: zookeeper-operator
-    chart_ref: zookeeper/zookeeper-operator
-    release_namespace: "{{ ansible_operator_meta.namespace }}"
-    release_state: absent
-    skip_crds: true
-- name: Delete Solr helm chart
-  kubernetes.core.helm:
-    name: solr-operator
-    chart_ref: solr/solr-operator
-    release_namespace: "{{ ansible_operator_meta.namespace }}"
-    release_state: absent
-    skip_crds: true
-- name: "Remove Solr configmap-computate-configset configmap on OpenShift"
-  k8s:
-    state: absent
-    api_version: v1
-    kind: ConfigMap
-    name: computate-configset
-    namespace: "{{ ansible_operator_meta.namespace }}"
-  ignore_errors: true
-- name: "Remove Solr role bindings on OpenShift"
-  k8s:
-    state: absent
-    kind: RoleBinding
-    api_version: rbac.authorization.k8s.io/v1
-    name: "system:openshift:scc:anyuid"
-    namespace: "{{ ansible_operator_meta.namespace }}"
-  ignore_errors: true
-- name: "Remove Solr service account on OpenShift"
-  k8s:
-    state: absent
-    kind: ServiceAccount
-    api_version: v1
-    name: solr
-    namespace: "{{ ansible_operator_meta.namespace }}"
-  ignore_errors: true
-- name: "Remove Solr Cloud on OpenShift"
-  k8s:
-    state: absent
-    api_version: solr.apache.org/v1beta1
-    kind: SolrCloud
-    name: default
-    namespace: "{{ ansible_operator_meta.namespace }}"
-  ignore_errors: true
-- name: "Remove Solr route on OpenShift"
-  k8s:
-    state: absent
-    kind: Route
-    api_version: route.openshift.io/v1
-    name: solr
-    namespace: "{{ ansible_operator_meta.namespace }}"
-  ignore_errors: true
 
 # Remove site
 - name: "Remove {{ site_name }}-web service on OpenShift"

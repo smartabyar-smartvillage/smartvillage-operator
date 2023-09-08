@@ -66,11 +66,12 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       containers:
-      - args:
+      - name: manager
+        imagePullPolicy: Always
+        args:
         - --leader-elect
         - --leader-election-id=smartvillage-operator
         image: controller:latest
-        name: manager
         env:
         - name: ANSIBLE_GATHERING
           value: explicit

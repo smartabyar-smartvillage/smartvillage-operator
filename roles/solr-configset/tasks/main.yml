@@ -1,0 +1,12 @@
+---
+- name: "Upload the {{ item.name }} configset to solr"
+  kubernetes.core.k8s_exec:
+    pod: "{{ values.solr.name }}-solrcloud-0"
+    command: >-
+      /opt/solr/bin/solr zk upconfig -n {{ item.name }} -d /opt/solr/server/solr/configsets/{{ item.name }} -z '{{ values.solr.name }}-solrcloud-zookeeper-client.{{ ansible_operator_meta.namespace }}.svc:2181'
+    namespace: "{{ ansible_operator_meta.namespace }}"
+  register: solr_upconfig
+  changed_when: false
+- name: "Debug output for uploading the {{ item.name }} configset to Solr"
+  debug:
+    var: solr_upconfig

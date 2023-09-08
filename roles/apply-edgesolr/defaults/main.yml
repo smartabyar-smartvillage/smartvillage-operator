@@ -1,0 +1,6 @@
+---
+ENTITY_TYPE: EdgeSolr
+
+verify_connections: true
+
+solr_nodeport: 30983

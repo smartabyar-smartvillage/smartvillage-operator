@@ -29,15 +29,19 @@ spec:
         requests:
           memory: '{{ values.solr.resources.requests.memory }}'
           cpu: '{{ values.solr.resources.requests.cpu }}'
+{% if values.solr.configsets %}
       volumes:
-        - name: computate-configset
+{% for configset in values.solr.configsets %}
+        - name: "{{ configset.configmap }}"
           source:
             configMap:
               defaultMode: 440
-              name: computate-configset
+              name: "{{ configset.configmap }}"
           defaultContainerMount:
-              mountPath: /opt/solr/server/solr/configsets/computate/conf
-              name: computate-configset
+              mountPath: "/opt/solr/server/solr/configsets/{{ configset.name }}/conf"
+              name: "{{ configset.configmap }}"
+{% endfor %}
+{% endif %}
   zookeeperRef:
     provided:
       replicas: {{ values.zookeeper.replicas }}

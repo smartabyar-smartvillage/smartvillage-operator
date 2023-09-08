@@ -385,4 +385,21 @@ rules:
       - patch
       - update
       - watch
+  ##
+  ## Rules for smartvillage.computate.org/v1, Kind: EdgeSolr
+  ##
+  - apiGroups:
+      - smartvillage.computate.org
+    resources:
+      - edgesolrs
+      - edgesolrs/status
+      - edgesolrs/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
 #+kubebuilder:scaffold:rules

@@ -482,12 +482,6 @@ ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=TrafficSim
 make docker-build docker-push deploy && oc -n smartvillage-operator-system delete pod -l 'control-plane=controller-manager'
 ```
 
-- View the logs of the operator
-
-```bash
-kubectl logs -n smartvillage-operator-system deployment/smartvillage-operator-controller-manager -f
-```
-
 ## Initialize EdgeMongoDB model
 
 ```bash
@@ -507,12 +501,6 @@ ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=EdgeMongoD
 
 ```bash
 make docker-build docker-push deploy && oc -n smartvillage-operator-system delete pod -l 'control-plane=controller-manager'
-```
-
-- View the logs of the operator
-
-```bash
-oc logs -n smartvillage-operator-system deployment/smartvillage-operator-controller-manager -f
 ```
 
 ## Initialize EdgePostgres model
@@ -536,12 +524,6 @@ ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=EdgePostgr
 make docker-build docker-push deploy && oc -n smartvillage-operator-system delete pod -l 'control-plane=controller-manager'
 ```
 
-- View the logs of the operator
-
-```bash
-oc logs -n smartvillage-operator-system deployment/smartvillage-operator-controller-manager -f
-```
-
 ## Initialize EdgeKafka model
 
 ```bash
@@ -561,12 +543,6 @@ ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=EdgeKafka
 
 ```bash
 make docker-build docker-push deploy && oc -n smartvillage-operator-system delete pod -l 'control-plane=controller-manager'
-```
-
-- View the logs of the operator
-
-```bash
-oc logs -n smartvillage-operator-system deployment/smartvillage-operator-controller-manager -f
 ```
 
 ## Initialize EdgeRabbitMQ model
@@ -590,10 +566,25 @@ ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=EdgeRabbit
 make docker-build docker-push deploy && oc -n smartvillage-operator-system delete pod -l 'control-plane=controller-manager'
 ```
 
-- View the logs of the operator
+## Initialize EdgeSolr model
 
 ```bash
-oc logs -n smartvillage-operator-system deployment/smartvillage-operator-controller-manager -f
+operator-sdk create api --group smartvillage --version v1 --kind EdgeSolr --generate-role
+ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=EdgeSolr
+```
+
+- Edit the newly generated vars values file: `smartvillage-operator/roles/smart-data-model-vars/vars/EdgeSolr.yaml`. 
+- Re-run the playbook to regenerate the latest model. 
+
+```bash
+ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=EdgeSolr
+```
+
+- Increment the VERSION in the smartvillage-operator/Makefile
+- Build and deploy the new version of the operator
+
+```bash
+make docker-build docker-push deploy && oc -n smartvillage-operator-system delete pod -l 'control-plane=controller-manager'
 ```
 
 # Install the latest AMQ Broker on MicroShift manually

@@ -1,0 +1,128 @@
+---
+name: smartvillage
+description: |
+  
+schema:
+  managementState:
+    type: string
+    default: Managed
+    enum:
+      - Managed
+      - Unmanaged
+  enable_dev_nodeports:
+    type: boolean
+    default: false
+  solr:
+    type: object
+    properties:
+      name:
+        type: string
+        default: default
+      port:
+        type: number
+        default: 80
+      ssl:
+        type: boolean
+        default: false
+      route:
+        type: object
+        properties:
+          create:
+            type: boolean
+            default: false
+            description: |
+              Whether to create a route for Solr. 
+          host_name:
+            type: string
+            default: solr.apps-crc.testing
+            description: |
+              The Route host name for Solr. 
+      replicas:
+        type: number
+        default: 1
+      storage:
+        type: string
+        default: '10Gi'
+      resources:
+        type: object
+        properties:
+          limits:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '2Gi'
+              cpu:
+                type: string
+                default: '1'
+          requests:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '1Gi'
+              cpu:
+                type: string
+                default: '1'
+      configsets:
+        type: array
+        description: |-
+          ConfigMaps that already exist in the solr namespace, that you would like to mount in the solr pods as Configsets in Solr. 
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+              description: |-
+                The name of the configset as it will be defined in Solr. 
+            configmap:
+              type: string
+              description: |-
+                The name of the configMap where the configset is defined. 
+                This should include a solrconfig.xml, managed-schema, and other definitions like stopwords, synonyms and contractions. 
+      collections:
+        type: array
+        description: |-
+           Solr collections that link to a Solr Configset. 
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+              description: |-
+                The name of the collection as it will be defined in Solr. 
+            configset:
+              type: string
+              description: |-
+                The name of the Solr configset for this collection. 
+  zookeeper:
+    type: object
+    properties:
+      replicas:
+        type: number
+        default: 1
+      storage:
+        type: string
+        default: '5Gi'
+      resources:
+        type: object
+        properties:
+          limits:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '500Mi'
+              cpu:
+                type: string
+                default: '500m'
+          requests:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '500Mi'
+              cpu:
+                type: string
+                default: '500m'
+
