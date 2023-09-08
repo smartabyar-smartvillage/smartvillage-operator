@@ -135,10 +135,6 @@
       The Solr service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
   when: verify_connections and verify_solr.failed
 
-- debug:
-    var: values.solr
-- debug:
-    var: crd
 - name: Upload loop for Solr configsets
   include_role:
     name: solr-configset

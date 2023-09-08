@@ -4,20 +4,18 @@
   connection: local
   pre_tasks:
     - fail:
-        msg: Variable ansible_operator_meta_name is not defined
-      when: ansible_operator_meta_name is not defined
-    - fail:
-        msg: Variable ansible_operator_meta_namespace is not defined
-      when: ansible_operator_meta_namespace is not defined
-    - fail:
         msg: Variable crd_path is not defined
       when: crd_path is not defined
     - name: "Query EdgeRabbitMQ"
       set_fact:
-        crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
-      ignore_errors: true
+        crd_complete: "{{ (lookup('file', crd_path) | from_yaml) }}"
+    - name: "Set name and namespace vars"
+      set_fact:
+        crd: "{{ crd_complete.spec }}"
+        ansible_operator_meta_name: "{{ crd_complete.metadata.name }}"
+        ansible_operator_meta_namespace: "{{ crd_complete.metadata.namespace }}"
       vars:
-        ENTITY_TYPE: EdgeRabbitMQ
+        ENTITY_TYPE: EdgeSolr
       when: crd_path is defined
   roles:
     - smart-data-model-vars
