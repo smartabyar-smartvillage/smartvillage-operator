@@ -1,12 +1,28 @@
 ---
-- name: Remove SmartaByarSmartVillage resources from OpenShift
+- name: Delete a SmartaByarSmartVillage resource from OpenShift
   hosts: localhost
   connection: local
-  roles:
-#    - smart-data-model-vars
-    - delete-smartabyarsmartvillage
+  pre_tasks:
+    - fail:
+        msg: Variable crd_path is not defined
+      when: crd_path is not defined
+    - name: "Query SmartaByarSmartVillage"
+      set_fact:
+        crd_complete: "{{ (lookup('file', crd_path) | from_yaml) }}"
+    - name: "Set name and namespace vars"
+      set_fact:
+        crd: "{{ crd_complete.spec }}"
+        ansible_operator_meta_name: "{{ crd_complete.metadata.name }}"
+        ansible_operator_meta_namespace: "{{ crd_complete.metadata.namespace }}"
+      vars:
+        ENTITY_TYPE: EdgeSolr
+      when: crd_path is defined
+  tasks:
+    - include_role:
+        name: delete-smartabyarsmartvillage
   vars:
     ENTITY_TYPE: SmartaByarSmartVillage
     ansible_operator_meta:
-      name: smartvillage
-      namespace: smartvillage
+      name: "{{ ansible_operator_meta_name }}"
+      namespace: "{{ ansible_operator_meta_namespace }}"
+    verify_connections: false

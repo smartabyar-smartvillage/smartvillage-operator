@@ -1,12 +1,28 @@
 ---
-- name: Remove a OrionLDContextBroker resource to OpenShift
+- name: Delete a OrionLDContextBroker resource from OpenShift
   hosts: localhost
   connection: local
-  roles:
-    - smart-data-model-vars
-    - delete-orionldcontextbroker
+  pre_tasks:
+    - fail:
+        msg: Variable crd_path is not defined
+      when: crd_path is not defined
+    - name: "Query OrionLDContextBroker"
+      set_fact:
+        crd_complete: "{{ (lookup('file', crd_path) | from_yaml) }}"
+    - name: "Set name and namespace vars"
+      set_fact:
+        crd: "{{ crd_complete.spec }}"
+        ansible_operator_meta_name: "{{ crd_complete.metadata.name }}"
+        ansible_operator_meta_namespace: "{{ crd_complete.metadata.namespace }}"
+      vars:
+        ENTITY_TYPE: EdgeSolr
+      when: crd_path is defined
+  tasks:
+    - include_role:
+        name: delete-orionldcontextbroker
   vars:
     ENTITY_TYPE: OrionLDContextBroker
     ansible_operator_meta:
-      name: smartvillage
-      namespace: smartvillage
+      name: "{{ ansible_operator_meta_name }}"
+      namespace: "{{ ansible_operator_meta_namespace }}"
+    verify_connections: false

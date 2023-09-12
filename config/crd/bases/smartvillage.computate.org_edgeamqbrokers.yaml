@@ -38,7 +38,7 @@ spec:
             properties:
               managementState:
                 type: string
-                default: |
+                default: |-
                   Managed
               amq_broker:
                 type: object

@@ -13,7 +13,7 @@ values:
       requests:
         memory: "{{ crd.kafka.resources.requests.memory | default(schema | community.general.json_query('kafka.properties.resources.properties.requests.properties.memory.default')) }}"
         cpu: "{{ crd.kafka.resources.requests.cpu | default(schema | community.general.json_query('kafka.properties.resources.properties.requests.properties.cpu.default')) }}"
-    users: "{{ crd.kafka.users | default('') }}"
+    users: "{{ crd.kafka.users | default([]) }}"
   zookeeper:
     replicas: "{{ crd.zookeeper.replicas | default(schema | community.general.json_query('zookeeper.properties.replicas.default')) }}"
     resources:
