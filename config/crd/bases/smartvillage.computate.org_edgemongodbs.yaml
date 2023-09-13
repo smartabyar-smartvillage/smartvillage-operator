@@ -39,10 +39,65 @@ spec:
                 type: string
                 default: |-
                   Managed
-              edgemongodb:
+              mongodb:
                 type: object
                 properties:
-                  {}
+                  name:
+                    default: mongodb
+                    description: The name of the MongoDB
+                    type: string
+                  replicas:
+                    default: 1
+                    type: number
+                  resources:
+                    properties:
+                      limits:
+                        properties:
+                          cpu:
+                            default: '1'
+                            type: string
+                          memory:
+                            default: 3Gi
+                            type: string
+                        type: object
+                      requests:
+                        properties:
+                          cpu:
+                            default: 300m
+                            type: string
+                          memory:
+                            default: 300Mi
+                            type: string
+                        type: object
+                    type: object
+                  storage:
+                    default: 8Gi
+                    type: string
+
+              arbiter:
+                type: object
+                properties:
+                  resources:
+                    properties:
+                      limits:
+                        properties:
+                          cpu:
+                            default: '1'
+                            type: string
+                          memory:
+                            default: 1.5Gi
+                            type: string
+                        type: object
+                      requests:
+                        properties:
+                          cpu:
+                            default: 200m
+                            type: string
+                          memory:
+                            default: 300Mi
+                            type: string
+                        type: object
+                    type: object
 
           status:
             description: Status defines the observed state of EdgeMongoDB

@@ -1,2 +1,11 @@
 ---
 # tasks to delete EdgeMongoDB
+
+- name: Delete FIWARE Marinera mongodb helm chart
+  kubernetes.core.helm:
+    name: "{{ values.mongodb.name }}"
+    chart_ref: bitnami/mongodb
+    chart_version: 12.1.31
+    release_namespace: "{{ ansible_operator_meta.namespace }}"
+    release_state: absent
+  ignore_errors: true

@@ -15,6 +15,11 @@ schema:
       enable_dev_nodeports:
         type: boolean
         default: false
+      name:
+        type: string
+        default: default
+        description: |-
+          The Kafka cluster name, referenced by Kafka Users. 
       service_name:
         type: string
         default: smartvillage-kafka-kafka-bootstrap

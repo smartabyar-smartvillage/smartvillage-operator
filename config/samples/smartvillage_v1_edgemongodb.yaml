@@ -13,4 +13,32 @@ spec:
     
   managementState: |-
     Managed
-  edgemongodb:
+  mongodb:
+    name: |-
+      mongodb
+    replicas: 1
+    storage: |-
+      8Gi
+    resources:
+      limits:
+        memory: |-
+          3Gi
+        cpu: |-
+          1
+      requests:
+        memory: |-
+          300Mi
+        cpu: |-
+          300m
+  arbiter:
+    resources:
+      limits:
+        memory: |-
+          1.5Gi
+        cpu: |-
+          1
+      requests:
+        memory: |-
+          300Mi
+        cpu: |-
+          200m

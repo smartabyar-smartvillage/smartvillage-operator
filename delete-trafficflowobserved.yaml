@@ -19,6 +19,8 @@
       when: crd_path is defined
   tasks:
     - include_role:
+        name: smart-data-model-vars
+    - include_role:
         name: delete-trafficflowobserved
   vars:
     ENTITY_TYPE: TrafficFlowObserved

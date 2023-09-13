@@ -2,4 +2,22 @@ values:
 
 
   managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
-  edgemongodb:
+  mongodb:
+    name: "{{ crd.mongodb.name | default(schema | community.general.json_query('mongodb.properties.name.default')) }}"
+    replicas: "{{ crd.mongodb.replicas | default(schema | community.general.json_query('mongodb.properties.replicas.default')) }}"
+    storage: "{{ crd.mongodb.storage | default(schema | community.general.json_query('mongodb.properties.storage.default')) }}"
+    resources:
+      limits:
+        memory: "{{ crd.mongodb.resources.limits.memory | default(schema | community.general.json_query('mongodb.properties.resources.properties.limits.properties.memory.default')) }}"
+        cpu: "{{ crd.mongodb.resources.limits.cpu | default(schema | community.general.json_query('mongodb.properties.resources.properties.limits.properties.cpu.default')) }}"
+      requests:
+        memory: "{{ crd.mongodb.resources.requests.memory | default(schema | community.general.json_query('mongodb.properties.resources.properties.requests.properties.memory.default')) }}"
+        cpu: "{{ crd.mongodb.resources.requests.cpu | default(schema | community.general.json_query('mongodb.properties.resources.properties.requests.properties.cpu.default')) }}"
+  arbiter:
+    resources:
+      limits:
+        memory: "{{ crd.arbiter.resources.limits.memory | default(schema | community.general.json_query('arbiter.properties.resources.properties.limits.properties.memory.default')) }}"
+        cpu: "{{ crd.arbiter.resources.limits.cpu | default(schema | community.general.json_query('arbiter.properties.resources.properties.limits.properties.cpu.default')) }}"
+      requests:
+        memory: "{{ crd.arbiter.resources.requests.memory | default(schema | community.general.json_query('arbiter.properties.resources.properties.requests.properties.memory.default')) }}"
+        cpu: "{{ crd.arbiter.resources.requests.cpu | default(schema | community.general.json_query('arbiter.properties.resources.properties.requests.properties.cpu.default')) }}"

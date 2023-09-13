@@ -9,6 +9,61 @@ schema:
     enum:
       - Managed
       - Unmanaged
-  edgemongodb:
+  mongodb:
     type: object
-    properties: {}
+    properties:
+      name:
+        type: string
+        default: mongodb
+        description: The name of the MongoDB
+      replicas:
+        type: number
+        default: 1
+      storage:
+        type: string
+        default: '8Gi'
+      resources:
+        type: object
+        properties:
+          limits:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '3Gi'
+              cpu:
+                type: string
+                default: '1'
+          requests:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '300Mi'
+              cpu:
+                type: string
+                default: '300m'
+  arbiter:
+    type: object
+    properties:
+      resources:
+        type: object
+        properties:
+          limits:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '1.5Gi'
+              cpu:
+                type: string
+                default: '1'
+          requests:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '300Mi'
+              cpu:
+                type: string
+                default: '200m'

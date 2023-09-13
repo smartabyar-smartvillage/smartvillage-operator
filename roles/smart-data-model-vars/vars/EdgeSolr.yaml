@@ -18,6 +18,9 @@ schema:
       name:
         type: string
         default: default
+      version:
+        type: string
+        default: 9.3.0
       port:
         type: number
         default: 80

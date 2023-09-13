@@ -405,6 +405,11 @@ oc login ...
 make docker-build docker-push deploy && oc -n smartvillage-operator-system delete pod -l 'control-plane=controller-manager'
 ```
 
+# Run the smartvillage-operator locally with podman
+```bash
+podman run --rm -it --entrypoint /bin/bash quay.io/computateorg/smartvillage-operator:latest
+```
+
 ## Initialize TrafficFlowObserved model
 
 ```bash

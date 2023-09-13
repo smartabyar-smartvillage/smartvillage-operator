@@ -3,7 +3,15 @@ values:
 
   managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
   amq_broker:
-    create: "{{ crd.amq_broker.create | default(schema | community.general.json_query('amq_broker.properties.create.default')) }}"
+    name: "{{ crd.amq_broker.name | default(schema | community.general.json_query('amq_broker.properties.name.default')) }}"
+    replicas: "{{ crd.amq_broker.replicas | default(schema | community.general.json_query('amq_broker.properties.replicas.default')) }}"
+    resources:
+      limits:
+        memory: "{{ crd.amq_broker.resources.limits.memory | default(schema | community.general.json_query('amq_broker.properties.resources.properties.limits.properties.memory.default')) }}"
+        cpu: "{{ crd.amq_broker.resources.limits.cpu | default(schema | community.general.json_query('amq_broker.properties.resources.properties.limits.properties.cpu.default')) }}"
+      requests:
+        memory: "{{ crd.amq_broker.resources.requests.memory | default(schema | community.general.json_query('amq_broker.properties.resources.properties.requests.properties.memory.default')) }}"
+        cpu: "{{ crd.amq_broker.resources.requests.cpu | default(schema | community.general.json_query('amq_broker.properties.resources.properties.requests.properties.cpu.default')) }}"
     enabled: "{{ crd.amq_broker.enabled | default(schema | community.general.json_query('amq_broker.properties.enabled.default')) }}"
     mqtt_service_name: "{{ crd.amq_broker.mqtt_service_name | default(schema | community.general.json_query('amq_broker.properties.mqtt_service_name.default')) }}"
     mqtt_port: "{{ crd.amq_broker.mqtt_port | default(schema | community.general.json_query('amq_broker.properties.mqtt_port.default')) }}"

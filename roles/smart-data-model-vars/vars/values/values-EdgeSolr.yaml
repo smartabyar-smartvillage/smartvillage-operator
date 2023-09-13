@@ -5,6 +5,7 @@ values:
   enable_dev_nodeports: "{{ crd.enable_dev_nodeports | default(schema | community.general.json_query('enable_dev_nodeports.default')) }}"
   solr:
     name: "{{ crd.solr.name | default(schema | community.general.json_query('solr.properties.name.default')) }}"
+    version: "{{ crd.solr.version | default(schema | community.general.json_query('solr.properties.version.default')) }}"
     port: "{{ crd.solr.port | default(schema | community.general.json_query('solr.properties.port.default')) }}"
     ssl: "{{ crd.solr.ssl | default(schema | community.general.json_query('solr.properties.ssl.default')) }}"
     route:

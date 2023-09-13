@@ -9,35 +9,23 @@
 
 - name: Install FIWARE Marinera mongodb helm chart
   kubernetes.core.helm:
-    name: mongodb-orion
+    name: "{{ values.mongodb.name }}"
     chart_ref: bitnami/mongodb
     chart_version: 12.1.31
     set_values:
-      - value: nameOverride=mongodb-orion
-      - value: fullnameOverride=mongodb-orion
+      - value: "nameOverride={{ values.mongodb.name }}"
+      - value: "fullnameOverride={{ values.mongodb.name }}"
+      - value: "replicaCount={{ values.mongodb.replicas }}"
       - value: architecture=standalone
       - value: podSecurityContext.enabled=false
       - value: containerSecurityContext.enabled=false
-      - value: resources.limits.memory=3Gi
-      - value: resources.requests.cpu=50m
-      - value: resources.requests.memory=300Mi
+      - value: "resources.limits.memory={{ values.mongodb.resources.limits.memory }}"
+      - value: "resources.limits.cpu={{ values.mongodb.resources.limits.cpu }}"
+      - value: "resources.requests.cpu={{ values.mongodb.resources.requests.cpu }}"
+      - value: "resources.requests.memory={{ values.mongodb.resources.requests.memory }}"
       - value: persistence.enabled=true
-      - value: persistence.size=8Gi
+      - value: "persistence.size={{ values.mongodb.storage }}"
       - value: readinessProbe.timeoutSeconds=60
-      - value: arbiter.podSecurityContext.enabled=false
-      - value: arbiter.containerSecurityContext.enabled=false
-      - value: |-
-          "arbiter.podLabels.marinera/platform=fiware"
-      - value: |-
-          "arbiter.podLabels.marinera/component=core"
-      - value: |-
-          "arbiter.podLabels.marinera/subcomponent=persistence"
-      - value: |-
-          "arbiter.podLabels.marinera/product=mongodb"
-      - value: arbiter.resources.limits.memory=1.5Gi
-      - value: arbiter.resources.requests.cpu=50m
-      - value: arbiter.resources.requests.memory=300Mi
-      - value: arbiter.readinessProbe.timeoutSeconds=60
       - value: systemLogVerbosity=1
       - value: |-
           "podLabels.marinera/platform=fiware"
@@ -49,10 +37,21 @@
           "podLabels.marinera/product=mongodb"
       - value: metrics.enabled=true
       - value: serviceMonitor.enabled=true
-      - value: resources.limits.memory=1Gi
-      - value: resources.requests.cpu=50m
-      - value: resources.requests.memory=50Mi
-      - value: readinessProbe.timeoutSeconds=60
+      - value: arbiter.podSecurityContext.enabled=false
+      - value: arbiter.containerSecurityContext.enabled=false
+      - value: |-
+          "arbiter.podLabels.marinera/platform=fiware"
+      - value: |-
+          "arbiter.podLabels.marinera/component=core"
+      - value: |-
+          "arbiter.podLabels.marinera/subcomponent=persistence"
+      - value: |-
+          "arbiter.podLabels.marinera/product=mongodb"
+      - value: arbiter.readinessProbe.timeoutSeconds=60
+      - value: "arbiter.resources.limits.memory={{ values.arbiter.resources.limits.memory }}"
+      - value: "arbiter.resources.limits.cpu={{ values.arbiter.resources.limits.cpu }}"
+      - value: "arbiter.resources.requests.cpu={{ values.arbiter.resources.requests.cpu }}"
+      - value: "arbiter.resources.requests.memory={{ values.arbiter.resources.requests.memory }}"
     release_namespace: "{{ ansible_operator_meta.namespace }}"
     release_state: present
   changed_when: false
@@ -60,4 +59,4 @@
 
 - name: "Query MongoDB pod"
   set_fact:
-    mongodb_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector='app.kubernetes.io/component=mongodb,app.kubernetes.io/instance=mongodb-orion,app.kubernetes.io/name=mongodb-orion', namespace=ansible_operator_meta.namespace)[0].metadata.name }}"
+    mongodb_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector=('app.kubernetes.io/component=mongodb,app.kubernetes.io/instance=' + values.mongodb.name + ',app.kubernetes.io/name=' + values.mongodb.name), namespace=ansible_operator_meta.namespace)[0].metadata.name }}"

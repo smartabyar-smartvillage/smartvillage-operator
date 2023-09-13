@@ -12,11 +12,34 @@ schema:
   amq_broker:
     type: object
     properties:
-      create:
-        type: boolean
-        default: true
-        description: |
-          Determines if a new MQTT and AMQP AMQ Broker will be created. 
+      name:
+        type: string
+        default: default
+        description: The name of the AMQ Broker
+      replicas:
+        type: number
+        default: 1
+      resources:
+        type: object
+        properties:
+          limits:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '500Mi'
+              cpu:
+                type: string
+                default: '500m'
+          requests:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '200Mi'
+              cpu:
+                type: string
+                default: '200m'
       enabled:
         type: boolean
         default: true

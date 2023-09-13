@@ -17,6 +17,8 @@ spec:
   solr:
     name: |-
       default
+    version: |-
+      9.3.0
     port: 80
     ssl: False
     route:

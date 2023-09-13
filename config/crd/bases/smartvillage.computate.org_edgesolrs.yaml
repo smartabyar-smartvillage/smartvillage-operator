@@ -119,6 +119,9 @@ spec:
                   storage:
                     default: 10Gi
                     type: string
+                  version:
+                    default: 9.3.0
+                    type: string
 
               zookeeper:
                 type: object

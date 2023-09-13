@@ -15,7 +15,20 @@ spec:
   managementState: |-
     Managed
   amq_broker:
-    create: True
+    name: |-
+      default
+    replicas: 1
+    resources:
+      limits:
+        memory: |-
+          500Mi
+        cpu: |-
+          500m
+      requests:
+        memory: |-
+          200Mi
+        cpu: |-
+          200m
     enabled: True
     mqtt_service_name: |-
       fiware-broker-mqtt-0-svc

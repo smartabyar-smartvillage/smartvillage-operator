@@ -7,7 +7,7 @@
     state: "present"
     kind: Kafka
     api_version: kafka.strimzi.io/v1beta2
-    name: smartvillage-kafka
+    name: "{{ values.kafka.name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'kafka.yaml') }}"
 - name: "Install Kafka users on OpenShift"

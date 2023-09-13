@@ -15,6 +15,8 @@ spec:
     Managed
   kafka:
     enable_dev_nodeports: False
+    name: |-
+      default
     service_name: |-
       smartvillage-kafka-kafka-bootstrap
     port: 9093

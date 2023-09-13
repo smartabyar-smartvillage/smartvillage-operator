@@ -5,7 +5,7 @@ spec:
     tag: 1.36.0-glibc
   solrImage:
     repository: docker.io/library/solr
-    tag: 9.1.1
+    tag: 9.3.0
   dataStorage:
     persistent:
       pvcTemplate:
@@ -21,6 +21,7 @@ spec:
         fsGroup: 8983
         seccompProfile:
           type: RuntimeDefault
+        allowPrivilegeEscalation: false
       serviceAccountName: solr
       resources:
         limits:

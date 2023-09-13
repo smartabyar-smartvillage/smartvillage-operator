@@ -45,6 +45,10 @@ spec:
                   enable_dev_nodeports:
                     default: false
                     type: boolean
+                  name:
+                    default: default
+                    description: 'The Kafka cluster name, referenced by Kafka Users. '
+                    type: string
                   port:
                     default: 9093
                     type: number
