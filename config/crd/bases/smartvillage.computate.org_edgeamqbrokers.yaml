@@ -73,10 +73,10 @@ spec:
                       limits:
                         properties:
                           cpu:
-                            default: 500m
+                            default: '1'
                             type: string
                           memory:
-                            default: 500Mi
+                            default: 1Gi
                             type: string
                         type: object
                       requests:

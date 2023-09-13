@@ -17,3 +17,13 @@ spec:
     persistenceEnabled: false
     requireLogin: false
     size: {{ values.amq_broker.replicas }}
+    resources:
+      limits:
+        memory: 
+    resources:
+      limits:
+        memory: '{{ values.amq_broker.resources.limits.memory }}'
+        cpu: '{{ values.amq_broker.resources.limits.cpu }}'
+      requests:
+        memory: '{{ values.amq_broker.resources.requests.memory }}'
+        cpu: '{{ values.amq_broker.resources.requests.cpu }}'
