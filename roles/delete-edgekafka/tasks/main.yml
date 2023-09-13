@@ -1,19 +1,12 @@
 ---
 # tasks to delete EdgeKafka
 
-- name: "Query resource"
-  set_fact:
-    crd: "{{ query('kubernetes.core.k8s', kind=ENTITY_TYPE, resource_name=ansible_operator_meta.name, namespace=ansible_operator_meta.namespace)[0].spec }}"
-  ignore_errors: true
-  vars:
-    ENTITY_TYPE: TrafficFlowObserved
-
 - name: "Remove Kafka cluster on OpenShift"
   k8s:
     state: absent
     kind: Kafka
     api_version: kafka.strimzi.io/v1beta2
-    name: smartvillage-kafka
+    name: "{{ values.kafka.name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
   ignore_errors: true
 - name: "Remove Kafka user on OpenShift"
@@ -21,6 +14,7 @@
     state: absent
     api_version: kafka.strimzi.io/v1beta2
     kind: KafkaUser
-    name: smartvillage-kafka
+    name: "{{ item.name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
-  ignore_errors: true
+  loop: "{{ values.kafka.users }}"
+  
