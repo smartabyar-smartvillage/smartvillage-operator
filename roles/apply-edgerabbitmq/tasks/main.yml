@@ -8,12 +8,17 @@
   changed_when: false
 - name: Install rabbitmq helm chart
   kubernetes.core.helm:
-    name: rabbitmq
+    name: "{{ values.rabbitmq.name }}"
     chart_ref: bitnami/rabbitmq
     history_max: 1
     force: true
     disable_hook: true
     set_values:
+      - value: "replicaCount={{ values.rabbitmq.replicas }}"
+      - value: "resources.limits.memory={{ values.rabbitmq.resources.limits.memory }}"
+      - value: "resources.limits.cpu={{ values.rabbitmq.resources.limits.cpu }}"
+      - value: "resources.requests.cpu={{ values.rabbitmq.resources.requests.cpu }}"
+      - value: "resources.requests.memory={{ values.rabbitmq.resources.requests.memory }}"
       - value: extraPlugins=rabbitmq_mqtt
       - value: podSecurityContext.enabled=false
       - value: containerSecurityContext.enabled=false

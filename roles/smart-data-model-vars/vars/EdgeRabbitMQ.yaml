@@ -12,18 +12,37 @@ schema:
   rabbitmq:
     type: object
     properties:
-      mqtt_service_name:
+      name:
         type: string
-        default: fiware-broker-mqtt-0-svc
+        default: default
+        description: The name of the RabbitMQ Broker
+      replicas:
+        type: number
+        default: 1
+      resources:
+        type: object
+        properties:
+          limits:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '1Gi'
+              cpu:
+                type: string
+                default: '1'
+          requests:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '200Mi'
+              cpu:
+                type: string
+                default: '200m'
       mqtt_port:
         type: number
         default: 1883
-      amqp_service_name:
-        type: string
-        default: fiware-broker-amqp-0-svc
       amqp_port:
         type: number
         default: 5672
-      iot_subscribe_topic:
-        type: string
-        default: iot-subscribe

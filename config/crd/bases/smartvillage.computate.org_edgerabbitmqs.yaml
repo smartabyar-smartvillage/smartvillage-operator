@@ -45,18 +45,37 @@ spec:
                   amqp_port:
                     default: 5672
                     type: number
-                  amqp_service_name:
-                    default: fiware-broker-amqp-0-svc
-                    type: string
-                  iot_subscribe_topic:
-                    default: iot-subscribe
-                    type: string
                   mqtt_port:
                     default: 1883
                     type: number
-                  mqtt_service_name:
-                    default: fiware-broker-mqtt-0-svc
+                  name:
+                    default: default
+                    description: The name of the RabbitMQ Broker
                     type: string
+                  replicas:
+                    default: 1
+                    type: number
+                  resources:
+                    properties:
+                      limits:
+                        properties:
+                          cpu:
+                            default: '1'
+                            type: string
+                          memory:
+                            default: 1Gi
+                            type: string
+                        type: object
+                      requests:
+                        properties:
+                          cpu:
+                            default: 200m
+                            type: string
+                          memory:
+                            default: 200Mi
+                            type: string
+                        type: object
+                    type: object
 
           status:
             description: Status defines the observed state of EdgeRabbitMQ

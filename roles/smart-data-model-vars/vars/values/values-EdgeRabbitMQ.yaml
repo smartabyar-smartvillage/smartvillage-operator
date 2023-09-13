@@ -3,8 +3,14 @@ values:
 
   managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
   rabbitmq:
-    mqtt_service_name: "{{ crd.rabbitmq.mqtt_service_name | default(schema | community.general.json_query('rabbitmq.properties.mqtt_service_name.default')) }}"
+    name: "{{ crd.rabbitmq.name | default(schema | community.general.json_query('rabbitmq.properties.name.default')) }}"
+    replicas: "{{ crd.rabbitmq.replicas | default(schema | community.general.json_query('rabbitmq.properties.replicas.default')) }}"
+    resources:
+      limits:
+        memory: "{{ crd.rabbitmq.resources.limits.memory | default(schema | community.general.json_query('rabbitmq.properties.resources.properties.limits.properties.memory.default')) }}"
+        cpu: "{{ crd.rabbitmq.resources.limits.cpu | default(schema | community.general.json_query('rabbitmq.properties.resources.properties.limits.properties.cpu.default')) }}"
+      requests:
+        memory: "{{ crd.rabbitmq.resources.requests.memory | default(schema | community.general.json_query('rabbitmq.properties.resources.properties.requests.properties.memory.default')) }}"
+        cpu: "{{ crd.rabbitmq.resources.requests.cpu | default(schema | community.general.json_query('rabbitmq.properties.resources.properties.requests.properties.cpu.default')) }}"
     mqtt_port: "{{ crd.rabbitmq.mqtt_port | default(schema | community.general.json_query('rabbitmq.properties.mqtt_port.default')) }}"
-    amqp_service_name: "{{ crd.rabbitmq.amqp_service_name | default(schema | community.general.json_query('rabbitmq.properties.amqp_service_name.default')) }}"
     amqp_port: "{{ crd.rabbitmq.amqp_port | default(schema | community.general.json_query('rabbitmq.properties.amqp_port.default')) }}"
-    iot_subscribe_topic: "{{ crd.rabbitmq.iot_subscribe_topic | default(schema | community.general.json_query('rabbitmq.properties.iot_subscribe_topic.default')) }}"

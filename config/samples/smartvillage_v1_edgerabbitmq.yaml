@@ -14,11 +14,19 @@ spec:
   managementState: |-
     Managed
   rabbitmq:
-    mqtt_service_name: |-
-      fiware-broker-mqtt-0-svc
+    name: |-
+      default
+    replicas: 1
+    resources:
+      limits:
+        memory: |-
+          1Gi
+        cpu: |-
+          1
+      requests:
+        memory: |-
+          200Mi
+        cpu: |-
+          200m
     mqtt_port: 1883
-    amqp_service_name: |-
-      fiware-broker-amqp-0-svc
     amqp_port: 5672
-    iot_subscribe_topic: |-
-      iot-subscribe

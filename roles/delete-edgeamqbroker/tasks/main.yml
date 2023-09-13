@@ -6,7 +6,7 @@
     state: absent
     api_version: broker.amq.io/v1beta1
     kind: ActiveMQArtemis
-    name: fiware-broker
+    name: "{{ values.amq_broker.name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
   ignore_errors: true
 - name: "Remove {{ site_name }} AMQ Broker Address on OpenShift"
@@ -14,6 +14,6 @@
     state: absent
     api_version: broker.amq.io/v1beta1
     kind: ActiveMQArtemisAddress
-    name: fiware-address
+    name: "{{ values.amq_broker.name }}-address"
     namespace: "{{ ansible_operator_meta.namespace }}"
   ignore_errors: true
