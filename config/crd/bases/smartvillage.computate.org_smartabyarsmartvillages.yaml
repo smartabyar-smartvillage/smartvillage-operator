@@ -180,6 +180,9 @@ spec:
                     default: true
                     description: "Determines if a new Zookeeper cluster will be created. \n"
                     type: boolean
+                  host:
+                    default: zookeeper.zookeeper.svc
+                    type: string
                   max_retries:
                     default: 0
                     type: number
@@ -213,9 +216,6 @@ spec:
                             type: string
                         type: object
                     type: object
-                  service_name:
-                    default: zookeeper
-                    type: string
                   session_timeout_millis:
                     default: 5000
                     type: number
@@ -283,6 +283,10 @@ spec:
                     default: true
                     description: "Determines if a new Crunchy Postgres cluster will be created. \n"
                     type: boolean
+                  host:
+                    default: postgres-primary.postgres.svc
+                    description: "The host name to connect to PostgreSQL. \n"
+                    type: string
                   port:
                     default: 5432
                     description: "The port to connect to PostgreSQL. \n"
@@ -313,10 +317,6 @@ spec:
                     description: "Optional secret name where the postgres secrets are stored. \nIf empty,\
                       \ \"postgres-pguser-smartvillage\" will be used. \n"
                     type: string
-                  service_name:
-                    default: postgres-primary
-                    description: "The host name to connect to PostgreSQL. \n"
-                    type: string
 
               solr:
                 type: object
@@ -328,6 +328,9 @@ spec:
                     default: true
                     description: "Determines if a new Apache Solr cluster will be created. \n"
                     type: boolean
+                  host:
+                    default: default-solrcloud-common.solr.svc
+                    type: string
                   port:
                     default: 80
                     type: number
@@ -366,9 +369,6 @@ spec:
                         description: "The Route host name for Solr. \n"
                         type: string
                     type: object
-                  service_name:
-                    default: default-solrcloud-common
-                    type: string
                   ssl:
                     default: false
                     type: boolean
@@ -556,6 +556,9 @@ spec:
                   group:
                     default: smartvillage-kafka
                     type: string
+                  host:
+                    default: default-kafka-bootstrap.kafka.svc
+                    type: string
                   keystore_secret:
                     default: smartvillage-kafka
                     type: string
@@ -564,9 +567,6 @@ spec:
                     type: number
                   security_protocol:
                     default: SSL
-                    type: string
-                  service_name:
-                    default: smartvillage-kafka-kafka-bootstrap
                     type: string
                   ssl_ca_crt_location:
                     default: /opt/kafka/truststore/ca.crt
@@ -629,27 +629,30 @@ spec:
               amq_broker:
                 type: object
                 properties:
+                  amqp_host:
+                    default: default-rabbitmq.rabbitmq.svc
+                    type: string
                   amqp_port:
                     default: 5672
                     type: number
-                  amqp_service_name:
-                    default: fiware-broker-amqp-0-svc
-                    type: string
                   iot_subscribe_topic:
                     default: iot-subscribe
+                    type: string
+                  mqtt_host:
+                    default: default-rabbitmq.rabbitmq.svc
                     type: string
                   mqtt_port:
                     default: 1883
                     type: number
-                  mqtt_service_name:
-                    default: fiware-broker-mqtt-0-svc
-                    type: string
 
               ngsi_ld:
                 type: object
                 properties:
                   context:
                     default: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
+                    type: string
+                  host:
+                    default: scorpiobroker.scorpiobroker.svc
                     type: string
                   port:
                     default: 9090
@@ -675,9 +678,6 @@ spec:
                             type: string
                         type: object
                     type: object
-                  service_name:
-                    default: scorpiobroker
-                    type: string
                   ssl:
                     default: false
                     type: boolean

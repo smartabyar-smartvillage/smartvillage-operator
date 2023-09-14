@@ -28,7 +28,7 @@ spec:
       containers:
         - env:
             - name: IOTA_CB_HOST
-              value: '{{ values.orionld.service_name }}'
+              value: '{{ values.orionld.host }}'
             - name: IOTA_CB_PORT
               value: '{{ values.orionld.port }}'
             - name: IOTA_NORTH_PORT
@@ -48,8 +48,7 @@ spec:
             - name: IOTA_AUTOCAST
               value: 'true'
             - name: IOTA_MONGO_HOST
-              value: >-
-                mongodb-orion
+              value: "{{ values.mongodb.name }}.{{ values.mongodb.namespace }}.svc"
             - name: IOTA_MONGO_PORT
               value: '27017'
             - name: IOTA_MONGO_USER
@@ -57,21 +56,21 @@ spec:
             - name: IOTA_MONGO_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mongodb-orion
+                  name: "{{ values.mongodb.name }}"
                   key: mongodb-root-password
             - name: IOTA_MONGO_DB
               value: 'iotagentjson'
             - name: IOTA_HTTP_PORT
               value: '7896'
             - name: IOTA_PROVIDER_URL
-              value: 'http://{{ values.iotagent.service_name }}:{{ values.iotagent.north_port }}'
+              value: 'http://{{ values.iotagent.host }}:{{ values.iotagent.north_port }}'
   
             - name: IOTA_MQTT_DISABLED
               value: 'false'
             - name: IOTA_MQTT_HOST
-              value: '{{ values.amq_broker.mqtt_service_name }}'
+              value: '{{ values.message_broker.mqtt_host }}'
             - name: IOTA_MQTT_PORT
-              value: '{{ values.amq_broker.mqtt_port }}'
+              value: '{{ values.message_broker.mqtt_port }}'
             - name: IOTA_MQTT_REJECT_UNAUTHORIZED
               value: 'false'
             - name: IOTA_AMQP_DISABLED

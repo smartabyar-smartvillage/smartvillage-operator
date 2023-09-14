@@ -20,6 +20,8 @@ spec:
       scorpiobroker
     route:
       create: False
+      host: |-
+        scorpiobroker.scorpiobroker.svc
     port: 9090
     log_level: |-
       INFO
@@ -36,8 +38,8 @@ spec:
         memory: |-
           1Gi
   postgres:
-    service_name: |-
-      postgres-primary
+    host: |-
+      postgres-primary.postgres.svc
     port: 5432
     secret_name: |-
       postgres-pguser-scorpiobroker
@@ -66,9 +68,9 @@ spec:
     keystore_secret: |-
       scorpiobroker-kafka
     truststore_secret: |-
-      smartvillage-kafka-cluster-ca-cert
-    service_name: |-
-      smartvillage-kafka-kafka-bootstrap
+      default-cluster-ca-cert
+    host: |-
+      default-kafka-bootstrap.kafka.svc
     port: 9093
     group: |-
       aio-runner

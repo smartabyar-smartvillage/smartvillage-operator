@@ -71,8 +71,8 @@ spec:
       create: True
   zookeeper:
     create: True
-    service_name: |-
-      zookeeper
+    host: |-
+      zookeeper.zookeeper.svc
     port: 2181
     max_retries: 0
     base_sleep_time_millis: 5000
@@ -114,8 +114,8 @@ spec:
       /auth/realms/SMARTVILLAGE/protocol/openid-connect/token
   postgres:
     create: True
-    service_name: |-
-      postgres-primary
+    host: |-
+      postgres-primary.postgres.svc
     port: 5432
     cluster_name: |-
       postgres
@@ -134,8 +134,8 @@ spec:
           200m
   solr:
     create: True
-    service_name: |-
-      default-solrcloud-common
+    host: |-
+      default-solrcloud-common.solr.svc
     port: 80
     ssl: False
     route:
@@ -270,8 +270,8 @@ spec:
       smartvillage-kafka
     truststore_secret: |-
       smartvillage-kafka-cluster-ca-cert
-    service_name: |-
-      smartvillage-kafka-kafka-bootstrap
+    host: |-
+      default-kafka-bootstrap.kafka.svc
     port: 9093
     group: |-
       smartvillage-kafka
@@ -292,11 +292,11 @@ spec:
     ssl_ca_crt_location: |-
       /opt/kafka/truststore/ca.crt
   amq_broker:
-    mqtt_service_name: |-
-      fiware-broker-mqtt-0-svc
+    mqtt_host: |-
+      default-rabbitmq.rabbitmq.svc
     mqtt_port: 1883
-    amqp_service_name: |-
-      fiware-broker-amqp-0-svc
+    amqp_host: |-
+      default-rabbitmq.rabbitmq.svc
     amqp_port: 5672
     iot_subscribe_topic: |-
       iot-subscribe
@@ -306,8 +306,8 @@ spec:
     context: |-
       https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
     ssl: False
-    service_name: |-
-      scorpiobroker
+    host: |-
+      scorpiobroker.scorpiobroker.svc
     port: 9090
     resources:
       limits:

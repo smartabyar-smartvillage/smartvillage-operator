@@ -17,13 +17,11 @@ spec:
   managementState: |-
     Managed
   iotagent:
-    service_name: |-
-      iotagent-json
+    host: |-
+      iotagent-json.iotagent.svc
   context_broker:
-    service_name: |-
-      orion-ld
     base_url: |-
-      http://scorpiobroker:9090
+      http://scorpiobroker.scorpiobroker.svc:9090
   ngsi_ld:
     service: |-
       smarttrafficlights
@@ -42,7 +40,7 @@ spec:
     id: |-
       Sjobovagen-SE
     mqtt_host: |-
-      fiware-broker-mqtt-0-svc
+      default-rabbitmq.rabbitmq.svc
     mqtt_port: 1883
     mqtt_subscription_topic: |-
       iot/subscribe

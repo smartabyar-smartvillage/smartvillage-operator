@@ -128,7 +128,7 @@ spec:
                     default: VeberodIntersection1
                     type: string
                   mqtt_host:
-                    default: fiware-broker-mqtt-0-svc
+                    default: default-rabbitmq.rabbitmq.svc
                     type: string
                   mqtt_port:
                     default: 1883

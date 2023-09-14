@@ -53,7 +53,7 @@ spec:
     id: |-
       VeberodIntersection1
     mqtt_host: |-
-      fiware-broker-mqtt-0-svc
+      default-rabbitmq.rabbitmq.svc
     mqtt_port: 1883
     mqtt_subscription_topic: |-
       iot/subscribe

@@ -44,7 +44,7 @@ values:
       host_name: "{{ crd.site.route.host_name | default('') }}"
   zookeeper:
     create: "{{ crd.zookeeper.create | default(schema | community.general.json_query('zookeeper.properties.create.default')) }}"
-    service_name: "{{ crd.zookeeper.service_name | default(schema | community.general.json_query('zookeeper.properties.service_name.default')) }}"
+    host: "{{ crd.zookeeper.host | default(schema | community.general.json_query('zookeeper.properties.host.default')) }}"
     port: "{{ crd.zookeeper.port | default(schema | community.general.json_query('zookeeper.properties.port.default')) }}"
     max_retries: "{{ crd.zookeeper.max_retries | default(schema | community.general.json_query('zookeeper.properties.max_retries.default')) }}"
     base_sleep_time_millis: "{{ crd.zookeeper.base_sleep_time_millis | default(schema | community.general.json_query('zookeeper.properties.base_sleep_time_millis.default')) }}"
@@ -76,7 +76,7 @@ values:
     token_uri: "{{ crd.auth.token_uri | default(schema | community.general.json_query('auth.properties.token_uri.default')) }}"
   postgres:
     create: "{{ crd.postgres.create | default(schema | community.general.json_query('postgres.properties.create.default')) }}"
-    service_name: "{{ crd.postgres.service_name | default(schema | community.general.json_query('postgres.properties.service_name.default')) }}"
+    host: "{{ crd.postgres.host | default(schema | community.general.json_query('postgres.properties.host.default')) }}"
     port: "{{ crd.postgres.port | default(schema | community.general.json_query('postgres.properties.port.default')) }}"
     cluster_name: "{{ crd.postgres.cluster_name | default(schema | community.general.json_query('postgres.properties.cluster_name.default')) }}"
     secret_name: "{{ crd.postgres.secret_name | default(schema | community.general.json_query('postgres.properties.secret_name.default')) }}"
@@ -89,7 +89,7 @@ values:
         cpu: "{{ crd.postgres.resources.requests.cpu | default(schema | community.general.json_query('postgres.properties.resources.properties.requests.properties.cpu.default')) }}"
   solr:
     create: "{{ crd.solr.create | default(schema | community.general.json_query('solr.properties.create.default')) }}"
-    service_name: "{{ crd.solr.service_name | default(schema | community.general.json_query('solr.properties.service_name.default')) }}"
+    host: "{{ crd.solr.host | default(schema | community.general.json_query('solr.properties.host.default')) }}"
     port: "{{ crd.solr.port | default(schema | community.general.json_query('solr.properties.port.default')) }}"
     ssl: "{{ crd.solr.ssl | default(schema | community.general.json_query('solr.properties.ssl.default')) }}"
     route:
@@ -174,7 +174,7 @@ values:
       regsubsync: "{{ crd.kafka.topic_names.regsubsync | default(schema | community.general.json_query('kafka.properties.topic_names.properties.regsubsync.default')) }}"
     keystore_secret: "{{ crd.kafka.keystore_secret | default(schema | community.general.json_query('kafka.properties.keystore_secret.default')) }}"
     truststore_secret: "{{ crd.kafka.truststore_secret | default(schema | community.general.json_query('kafka.properties.truststore_secret.default')) }}"
-    service_name: "{{ crd.kafka.service_name | default(schema | community.general.json_query('kafka.properties.service_name.default')) }}"
+    host: "{{ crd.kafka.host | default(schema | community.general.json_query('kafka.properties.host.default')) }}"
     port: "{{ crd.kafka.port | default(schema | community.general.json_query('kafka.properties.port.default')) }}"
     group: "{{ crd.kafka.group | default(schema | community.general.json_query('kafka.properties.group.default')) }}"
     security_protocol: "{{ crd.kafka.security_protocol | default(schema | community.general.json_query('kafka.properties.security_protocol.default')) }}"
@@ -186,9 +186,9 @@ values:
     ssl_truststore_location: "{{ crd.kafka.ssl_truststore_location | default(schema | community.general.json_query('kafka.properties.ssl_truststore_location.default')) }}"
     ssl_ca_crt_location: "{{ crd.kafka.ssl_ca_crt_location | default(schema | community.general.json_query('kafka.properties.ssl_ca_crt_location.default')) }}"
   amq_broker:
-    mqtt_service_name: "{{ crd.amq_broker.mqtt_service_name | default(schema | community.general.json_query('amq_broker.properties.mqtt_service_name.default')) }}"
+    mqtt_host: "{{ crd.amq_broker.mqtt_host | default(schema | community.general.json_query('amq_broker.properties.mqtt_host.default')) }}"
     mqtt_port: "{{ crd.amq_broker.mqtt_port | default(schema | community.general.json_query('amq_broker.properties.mqtt_port.default')) }}"
-    amqp_service_name: "{{ crd.amq_broker.amqp_service_name | default(schema | community.general.json_query('amq_broker.properties.amqp_service_name.default')) }}"
+    amqp_host: "{{ crd.amq_broker.amqp_host | default(schema | community.general.json_query('amq_broker.properties.amqp_host.default')) }}"
     amqp_port: "{{ crd.amq_broker.amqp_port | default(schema | community.general.json_query('amq_broker.properties.amqp_port.default')) }}"
     iot_subscribe_topic: "{{ crd.amq_broker.iot_subscribe_topic | default(schema | community.general.json_query('amq_broker.properties.iot_subscribe_topic.default')) }}"
   ngsi_ld:
@@ -196,7 +196,7 @@ values:
     sync_replicas: "{{ crd.ngsi_ld.sync_replicas | default(schema | community.general.json_query('ngsi_ld.properties.sync_replicas.default')) }}"
     context: "{{ crd.ngsi_ld.context | default(schema | community.general.json_query('ngsi_ld.properties.context.default')) }}"
     ssl: "{{ crd.ngsi_ld.ssl | default(schema | community.general.json_query('ngsi_ld.properties.ssl.default')) }}"
-    service_name: "{{ crd.ngsi_ld.service_name | default(schema | community.general.json_query('ngsi_ld.properties.service_name.default')) }}"
+    host: "{{ crd.ngsi_ld.host | default(schema | community.general.json_query('ngsi_ld.properties.host.default')) }}"
     port: "{{ crd.ngsi_ld.port | default(schema | community.general.json_query('ngsi_ld.properties.port.default')) }}"
     resources:
       limits:

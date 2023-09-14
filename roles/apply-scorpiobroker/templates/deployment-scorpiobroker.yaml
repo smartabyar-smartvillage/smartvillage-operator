@@ -32,7 +32,7 @@ spec:
               value: '30000'
 
             - name: DBHOST
-              value: "{{ values.postgres.service_name }}"
+              value: "{{ values.postgres.host }}"
             - name: DBPORT
               value: "{{ values.postgres.port }}"
             - name: DBNAME
@@ -52,7 +52,7 @@ spec:
                   name: "{{ values.postgres.secret_name }}"
 
             - name: "BUSHOST"
-              value: "{{ values.kafka.service_name }}"
+              value: "{{ values.kafka.host }}"
             - name: "BUSPORT"
               value: "{{ values.kafka.port }}"
 

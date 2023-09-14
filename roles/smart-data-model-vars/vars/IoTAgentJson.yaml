@@ -10,21 +10,32 @@ schema:
     enum:
       - Managed
       - Unmanaged
-  amq_broker:
+  mongodb:
     type: object
     properties:
-      mqtt_service_name:
+      namespace:
         type: string
-        default: fiware-broker-mqtt-0-svc
+        default: mongodb
+        description: The namespace of the MongoDB
+      name:
+        type: string
+        default: mongodb
+        description: The name of the MongoDB
+  message_broker:
+    type: object
+    properties:
+      mqtt_host:
+        type: string
+        default: default-rabbitmq.rabbitmq.svc
       mqtt_port:
         type: number
         default: 1883
   orionld:
     type: object
     properties:
-      service_name:
+      host:
         type: string
-        default: scorpiobroker
+        default: scorpiobroker.scorpiobroker.svc
       port:
         type: number
         default: 9090
@@ -37,9 +48,9 @@ schema:
       north_port:
         type: number
         default: 4041
-      service_name:
+      host:
         type: string
-        default: iotagent-json
+        default: iotagent-json.iotagent.svc
       route:
         type: object
         properties:
@@ -48,7 +59,7 @@ schema:
             default: false
             description: |
               Whether to create a route for iotagent-json. 
-          host:
+          service_name:
             type: string
             description: |
               The Route host name for iotagent-json. 

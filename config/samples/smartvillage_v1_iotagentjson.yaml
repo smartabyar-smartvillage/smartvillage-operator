@@ -15,19 +15,24 @@ spec:
 
   managementState: |-
     Managed
-  amq_broker:
-    mqtt_service_name: |-
-      fiware-broker-mqtt-0-svc
+  mongodb:
+    namespace: |-
+      mongodb
+    name: |-
+      mongodb
+  message_broker:
+    mqtt_host: |-
+      default-rabbitmq.rabbitmq.svc
     mqtt_port: 1883
   orionld:
-    service_name: |-
-      scorpiobroker
+    host: |-
+      scorpiobroker.scorpiobroker.svc
     port: 9090
   iotagent:
     http_port: 7896
     north_port: 4041
-    service_name: |-
-      iotagent-json
+    host: |-
+      iotagent-json.iotagent.svc
     route:
       create: False
     log_level: |-

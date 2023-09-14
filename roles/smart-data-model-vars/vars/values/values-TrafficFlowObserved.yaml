@@ -43,10 +43,9 @@ values:
 
   managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
   iotagent:
-    service_name: "{{ crd.iotagent.service_name | default(schema | community.general.json_query('iotagent.properties.service_name.default')) }}"
+    host: "{{ crd.iotagent.host | default(schema | community.general.json_query('iotagent.properties.host.default')) }}"
     base_url: "{{ crd.iotagent.base_url | default('') }}"
   context_broker:
-    service_name: "{{ crd.context_broker.service_name | default(schema | community.general.json_query('context_broker.properties.service_name.default')) }}"
     base_url: "{{ crd.context_broker.base_url | default(schema | community.general.json_query('context_broker.properties.base_url.default')) }}"
   ngsi_ld:
     service: "{{ crd.ngsi_ld.service | default(schema | community.general.json_query('ngsi_ld.properties.service.default')) }}"

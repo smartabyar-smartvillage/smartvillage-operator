@@ -2,19 +2,22 @@ values:
 
 
   managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
-  amq_broker:
-    mqtt_service_name: "{{ crd.amq_broker.mqtt_service_name | default(schema | community.general.json_query('amq_broker.properties.mqtt_service_name.default')) }}"
-    mqtt_port: "{{ crd.amq_broker.mqtt_port | default(schema | community.general.json_query('amq_broker.properties.mqtt_port.default')) }}"
+  mongodb:
+    namespace: "{{ crd.mongodb.namespace | default(schema | community.general.json_query('mongodb.properties.namespace.default')) }}"
+    name: "{{ crd.mongodb.name | default(schema | community.general.json_query('mongodb.properties.name.default')) }}"
+  message_broker:
+    mqtt_host: "{{ crd.message_broker.mqtt_host | default(schema | community.general.json_query('message_broker.properties.mqtt_host.default')) }}"
+    mqtt_port: "{{ crd.message_broker.mqtt_port | default(schema | community.general.json_query('message_broker.properties.mqtt_port.default')) }}"
   orionld:
-    service_name: "{{ crd.orionld.service_name | default(schema | community.general.json_query('orionld.properties.service_name.default')) }}"
+    host: "{{ crd.orionld.host | default(schema | community.general.json_query('orionld.properties.host.default')) }}"
     port: "{{ crd.orionld.port | default(schema | community.general.json_query('orionld.properties.port.default')) }}"
   iotagent:
     http_port: "{{ crd.iotagent.http_port | default(schema | community.general.json_query('iotagent.properties.http_port.default')) }}"
     north_port: "{{ crd.iotagent.north_port | default(schema | community.general.json_query('iotagent.properties.north_port.default')) }}"
-    service_name: "{{ crd.iotagent.service_name | default(schema | community.general.json_query('iotagent.properties.service_name.default')) }}"
+    host: "{{ crd.iotagent.host | default(schema | community.general.json_query('iotagent.properties.host.default')) }}"
     route:
       create: "{{ crd.iotagent.route.create | default(schema | community.general.json_query('iotagent.properties.route.properties.create.default')) }}"
-      host: "{{ crd.iotagent.route.host | default('') }}"
+      service_name: "{{ crd.iotagent.route.service_name | default('') }}"
     log_level: "{{ crd.iotagent.log_level | default(schema | community.general.json_query('iotagent.properties.log_level.default')) }}"
     replicas: "{{ crd.iotagent.replicas | default(schema | community.general.json_query('iotagent.properties.replicas.default')) }}"
     resources:

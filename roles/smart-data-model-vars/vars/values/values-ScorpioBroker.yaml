@@ -6,7 +6,7 @@ values:
     service_name: "{{ crd.scorpiobroker.service_name | default(schema | community.general.json_query('scorpiobroker.properties.service_name.default')) }}"
     route:
       create: "{{ crd.scorpiobroker.route.create | default(schema | community.general.json_query('scorpiobroker.properties.route.properties.create.default')) }}"
-      host: "{{ crd.scorpiobroker.route.host | default('') }}"
+      host: "{{ crd.scorpiobroker.route.host | default(schema | community.general.json_query('scorpiobroker.properties.route.properties.host.default')) }}"
     port: "{{ crd.scorpiobroker.port | default(schema | community.general.json_query('scorpiobroker.properties.port.default')) }}"
     cors_allowed_origin: "{{ crd.scorpiobroker.cors_allowed_origin | default('') }}"
     log_level: "{{ crd.scorpiobroker.log_level | default(schema | community.general.json_query('scorpiobroker.properties.log_level.default')) }}"
@@ -19,7 +19,7 @@ values:
         cpu: "{{ crd.scorpiobroker.resources.requests.cpu | default(schema | community.general.json_query('scorpiobroker.properties.resources.properties.requests.properties.cpu.default')) }}"
         memory: "{{ crd.scorpiobroker.resources.requests.memory | default(schema | community.general.json_query('scorpiobroker.properties.resources.properties.requests.properties.memory.default')) }}"
   postgres:
-    service_name: "{{ crd.postgres.service_name | default(schema | community.general.json_query('postgres.properties.service_name.default')) }}"
+    host: "{{ crd.postgres.host | default(schema | community.general.json_query('postgres.properties.host.default')) }}"
     port: "{{ crd.postgres.port | default(schema | community.general.json_query('postgres.properties.port.default')) }}"
     secret_name: "{{ crd.postgres.secret_name | default(schema | community.general.json_query('postgres.properties.secret_name.default')) }}"
   kafka:
@@ -36,7 +36,7 @@ values:
       regsubsync: "{{ crd.kafka.topic_names.regsubsync | default(schema | community.general.json_query('kafka.properties.topic_names.properties.regsubsync.default')) }}"
     keystore_secret: "{{ crd.kafka.keystore_secret | default(schema | community.general.json_query('kafka.properties.keystore_secret.default')) }}"
     truststore_secret: "{{ crd.kafka.truststore_secret | default(schema | community.general.json_query('kafka.properties.truststore_secret.default')) }}"
-    service_name: "{{ crd.kafka.service_name | default(schema | community.general.json_query('kafka.properties.service_name.default')) }}"
+    host: "{{ crd.kafka.host | default(schema | community.general.json_query('kafka.properties.host.default')) }}"
     port: "{{ crd.kafka.port | default(schema | community.general.json_query('kafka.properties.port.default')) }}"
     group: "{{ crd.kafka.group | default(schema | community.general.json_query('kafka.properties.group.default')) }}"
     security_protocol: "{{ crd.kafka.security_protocol | default(schema | community.general.json_query('kafka.properties.security_protocol.default')) }}"

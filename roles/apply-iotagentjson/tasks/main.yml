@@ -4,7 +4,7 @@
     var: values
 - name: "Query MongoDB pod"
   set_fact:
-    mongodb_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector='app.kubernetes.io/component=mongodb,app.kubernetes.io/instance=mongodb-orion,app.kubernetes.io/name=mongodb-orion', namespace=ansible_operator_meta.namespace)[0].metadata.name }}"
+    mongodb_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector=('app.kubernetes.io/component=mongodb,app.kubernetes.io/instance=' + values.mongodb.name + ',app.kubernetes.io/name=' + values.mongodb.name), namespace=values.mongodb.namespace)[0].metadata.name }}"
     
 - name: Run create database scripts on MongoDB
   kubernetes.core.k8s_exec:
@@ -14,7 +14,7 @@
       {{ MONGODB_CREATE_USER_COMMAND_iotagentjson | indent(6, false) }}
       {{ MONGODB_CREATE_COLLECTIONS_COMMAND_iotagentjson | indent(6, false) }}
       '"'"''
-    namespace: "{{ ansible_operator_meta.namespace }}"
+    namespace: "{{ values.mongodb.namespace }}"
   register: create_user
   ignore_errors: True
   changed_when: false

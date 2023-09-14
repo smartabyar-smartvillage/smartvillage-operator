@@ -20,6 +20,8 @@
       - value: "resources.requests.cpu={{ values.rabbitmq.resources.requests.cpu }}"
       - value: "resources.requests.memory={{ values.rabbitmq.resources.requests.memory }}"
       - value: extraPlugins=rabbitmq_mqtt
+      - value: 'service.extraPorts=[{"name":"mqtt","port":1883,"targetPort":1883}]'
+        value_type: json
       - value: podSecurityContext.enabled=false
       - value: containerSecurityContext.enabled=false
     release_namespace: "{{ ansible_operator_meta.namespace }}"

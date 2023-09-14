@@ -1,20 +1,20 @@
 ---
 
-- name: "Remove iotagent-json service on OpenShift"
+- name: "Delete iotagent-json service on OpenShift"
   k8s:
     state: absent
     api_version: v1
     kind: Service
     name: "iotagent-json"
     namespace: "{{ ansible_operator_meta.namespace }}"
-- name: "Install iotagent-json deployment on OpenShift"
+- name: "Delete iotagent-json deployment on OpenShift"
   k8s:
     state: absent
     api_version: apps/v1
     kind: Deployment
     name: "iotagent-json"
     namespace: "{{ ansible_operator_meta.namespace }}"
-- name: "Install iotagent-json route on OpenShift"
+- name: "Delete iotagent-json route on OpenShift"
   k8s:
     state: absent
     kind: Route

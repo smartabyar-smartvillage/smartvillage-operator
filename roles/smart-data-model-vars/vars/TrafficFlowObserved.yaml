@@ -12,20 +12,17 @@ schema:
   iotagent:
     type: object
     properties:
-      service_name:
+      host:
         type: string
-        default: iotagent-json
+        default: iotagent-json.iotagent.svc
       base_url:
         type: string
   context_broker:
     type: object
     properties:
-      service_name:
-        type: string
-        default: orion-ld
       base_url:
         type: string
-        default: http://scorpiobroker:9090
+        default: http://scorpiobroker.scorpiobroker.svc:9090
   ngsi_ld:
     type: object
     properties:
@@ -58,7 +55,7 @@ schema:
         default: 'Sjobovagen-SE'
       mqtt_host:
         type: string
-        default: fiware-broker-mqtt-0-svc
+        default: default-rabbitmq.rabbitmq.svc
       mqtt_port:
         type: number
         default: 1883

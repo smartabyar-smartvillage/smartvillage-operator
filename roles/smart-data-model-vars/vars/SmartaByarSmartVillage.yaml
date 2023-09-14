@@ -148,9 +148,9 @@ schema:
         default: true
         description: |
           Determines if a new Zookeeper cluster will be created. 
-      service_name:
+      host:
         type: string
-        default: zookeeper
+        default: zookeeper.zookeeper.svc
       port:
         type: number
         default: 2181
@@ -258,9 +258,9 @@ schema:
         default: true
         description: |
           Determines if a new Crunchy Postgres cluster will be created. 
-      service_name:
+      host:
         type: string
-        default: postgres-primary
+        default: postgres-primary.postgres.svc
         description: |
           The host name to connect to PostgreSQL. 
       port:
@@ -310,9 +310,9 @@ schema:
         default: true
         description: |
           Determines if a new Apache Solr cluster will be created. 
-      service_name:
+      host:
         type: string
-        default: default-solrcloud-common
+        default: default-solrcloud-common.solr.svc
       port:
         type: number
         default: 80
@@ -582,9 +582,9 @@ schema:
       truststore_secret:
         type: string
         default: smartvillage-kafka-cluster-ca-cert
-      service_name:
+      host:
         type: string
-        default: smartvillage-kafka-kafka-bootstrap
+        default: default-kafka-bootstrap.kafka.svc
       port:
         type: number
         default: 9093
@@ -619,15 +619,15 @@ schema:
   amq_broker:
     type: object
     properties:
-      mqtt_service_name:
+      mqtt_host:
         type: string
-        default: fiware-broker-mqtt-0-svc
+        default: default-rabbitmq.rabbitmq.svc
       mqtt_port:
         type: number
         default: 1883
-      amqp_service_name:
+      amqp_host:
         type: string
-        default: fiware-broker-amqp-0-svc
+        default: default-rabbitmq.rabbitmq.svc
       amqp_port:
         type: number
         default: 5672
@@ -654,9 +654,9 @@ schema:
       ssl:
         type: boolean
         default: false
-      service_name:
+      host:
         type: string
-        default: scorpiobroker
+        default: scorpiobroker.scorpiobroker.svc
       port:
         type: number
         default: 9090

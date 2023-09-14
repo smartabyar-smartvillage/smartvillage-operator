@@ -41,29 +41,44 @@ spec:
                 type: string
                 default: |-
                   Managed
-              amq_broker:
+              mongodb:
                 type: object
                 properties:
+                  name:
+                    default: mongodb
+                    description: The name of the MongoDB
+                    type: string
+                  namespace:
+                    default: mongodb
+                    description: The namespace of the MongoDB
+                    type: string
+
+              message_broker:
+                type: object
+                properties:
+                  mqtt_host:
+                    default: default-rabbitmq.rabbitmq.svc
+                    type: string
                   mqtt_port:
                     default: 1883
                     type: number
-                  mqtt_service_name:
-                    default: fiware-broker-mqtt-0-svc
-                    type: string
 
               orionld:
                 type: object
                 properties:
+                  host:
+                    default: scorpiobroker.scorpiobroker.svc
+                    type: string
                   port:
                     default: 9090
                     type: number
-                  service_name:
-                    default: scorpiobroker
-                    type: string
 
               iotagent:
                 type: object
                 properties:
+                  host:
+                    default: iotagent-json.iotagent.svc
+                    type: string
                   http_port:
                     default: 7896
                     type: number
@@ -110,13 +125,10 @@ spec:
                         default: false
                         description: "Whether to create a route for iotagent-json. \n"
                         type: boolean
-                      host:
+                      service_name:
                         description: "The Route host name for iotagent-json. \n"
                         type: string
                     type: object
-                  service_name:
-                    default: iotagent-json
-                    type: string
 
           status:
             description: Status defines the observed state of IoTAgentJson

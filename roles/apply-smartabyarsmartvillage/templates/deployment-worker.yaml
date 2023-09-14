@@ -117,7 +117,7 @@ spec:
               value: "{{ values.site.java_opts }}"
 
             - name: ZOOKEEPER_HOST_NAME
-              value: "{{ values.zookeeper.service_name }}"
+              value: "{{ values.zookeeper.host }}"
             - name: ZOOKEEPER_PORT
               value: "{{ values.zookeeper.port }}"
             - name: ZOOKEEPER_MAX_RETRIES
@@ -155,7 +155,7 @@ spec:
               value: "{{ values.auth.token_uri }}"
 
             - name: JDBC_HOST
-              value: "{{ values.postgres.service_name }}"
+              value: "{{ values.postgres.host }}"
             - name: JDBC_PORT
               value: "{{ values.postgres.port }}"
             - name: JDBC_DATABASE
@@ -175,13 +175,13 @@ spec:
                   name: {{ values.postgres.secret_name }}
 
             - name: SOLR_HOST_NAME
-              value: "{{ values.solr.service_name }}"
+              value: "{{ values.solr.host }}"
             - name: SOLR_PORT
               value: "{{ values.solr.port }}"
             - name: SOLR_SSL
               value: "{{ values.solr.ssl }}"
             - name: SOLR_URL
-              value: "{{ 'https://' if values.solr.ssl else 'http://' }}{{ values.solr.service_name }}:{{ values.solr.port }}/solr/{{ values.solr.collection }}"
+              value: "{{ 'https://' if values.solr.ssl else 'http://' }}{{ values.solr.host }}:{{ values.solr.port }}/solr/{{ values.solr.collection }}"
             - name: SOLR_COLLECTION
               value: "{{ values.solr.collection }}"
 {% if values.email.enabled %}
@@ -327,7 +327,7 @@ spec:
               value: /usr/local/share/sumo/fcd
 
             - name: "KAFKA_BROKERS"
-              value: "{{ values.kafka.service_name }}:{{ values.kafka.port }}"
+              value: "{{ values.kafka.host }}:{{ values.kafka.port }}"
             - name: "KAFKA_GROUP"
               value: "{{ values.kafka.group }}"
             - name: "KAFKA_SECURITY_PROTOCOL"
@@ -352,11 +352,11 @@ spec:
               value: "{{ values.kafka.ssl_truststore_location }}"
 
             - name: "MQTT_HOST"
-              value: "{{ values.amq_broker.mqtt_service_name }}"
+              value: "{{ values.message_broker.mqtt_service_name }}"
             - name: "MQTT_PORT"
-              value: "{{ values.amq_broker.mqtt_port }}"
+              value: "{{ values.message_broker.mqtt_port }}"
             - name: "MQTT_IOT_SUBSCRIBE_TOPIC"
-              value: "{{ values.amq_broker.iot_subscribe_topic }}"
+              value: "{{ values.message_broker.iot_subscribe_topic }}"
           volumeMounts:
             - mountPath: /opt/kafka/keystore
               name: "{{ values.kafka.keystore_secret }}"

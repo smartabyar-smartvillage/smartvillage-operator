@@ -92,6 +92,7 @@ spec:
                         description: "Whether to create a route for Scorpio Broker. \n"
                         type: boolean
                       host:
+                        default: scorpiobroker.scorpiobroker.svc
                         description: "The Route host name for Scorpio Broker. \n"
                         type: string
                     type: object
@@ -102,6 +103,10 @@ spec:
               postgres:
                 type: object
                 properties:
+                  host:
+                    default: postgres-primary.postgres.svc
+                    description: "The host name to connect to PostgreSQL. \n"
+                    type: string
                   port:
                     default: 5432
                     description: "The port to connect to PostgreSQL. \n"
@@ -111,16 +116,15 @@ spec:
                     description: "Optional secret name where the postgres secrets are stored. \nIf empty,\
                       \ \"postgres-pguser-scorpiobroker\" will be used. \n"
                     type: string
-                  service_name:
-                    default: postgres-primary
-                    description: "The host name to connect to PostgreSQL. \n"
-                    type: string
 
               kafka:
                 type: object
                 properties:
                   group:
                     default: aio-runner
+                    type: string
+                  host:
+                    default: default-kafka-bootstrap.kafka.svc
                     type: string
                   keystore_secret:
                     default: scorpiobroker-kafka
@@ -130,9 +134,6 @@ spec:
                     type: number
                   security_protocol:
                     default: SSL
-                    type: string
-                  service_name:
-                    default: smartvillage-kafka-kafka-bootstrap
                     type: string
                   ssl_ca_crt_location:
                     default: /opt/kafka/truststore/ca.crt
@@ -189,7 +190,7 @@ spec:
                         type: string
                     type: object
                   truststore_secret:
-                    default: smartvillage-kafka-cluster-ca-cert
+                    default: default-cluster-ca-cert
                     type: string
 
           status:

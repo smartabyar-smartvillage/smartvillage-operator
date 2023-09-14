@@ -26,6 +26,7 @@ schema:
               Whether to create a route for Scorpio Broker. 
           host:
             type: string
+            default: scorpiobroker.scorpiobroker.svc
             description: |
               The Route host name for Scorpio Broker. 
       port:
@@ -76,9 +77,9 @@ schema:
   postgres:
     type: object
     properties:
-      service_name:
+      host:
         type: string
-        default: postgres-primary
+        default: postgres-primary.postgres.svc
         description: |
           The host name to connect to PostgreSQL. 
       port:
@@ -134,10 +135,10 @@ schema:
         default: scorpiobroker-kafka
       truststore_secret:
         type: string
-        default: smartvillage-kafka-cluster-ca-cert
-      service_name:
+        default: default-cluster-ca-cert
+      host:
         type: string
-        default: smartvillage-kafka-kafka-bootstrap
+        default: default-kafka-bootstrap.kafka.svc
       port:
         type: number
         default: 9093

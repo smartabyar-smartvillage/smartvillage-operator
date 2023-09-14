@@ -53,7 +53,7 @@ spec:
           env:
 
             - name: "KAFKA_BROKERS"
-              value: "{{ values.kafka.service_name }}:{{ values.kafka.port }}"
+              value: "{{ values.kafka.host }}:{{ values.kafka.port }}"
             - name: "KAFKA_GROUP"
               value: "{{ values.kafka.group }}"
             - name: "KAFKA_SECURITY_PROTOCOL"
