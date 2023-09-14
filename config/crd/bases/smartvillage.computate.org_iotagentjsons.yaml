@@ -62,6 +62,10 @@ spec:
                   mqtt_port:
                     default: 1883
                     type: number
+                  name:
+                    default: default
+                    description: The name of the RabbitMQ Broker
+                    type: string
 
               orionld:
                 type: object

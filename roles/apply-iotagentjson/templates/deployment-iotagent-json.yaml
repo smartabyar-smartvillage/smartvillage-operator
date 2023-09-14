@@ -71,6 +71,13 @@ spec:
               value: '{{ values.message_broker.mqtt_host }}'
             - name: IOTA_MQTT_PORT
               value: '{{ values.message_broker.mqtt_port }}'
+            - name: IOTA_MQTT_USER
+              value: 'user'
+            - name: IOTA_MQTT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ values.message_broker.name }}-rabbitmq"
+                  key: rabbitmq-password
             - name: IOTA_MQTT_REJECT_UNAUTHORIZED
               value: 'false'
             - name: IOTA_AMQP_DISABLED

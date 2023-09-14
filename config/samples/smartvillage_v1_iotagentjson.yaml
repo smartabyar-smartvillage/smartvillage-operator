@@ -21,6 +21,8 @@ spec:
     name: |-
       mongodb
   message_broker:
+    name: |-
+      default
     mqtt_host: |-
       default-rabbitmq.rabbitmq.svc
     mqtt_port: 1883

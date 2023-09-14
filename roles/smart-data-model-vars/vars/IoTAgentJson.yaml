@@ -24,6 +24,10 @@ schema:
   message_broker:
     type: object
     properties:
+      name:
+        type: string
+        default: default
+        description: The name of the RabbitMQ Broker
       mqtt_host:
         type: string
         default: default-rabbitmq.rabbitmq.svc
