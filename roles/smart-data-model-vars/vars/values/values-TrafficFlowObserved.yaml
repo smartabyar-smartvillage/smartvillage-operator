@@ -43,10 +43,15 @@ values:
 
   managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
   iotagent:
-    host: "{{ crd.iotagent.host | default(schema | community.general.json_query('iotagent.properties.host.default')) }}"
+    name: "{{ crd.iotagent.name | default(schema | community.general.json_query('iotagent.properties.name.default')) }}"
+    namespace: "{{ crd.iotagent.namespace | default(schema | community.general.json_query('iotagent.properties.namespace.default')) }}"
+    service_name: "{{ crd.iotagent.service_name | default(schema | community.general.json_query('iotagent.properties.service_name.default')) }}"
     base_url: "{{ crd.iotagent.base_url | default('') }}"
   context_broker:
-    base_url: "{{ crd.context_broker.base_url | default(schema | community.general.json_query('context_broker.properties.base_url.default')) }}"
+    name: "{{ crd.context_broker.name | default(schema | community.general.json_query('context_broker.properties.name.default')) }}"
+    namespace: "{{ crd.context_broker.namespace | default(schema | community.general.json_query('context_broker.properties.namespace.default')) }}"
+    service_name: "{{ crd.context_broker.service_name | default(schema | community.general.json_query('context_broker.properties.service_name.default')) }}"
+    base_url: "{{ crd.context_broker.base_url | default('') }}"
   ngsi_ld:
     service: "{{ crd.ngsi_ld.service | default(schema | community.general.json_query('ngsi_ld.properties.service.default')) }}"
     service_path: "{{ crd.ngsi_ld.service_path | default(schema | community.general.json_query('ngsi_ld.properties.service_path.default')) }}"
@@ -54,12 +59,16 @@ values:
   service_group:
     resource: "{{ crd.service_group.resource | default(schema | community.general.json_query('service_group.properties.resource.default')) }}"
     apikey: "{{ crd.service_group.apikey | default(schema | community.general.json_query('service_group.properties.apikey.default')) }}"
+  message_broker:
+    transport: "{{ crd.message_broker.transport | default(schema | community.general.json_query('message_broker.properties.transport.default')) }}"
+    host: "{{ crd.message_broker.host | default(schema | community.general.json_query('message_broker.properties.host.default')) }}"
+    user: "{{ crd.message_broker.user | default(schema | community.general.json_query('message_broker.properties.user.default')) }}"
+    secret:
+      name: "{{ crd.message_broker.secret.name | default(schema | community.general.json_query('message_broker.properties.secret.properties.name.default')) }}"
+      property: "{{ crd.message_broker.secret.property | default(schema | community.general.json_query('message_broker.properties.secret.properties.property.default')) }}"
+    port: "{{ crd.message_broker.port | default(schema | community.general.json_query('message_broker.properties.port.default')) }}"
   device:
-    transport: "{{ crd.device.transport | default(schema | community.general.json_query('device.properties.transport.default')) }}"
     id: "{{ crd.device.id | default(schema | community.general.json_query('device.properties.id.default')) }}"
-    mqtt_host: "{{ crd.device.mqtt_host | default(schema | community.general.json_query('device.properties.mqtt_host.default')) }}"
-    mqtt_port: "{{ crd.device.mqtt_port | default(schema | community.general.json_query('device.properties.mqtt_port.default')) }}"
-    mqtt_subscription_topic: "{{ crd.device.mqtt_subscription_topic | default(schema | community.general.json_query('device.properties.mqtt_subscription_topic.default')) }}"
     subscription_url: "{{ crd.device.subscription_url | default(schema | community.general.json_query('device.properties.subscription_url.default')) }}"
   smartabyar_smartvillage:
     enabled: "{{ crd.smartabyar_smartvillage.enabled | default(schema | community.general.json_query('smartabyar_smartvillage.properties.enabled.default')) }}"

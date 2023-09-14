@@ -2,7 +2,7 @@
 device_id: "{{ values.device.id }}"
 entity_name: "{{ values.device.id }}"
 entity_type: "{{ENTITY_TYPE }}"
-transport: "{{ values.device.transport }}"
+transport: "{{ values.message_broker.transport }}"
 attributes:
 {% for key, attribute in smart_data_model.attributes.items() %}
   - object_id: {{ key }}

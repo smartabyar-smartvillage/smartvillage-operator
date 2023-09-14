@@ -26,7 +26,7 @@ schema:
               Whether to create a route for Scorpio Broker. 
           host:
             type: string
-            default: scorpiobroker.scorpiobroker.svc
+            default: scorpiobroker.apps-crc.testing
             description: |
               The Route host name for Scorpio Broker. 
       port:

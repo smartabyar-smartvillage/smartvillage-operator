@@ -84,6 +84,12 @@ spec:
                 properties:
                   base_url:
                     type: string
+                  name:
+                    default: iotagent-json
+                    type: string
+                  namespace:
+                    default: iotagent
+                    type: string
                   service_name:
                     default: iotagent-json
                     type: string
@@ -92,7 +98,12 @@ spec:
                 type: object
                 properties:
                   base_url:
-                    default: http://scorpiobroker:9090
+                    type: string
+                  name:
+                    default: scorpiobroker
+                    type: string
+                  namespace:
+                    default: scorpiobroker
                     type: string
                   service_name:
                     default: scorpiobroker
@@ -121,26 +132,42 @@ spec:
                     default: /iot/json
                     type: string
 
+              message_broker:
+                type: object
+                properties:
+                  host:
+                    default: default-rabbitmq.rabbitmq.svc
+                    type: string
+                  port:
+                    default: 1883
+                    type: number
+                  secret:
+                    properties:
+                      name:
+                        default: default-rabbitmq
+                        type: string
+                      property:
+                        default: rabbitmq-password
+                        type: string
+                    type: object
+                  transport:
+                    default: MQTT
+                    enum:
+                    - MQTT
+                    - AMQP
+                    type: string
+                  user:
+                    default: user
+                    type: string
+
               device:
                 type: object
                 properties:
                   id:
                     default: VeberodIntersection1
                     type: string
-                  mqtt_host:
-                    default: default-rabbitmq.rabbitmq.svc
-                    type: string
-                  mqtt_port:
-                    default: 1883
-                    type: number
-                  mqtt_subscription_topic:
-                    default: iot/subscribe
-                    type: string
                   subscription_url:
                     default: http://orionld-smartvillage-sync:8080
-                    type: string
-                  transport:
-                    default: MQTT
                     type: string
 
               smartabyar_smartvillage:

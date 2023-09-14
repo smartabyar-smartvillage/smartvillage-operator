@@ -12,6 +12,12 @@ schema:
   iotagent:
     type: object
     properties:
+      name:
+        type: string
+        default: iotagent-json
+      namespace:
+        type: string
+        default: iotagent
       service_name:
         type: string
         default: iotagent-json
@@ -20,12 +26,17 @@ schema:
   context_broker:
     type: object
     properties:
+      name:
+        type: string
+        default: scorpiobroker
+      namespace:
+        type: string
+        default: scorpiobroker
       service_name:
         type: string
         default: scorpiobroker
       base_url:
         type: string
-        default: http://scorpiobroker:9090
   ngsi_ld:
     type: object
     properties:
@@ -47,24 +58,39 @@ schema:
       apikey:
         type: string
         default: TrafficSimulation
-  device:
+  message_broker:
     type: object
     properties:
       transport:
         type: string
         default: MQTT
+        enum:
+          - MQTT
+          - AMQP
+      host:
+        type: string
+        default: default-rabbitmq.rabbitmq.svc
+      user:
+        type: string
+        default: user
+      secret:
+        type: object
+        properties:
+          name:
+            type: string
+            default: default-rabbitmq
+          property:
+            type: string
+            default: rabbitmq-password
+      port:
+        type: number
+        default: 1883
+  device:
+    type: object
+    properties:
       id:
         type: string
         default: 'VeberodIntersection1'
-      mqtt_host:
-        type: string
-        default: default-rabbitmq.rabbitmq.svc
-      mqtt_port:
-        type: number
-        default: 1883
-      mqtt_subscription_topic:
-        type: string
-        default: iot/subscribe
       subscription_url:
         type: string
         default: "http://orionld-smartvillage-sync:8080"

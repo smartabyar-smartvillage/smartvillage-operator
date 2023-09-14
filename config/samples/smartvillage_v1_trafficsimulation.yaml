@@ -28,13 +28,19 @@ spec:
   managementState: |-
     Managed
   iotagent:
+    name: |-
+      iotagent-json
+    namespace: |-
+      iotagent
     service_name: |-
       iotagent-json
   context_broker:
+    name: |-
+      scorpiobroker
+    namespace: |-
+      scorpiobroker
     service_name: |-
       scorpiobroker
-    base_url: |-
-      http://scorpiobroker:9090
   ngsi_ld:
     service: |-
       trafficsimulations
@@ -47,16 +53,22 @@ spec:
       /iot/json
     apikey: |-
       TrafficSimulation
-  device:
+  message_broker:
     transport: |-
       MQTT
+    host: |-
+      default-rabbitmq.rabbitmq.svc
+    user: |-
+      user
+    secret:
+      name: |-
+        default-rabbitmq
+      property: |-
+        rabbitmq-password
+    port: 1883
+  device:
     id: |-
       VeberodIntersection1
-    mqtt_host: |-
-      default-rabbitmq.rabbitmq.svc
-    mqtt_port: 1883
-    mqtt_subscription_topic: |-
-      iot/subscribe
     subscription_url: |-
       http://orionld-smartvillage-sync:8080
   smartabyar_smartvillage:

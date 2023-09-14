@@ -17,11 +17,19 @@ spec:
   managementState: |-
     Managed
   iotagent:
-    host: |-
-      iotagent-json.iotagent.svc
+    name: |-
+      iotagent-json
+    namespace: |-
+      iotagent
+    service_name: |-
+      iotagent-json
   context_broker:
-    base_url: |-
-      http://scorpiobroker.scorpiobroker.svc:9090
+    name: |-
+      scorpiobroker
+    namespace: |-
+      scorpiobroker
+    service_name: |-
+      scorpiobroker
   ngsi_ld:
     service: |-
       smarttrafficlights
@@ -34,16 +42,22 @@ spec:
       /iot/json
     apikey: |-
       VeberodIntersection1
-  device:
+  message_broker:
     transport: |-
       MQTT
+    host: |-
+      default-rabbitmq.rabbitmq.svc
+    user: |-
+      user
+    secret:
+      name: |-
+        default-rabbitmq
+      property: |-
+        rabbitmq-password
+    port: 1883
+  device:
     id: |-
       Sjobovagen-SE
-    mqtt_host: |-
-      default-rabbitmq.rabbitmq.svc
-    mqtt_port: 1883
-    mqtt_subscription_topic: |-
-      iot/subscribe
     subscription_url: |-
       http://orionld-smartvillage-sync:8080
   smartabyar_smartvillage:
