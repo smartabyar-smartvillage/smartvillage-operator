@@ -23,8 +23,6 @@ spec:
     ssl: False
     route:
       create: False
-      host_name: |-
-        solr.apps-crc.testing
     replicas: 1
     storage: |-
       10Gi

@@ -37,7 +37,6 @@ schema:
               Whether to create a route for Solr. 
           host_name:
             type: string
-            default: solr.apps-crc.testing
             description: |
               The Route host name for Solr. 
       replicas:

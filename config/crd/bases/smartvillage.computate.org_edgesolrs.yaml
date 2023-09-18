@@ -109,7 +109,6 @@ spec:
                         description: "Whether to create a route for Solr. \n"
                         type: boolean
                       host_name:
-                        default: solr.apps-crc.testing
                         description: "The Route host name for Solr. \n"
                         type: string
                     type: object
