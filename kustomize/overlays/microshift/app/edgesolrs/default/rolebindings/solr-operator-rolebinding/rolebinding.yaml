@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: solr-operator-rolebinding
+  namespace: solr
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: solr-operator-role
+subjects:
+  - kind: ServiceAccount
+    name: solr
