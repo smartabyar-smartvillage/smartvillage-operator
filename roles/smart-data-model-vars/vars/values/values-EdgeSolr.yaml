@@ -10,7 +10,7 @@ values:
     ssl: "{{ crd.solr.ssl | default(schema | community.general.json_query('solr.properties.ssl.default')) }}"
     route:
       create: "{{ crd.solr.route.create | default(schema | community.general.json_query('solr.properties.route.properties.create.default')) }}"
-      host_name: "{{ crd.solr.route.host_name | default(schema | community.general.json_query('solr.properties.route.properties.host_name.default')) }}"
+      host_name: "{{ crd.solr.route.host_name | default('') }}"
     replicas: "{{ crd.solr.replicas | default(schema | community.general.json_query('solr.properties.replicas.default')) }}"
     storage: "{{ crd.solr.storage | default(schema | community.general.json_query('solr.properties.storage.default')) }}"
     resources:
