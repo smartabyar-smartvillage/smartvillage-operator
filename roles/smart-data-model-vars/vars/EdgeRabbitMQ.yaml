@@ -9,6 +9,9 @@ schema:
     enum:
       - Managed
       - Unmanaged
+  enable_dev_nodeports:
+    type: boolean
+    default: false
   rabbitmq:
     type: object
     properties:

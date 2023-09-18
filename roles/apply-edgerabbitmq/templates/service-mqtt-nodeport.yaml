@@ -1,0 +1,11 @@
+spec:
+  ports:
+    - name: mqtt
+      protocol: TCP
+      port: 1883
+      targetPort: 1883
+      nodePort: {{ mqtt_nodeport }}
+  type: NodePort
+  selector:
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/name: rabbitmq

@@ -71,7 +71,7 @@ spec:
               value: '{{ values.message_broker.mqtt_host }}'
             - name: IOTA_MQTT_PORT
               value: '{{ values.message_broker.mqtt_port }}'
-            - name: IOTA_MQTT_USER
+            - name: IOTA_MQTT_USERNAME
               value: 'user'
             - name: IOTA_MQTT_PASSWORD
               valueFrom:

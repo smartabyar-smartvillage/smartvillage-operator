@@ -2,6 +2,7 @@ values:
 
 
   managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
+  enable_dev_nodeports: "{{ crd.enable_dev_nodeports | default(schema | community.general.json_query('enable_dev_nodeports.default')) }}"
   rabbitmq:
     name: "{{ crd.rabbitmq.name | default(schema | community.general.json_query('rabbitmq.properties.name.default')) }}"
     replicas: "{{ crd.rabbitmq.replicas | default(schema | community.general.json_query('rabbitmq.properties.replicas.default')) }}"

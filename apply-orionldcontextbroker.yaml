@@ -26,3 +26,4 @@
       name: "{{ ansible_operator_meta_name }}"
       namespace: "{{ ansible_operator_meta_namespace }}"
     verify_connections: false
+    enable_dev_nodeports: true

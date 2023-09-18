@@ -39,6 +39,9 @@ spec:
                 type: string
                 default: |-
                   Managed
+              enable_dev_nodeports:
+                type: boolean
+                default: False
               rabbitmq:
                 type: object
                 properties:

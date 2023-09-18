@@ -1,6 +1,17 @@
 ---
 # tasks file for EdgeRabbitMQ
 
+- block:
+    - name: "{{ 'Install' if values.enable_dev_nodeports else 'Skip' }} mqtt-nodeport NodePort service on OpenShift"
+      k8s:
+        state: "{{ 'present' if values.enable_dev_nodeports else 'absent' }}"
+        api_version: v1
+        kind: Service
+        name: "mqtt-nodeport"
+        namespace: "{{ ansible_operator_meta.namespace }}"
+        definition: "{{ lookup('template', 'service-mqtt-nodeport.yaml') }}"
+  when: values.enable_dev_nodeports
+
 - name: Add rabbitmq chart repo
   kubernetes.core.helm_repository:
     name: bitnami

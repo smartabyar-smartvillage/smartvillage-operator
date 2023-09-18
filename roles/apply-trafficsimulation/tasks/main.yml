@@ -39,11 +39,11 @@
 - name: "Configure context_broker_base_url"
   set_fact:
     context_broker_base_url: "http://{{ query('kubernetes.core.k8s', kind='Route', resource_name=values.context_broker.name, namespace=values.context_broker.namespace)[0].spec.host }}"
-  when: values.context_broker.base_url == '' and verify_connections is defined and not verify_connections
+  when: values.context_broker.base_url == '' and enable_dev_nodeports is defined and enable_dev_nodeports
 - name: "Configure context_broker_base_url"
   set_fact:
     context_broker_base_url: "http://{{ values.context_broker.name }}.{{ values.context_broker.namespace }}.svc:{{ context_broker_port }}"
-  when: values.context_broker.base_url == '' and (verify_connections is not defined or verify_connections)
+  when: values.context_broker.base_url == '' and (enable_dev_nodeports is not defined or not enable_dev_nodeports)
 - name: "Configure context broker base url"
   set_fact:
     context_broker_base_url: "{{ values.context_broker.base_url }}"
@@ -53,12 +53,12 @@
     values: "{{ values | combine({'context_broker':{'base_url':context_broker_base_url}}, recursive=true) }}"
   when: values.context_broker.base_url == ''
 
-- name: Run Ansible role iotagent-json-service-group
-  include_role:
-    name: iotagent-json-service-group
-- name: Run Ansible role iotagent-json-device
-  include_role:
-    name: iotagent-json-device
+#- name: Run Ansible role iotagent-json-service-group
+#  include_role:
+#    name: iotagent-json-service-group
+#- name: Run Ansible role iotagent-json-device
+#  include_role:
+#    name: iotagent-json-device
 - name: Run Ansible role iotagent-json-subscription
   include_role:
     name: iotagent-json-subscription

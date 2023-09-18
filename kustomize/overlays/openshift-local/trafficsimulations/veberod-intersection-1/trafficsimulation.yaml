@@ -5,11 +5,11 @@ metadata:
   namespace: smartvillage
 spec:
   iotagent:
-    base_url: 'http://iotagent-json.smartvillage.svc:4041'
+    base_url: 'http://iotagent-json.iotagent.svc:4041'
     service_name: iotagent-json
   context_broker:
     service_name: scorpiobroker
-    base_url: http://scorpiobroker.smartvillage.svc:9090
+    base_url: http://scorpiobroker.scorpiobroker.svc:9090
   fiware:
     service: trafficsimulations
     service_path: /Sweden/Veberod/CityCenter
@@ -20,7 +20,7 @@ spec:
     transport: MQTT
     context: ngsi-ld
     id: TrafficSimulation-VeberodIntersection1
-    mqtt_host: fiware-broker-mqtt-0-svc.smartvillage.svc
+    mqtt_host: default-rabbitmq.rabbitmq.svc
     mqtt_port: 1883
     mqtt_subscription_topic: iot/subscribe
     subscription_url: http://orionld-smartvillage-sync.smartvillage.svc:8080
