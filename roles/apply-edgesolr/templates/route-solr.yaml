@@ -1,5 +1,5 @@
 spec:
-{% if values.solr.route.host is defined %}
+{% if values.solr.route.host_name is defined %}
   host: {{ values.solr.route.host_name }}
 {% endif %}
   to:

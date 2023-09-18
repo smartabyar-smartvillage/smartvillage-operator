@@ -118,6 +118,18 @@
       - op: remove
         path: /spec/template/spec/readinessGates
   ignore_errors: true
+  register: remove_readinessGates
+- name: Delete solr pods with readinessGates
+  k8s:
+    state: absent
+    api_version: v1
+    kind: Pod
+    label_selectors:
+      - "solr-cloud={{ values.solr.name }}"
+      - "statefulset.kubernetes.io/pod-name={{ values.solr.name }}-solrcloud-0"
+      - "technology=solr-cloud"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+  when: not remove_readinessGates.failed
 
 - name: "Verify Solr"
   wait_for:
