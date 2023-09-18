@@ -121,7 +121,7 @@
 
 - name: "Verify Solr"
   wait_for:
-    host: "{{ values.solr.service_name + '.' + ansible_operator_meta.namespace + '.svc' }}"
+    host: "{{ values.solr.name + '-solrcloud-common.' + ansible_operator_meta.namespace + '.svc' }}"
     port: "{{ values.solr.port }}"
     state: started
     delay: 0
