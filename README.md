@@ -1,4 +1,16 @@
 
+# Install Smart Village Operator on OpenShift Local
+
+View the instructions to [install the Smart Village Operator on OpenShift Local here](docs/overlays/openshift-local/README.md). 
+
+
+
+
+
+
+
+
+
 # Clone the Smart Village Operator
 
 Create a directory for the Smart Village Operator source code: 
