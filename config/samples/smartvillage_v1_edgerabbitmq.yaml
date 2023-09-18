@@ -13,6 +13,7 @@ spec:
     
   managementState: |-
     Managed
+  enable_dev_nodeports: False
   rabbitmq:
     name: |-
       default

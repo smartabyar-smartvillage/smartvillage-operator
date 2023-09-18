@@ -1,2 +1,5 @@
 ---
 ENTITY_TYPE: TrafficSimulation
+
+mqtt_nodeport: 30083
+mqtt_nodeport_hostname: mqtt.apps-crc.testing

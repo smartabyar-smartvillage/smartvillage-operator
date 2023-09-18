@@ -7,17 +7,7 @@ spec:
   postgres:
     enable_dev_nodeports: true
     instances:
-      - name: scorpiobroker
-        replicas: 1
-        storage: 1Gi
-        resources:
-          limits:
-            memory: 500Mi
-            cpu: 500m
-          requests:
-            memory: 200Mi
-            cpu: 200m
-      - name: smartvillage
+      - name: postgres
         replicas: 1
         storage: 1Gi
         resources:

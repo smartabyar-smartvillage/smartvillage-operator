@@ -1,6 +1,6 @@
 ---
 apikey: "{{ values.service_group.apikey }}"
-cbHost: "http://{{ values.context_broker.name }}.{{ values.context_broker.namespace }}.svc:{{ context_broker_port }}"
+cbHost: "{{ values.context_broker.base_url }}"
 entity_type: "{{ ENTITY_TYPE }}"
 resource: "{{ values.service_group.resource }}"
 attributes:
