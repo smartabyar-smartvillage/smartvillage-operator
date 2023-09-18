@@ -21,6 +21,12 @@ cd ~/.local/src/smartvillage-operator
 make deploy
 ```
 
+## View the logs of the operator
+
+```bash
+oc logs -n smartvillage-operator-system deployment/smartvillage-operator-controller-manager -f
+```
+
 ## Deploy the required namespaces, subscriptions, SCCs, and CRDs for the Smart Village Operator
 
 ```bash
