@@ -137,20 +137,20 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: CLIENT_ID
-                  name: "{{ values.sso.client_secret_name }}"
+                  name: "{{ values.auth.client_secret_name }}"
             - name: AUTH_SECRET
               valueFrom:
                 secretKeyRef:
                   key: CLIENT_SECRET
-                  name: "{{ values.sso.client_secret_name }}"
+                  name: "{{ values.auth.client_secret_name }}"
             - name: AUTH_HOST_NAME
-              value: "{{ values.auth.host_name | default(values.sso.host_name) }}"
+              value: "{{ values.auth.host_name | default(values.auth.host_name) }}"
             - name: AUTH_PORT
               value: "{{ values.auth.port }}"
             - name: AUTH_SSL
               value: "{{ values.auth.ssl }}"
             - name: AUTH_URL
-              value: "https://{{ values.auth.host_name | default(values.sso.host_name) }}/auth"
+              value: "https://{{ values.auth.host_name | default(values.auth.host_name) }}/auth"
             - name: AUTH_TOKEN_URI
               value: "{{ values.auth.token_uri }}"
 
@@ -350,13 +350,6 @@ spec:
                   name: "{{ values.kafka.truststore_secret }}"
             - name: "KAFKA_SSL_TRUSTSTORE_LOCATION"
               value: "{{ values.kafka.ssl_truststore_location }}"
-
-            - name: "MQTT_HOST"
-              value: "{{ values.message_broker.mqtt_service_name }}"
-            - name: "MQTT_PORT"
-              value: "{{ values.message_broker.mqtt_port }}"
-            - name: "MQTT_IOT_SUBSCRIBE_TOPIC"
-              value: "{{ values.message_broker.iot_subscribe_topic }}"
           volumeMounts:
             - mountPath: /opt/kafka/keystore
               name: "{{ values.kafka.keystore_secret }}"

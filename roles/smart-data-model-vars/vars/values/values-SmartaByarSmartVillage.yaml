@@ -60,12 +60,6 @@ values:
       requests:
         memory: "{{ crd.zookeeper.resources.requests.memory | default(schema | community.general.json_query('zookeeper.properties.resources.properties.requests.properties.memory.default')) }}"
         cpu: "{{ crd.zookeeper.resources.requests.cpu | default(schema | community.general.json_query('zookeeper.properties.resources.properties.requests.properties.cpu.default')) }}"
-  sso:
-    create: "{{ crd.sso.create | default(schema | community.general.json_query('sso.properties.create.default')) }}"
-    host_name: "{{ crd.sso.host_name | default(schema | community.general.json_query('sso.properties.host_name.default')) }}"
-    cluster_name: "{{ crd.sso.cluster_name | default(schema | community.general.json_query('sso.properties.cluster_name.default')) }}"
-    postgres_secret_name: "{{ crd.sso.postgres_secret_name | default(schema | community.general.json_query('sso.properties.postgres_secret_name.default')) }}"
-    client_secret_name: "{{ crd.sso.client_secret_name | default(schema | community.general.json_query('sso.properties.client_secret_name.default')) }}"
   auth:
     host_name: "{{ crd.auth.host_name | default('') }}"
     port: "{{ crd.auth.port | default(schema | community.general.json_query('auth.properties.port.default')) }}"
@@ -74,21 +68,13 @@ values:
     client: "{{ crd.auth.client | default(schema | community.general.json_query('auth.properties.client.default')) }}"
     secret: "{{ crd.auth.secret | default('') }}"
     token_uri: "{{ crd.auth.token_uri | default(schema | community.general.json_query('auth.properties.token_uri.default')) }}"
+    client_secret_name: "{{ crd.auth.client_secret_name | default(schema | community.general.json_query('auth.properties.client_secret_name.default')) }}"
   postgres:
-    create: "{{ crd.postgres.create | default(schema | community.general.json_query('postgres.properties.create.default')) }}"
     host: "{{ crd.postgres.host | default(schema | community.general.json_query('postgres.properties.host.default')) }}"
     port: "{{ crd.postgres.port | default(schema | community.general.json_query('postgres.properties.port.default')) }}"
     cluster_name: "{{ crd.postgres.cluster_name | default(schema | community.general.json_query('postgres.properties.cluster_name.default')) }}"
     secret_name: "{{ crd.postgres.secret_name | default(schema | community.general.json_query('postgres.properties.secret_name.default')) }}"
-    resources:
-      limits:
-        memory: "{{ crd.postgres.resources.limits.memory | default(schema | community.general.json_query('postgres.properties.resources.properties.limits.properties.memory.default')) }}"
-        cpu: "{{ crd.postgres.resources.limits.cpu | default(schema | community.general.json_query('postgres.properties.resources.properties.limits.properties.cpu.default')) }}"
-      requests:
-        memory: "{{ crd.postgres.resources.requests.memory | default(schema | community.general.json_query('postgres.properties.resources.properties.requests.properties.memory.default')) }}"
-        cpu: "{{ crd.postgres.resources.requests.cpu | default(schema | community.general.json_query('postgres.properties.resources.properties.requests.properties.cpu.default')) }}"
   solr:
-    create: "{{ crd.solr.create | default(schema | community.general.json_query('solr.properties.create.default')) }}"
     host: "{{ crd.solr.host | default(schema | community.general.json_query('solr.properties.host.default')) }}"
     port: "{{ crd.solr.port | default(schema | community.general.json_query('solr.properties.port.default')) }}"
     ssl: "{{ crd.solr.ssl | default(schema | community.general.json_query('solr.properties.ssl.default')) }}"
@@ -96,15 +82,6 @@ values:
       create: "{{ crd.solr.route.create | default(schema | community.general.json_query('solr.properties.route.properties.create.default')) }}"
       host_name: "{{ crd.solr.route.host_name | default(schema | community.general.json_query('solr.properties.route.properties.host_name.default')) }}"
     collection: "{{ crd.solr.collection | default(schema | community.general.json_query('solr.properties.collection.default')) }}"
-    replicas: "{{ crd.solr.replicas | default(schema | community.general.json_query('solr.properties.replicas.default')) }}"
-    storage: "{{ crd.solr.storage | default(schema | community.general.json_query('solr.properties.storage.default')) }}"
-    resources:
-      limits:
-        memory: "{{ crd.solr.resources.limits.memory | default(schema | community.general.json_query('solr.properties.resources.properties.limits.properties.memory.default')) }}"
-        cpu: "{{ crd.solr.resources.limits.cpu | default(schema | community.general.json_query('solr.properties.resources.properties.limits.properties.cpu.default')) }}"
-      requests:
-        memory: "{{ crd.solr.resources.requests.memory | default(schema | community.general.json_query('solr.properties.resources.properties.requests.properties.memory.default')) }}"
-        cpu: "{{ crd.solr.resources.requests.cpu | default(schema | community.general.json_query('solr.properties.resources.properties.requests.properties.cpu.default')) }}"
   email:
     enabled: "{{ crd.email.enabled | default(schema | community.general.json_query('email.properties.enabled.default')) }}"
     secret_name: "{{ crd.email.secret_name | default(schema | community.general.json_query('email.properties.secret_name.default')) }}"
@@ -161,17 +138,6 @@ values:
     api_relative_uri_iotnode: "{{ crd.yggio.api_relative_uri_iotnode | default(schema | community.general.json_query('yggio.properties.api_relative_uri_iotnode.default')) }}"
     auth_local_uri: "{{ crd.yggio.auth_local_uri | default(schema | community.general.json_query('yggio.properties.auth_local_uri.default')) }}"
   kafka:
-    topic_names:
-      entity: "{{ crd.kafka.topic_names.entity | default(schema | community.general.json_query('kafka.properties.topic_names.properties.entity.default')) }}"
-      entitybatch: "{{ crd.kafka.topic_names.entitybatch | default(schema | community.general.json_query('kafka.properties.topic_names.properties.entitybatch.default')) }}"
-      registry: "{{ crd.kafka.topic_names.registry | default(schema | community.general.json_query('kafka.properties.topic_names.properties.registry.default')) }}"
-      temporal: "{{ crd.kafka.topic_names.temporal | default(schema | community.general.json_query('kafka.properties.topic_names.properties.temporal.default')) }}"
-      inotify: "{{ crd.kafka.topic_names.inotify | default(schema | community.general.json_query('kafka.properties.topic_names.properties.inotify.default')) }}"
-      iregsub: "{{ crd.kafka.topic_names.iregsub | default(schema | community.general.json_query('kafka.properties.topic_names.properties.iregsub.default')) }}"
-      subalive: "{{ crd.kafka.topic_names.subalive | default(schema | community.general.json_query('kafka.properties.topic_names.properties.subalive.default')) }}"
-      subsync: "{{ crd.kafka.topic_names.subsync | default(schema | community.general.json_query('kafka.properties.topic_names.properties.subsync.default')) }}"
-      regsubalive: "{{ crd.kafka.topic_names.regsubalive | default(schema | community.general.json_query('kafka.properties.topic_names.properties.regsubalive.default')) }}"
-      regsubsync: "{{ crd.kafka.topic_names.regsubsync | default(schema | community.general.json_query('kafka.properties.topic_names.properties.regsubsync.default')) }}"
     keystore_secret: "{{ crd.kafka.keystore_secret | default(schema | community.general.json_query('kafka.properties.keystore_secret.default')) }}"
     truststore_secret: "{{ crd.kafka.truststore_secret | default(schema | community.general.json_query('kafka.properties.truststore_secret.default')) }}"
     host: "{{ crd.kafka.host | default(schema | community.general.json_query('kafka.properties.host.default')) }}"
@@ -185,12 +151,6 @@ values:
     ssl_truststore_type: "{{ crd.kafka.ssl_truststore_type | default(schema | community.general.json_query('kafka.properties.ssl_truststore_type.default')) }}"
     ssl_truststore_location: "{{ crd.kafka.ssl_truststore_location | default(schema | community.general.json_query('kafka.properties.ssl_truststore_location.default')) }}"
     ssl_ca_crt_location: "{{ crd.kafka.ssl_ca_crt_location | default(schema | community.general.json_query('kafka.properties.ssl_ca_crt_location.default')) }}"
-  amq_broker:
-    mqtt_host: "{{ crd.amq_broker.mqtt_host | default(schema | community.general.json_query('amq_broker.properties.mqtt_host.default')) }}"
-    mqtt_port: "{{ crd.amq_broker.mqtt_port | default(schema | community.general.json_query('amq_broker.properties.mqtt_port.default')) }}"
-    amqp_host: "{{ crd.amq_broker.amqp_host | default(schema | community.general.json_query('amq_broker.properties.amqp_host.default')) }}"
-    amqp_port: "{{ crd.amq_broker.amqp_port | default(schema | community.general.json_query('amq_broker.properties.amqp_port.default')) }}"
-    iot_subscribe_topic: "{{ crd.amq_broker.iot_subscribe_topic | default(schema | community.general.json_query('amq_broker.properties.iot_subscribe_topic.default')) }}"
   ngsi_ld:
     sync: "{{ crd.ngsi_ld.sync | default(schema | community.general.json_query('ngsi_ld.properties.sync.default')) }}"
     sync_replicas: "{{ crd.ngsi_ld.sync_replicas | default(schema | community.general.json_query('ngsi_ld.properties.sync_replicas.default')) }}"

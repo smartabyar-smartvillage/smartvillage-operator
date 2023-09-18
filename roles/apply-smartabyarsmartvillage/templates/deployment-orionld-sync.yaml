@@ -54,14 +54,14 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: CLIENT_ID
-                  name: "{{ values.sso.client_secret_name }}"
+                  name: "{{ values.auth.client_secret_name }}"
             - name: AUTH_SECRET
               valueFrom:
                 secretKeyRef:
                   key: CLIENT_SECRET
-                  name: "{{ values.sso.client_secret_name }}"
+                  name: "{{ values.auth.client_secret_name }}"
             - name: AUTH_HOST_NAME
-              value: "{{ values.auth.host_name | default(values.sso.host_name) }}"
+              value: "{{ values.auth.host_name | default(values.auth.host_name) }}"
             - name: AUTH_PORT
               value: "{{ values.auth.port }}"
             - name: AUTH_SSL

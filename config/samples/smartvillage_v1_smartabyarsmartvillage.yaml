@@ -93,16 +93,6 @@ spec:
           200Mi
         cpu: |-
           200m
-  sso:
-    create: True
-    host_name: |-
-      keycloak-sso.apps-crc.testing
-    cluster_name: |-
-      sso
-    postgres_secret_name: |-
-      postgres-pguser-sso
-    client_secret_name: |-
-      keycloak-client-secret-smartvillage
   auth:
     port: 443
     ssl: True
@@ -112,8 +102,9 @@ spec:
       smartvillage
     token_uri: |-
       /auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+    client_secret_name: |-
+      keycloak-client-secret-smartvillage
   postgres:
-    create: True
     host: |-
       postgres-primary.postgres.svc
     port: 5432
@@ -121,19 +112,7 @@ spec:
       postgres
     secret_name: |-
       postgres-pguser-smartvillage
-    resources:
-      limits:
-        memory: |-
-          500Mi
-        cpu: |-
-          500m
-      requests:
-        memory: |-
-          200Mi
-        cpu: |-
-          200m
   solr:
-    create: True
     host: |-
       default-solrcloud-common.solr.svc
     port: 80
@@ -144,20 +123,6 @@ spec:
         solr.apps-crc.testing
     collection: |-
       smartvillage
-    replicas: 2
-    storage: |-
-      1Gi
-    resources:
-      limits:
-        memory: |-
-          1Gi
-        cpu: |-
-          1
-      requests:
-        memory: |-
-          200Mi
-        cpu: |-
-          200m
   email:
     enabled: False
     secret_name: |-
@@ -245,27 +210,6 @@ spec:
     auth_local_uri: |-
       /api/auth/local
   kafka:
-    topic_names:
-      entity: |-
-        ENTITY
-      entitybatch: |-
-        ENTITYBATCH
-      registry: |-
-        REGISTRY
-      temporal: |-
-        TEMPORAL
-      inotify: |-
-        I_NOTIFY
-      iregsub: |-
-        I_REGSUB
-      subalive: |-
-        SUB_ALIVE
-      subsync: |-
-        SUB_SYNC
-      regsubalive: |-
-        REG_SUB_ALIVE
-      regsubsync: |-
-        REG_SUB_SYNC
     keystore_secret: |-
       smartvillage-kafka
     truststore_secret: |-
@@ -291,15 +235,6 @@ spec:
       /opt/kafka/truststore/ca.p12
     ssl_ca_crt_location: |-
       /opt/kafka/truststore/ca.crt
-  amq_broker:
-    mqtt_host: |-
-      default-rabbitmq.rabbitmq.svc
-    mqtt_port: 1883
-    amqp_host: |-
-      default-rabbitmq.rabbitmq.svc
-    amqp_port: 5672
-    iot_subscribe_topic: |-
-      iot-subscribe
   ngsi_ld:
     sync: True
     sync_replicas: 1

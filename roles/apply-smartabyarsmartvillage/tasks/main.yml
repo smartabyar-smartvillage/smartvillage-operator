@@ -9,14 +9,6 @@
         name: "zookeeper-nodeport"
         namespace: "{{ ansible_operator_meta.namespace }}"
         definition: "{{ lookup('template', 'service-zookeeper-nodeport.yaml') }}"
-    - name: "{{ 'Install' if values.site.enable_dev_nodeports else 'Skip' }} fiware-broker-mqtt-nodeport NodePort service on OpenShift"
-      k8s:
-        state: "{{ 'present' if values.site.enable_dev_nodeports else 'absent' }}"
-        api_version: v1
-        kind: Service
-        name: "fiware-broker-mqtt-nodeport"
-        namespace: "{{ ansible_operator_meta.namespace }}"
-        definition: "{{ lookup('template', 'service-fiware-broker-mqtt-nodeport.yaml') }}"
     - name: "{{ 'Install' if values.site.enable_dev_nodeports else 'Skip' }} site-nodeport NodePort service on OpenShift"
       k8s:
         state: "{{ 'present' if values.site.enable_dev_nodeports else 'absent' }}"
@@ -28,56 +20,16 @@
   when: values.site.enable_dev_nodeports
 
 # Install PostgreSQL
-- block:
-    - name: "Install PostgreSQL {{ site_name }}-db-create configmap on OpenShift"
-      k8s:
-        state: "{{ 'present' if values.postgres.create else 'absent' }}"
-        api_version: v1
-        kind: ConfigMap
-        name: "{{ site_name }}-db-create"
-        namespace: "{{ ansible_operator_meta.namespace }}"
-        definition: "{{ lookup('template', 'configmap-db-create.yaml') }}"
-  when: values.postgres.create
-
-# Install Red Hat SSO
-- block:
-    - name: "Query SSO postgres secret"
-      set_fact:
-        sso_postgres_secret: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=(values.sso.postgres_secret_name | default(schema.sso.properties.postgres_secret_name.default, true)), namespace=ansible_operator_meta.namespace)[0].data }}"
-      when: values.sso.create
-    - name: "Install keycloak-db-secret on OpenShift"
-      k8s:
-        state: "{{ 'present' if values.sso.create else 'absent' }}"
-        kind: Secret
-        api_version: v1
-        name: keycloak-db-secret
-        namespace: "{{ ansible_operator_meta.namespace }}"
-        definition: "{{ lookup('template', 'keycloak-db-secret.yaml') }}"
-    - name: "Install {{ site_name }} Keycloak realm on OpenShift"
-      k8s:
-        state: "{{ 'present' if values.sso.create else 'absent' }}"
-        api_version: keycloak.org/v1alpha1
-        kind: KeycloakRealm
-        name: "{{ site_name }}"
-        namespace: "{{ ansible_operator_meta.namespace }}"
-        definition: "{{ lookup('template', 'keycloakrealm.yaml') }}"
-    - name: "Install {{ site_name }} Keycloak client on OpenShift"
-      k8s:
-        state: "{{ 'present' if values.sso.create else 'absent' }}"
-        api_version: keycloak.org/v1alpha1
-        kind: KeycloakClient
-        name: "{{ site_name }}"
-        namespace: "{{ ansible_operator_meta.namespace }}"
-        definition: "{{ lookup('template', 'keycloakclient.yaml') }}"
-    - name: "Install {{ site_name }} Keycloak cluster on OpenShift"
-      k8s:
-        state: "{{ 'present' if values.sso.create else 'absent' }}"
-        api_version: keycloak.org/v1alpha1
-        kind: Keycloak
-        namespace: "{{ ansible_operator_meta.namespace }}"
-        name: sso
-        definition: "{{ lookup('template', 'keycloak.yaml') }}"
-  when: values.sso.create
+#- block:
+#    - name: "Install PostgreSQL {{ site_name }}-db-create configmap on OpenShift"
+#      k8s:
+#        state: "{{ 'present' if values.postgres.create else 'absent' }}"
+#        api_version: v1
+#        kind: ConfigMap
+#        name: "{{ site_name }}-db-create"
+#        namespace: "{{ ansible_operator_meta.namespace }}"
+#        definition: "{{ lookup('template', 'configmap-db-create.yaml') }}"
+#  when: values.postgres.create
 
 # Install Zookeeper
 - block:
@@ -113,6 +65,14 @@
         name: zookeeper
         namespace: "{{ ansible_operator_meta.namespace }}"
         definition: "{{ lookup('template', 'service-zookeeper.yaml') }}"
+    - name: "Install Zookeeper service account on OpenShift"
+      k8s:
+        state: "{{ 'present' if values.zookeeper.create else 'absent' }}"
+        kind: ServiceAccount
+        api_version: v1
+        name: zookeeper
+        namespace: "{{ ansible_operator_meta.namespace }}"
+        definition: "{{ lookup('template', 'serviceaccount-zookeeper.yaml') }}"
   when: values.zookeeper.create
 
 - name: "Verify Zookeeper"
@@ -130,36 +90,6 @@
     msg: |-
       The Zookeeper service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
   when: verify_connections and values.zookeeper.create and verify_zookeeper.failed
-
-- name: "Verify SSO"
-  wait_for:
-    host: "{{ values.sso.host_name }}"
-    port: "443"
-    state: started
-    delay: 0
-    timeout: 5
-  register: verify_sso
-  ignore_errors: yes
-  when: verify_connections and values.sso.create
-- name: "Verify SSO is running"
-  fail:
-    msg: |-
-      The SSO service https://{{ sso.host_name }} was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
-  when: verify_connections and sso.create and verify_sso.failed
-
-
-- name: "Query postgres pod"
-  set_fact:
-    postgres_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector='postgres-operator.crunchydata.com/cluster=postgres,postgres-operator.crunchydata.com/data=postgres,postgres-operator.crunchydata.com/instance-set=smartvillage,postgres-operator.crunchydata.com/patroni=postgres-ha,postgres-operator.crunchydata.com/role=master', namespace=ansible_operator_meta.namespace)[0].metadata.name }}"
-  when: values.postgres.create
-- name: Run create database scripts on PostgreSQL
-  kubernetes.core.k8s_exec:
-    pod: "{{ postgres_pod_name }}"
-    command: >-
-      bash -c 'curl https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage/main/src/main/resources/sql/db-create.sql | psql -U smartvillage smartvillage'
-    namespace: "{{ ansible_operator_meta.namespace }}"
-  when: values.postgres.create
-  changed_when: false
 
 # Install site
 - name: "Install {{ site_name }}-web service on OpenShift"

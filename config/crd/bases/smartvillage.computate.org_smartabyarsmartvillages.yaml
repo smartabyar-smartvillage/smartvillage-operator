@@ -223,36 +223,19 @@ spec:
                     default: 1Gi
                     type: string
 
-              sso:
-                type: object
-                properties:
-                  client_secret_name:
-                    default: keycloak-client-secret-smartvillage
-                    description: "Optional secret name where the SSO secrets are stored. \nIf empty,\
-                      \ \"keycloak-client-secret-smartvillage\" will be used. \n"
-                    type: string
-                  cluster_name:
-                    default: sso
-                    description: "Red Hat SSO cluster name. \nIf empty, \"sso\" will be used. \n"
-                    type: string
-                  create:
-                    default: true
-                    description: "Determines if a new Red Hat SSO cluster will be created. \n"
-                    type: boolean
-                  host_name:
-                    default: keycloak-sso.apps-crc.testing
-                    type: string
-                  postgres_secret_name:
-                    default: postgres-pguser-sso
-                    description: "Optional secret name where the SSO secrets are stored. \nIf empty,\
-                      \ \"postgres-pguser-sso\" will be used. \n"
-                    type: string
-
               auth:
                 type: object
                 properties:
                   client:
                     default: smartvillage
+                    type: string
+                  client_secret_name:
+                    default: keycloak-client-secret-smartvillage
+                    description: "Optional secret name where the SSO secrets are stored. \nIf empty,\
+                      \ \"keycloak-client-secret-smartvillage\" will be used. \n\n```\necho '\nkind:\
+                      \ Secret\napiVersion: v1\nmetadata:\n  name: keycloak-client-secret-smartvillage\n\
+                      \  namespace: smartvillage\nstringData:\n  CLIENT_ID: smartvillage\n  CLIENT_SECRET:\
+                      \ ...\ntype: Opaque\n' | oc apply -f -\n```\n"
                     type: string
                   host_name:
                     type: string
@@ -279,10 +262,6 @@ spec:
                     description: "Crunchy Postgres cluster name. \nIf empty, \"postgres\" will be used.\
                       \ \n"
                     type: string
-                  create:
-                    default: true
-                    description: "Determines if a new Crunchy Postgres cluster will be created. \n"
-                    type: boolean
                   host:
                     default: postgres-primary.postgres.svc
                     description: "The host name to connect to PostgreSQL. \n"
@@ -291,27 +270,6 @@ spec:
                     default: 5432
                     description: "The port to connect to PostgreSQL. \n"
                     type: number
-                  resources:
-                    properties:
-                      limits:
-                        properties:
-                          cpu:
-                            default: 500m
-                            type: string
-                          memory:
-                            default: 500Mi
-                            type: string
-                        type: object
-                      requests:
-                        properties:
-                          cpu:
-                            default: 200m
-                            type: string
-                          memory:
-                            default: 200Mi
-                            type: string
-                        type: object
-                    type: object
                   secret_name:
                     default: postgres-pguser-smartvillage
                     description: "Optional secret name where the postgres secrets are stored. \nIf empty,\
@@ -324,40 +282,12 @@ spec:
                   collection:
                     default: smartvillage
                     type: string
-                  create:
-                    default: true
-                    description: "Determines if a new Apache Solr cluster will be created. \n"
-                    type: boolean
                   host:
                     default: default-solrcloud-common.solr.svc
                     type: string
                   port:
                     default: 80
                     type: number
-                  replicas:
-                    default: 2
-                    type: number
-                  resources:
-                    properties:
-                      limits:
-                        properties:
-                          cpu:
-                            default: '1'
-                            type: string
-                          memory:
-                            default: 1Gi
-                            type: string
-                        type: object
-                      requests:
-                        properties:
-                          cpu:
-                            default: 200m
-                            type: string
-                          memory:
-                            default: 200Mi
-                            type: string
-                        type: object
-                    type: object
                   route:
                     properties:
                       create:
@@ -372,9 +302,6 @@ spec:
                   ssl:
                     default: false
                     type: boolean
-                  storage:
-                    default: 1Gi
-                    type: string
 
               email:
                 type: object
@@ -589,61 +516,9 @@ spec:
                   ssl_user_key_location:
                     default: /opt/kafka/keystore/user.key
                     type: string
-                  topic_names:
-                    properties:
-                      entity:
-                        default: ENTITY
-                        type: string
-                      entitybatch:
-                        default: ENTITYBATCH
-                        type: string
-                      inotify:
-                        default: I_NOTIFY
-                        type: string
-                      iregsub:
-                        default: I_REGSUB
-                        type: string
-                      registry:
-                        default: REGISTRY
-                        type: string
-                      regsubalive:
-                        default: REG_SUB_ALIVE
-                        type: string
-                      regsubsync:
-                        default: REG_SUB_SYNC
-                        type: string
-                      subalive:
-                        default: SUB_ALIVE
-                        type: string
-                      subsync:
-                        default: SUB_SYNC
-                        type: string
-                      temporal:
-                        default: TEMPORAL
-                        type: string
-                    type: object
                   truststore_secret:
                     default: smartvillage-kafka-cluster-ca-cert
                     type: string
-
-              amq_broker:
-                type: object
-                properties:
-                  amqp_host:
-                    default: default-rabbitmq.rabbitmq.svc
-                    type: string
-                  amqp_port:
-                    default: 5672
-                    type: number
-                  iot_subscribe_topic:
-                    default: iot-subscribe
-                    type: string
-                  mqtt_host:
-                    default: default-rabbitmq.rabbitmq.svc
-                    type: string
-                  mqtt_port:
-                    default: 1883
-                    type: number
 
               ngsi_ld:
                 type: object

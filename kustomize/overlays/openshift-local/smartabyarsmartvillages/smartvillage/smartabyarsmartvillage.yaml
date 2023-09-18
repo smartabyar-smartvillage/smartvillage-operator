@@ -47,12 +47,6 @@ spec:
     requests:
       memory: 200Mi
       cpu: 200m
-  sso:
-    create: false
-    host_name: sso.computate.org
-    cluster_name: sso
-    postgres_secret_name: postgres-pguser-sso
-    client_secret_name: keycloak-client-secret-smartvillage
   auth:
     host_name: sso.computate.org
     port: 443
@@ -61,20 +55,11 @@ spec:
     client: smartvillage
     token_uri: /auth/realms/SMARTVILLAGE/protocol/openid-connect/token
   postgres:
-    create: true
     service_name: postgres-primary
     port: 5432
     cluster_name: postgres
     secret_name: postgres-pguser-smartvillage
-    resources:
-      limits:
-        memory: 500Mi
-        cpu: 500m
-      requests:
-        memory: 200Mi
-        cpu: 200m
   solr:
-    create: true
     service_name: default-solrcloud-common
     port: 80
     ssl: false
@@ -82,13 +67,6 @@ spec:
       create: true
       host_name: solr.apps-crc.testing
     collection: smartvillage
-    resources:
-      limits:
-        memory: 2Gi
-        cpu: 2
-      requests:
-        memory: 200Mi
-        cpu: 200m
   email:
     enabled: true
     secret_name: smartvillage
@@ -157,10 +135,3 @@ spec:
     ssl_keystore_location: /opt/kafka/keystore/user.p12
     ssl_truststore_type: PKCS12
     ssl_truststore_location: /opt/kafka/truststore/ca.p12
-    resources:
-      limits:
-        memory: 500Mi
-        cpu: 500m
-      requests:
-        memory: 200Mi
-        cpu: 200m

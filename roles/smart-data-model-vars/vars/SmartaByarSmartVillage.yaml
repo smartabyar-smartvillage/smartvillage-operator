@@ -197,36 +197,6 @@ schema:
                 type: string
                 default: '200m'
 
-  sso:
-    type: object
-    properties:
-      create:
-        type: boolean
-        default: true
-        description: |
-          Determines if a new Red Hat SSO cluster will be created. 
-      host_name:
-        type: string
-        default: keycloak-sso.apps-crc.testing
-      cluster_name:
-        type: string
-        default: sso
-        description: |
-          Red Hat SSO cluster name. 
-          If empty, "sso" will be used. 
-      postgres_secret_name:
-        type: string
-        default: postgres-pguser-sso
-        description: |
-          Optional secret name where the SSO secrets are stored. 
-          If empty, "postgres-pguser-sso" will be used. 
-      client_secret_name:
-        type: string
-        default: keycloak-client-secret-smartvillage
-        description: |
-          Optional secret name where the SSO secrets are stored. 
-          If empty, "keycloak-client-secret-smartvillage" will be used. 
-
   auth:
     type: object
     properties:
@@ -249,15 +219,30 @@ schema:
       token_uri:
         type: string
         default: "/auth/realms/SMARTVILLAGE/protocol/openid-connect/token"
+      client_secret_name:
+        type: string
+        default: keycloak-client-secret-smartvillage
+        description: |
+          Optional secret name where the SSO secrets are stored. 
+          If empty, "keycloak-client-secret-smartvillage" will be used. 
+
+          ```
+          echo '
+          kind: Secret
+          apiVersion: v1
+          metadata:
+            name: keycloak-client-secret-smartvillage
+            namespace: smartvillage
+          stringData:
+            CLIENT_ID: smartvillage
+            CLIENT_SECRET: ...
+          type: Opaque
+          ' | oc apply -f -
+          ```
 
   postgres:
     type: object
     properties:
-      create:
-        type: boolean
-        default: true
-        description: |
-          Determines if a new Crunchy Postgres cluster will be created. 
       host:
         type: string
         default: postgres-primary.postgres.svc
@@ -280,36 +265,10 @@ schema:
         description: |
           Optional secret name where the postgres secrets are stored. 
           If empty, "postgres-pguser-smartvillage" will be used. 
-      resources:
-        type: object
-        properties:
-          limits:
-            type: object
-            properties:
-              memory:
-                type: string
-                default: '500Mi'
-              cpu:
-                type: string
-                default: '500m'
-          requests:
-            type: object
-            properties:
-              memory:
-                type: string
-                default: '200Mi'
-              cpu:
-                type: string
-                default: '200m'
   
   solr:
     type: object
     properties:
-      create:
-        type: boolean
-        default: true
-        description: |
-          Determines if a new Apache Solr cluster will be created. 
       host:
         type: string
         default: default-solrcloud-common.solr.svc
@@ -335,33 +294,6 @@ schema:
       collection:
         type: string
         default: "smartvillage"
-      replicas:
-        type: number
-        default: 2
-      storage:
-        type: string
-        default: '1Gi'
-      resources:
-        type: object
-        properties:
-          limits:
-            type: object
-            properties:
-              memory:
-                type: string
-                default: '1Gi'
-              cpu:
-                type: string
-                default: '1'
-          requests:
-            type: object
-            properties:
-              memory:
-                type: string
-                default: '200Mi'
-              cpu:
-                type: string
-                default: '200m'
   
   email:
     type: object
@@ -543,39 +475,6 @@ schema:
   kafka:
     type: object
     properties:
-      topic_names:
-        type: object
-        properties:
-          entity:
-            type: string
-            default: ENTITY
-          entitybatch:
-            type: string
-            default: ENTITYBATCH
-          registry:
-            type: string
-            default: REGISTRY
-          temporal:
-            type: string
-            default: TEMPORAL
-          inotify:
-            type: string
-            default: I_NOTIFY
-          iregsub:
-            type: string
-            default: I_REGSUB
-          subalive:
-            type: string
-            default: SUB_ALIVE
-          subsync:
-            type: string
-            default: SUB_SYNC
-          regsubalive:
-            type: string
-            default: REG_SUB_ALIVE
-          regsubsync:
-            type: string
-            default: REG_SUB_SYNC
       keystore_secret:
         type: string
         default: smartvillage-kafka
@@ -615,25 +514,6 @@ schema:
       ssl_ca_crt_location:
         type: string
         default: /opt/kafka/truststore/ca.crt
-
-  amq_broker:
-    type: object
-    properties:
-      mqtt_host:
-        type: string
-        default: default-rabbitmq.rabbitmq.svc
-      mqtt_port:
-        type: number
-        default: 1883
-      amqp_host:
-        type: string
-        default: default-rabbitmq.rabbitmq.svc
-      amqp_port:
-        type: number
-        default: 5672
-      iot_subscribe_topic:
-        type: string
-        default: iot-subscribe
 
   ngsi_ld:
     type: object
@@ -681,3 +561,4 @@ schema:
               cpu:
                 type: string
                 default: '200m'
+        

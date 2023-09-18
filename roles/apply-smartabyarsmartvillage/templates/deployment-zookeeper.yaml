@@ -73,10 +73,5 @@ spec:
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
 #      securityContext: {}
-      securityContext:
-        runAsUser: 1001
-        runAsNonRoot: true
-        fsGroup: 1001
-        seccompProfile:
-          type: RuntimeDefault
+      securityContext: {}
       schedulerName: default-scheduler
