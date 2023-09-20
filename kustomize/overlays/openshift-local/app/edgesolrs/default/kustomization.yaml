@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
   - roles/
   - rolebindings/
-  - edgesolr.yaml
+  - edgesolrs/
