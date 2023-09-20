@@ -3,4 +3,7 @@ site_name: "{{ site.name | default('smartvillage') }}"
 operator_state: "present"
 ENTITY_TYPE: EdgeAmqBroker
 
+mqtt_nodeport: 30083
+mqtt_nodeport_hostname: mqtt.apps-crc.testing
+
 verify_connections: true

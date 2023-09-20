@@ -62,10 +62,10 @@ values:
   message_broker:
     transport: "{{ crd.message_broker.transport | default(schema | community.general.json_query('message_broker.properties.transport.default')) }}"
     host: "{{ crd.message_broker.host | default(schema | community.general.json_query('message_broker.properties.host.default')) }}"
-    user: "{{ crd.message_broker.user | default(schema | community.general.json_query('message_broker.properties.user.default')) }}"
+    user: "{{ crd.message_broker.user | default('') }}"
     secret:
-      name: "{{ crd.message_broker.secret.name | default(schema | community.general.json_query('message_broker.properties.secret.properties.name.default')) }}"
-      property: "{{ crd.message_broker.secret.property | default(schema | community.general.json_query('message_broker.properties.secret.properties.property.default')) }}"
+      name: "{{ crd.message_broker.secret.name | default('') }}"
+      property: "{{ crd.message_broker.secret.property | default('') }}"
     port: "{{ crd.message_broker.port | default(schema | community.general.json_query('message_broker.properties.port.default')) }}"
   device:
     id: "{{ crd.device.id | default(schema | community.general.json_query('device.properties.id.default')) }}"

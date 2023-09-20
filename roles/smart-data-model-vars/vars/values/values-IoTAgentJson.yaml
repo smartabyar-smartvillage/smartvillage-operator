@@ -9,6 +9,10 @@ values:
     name: "{{ crd.message_broker.name | default(schema | community.general.json_query('message_broker.properties.name.default')) }}"
     mqtt_host: "{{ crd.message_broker.mqtt_host | default(schema | community.general.json_query('message_broker.properties.mqtt_host.default')) }}"
     mqtt_port: "{{ crd.message_broker.mqtt_port | default(schema | community.general.json_query('message_broker.properties.mqtt_port.default')) }}"
+    user: "{{ crd.message_broker.user | default('') }}"
+    password_secret:
+      name: "{{ crd.message_broker.password_secret.name | default('') }}"
+      key: "{{ crd.message_broker.password_secret.key | default('') }}"
   orionld:
     host: "{{ crd.orionld.host | default(schema | community.general.json_query('orionld.properties.host.default')) }}"
     port: "{{ crd.orionld.port | default(schema | community.general.json_query('orionld.properties.port.default')) }}"

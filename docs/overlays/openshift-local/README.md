@@ -72,6 +72,44 @@ oc -n kafka get events -w
 oc -n kafka get pods -w
 ```
 
+## Copy secrets
+
+### Copy the `scorpiobroker` secrets to the `scorpiobroker` namespace. 
+
+```bash
+oc -n postgres get secret postgres-pguser-scorpiobroker -o json \
+    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
+    | oc -n scorpiobroker apply -f -
+oc -n kafka get secret scorpiobroker-kafka -o json \
+    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
+    | oc -n scorpiobroker apply -f -
+oc -n kafka get secret default-cluster-ca-cert -o json \
+    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
+    | oc -n scorpiobroker apply -f -
+```
+
+### Copy the `iotagent-json` secrets to the `iotagent` namespace. 
+
+```bash
+oc -n mongodb get secret mongodb -o json \
+    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
+    | oc -n iotagent apply -f -
+```
+
+### Copy the `smartvillage` secrets to the `smartvillage` namespace. 
+
+```bash
+oc -n postgres get secret postgres-pguser-smartvillage -o json \
+    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
+    | oc -n smartvillage apply -f -
+oc -n kafka get secret smartvillage-kafka -o json \
+    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
+    | oc -n smartvillage apply -f -
+oc -n kafka get secret default-cluster-ca-cert -o json \
+    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
+    | oc -n smartvillage apply -f -
+```
+
 ## Deploy Smarta Byar Smart Village to OpenShift Local
 
 ```bash

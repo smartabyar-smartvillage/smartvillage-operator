@@ -2,6 +2,7 @@ values:
 
 
   managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
+  enable_dev_nodeports: "{{ crd.enable_dev_nodeports | default(schema | community.general.json_query('enable_dev_nodeports.default')) }}"
   amq_broker:
     name: "{{ crd.amq_broker.name | default(schema | community.general.json_query('amq_broker.properties.name.default')) }}"
     replicas: "{{ crd.amq_broker.replicas | default(schema | community.general.json_query('amq_broker.properties.replicas.default')) }}"

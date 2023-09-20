@@ -46,14 +46,8 @@ spec:
     transport: |-
       MQTT
     host: |-
-      default-rabbitmq.rabbitmq.svc
-    user: |-
-      user
+      default-mqtt-0-svc.amqbroker.svc
     secret:
-      name: |-
-        default-rabbitmq
-      property: |-
-        rabbitmq-password
     port: 1883
   device:
     id: |-

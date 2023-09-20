@@ -136,7 +136,7 @@ spec:
                 type: object
                 properties:
                   host:
-                    default: default-rabbitmq.rabbitmq.svc
+                    default: default-mqtt-0-svc.amqbroker.svc
                     type: string
                   port:
                     default: 1883
@@ -144,10 +144,8 @@ spec:
                   secret:
                     properties:
                       name:
-                        default: default-rabbitmq
                         type: string
                       property:
-                        default: rabbitmq-password
                         type: string
                     type: object
                   transport:
@@ -157,7 +155,6 @@ spec:
                     - AMQP
                     type: string
                   user:
-                    default: user
                     type: string
 
               device:

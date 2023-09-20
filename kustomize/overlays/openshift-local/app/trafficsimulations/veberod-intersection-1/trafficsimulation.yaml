@@ -27,7 +27,7 @@ spec:
   smartabyar_smartvillage:
     enabled: true
     auth_secret_name: keycloak-client-secret-smartvillage
-    auth_token_url: https://keycloak-sso.apps-crc.testing/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+    auth_token_url: https://sso.smartabyarsmartvillage.org/realms/SMARTVILLAGE/protocol/openid-connect/token
     site_base_url: https://smartvillage-web-smartvillage.apps-crc.testing
     smart_model_api: /api/traffic-simulation
   attributes:

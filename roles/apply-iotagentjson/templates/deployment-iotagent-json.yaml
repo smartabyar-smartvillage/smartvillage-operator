@@ -72,14 +72,21 @@ spec:
             - name: IOTA_MQTT_PORT
               value: '{{ values.message_broker.mqtt_port }}'
             - name: IOTA_MQTT_USERNAME
-              value: 'user'
+              value: '{{ values.message_broker.user }}'
+{% if values.message_broker.password_secret.name %}
             - name: IOTA_MQTT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: "{{ values.message_broker.name }}-rabbitmq"
-                  key: rabbitmq-password
+                  name: "{{ values.message_broker.password_secret.name }}"
+                  key: "{{ values.message_broker.password_secret.key }}"
+            - name: IOTA_MQTT_REJECT_UNAUTHORIZED
+              value: 'true'
+{% else %}
+            - name: IOTA_MQTT_PASSWORD
+              value: ''
             - name: IOTA_MQTT_REJECT_UNAUTHORIZED
               value: 'false'
+{% endif %}
             - name: IOTA_AMQP_DISABLED
               value: 'true'
           image: 'docker.io/fiware/iotagent-json:1.26.0'

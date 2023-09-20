@@ -1,9 +1,10 @@
 ---
 # tasks file for TrafficSimulation
 
-- name: "Query MongoDB secret"
+- name: "Query message broker secret"
   set_fact:
-    message_broker_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.message_broker.secret.name, namespace=ansible_operator_meta.namespace)[0].data[values.message_broker.secret.property] | b64decode }}"
+    message_broker_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.message_broker.secret.name, namespace=ansible_operator_meta.namespace)[0].data[values.message_broker.secret.property] | b64decode | default('') }}"
+  when: values.message_broker.secret.name
 
 - name: "Query the IOT Agent service"
   set_fact:
@@ -53,12 +54,12 @@
     values: "{{ values | combine({'context_broker':{'base_url':context_broker_base_url}}, recursive=true) }}"
   when: values.context_broker.base_url == ''
 
-#- name: Run Ansible role iotagent-json-service-group
-#  include_role:
-#    name: iotagent-json-service-group
-#- name: Run Ansible role iotagent-json-device
-#  include_role:
-#    name: iotagent-json-device
+- name: Run Ansible role iotagent-json-service-group
+  include_role:
+    name: iotagent-json-service-group
+- name: Run Ansible role iotagent-json-device
+  include_role:
+    name: iotagent-json-device
 - name: Run Ansible role iotagent-json-subscription
   include_role:
     name: iotagent-json-subscription

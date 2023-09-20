@@ -1,104 +1,114 @@
 ---
-#- name: "Get the {{ ENTITY_NAME }} subscription"
-#  connection: local
-#  uri:
-#    timeout: 90
-#    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/subscriptions"
-#    method: GET
-#    headers:
-#      Fiware-Service: "{{ values.ngsi_ld.service | lower }}"
-#      Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
-#      NGSILD-Tenant: "{{ values.ngsi_ld.service }}"
-#      NGSILD-PATH: "{{ values.ngsi_ld.service_path }}"
-#      Accept: "*/*"
-#    validate_certs: false
-#    status_code: 
-#      - 200
-#      - 201
-#  register: GET_SUBSCRIPTION
-#  ignore_errors: true
-#- name: "Get subscription {{ ENTITY_NAME }}"
-#  set_fact:
-#    SUBSCRIPTION: "{{ GET_SUBSCRIPTION.json | json_query(QUERY) | first | default('') }}"
-#  vars: 
-#    QUERY: "[?(subject.entities[?id=='{{ ENTITY_NAME }}'])]"
-#- debug:
-#    var: SUBSCRIPTION
+- name: "Get the {{ ENTITY_NAME }} subscription"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/subscriptions"
+    method: GET
+    headers:
+      Fiware-Service: "{{ values.ngsi_ld.service | lower }}"
+      Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
+      NGSILD-Tenant: "{{ values.ngsi_ld.service }}"
+      NGSILD-PATH: "{{ values.ngsi_ld.service_path }}"
+      Accept: "*/*"
+    validate_certs: false
+    status_code: 
+      - 200
+      - 201
+  register: GET_SUBSCRIPTION
+  ignore_errors: true
+- name: "Get subscription {{ ENTITY_NAME }}"
+  set_fact:
+    SUBSCRIPTION: "{{ GET_SUBSCRIPTION.json | json_query(QUERY) | first | default('') }}"
+  vars: 
+    QUERY: "[?(subject.entities[?id=='{{ ENTITY_NAME }}'])]"
+- debug:
+    var: SUBSCRIPTION
+- name: "Provision the {{ ENTITY_NAME }} subscription"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/subscriptions"
+    method: POST
+    headers:
+      Content-Type: "application/ld+json"
+      Fiware-Service: "{{ values.ngsi_ld.service | lower }}"
+      Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
+      NGSILD-Tenant: "{{ values.ngsi_ld.service }}"
+      NGSILD-PATH: "{{ values.ngsi_ld.service_path }}"
+      Accept: "*/*"
+    body_format: json
+    body: "{{ SUBSCRIPTION_BODY }}"
+    return_content: true
+    validate_certs: false
+    status_code: 
+      - 200
+      - 201
+  register: CREATE_SUBSCRIPTION
+  ignore_errors: true
+  when: SUBSCRIPTION is not defined or SUBSCRIPTION == ''
 #- name: "Provision the {{ ENTITY_NAME }} subscription"
 #  connection: local
 #  uri:
 #    timeout: 90
-#    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/subscriptions"
-#    method: POST
-#    headers:
-#      Content-Type: "application/ld+json"
-#      Fiware-Service: "{{ values.ngsi_ld.service | lower }}"
-#      Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
-#      NGSILD-Tenant: "{{ values.ngsi_ld.service }}"
-#      NGSILD-PATH: "{{ values.ngsi_ld.service_path }}"
-#      Accept: "*/*"
-#    body_format: json
-#    body: "{{ SUBSCRIPTION_BODY }}"
-#    return_content: true
-#    validate_certs: false
-#    status_code: 
-#      - 200
-#      - 201
-#  register: CREATE_SUBSCRIPTION
-#  ignore_errors: true
-#  when: SUBSCRIPTION is not defined or SUBSCRIPTION == ''
-##- name: "Provision the {{ ENTITY_NAME }} subscription"
-##  connection: local
-##  uri:
-##    timeout: 90
-##    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/subscriptions/{{ SUBSCRIPTION_NAME | urlencode }}"
-##    method: DELETE
-##    headers:
-##      Fiware-Service: "{{ values.ngsi_ld.service | lower }}"
-##      Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
-##      NGSILD-Tenant: "{{ values.ngsi_ld.service }}"
-##      NGSILD-PATH: "{{ values.ngsi_ld.service_path }}"
-##      Accept: "*/*"
-##    validate_certs: false
-##    status_code: 
-##      - 200
-##      - 202
-##      - 204
-##  register: DELETE_SUBSCRIPTION
-##  when: CREATE_SUBSCRIPTION is defined and CREATE_SUBSCRIPTION.failed is defined and CREATE_SUBSCRIPTION.failed
-#- name: "Update the {{ ENTITY_NAME }} subscription"
-#  connection: local
-#  uri:
-#    timeout: 90
 #    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/subscriptions/{{ SUBSCRIPTION_NAME | urlencode }}"
-#    method: PATCH
+#    method: DELETE
 #    headers:
-#      Content-Type: "application/ld+json"
 #      Fiware-Service: "{{ values.ngsi_ld.service | lower }}"
 #      Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
 #      NGSILD-Tenant: "{{ values.ngsi_ld.service }}"
 #      NGSILD-PATH: "{{ values.ngsi_ld.service_path }}"
 #      Accept: "*/*"
-#    body_format: json
-#    body: "{{ SUBSCRIPTION_BODY }}"
-#    return_content: true
 #    validate_certs: false
 #    status_code: 
 #      - 200
-#      - 201
+#      - 202
 #      - 204
-#  register: UPDATE_SUBSCRIPTION
+#  register: DELETE_SUBSCRIPTION
 #  when: CREATE_SUBSCRIPTION is defined and CREATE_SUBSCRIPTION.failed is defined and CREATE_SUBSCRIPTION.failed
+- name: "Update the {{ ENTITY_NAME }} subscription"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/subscriptions/{{ SUBSCRIPTION_NAME | urlencode }}"
+    method: PATCH
+    headers:
+      Content-Type: "application/ld+json"
+      Fiware-Service: "{{ values.ngsi_ld.service | lower }}"
+      Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
+      NGSILD-Tenant: "{{ values.ngsi_ld.service }}"
+      NGSILD-PATH: "{{ values.ngsi_ld.service_path }}"
+      Accept: "*/*"
+    body_format: json
+    body: "{{ SUBSCRIPTION_BODY }}"
+    return_content: true
+    validate_certs: false
+    status_code: 
+      - 200
+      - 201
+      - 204
+  register: UPDATE_SUBSCRIPTION
+  when: CREATE_SUBSCRIPTION is defined and CREATE_SUBSCRIPTION.failed is defined and CREATE_SUBSCRIPTION.failed
 
 - name: Publish message on MQTT topic to device /{{ values.service_group.apikey }}/{{ values.device.id }}/attrs
   community.general.mqtt:
     server: "{{ mqtt_nodeport_hostname if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.host }}"
     port: "{{ mqtt_nodeport if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.port }}"
-    username: "{{ values.message_broker.user }}"
+    username: "{{ values.message_broker.user | default('') }}"
     password: "{{ message_broker_password }}"
-    topic: "$share/json//{{ values.service_group.apikey }}/{{ values.device.id }}/attrs"
+    topic: "/{{ values.service_group.apikey }}/{{ values.device.id }}/attrs"
     payload: "{{ lookup('template', 'device_values.yml') | from_yaml | ansible.utils.remove_keys(target=['id', 'type']) | to_json }}"
     qos: 0
+  when: values.message_broker.user and message_broker_password
+- name: Publish message on MQTT topic to device /{{ values.service_group.apikey }}/{{ values.device.id }}/attrs
+  community.general.mqtt:
+    server: "{{ mqtt_nodeport_hostname if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.host }}"
+    port: "{{ mqtt_nodeport if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.port }}"
+    topic: "/{{ values.service_group.apikey }}/{{ values.device.id }}/attrs"
+    payload: "{{ lookup('template', 'device_values.yml') | from_yaml | ansible.utils.remove_keys(target=['id', 'type']) | to_json }}"
+    qos: 0
+  when: not (values.message_broker.user and message_broker_password)
+
 - debug:
     var: "{{ lookup('template', 'device_values.yml') | from_yaml | ansible.utils.remove_keys(target=['id', 'type']) | to_json }}"
 - debug:

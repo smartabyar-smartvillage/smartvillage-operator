@@ -1,6 +1,15 @@
 ---
 
 # Remove AMQ Broker
+
+- name: "Delete mqtt-nodeport NodePort service on OpenShift"
+  k8s:
+    state: absent
+    api_version: v1
+    kind: Service
+    name: "mqtt-nodeport"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+
 - name: "Remove {{ site_name }} AMQ Broker on OpenShift"
   k8s:
     state: absent

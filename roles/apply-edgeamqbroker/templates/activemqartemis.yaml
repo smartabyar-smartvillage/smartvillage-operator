@@ -3,9 +3,13 @@ spec:
     - name: mqtt
       protocols: mqtt
       port: {{ values.amq_broker.mqtt_port }}
+#      expose: true
+#      sslEnabled: true
     - name: amqp
       protocols: amqp
       port: {{ values.amq_broker.amqp_port }}
+#      expose: true
+#      sslEnabled: true
   console:
     expose: true
   deploymentPlan:

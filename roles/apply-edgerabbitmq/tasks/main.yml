@@ -30,7 +30,11 @@
       - value: "resources.limits.cpu={{ values.rabbitmq.resources.limits.cpu }}"
       - value: "resources.requests.cpu={{ values.rabbitmq.resources.requests.cpu }}"
       - value: "resources.requests.memory={{ values.rabbitmq.resources.requests.memory }}"
-      - value: extraPlugins=rabbitmq_mqtt
+      - value: "extraPlugins=rabbitmq_mqtt"
+      - value: "featureFlags=all"
+      - value: "image.registry=docker.io"
+      - value: "image.repository=rabbitmq"
+      - value: "image.tag=3.13.0-beta.6-management-alpine"
       - value: 'service.extraPorts=[{"name":"mqtt","port":1883,"targetPort":1883}]'
         value_type: json
       - value: podSecurityContext.enabled=false

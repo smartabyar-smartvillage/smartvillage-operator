@@ -69,19 +69,16 @@ schema:
           - AMQP
       host:
         type: string
-        default: default-rabbitmq.rabbitmq.svc
+        default: default-mqtt-0-svc.amqbroker.svc
       user:
         type: string
-        default: user
       secret:
         type: object
         properties:
           name:
             type: string
-            default: default-rabbitmq
           property:
             type: string
-            default: rabbitmq-password
       port:
         type: number
         default: 1883
