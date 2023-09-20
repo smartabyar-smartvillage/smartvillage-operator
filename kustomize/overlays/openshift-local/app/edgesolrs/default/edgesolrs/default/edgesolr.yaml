@@ -8,7 +8,7 @@ spec:
     name: default
     route:
       create: true
-      host_name: solr.apps-crc.testing
+      host_name: solr-solr.apps-crc.testing
     replicas: 1
     resources:
       limits:
