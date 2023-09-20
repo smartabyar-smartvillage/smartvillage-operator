@@ -2,7 +2,7 @@ apiVersion: smartvillage.computate.org/v1
 kind: EdgeKafka
 metadata:
   name: kafka
-  namespace: smartvillage
+  namespace: kafka
 spec:
   kafka:
     enable_dev_nodeports: true
