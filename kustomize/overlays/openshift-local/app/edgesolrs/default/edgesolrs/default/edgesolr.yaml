@@ -2,7 +2,7 @@ apiVersion: smartvillage.computate.org/v1
 kind: EdgeSolr
 metadata:
   name: default
-  namespace: smartvillage
+  namespace: solr
 spec:
   solr:
     name: default
