@@ -17,3 +17,4 @@ spec:
     enable_dev_nodeports: False
     backup_storage: |-
       10Gi
+    config:

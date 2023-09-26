@@ -45,6 +45,71 @@ spec:
                   backup_storage:
                     default: 10Gi
                     type: string
+                  config:
+                    properties:
+                      files:
+                        items:
+                          properties:
+                            configMap:
+                              properties:
+                                items:
+                                  items:
+                                    properties:
+                                      database:
+                                        description: 'The optional database to run this init script
+                                          in. '
+                                        type: string
+                                      instance:
+                                        description: 'The optional instance to run this init script
+                                          in. '
+                                        type: string
+                                      key:
+                                        type: string
+                                      mode:
+                                        type: string
+                                      path:
+                                        type: string
+                                      user:
+                                        description: 'The optional database user to run this init script
+                                          in. '
+                                        type: string
+                                    type: object
+                                  type: array
+                                name:
+                                  type: string
+                              type: object
+                            secret:
+                              properties:
+                                keys:
+                                  items:
+                                    properties:
+                                      database:
+                                        description: 'The optional database to run this init script
+                                          in. '
+                                        type: string
+                                      instance:
+                                        description: 'The optional instance to run this init script
+                                          in. '
+                                        type: string
+                                      key:
+                                        type: string
+                                      mode:
+                                        type: string
+                                      path:
+                                        description: 'The relative path to the file within `/etc/postgres/`. '
+                                        type: string
+                                      user:
+                                        description: 'The optional database user to run this init script
+                                          in. '
+                                        type: string
+                                    type: object
+                                  type: array
+                                name:
+                                  type: string
+                              type: object
+                          type: object
+                        type: array
+                    type: object
                   enable_dev_nodeports:
                     default: false
                     type: boolean

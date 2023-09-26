@@ -35,3 +35,19 @@
     msg: |-
       The PostgreSQL service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
   when: verify_connections and verify_postgresql.failed
+
+- name: Run SQL configMap scripts on postgres
+  include_role:
+    name: postgres-sql-script
+  loop: "{{ values.postgres.config.files | json_query(_query) | default([]) }}"
+  vars:
+    _query: |-
+      [].configMap.items[]
+
+- name: Run SQL secret scripts on postgres
+  include_role:
+    name: postgres-sql-script
+  loop: "{{ values.postgres.config.files | json_query(_query) | default([]) }}"
+  vars:
+    _query: |-
+      [].secret.items[]

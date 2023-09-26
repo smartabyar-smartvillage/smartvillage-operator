@@ -640,20 +640,20 @@ data:
         <dynamicField name="*_encrypted" type="string" indexed="false" stored="true" sortMissingLast="true"/>
         <dynamicField name="*_encrypteds" type="string" indexed="false" stored="true" multiValued="true" sortMissingLast="true"/>
 
-        <dynamicField name="*_indexedstored_int" type="pint" indexed="true" stored="true" sortMissingLast="true" docValues="false"/>
-        <dynamicField name="*_indexedstored_ints" type="pints" indexed="true" stored="true" multiValued="true" sortMissingLast="true" docValues="false"/>
+        <dynamicField name="*_indexedstored_int" type="pint" indexed="true" stored="true" sortMissingLast="true" docValues="true"/>
+        <dynamicField name="*_indexedstored_ints" type="pints" indexed="true" stored="true" multiValued="true" sortMissingLast="true" docValues="true"/>
         <dynamicField name="*_indexedstored_string" type="string" indexed="true" stored="true" sortMissingLast="true" docValues="false"/>
         <dynamicField name="*_indexedstored_strings" type="strings" indexed="true" stored="true" multiValued="true" sortMissingLast="true" docValues="false"/>
-        <dynamicField name="*_indexedstored_long" type="plong" indexed="true" stored="true" sortMissingLast="true" docValues="false"/>
-        <dynamicField name="*_indexedstored_longs" type="plongs" indexed="true" stored="true" multiValued="true" sortMissingLast="true" docValues="false"/>
+        <dynamicField name="*_indexedstored_long" type="plong" indexed="true" stored="true" sortMissingLast="true" docValues="true"/>
+        <dynamicField name="*_indexedstored_longs" type="plongs" indexed="true" stored="true" multiValued="true" sortMissingLast="true" docValues="true"/>
         <dynamicField name="*_indexedstored_boolean" type="boolean" indexed="true" stored="true" sortMissingLast="true" docValues="false"/>
         <dynamicField name="*_indexedstored_booleans" type="booleans" indexed="true" stored="true" multiValued="true" sortMissingLast="true" docValues="false"/>
-        <dynamicField name="*_indexedstored_float" type="pfloat" indexed="true" stored="true" sortMissingLast="true" docValues="false"/>
-        <dynamicField name="*_indexedstored_floats" type="pfloats" indexed="true" stored="true" multiValued="true" sortMissingLast="true" docValues="false"/>
-        <dynamicField name="*_indexedstored_double" type="pdouble" indexed="true" stored="true" sortMissingLast="true" docValues="false"/>
-        <dynamicField name="*_indexedstored_doubles" type="pdoubles" indexed="true" stored="true" multiValued="true" sortMissingLast="true" docValues="false"/>
-        <dynamicField name="*_indexedstored_date" type="pdate" indexed="true" stored="true" sortMissingLast="true" docValues="false"/>
-        <dynamicField name="*_indexedstored_dates" type="pdate" indexed="true" multiValued="true" stored="true" sortMissingLast="true" docValues="false"/>
+        <dynamicField name="*_indexedstored_float" type="pfloat" indexed="true" stored="true" sortMissingLast="true" docValues="true"/>
+        <dynamicField name="*_indexedstored_floats" type="pfloats" indexed="true" stored="true" multiValued="true" sortMissingLast="true" docValues="true"/>
+        <dynamicField name="*_indexedstored_double" type="pdouble" indexed="true" stored="true" sortMissingLast="true" docValues="true"/>
+        <dynamicField name="*_indexedstored_doubles" type="pdoubles" indexed="true" stored="true" multiValued="true" sortMissingLast="true" docValues="true"/>
+        <dynamicField name="*_indexedstored_date" type="pdate" indexed="true" stored="true" sortMissingLast="true" docValues="true"/>
+        <dynamicField name="*_indexedstored_dates" type="pdate" indexed="true" multiValued="true" stored="true" sortMissingLast="true" docValues="true"/>
         <dynamicField name="*_indexedstored_location" type="location" stored="true" indexed="true" sortMissingLast="true"/>
         <dynamicField name="*_indexedstored_phonetic_en" type="phonetic_en" indexed="true" multiValued="true" stored="true" sortMissingLast="true"/>
 
