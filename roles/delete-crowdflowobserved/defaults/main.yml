@@ -1,0 +1,3 @@
+---
+ENTITY_TYPE: CrowdFlowObserved
+SUBSCRIPTION_NAME: "urn:subscription:CrowdFlowObserved-{{ values.device.id }}"

@@ -1,0 +1,65 @@
+values:
+
+  attributes:
+    address: "{{ crd.attributes.address | default('') }}"
+    alternateName: "{{ crd.attributes.alternateName | default('') }}"
+    areaServed: "{{ crd.attributes.areaServed | default('') }}"
+    averageCrowdSpeed: "{{ crd.attributes.averageCrowdSpeed | default('') }}"
+    averageHeadwayTime: "{{ crd.attributes.averageHeadwayTime | default('') }}"
+    congested: "{{ crd.attributes.congested | default('') }}"
+    dataProvider: "{{ crd.attributes.dataProvider | default('') }}"
+    dateCreated: "{{ crd.attributes.dateCreated | default('') }}"
+    dateModified: "{{ crd.attributes.dateModified | default('') }}"
+    dateObserved: "{{ crd.attributes.dateObserved | default('') }}"
+    dateObservedFrom: "{{ crd.attributes.dateObservedFrom | default('') }}"
+    dateObservedTo: "{{ crd.attributes.dateObservedTo | default('') }}"
+    description: "{{ crd.attributes.description | default('') }}"
+    direction: "{{ crd.attributes.direction | default('') }}"
+    location: "{{ crd.attributes.location | default('') }}"
+    name: "{{ crd.attributes.name | default('') }}"
+    occupancy: "{{ crd.attributes.occupancy | default('') }}"
+    owner: "{{ crd.attributes.owner | default('') }}"
+    peopleCount: "{{ crd.attributes.peopleCount | default('') }}"
+    refRoadSegment: "{{ crd.attributes.refRoadSegment | default('') }}"
+    seeAlso: "{{ crd.attributes.seeAlso | default('') }}"
+    source: "{{ crd.attributes.source | default('') }}"
+    type: "{{ crd.attributes.type | default('') }}"
+
+  managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
+  iotagent:
+    name: "{{ crd.iotagent.name | default(schema | community.general.json_query('iotagent.properties.name.default')) }}"
+    namespace: "{{ crd.iotagent.namespace | default(schema | community.general.json_query('iotagent.properties.namespace.default')) }}"
+    service_name: "{{ crd.iotagent.service_name | default(schema | community.general.json_query('iotagent.properties.service_name.default')) }}"
+    base_url: "{{ crd.iotagent.base_url | default('') }}"
+  context_broker:
+    name: "{{ crd.context_broker.name | default(schema | community.general.json_query('context_broker.properties.name.default')) }}"
+    namespace: "{{ crd.context_broker.namespace | default(schema | community.general.json_query('context_broker.properties.namespace.default')) }}"
+    service_name: "{{ crd.context_broker.service_name | default(schema | community.general.json_query('context_broker.properties.service_name.default')) }}"
+    base_url: "{{ crd.context_broker.base_url | default('') }}"
+  ngsi_ld:
+    service: "{{ crd.ngsi_ld.service | default(schema | community.general.json_query('ngsi_ld.properties.service.default')) }}"
+    service_path: "{{ crd.ngsi_ld.service_path | default(schema | community.general.json_query('ngsi_ld.properties.service_path.default')) }}"
+    context: "{{ crd.ngsi_ld.context | default(schema | community.general.json_query('ngsi_ld.properties.context.default')) }}"
+  service_group:
+    resource: "{{ crd.service_group.resource | default(schema | community.general.json_query('service_group.properties.resource.default')) }}"
+    apikey: "{{ crd.service_group.apikey | default(schema | community.general.json_query('service_group.properties.apikey.default')) }}"
+  message_broker:
+    transport: "{{ crd.message_broker.transport | default(schema | community.general.json_query('message_broker.properties.transport.default')) }}"
+    host: "{{ crd.message_broker.host | default(schema | community.general.json_query('message_broker.properties.host.default')) }}"
+    user: "{{ crd.message_broker.user | default('') }}"
+    secret:
+      name: "{{ crd.message_broker.secret.name | default('') }}"
+      property: "{{ crd.message_broker.secret.property | default('') }}"
+    port: "{{ crd.message_broker.port | default(schema | community.general.json_query('message_broker.properties.port.default')) }}"
+  device:
+    id: "{{ crd.device.id | default(schema | community.general.json_query('device.properties.id.default')) }}"
+    subscription_url: "{{ crd.device.subscription_url | default(schema | community.general.json_query('device.properties.subscription_url.default')) }}"
+  smartabyar_smartvillage:
+    enabled: "{{ crd.smartabyar_smartvillage.enabled | default(schema | community.general.json_query('smartabyar_smartvillage.properties.enabled.default')) }}"
+    auth_secret_name: "{{ crd.smartabyar_smartvillage.auth_secret_name | default(schema | community.general.json_query('smartabyar_smartvillage.properties.auth_secret_name.default')) }}"
+    auth_token_url: "{{ crd.smartabyar_smartvillage.auth_token_url | default(schema | community.general.json_query('smartabyar_smartvillage.properties.auth_token_url.default')) }}"
+    site_base_url: "{{ crd.smartabyar_smartvillage.site_base_url | default(schema | community.general.json_query('smartabyar_smartvillage.properties.site_base_url.default')) }}"
+    smart_model_api: "{{ crd.smartabyar_smartvillage.smart_model_api | default(schema | community.general.json_query('smartabyar_smartvillage.properties.smart_model_api.default')) }}"
+  alternate_model:
+    enabled: "{{ crd.alternate_model.enabled | default(schema | community.general.json_query('alternate_model.properties.enabled.default')) }}"
+    id: "{{ crd.alternate_model.id | default(schema | community.general.json_query('alternate_model.properties.id.default')) }}"

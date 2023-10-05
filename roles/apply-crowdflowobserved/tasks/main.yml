@@ -1,0 +1,52 @@
+---
+# tasks file for CrowdFlowObserved
+
+- name: "Query the IOT Agent service"
+  set_fact:
+    iotagent_port: "{{ query('kubernetes.core.k8s', kind='Service', resource_name=values.iotagent.service_name, namespace=ansible_operator_meta.namespace)[0].spec.ports | community.general.json_query(QUERY) | first }}"
+  vars: 
+    QUERY: |-
+      [?name=='north'].port
+  when: values.iotagent.base_url == ''
+- name: "Configure iotagent_base_url"
+  set_fact:
+    iotagent_base_url: "http://{{ values.iotagent.service_name }}.{{ ansible_operator_meta.namespace }}.svc:{{ iotagent_port }}"
+  when: values.iotagent.base_url == ''
+- name: "Configure iotagent_base_url"
+  set_fact:
+    iotagent_base_url: "{{ values.iotagent.base_url }}"
+  when: values.iotagent.base_url != ''
+- name: "Update values.iotagent.base_url"
+  set_fact:
+    values: "{{ values | combine({'iotagent':{'base_url':iotagent_base_url}}, recursive=true) }}"
+  when: values.iotagent.base_url == ''
+
+- name: "Query the Orion-LD Context Broker service"
+  set_fact:
+    context_broker_port: "{{ query('kubernetes.core.k8s', kind='Service', resource_name=values.context_broker.service_name, namespace=ansible_operator_meta.namespace)[0].spec.ports | community.general.json_query(QUERY) | first }}"
+  vars: 
+    QUERY: |-
+      [?name=='http'].port
+  when: values.context_broker.base_url == ''
+- name: "Configure context_broker_base_url"
+  set_fact:
+    context_broker_base_url: "http://{{ values.context_broker.service_name }}.{{ ansible_operator_meta.namespace }}.svc:{{ context_broker_port }}"
+  when: values.context_broker.base_url == ''
+- name: "Configure iotagent_base_url"
+  set_fact:
+    context_broker_base_url: "{{ values.context_broker.base_url }}"
+  when: values.context_broker.base_url != ''
+- name: "Update values.context_broker.base_url"
+  set_fact:
+    values: "{{ values | combine({'context_broker':{'base_url':context_broker_base_url}}, recursive=true) }}"
+  when: values.context_broker.base_url == ''
+
+- name: Run Ansible role iotagent-json-service-group
+  include_role:
+    name: iotagent-json-service-group
+- name: Run Ansible role iotagent-json-device
+  include_role:
+    name: iotagent-json-device
+- name: Run Ansible role iotagent-json-subscription
+  include_role:
+    name: iotagent-json-subscription
