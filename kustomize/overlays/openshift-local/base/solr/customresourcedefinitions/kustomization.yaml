@@ -1,4 +1,4 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - https://solr.apache.org/operator/downloads/crds/v0.7.0/all-with-dependencies.yaml
+  - https://solr.apache.org/operator/downloads/crds/v0.7.1/all-with-dependencies.yaml

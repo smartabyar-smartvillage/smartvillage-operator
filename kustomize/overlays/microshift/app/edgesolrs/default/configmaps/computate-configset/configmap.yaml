@@ -130,7 +130,7 @@ data:
         </analyzer>
       </fieldType>
       <fieldType name="ignored" class="solr.StrField" indexed="false" stored="false" multiValued="true"/>
-      <fieldType name="location" class="solr.LatLonPointSpatialField" docValues="true"/>
+      <fieldType name="location" class="solr.SpatialRecursivePrefixTreeFieldType" spatialContextFactory="Geo3D" prefixTree="s2" planetModel="WGS84" geo="true" format="GeoJSON"/>
       <fieldType name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType" geo="true" maxDistErr="0.001" distErrPct="0.025" distanceUnits="kilometers"/>
       <fieldType name="lowercase" class="solr.TextField" positionIncrementGap="100">
         <analyzer>
@@ -671,7 +671,7 @@ data:
         <dynamicField name="*_docvalues_doubles" type="pdoubles" indexed="true" stored="true" multiValued="true" sortMissingLast="true" docValues="true"/>
         <dynamicField name="*_docvalues_date" type="pdate" indexed="true" stored="true" sortMissingLast="true" docValues="true"/>
         <dynamicField name="*_docvalues_dates" type="pdate" indexed="true" multiValued="true" stored="true" sortMissingLast="true" docValues="true"/>
-        <dynamicField name="*_docvalues_location" type="location" stored="true" indexed="true" sortMissingLast="true" docValues="true"/>
+        <dynamicField name="*_docvalues_location" type="location" stored="true" indexed="true" sortMissingLast="true"/>
 
         <dynamicField name="*_indexed_int" type="pint" indexed="true" stored="false" sortMissingLast="true"/>
         <dynamicField name="*_indexed_ints" type="pints" indexed="true" stored="false" multiValued="true" sortMissingLast="true"/>
@@ -706,7 +706,6 @@ data:
         <dynamicField name="*_stored_doubles" type="pdoubles" indexed="false" stored="true" multiValued="true" sortMissingLast="true"/>
         <dynamicField name="*_stored_date" type="pdate" indexed="false" stored="true" sortMissingLast="true"/>
         <dynamicField name="*_stored_dates" type="pdate" indexed="false" multiValued="true" stored="true" sortMissingLast="true"/>
-        <dynamicField name="*_stored_location" type="location" stored="true" indexed="false" sortMissingLast="true"/>
         <dynamicField name="*_stored_phonetic_en" type="phonetic_en" indexed="false" multiValued="true" stored="true" sortMissingLast="true"/>
         <dynamicField name="*_incremented_int" type="pint" indexed="true" stored="true" sortMissingLast="true"/>
         <dynamicField name="*_incremented_long" type="plong" indexed="true" stored="true" sortMissingLast="true"/>

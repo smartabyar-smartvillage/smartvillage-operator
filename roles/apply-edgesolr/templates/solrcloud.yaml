@@ -1,4 +1,7 @@
 spec:
+  availability:
+    podDisruptionBudget:
+      enabled: false
   replicas: {{ values.solr.replicas }}
   busyBoxImage:
     repository: docker.io/library/busybox
@@ -15,6 +18,18 @@ spec:
               storage: {{ values.solr.storage }}
   customSolrKubeOptions:
     podOptions:
+      livenessProbe:
+        timeoutSeconds: 20
+        failureThreshold: 300
+      readinessProbe:
+        timeoutSeconds: 5
+      defaultInitContainerResources:
+        limits:
+          cpu: '500m'
+          memory: 500Mi
+        requests:
+          cpu: '200m'
+          memory: 200Mi
       podSecurityContext:
         runAsNonRoot: true
         runAsUser: 8983
