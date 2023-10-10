@@ -1,7 +1,10 @@
 ---
 MODEL_NAME: TrafficFlowObserved
 SUBMODULE_SHORT_NAME: Transportation
-DOMAIN_NAME: Smart Cities
+DOMAIN_NAME: SmartCities
+name: smartvillage
+description: |
+  A device for watching vehicles in a lane of traffic on a road. 
 schema:
   managementState:
     type: string
@@ -42,7 +45,7 @@ schema:
     properties:
       service:
         type: string
-        default: smarttrafficlights
+        default: trafficflowobserveds
       service_path:
         type: string
         default: /Sweden/Veberod/CityCenter
@@ -57,7 +60,7 @@ schema:
         default: /iot/json
       apikey:
         type: string
-        default: VeberodIntersection1
+        default: TrafficFlowObserved
   message_broker:
     type: object
     properties:
@@ -87,7 +90,6 @@ schema:
     properties:
       id:
         type: string
-        default: 'Sjobovagen-SE'
       subscription_url:
         type: string
         default: "http://orionld-smartvillage-sync:8080"
@@ -117,277 +119,288 @@ schema:
         default: true
       id:
         type: string
-        default: sumo
-      name:
+        default: trafficflowobserved
+      enabled:
         type: string
-        default: SUMO
+        default: TrafficFlowObserved
 smart_data_model:
   attributes:
+    color:
+      name: color
+      type: string
+    entityId:
+      name: entityId
+      type: string
+      description: >+
+        A unique ID for this Smart Data Model
+    trafficSimulationId:
+      name: trafficSimulationId
+      type: string
+      description: >+
+        The Traffic Simulation ID
+    laneAreaDetectorId:
+      name: laneAreaDetectorId
+      type: string
+      description: >+
+        The unique ID of the lane area detector in SUMO. 
     location:
-      required: true
       name: location
-      type: "geo:point"
-      description: |
-        Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon
+      type: geo:point
+    simulationName:
+      name: simulationName
+      type: string
+    sumocfgPath:
+      name: sumocfgPath
+      type: string
+    customTrafficLightId:
+      name: customTrafficLightId
+      type: string
+      description: >+
+        The Smart Traffic Light ID
     address:
       name: address
       type: object
-      description: |
+      description: >+
         The mailing address
-      docs: |
-        https://github.com/smart-data-models/dataModel.Transportation/blob/ca8d89fe82b71403fcb0905b96c79b8d9bff54bb/TrafficFlowObserved/model.yaml#L4-L34
+      x-ngsi:
+        model: https://schema.org/address
     alternateName:
       name: alternateName
       type: string
-      description: |
+      description: >+
         An alternative name for this item
-      docs: |
-        https://github.com/smart-data-models/dataModel.Transportation/blob/ca8d89fe82b71403fcb0905b96c79b8d9bff54bb/TrafficFlowObserved/model.yaml#L35-L39
     areaServed:
       name: areaServed
-      type: string
-      description: |
-        The geographic area where a service or offered item is provided
-      docs: |
-        https://github.com/smart-data-models/dataModel.Transportation/blob/ca8d89fe82b71403fcb0905b96c79b8d9bff54bb/TrafficFlowObserved/model.yaml#L40-L45
-      alternate_name: edges
-      alternate_description: |
-        The edges the vehicle shall drive along, given as their ids, separated using spaces
-      alternate_docs: |
-        https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html#routes
+      type: geo:linestring
+      description: >+
+        The geographic area where a service or offered item is provided.
+        Geojson reference to the item. It can be Point, LineString, Polygon,
+        MultiPoint, MultiLineString or MultiPolygon. 
+      required: true
     averageGapDistance:
       name: averageGapDistance
       type: number
-      description: |
+      description: >+
         Average gap distance between consecutive vehicles
-      docs: |
-        https://github.com/smart-data-models/dataModel.Transportation/blob/ca8d89fe82b71403fcb0905b96c79b8d9bff54bb/TrafficFlowObserved/model.yaml#L46-L53
-      alternate_name: minGap
-      alternate_description: |
-        Empty space after leader [m]
-      alternate_docs: |
-        https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html#available_vtype_attributes
-      minimum: 1
-      default: 1
+      x-ngsi:
+        model: https://schema.org/Number
     averageHeadwayTime:
-      # See Smart Data Model: 
       name: averageHeadwayTime
       type: number
-      alternate_name: tau
-      alternate_description: |
-        The driver's desired (minimum) time headway. 
-        Exact interpretation varies by model. 
-        For the default model Krauss this is based on the net space between leader back and follower front).
-      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
-      minimum: 0
+      description: >+
+        Average headway time. Headway time is the time ellapsed between two
+        consecutive vehicles
+      x-ngsi:
+        model: https://schema.org/Number
     averageVehicleLength:
       name: averageVehicleLength
       type: number
-      description: |
-        Average length of the vehicles transiting during the observation period
-      alternate_name: length
-      alternate_description: |
-        The vehicle's netto-length (length) (in m)
-      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
-      minimum: 0
+      description: >+
+        Average length of the vehicles transiting during     the observation
+        period
+      x-ngsi:
+        model: https://schema.org/Number
     averageVehicleSpeed:
       name: averageVehicleSpeed
       type: number
-      description: |
+      description: >+
         Average speed of the vehicles transiting during the observation period
-      alternate_name: speed
-      alternate_description: |
-        speed to be kept while driving between startPos and endPos. This turns the stop into a waypoint.
-      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
-      minimum: 0
+      x-ngsi:
+        model: https://schema.org/Number
     congested:
       name: congested
       type: boolean
-      description: |
-        Flags whether there was a traffic congestion during the observation period in the referred lane. The absence of this attribute means no traffic congestion
+      description: >+
+        Flags whether there was a traffic congestion during the observation
+        period in the referred lane. The absence of this attribute means no
+        traffic congestion
+      x-ngsi:
+        model: https://schema.org/Boolean
     dataProvider:
       name: dataProvider
       type: string
-      description: |
-        A sequence of characters identifying the provider of the harmonised data entity.
+      description: >+
+        A sequence of characters identifying the provider of the harmonised
+        data entity.
     dateCreated:
       name: dateCreated
       type: string
-      description: |
-        Entity creation timestamp. This will usually be allocated by the storage platform.
+      description: >+
+        Entity creation timestamp. This will usually be allocated by the
+        storage platform.
     dateModified:
       name: dateModified
       type: string
-      description: |
-        Timestamp of the last modification of the entity. This will usually be allocated by the storage platform.
+      description: >+
+        Timestamp of the last modification of the entity. This will usually be
+        allocated by the storage platform.
     dateObserved:
       name: dateObserved
       type: string
-      description: |
-        The date and time of this observation in ISO8601 UTC format. It can be represented by an specific time instant or by an ISO8601 interval. As a workaround for the lack of support of Orion Context Broker for datetime intervals, it can be used two separate attributes: `dateObservedFrom`, `dateObservedTo`. [DateTime](https://schema.org/DateTime) or an ISO8601 interval represented as [Text](https://schema.org/Text)
+      description: >+
+        The date and time of this observation in ISO8601 UTC format. It can be
+        represented by an specific time instant or by an ISO8601 interval. As
+        a workaround for the lack of support of Orion Context Broker for
+        datetime intervals, it can be used two separate attributes:
+        `dateObservedFrom`, `dateObservedTo`.
+        [DateTime](https://schema.org/DateTime) or an ISO8601 interval
+        represented as [Text](https://schema.org/Text)
     dateObservedFrom:
       name: dateObservedFrom
       type: string
-      description: |
+      description: >+
         Observation period start date and time. See `dateObserved`
     dateObservedTo:
       name: dateObservedTo
       type: string
-      description: |
+      description: >+
         Observation period end date and time. See `dateObserved`
     description:
       name: description
       type: string
-      description: |
+      description: >+
         A description of this item
     intensity:
       name: intensity
       type: number
-      description: |
+      description: >+
         Total number of vehicles detected during this observation period
-      alternate_name: number
-      alternate_description: |
-        total number of vehicles, equally spaced
-      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
-      minimum: 0
+      x-ngsi:
+        model: https://schema.org/Number
     laneDirection:
       name: laneDirection
       type: string
-      description: |
-        Usual direction of travel in the lane referred by this observation. This attribute is useful when the observation is not referencing any road segment, allowing to know the direction of travel of the traffic flow observed. Enum:forward, backward''. See RoadSegment for a description of the semantics of these values.
+      description: >+
+        Usual direction of travel in the lane referred by this observation.
+        This attribute is useful when the observation is not referencing any
+        road segment, allowing to know the direction of travel of the traffic
+        flow observed. Enum:forward, backward'. See RoadSegment for a
+        description of the semantics of these values.
     laneId:
       name: laneId
       type: number
-      description: |
-        Lane identifier. Lane identification is done using the conventions defined by RoadSegment entity which are based on [OpenStreetMap](http://wiki.openstreetmap.org/wiki/Forward_%26_backward,_left_%26_right).
-      alternate_name: lane
-      alternate_description: |
-        the lane id takes the form <edge_id>_<lane_index>. the edge has to be part of the corresponding route. If the edge supports opposite direciton driving, the lane index may use values beyond the lane indices of the stop edge to define stops on the opposite side.
-      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
+      description: >+
+        Lane identifier. Lane identification is done using the conventions
+        defined by RoadSegment entity which are based on
+        [OpenStreetMap](http://wiki.openstreetmap.org/wiki/Forward_%26_backward,_left_%26_right).
+      x-ngsi:
+        model: https://schema.org/Number
     name:
       name: name
       type: string
+      description: >+
+        The name of this item.
     occupancy:
       name: occupancy
       type: number
-      description: |
-        Fraction of the observation time where a vehicle has been occupying the observed lane
+      description: >+
+        Fraction of the observation time where a vehicle has been occupying
+        the observed lane
+      x-ngsi:
+        model: https://schema.org/Number
     owner:
       name: owner
-      type: array
-      description: |
-        A List containing a JSON encoded sequence of characters referencing the unique Ids of the owner(s)
+      type: object
+      description: >+
+        A List containing a JSON encoded sequence of characters referencing
+        the unique Ids of the owner(s)
     refRoadSegment:
       name: refRoadSegment
       type: string
-      description: |
-        Concerned road segment on which the observation has been made. Reference to an entity of type RoadSegment
+      description: >+
+        Concerned road segment on which the observation has been made.
+        Reference to an entity of type RoadSegment
     reversedLane:
       name: reversedLane
       type: boolean
-      description: |
-        Flags whether traffic in the lane was reversed during the observation period. The absence of this attribute means no lane reversion
+      description: >+
+        Flags whether traffic in the lane was reversed during the observation
+        period. The absence of this attribute means no lane reversion
+      x-ngsi:
+        model: https://schema.org/Boolean
     seeAlso:
       name: seeAlso
-      type: array
-      description: |
+      type: object
+      description: >+
         list of uri pointing to additional resources about the item
     source:
       name: source
       type: string
-      description: |
-        A sequence of characters giving the original source of the entity data as a URL. Recommended to be the fully qualified domain name of the source provider, or the URL to the source object.
+      description: >+
+        A sequence of characters giving the original source of the entity data
+        as a URL. Recommended to be the fully qualified domain name of the
+        source provider, or the URL to the source object.
     vehicleSubType:
       name: vehicleSubType
       type: string
-      description: |
-        It allows to specify a sub type of `vehicleType`, eg if the `vehicleType` is set to `Lorry` the `vehicleSubType` may be `OGV1` or `OGV2` to convey more information about the exact type of vehicle.
+      description: >+
+        It allows to specify a sub type of `vehicleType`, eg if the
+        `vehicleType` is set to `Lorry` the `vehicleSubType` may be `OGV1` or
+        `OGV2` to convey more information about the exact type of vehicle.
     vehicleType:
       name: vehicleType
       type: string
-      description: |
-        Type of vehicle from the point of view of its structural characteristics. Enum:agriculturalVehicle, bicycle, bus, minibus, car, caravan, tram, tanker, carWithCaravan, carWithTrailer, lorry, moped, motorcycle, motorcycleWithSideCar, motorscooter, trailer, van, constructionOrMaintenanceVehicle, trolley, binTrolley, sweepingMachine, cleaningTrolley
-      alternate_name: vClass
-      alternate_description: |
-        An abstract vehicle class (see below). By default vehicles represent regular passenger cars.
-      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
-    customRouteId:
-      name: customRouteId
-      type: string
-      description: |
-        The unique ID of the route in SUMO. 
-      alternate_name: decel
-      alternate_description: |
-        The unique ID of the route in SUMO. 
-      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
+      description: >+
+        Type of vehicle from the point of view of its structural
+        characteristics. Enum:'agriculturalVehicle, bicycle, bus, minibus,
+        car, caravan, tram, tanker, carWithCaravan, carWithTrailer, lorry,
+        moped, motorcycle, motorcycleWithSideCar, motorscooter, trailer, van,
+        constructionOrMaintenanceVehicle, trolley, binTrolley,
+        sweepingMachine, cleaningTrolley'
     customSigma:
       name: customSigma
       type: number
-      description: |
-        The driver imperfection as a floating point number [0,1] (0 denotes perfect driving)
-      alternate_name: sigma
-      alternate_description: |
-        The driver imperfection as a floating point number [0,1] (0 denotes perfect driving)
-      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
+      description: >+
+        The driver imperfection as a floating point number [0,1] (0 denotes
+        perfect driving). 
+      x-ngsi:
+        model: https://schema.org/Number
     customAcceleration:
       name: customAcceleration
       type: number
-      description: |
-        The acceleration ability of vehicles of this type (in m/s^2)
-      alternate_name: accel
-      alternate_description: |
-        The acceleration ability of vehicles of this type (in m/s^2)
-      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
+      description: >+
+        The acceleration ability of vehicles of this type (in m/s^2). 
+      x-ngsi:
+        model: https://schema.org/Number
     customDeceleration:
       name: customDeceleration
       type: number
-      description: |
+      description: >+
         The deceleration ability of vehicles of this type (in m/s^2). 
-      alternate_name: decel
-      alternate_description: |
-        The deceleration ability of vehicles of this type (in m/s^2). 
-      alternate_docs: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html
+      x-ngsi:
+        model: https://schema.org/Number
     customMinGreenTime:
       name: customMinGreenTime
       type: number
-      description: |
+      description: >+
         Min green time for the traffic light in seconds [1, 50]. 
-      minimum: 1
-      maximum: 50
+      x-ngsi:
+        model: https://schema.org/Number
     customMaxGreenTime:
       name: customMaxGreenTime
       type: number
-      description: |
+      description: >+
         Max green time for the traffic light in seconds [1, 50]. 
-      minimum: 1
-      maximum: 100
+      x-ngsi:
+        model: https://schema.org/Number
     customAverageVehiclesPerMinute:
       name: customAverageVehiclesPerMinute
       type: number
-      description: |
+      description: >+
         Average vehicle/min [1, 30]. 
-      minimum: 1
-      maximum: 30
+      x-ngsi:
+        model: https://schema.org/Number
     customDemandScalingFactor:
       name: customDemandScalingFactor
       type: number
-      description: |
+      description: >+
         Demand scaling factor (multiplies all vehicle demands) [1, 2]. 
-      minimum: 1
-      maximum: 2
+      x-ngsi:
+        model: https://schema.org/Number
     customQueueLengthThreshold:
       name: customQueueLengthThreshold
       type: number
-      description: |
-        queue length threshold between low-high content [1, 15]. 
-    customTrafficLightId:
-      name: customTrafficLightId
-      type: string
-      description: |
-        The Smart Traffic Light ID. 
-    customVehicleQueueThreshold:
-      name: customVehicleQueueThreshold
-      type: number
-      default: 8
-      minimum: 1
-      maximum: 60
+      description: >+
+        Demand scaling factor (multiplies all vehicle demands) [1, 2]. 
+      x-ngsi:
+        model: https://schema.org/Number

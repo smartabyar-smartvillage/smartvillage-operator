@@ -10,21 +10,9 @@ metadata:
   name: smartvillage
 spec:
   description: |
-    
+    A SUMO Traffic Simulation
+
   attributes:
-    simulationName: |
-      Veberöd intersection 1
-    sumocfgPath: |
-      /usr/local/src/TLC/input/Veberod_intersection_pedestrian.sumocfg
-    fcdFilePath: |
-      /usr/local/src/TLC/output/veberod-fcd.xml
-    startSeconds: 0
-    endSeconds: 300
-    stepSeconds: 1
-    paramStepSize: 1
-    paramRunTime: 1000
-    paramItersPerPar: 3
-    paramTotalIterNum: 5
   managementState: |-
     Managed
   iotagent:
@@ -61,8 +49,6 @@ spec:
     secret:
     port: 1883
   device:
-    id: |-
-      VeberodIntersection1
     subscription_url: |-
       http://orionld-smartvillage-sync:8080
   smartabyar_smartvillage:
@@ -75,3 +61,8 @@ spec:
       https://smartvillage-web-smartvillage.apps-crc.testing
     smart_model_api: |-
       /api/traffic-simulation
+  alternate_model:
+    enabled: |-
+      TrafficSimulation
+    id: |-
+      trafficsimulation

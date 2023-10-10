@@ -2,15 +2,14 @@ values:
 
   attributes:
     entityId: "{{ crd.attributes.entityId | default('') }}"
-    startDateTime: "{{ crd.attributes.startDateTime | default('') }}"
-    simulationName: "{{ crd.attributes.simulationName | default('') }}"
-    location: "{{ crd.attributes.location | default('') }}"
-    sumocfgPath: "{{ crd.attributes.sumocfgPath | default('') }}"
-    fcdFilePath: "{{ crd.attributes.fcdFilePath | default('') }}"
-    netFilePath: "{{ crd.attributes.netFilePath | default('') }}"
-    startSeconds: "{{ crd.attributes.startSeconds | default('') }}"
-    endSeconds: "{{ crd.attributes.endSeconds | default('') }}"
-    stepSeconds: "{{ crd.attributes.stepSeconds | default('') }}"
+    smartTrafficLightName: "{{ crd.attributes.smartTrafficLightName | default('') }}"
+    routeIdNorth: "{{ crd.attributes.routeIdNorth | default('') }}"
+    routeIdEast: "{{ crd.attributes.routeIdEast | default('') }}"
+    trafficFlowObservedIds: "{{ crd.attributes.trafficFlowObservedIds | default('') }}"
+    trafficFlowObservedSearch: "{{ crd.attributes.trafficFlowObservedSearch | default('') }}"
+    trafficFlowObserveds: "{{ crd.attributes.trafficFlowObserveds | default('') }}"
+    trafficFlowObservedNorth_: "{{ crd.attributes.trafficFlowObservedNorth_ | default('') }}"
+    trafficFlowObservedEast_: "{{ crd.attributes.trafficFlowObservedEast_ | default('') }}"
     paramAvgVehiclePerMinFromWestToEast: "{{ crd.attributes.paramAvgVehiclePerMinFromWestToEast | default('') }}"
     paramAvgVehiclePerMinFromSouthToNorth: "{{ crd.attributes.paramAvgVehiclePerMinFromSouthToNorth | default('') }}"
     paramVehicleDemandScalingFactor: "{{ crd.attributes.paramVehicleDemandScalingFactor | default('') }}"
@@ -32,12 +31,9 @@ values:
     paramRunTime: "{{ crd.attributes.paramRunTime | default('') }}"
     paramItersPerPar: "{{ crd.attributes.paramItersPerPar | default('') }}"
     paramTotalIterNum: "{{ crd.attributes.paramTotalIterNum | default('') }}"
-    laneAreaDetectorIds: "{{ crd.attributes.laneAreaDetectorIds | default('') }}"
-    laneAreaDetectorLanes: "{{ crd.attributes.laneAreaDetectorLanes | default('') }}"
-    laneAreaDetectorPaths: "{{ crd.attributes.laneAreaDetectorPaths | default('') }}"
-    e1DetectorIds: "{{ crd.attributes.e1DetectorIds | default('') }}"
-    e1DetectorLanes: "{{ crd.attributes.e1DetectorLanes | default('') }}"
-    e1DetectorPaths: "{{ crd.attributes.e1DetectorPaths | default('') }}"
+    reportKeys: "{{ crd.attributes.reportKeys | default('') }}"
+    tlsStatesPaths: "{{ crd.attributes.tlsStatesPaths | default('') }}"
+    additionalFilePaths: "{{ crd.attributes.additionalFilePaths | default('') }}"
 
   managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
   iotagent:
@@ -66,7 +62,7 @@ values:
       property: "{{ crd.message_broker.secret.property | default('') }}"
     port: "{{ crd.message_broker.port | default(schema | community.general.json_query('message_broker.properties.port.default')) }}"
   device:
-    id: "{{ crd.device.id | default('') }}"
+    id: "{{ crd.device.id | default(schema | community.general.json_query('device.properties.id.default')) }}"
     subscription_url: "{{ crd.device.subscription_url | default(schema | community.general.json_query('device.properties.subscription_url.default')) }}"
   smartabyar_smartvillage:
     enabled: "{{ crd.smartabyar_smartvillage.enabled | default(schema | community.general.json_query('smartabyar_smartvillage.properties.enabled.default')) }}"

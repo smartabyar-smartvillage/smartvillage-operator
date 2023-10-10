@@ -90,7 +90,6 @@ schema:
     properties:
       id:
         type: string
-        default: 'VeberodIntersection1'
       subscription_url:
         type: string
         default: "http://orionld-smartvillage-sync:8080"

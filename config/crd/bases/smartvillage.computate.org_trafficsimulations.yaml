@@ -17,7 +17,8 @@ spec:
       openAPIV3Schema:
         description: |
           TrafficSimulation is the Schema for the trafficsimulations API
-          
+          A SUMO Traffic Simulation
+
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -40,41 +41,66 @@ spec:
                 properties:
                   object_id:
                     type: string
-                  location:
+                  entityId:
+                    type: string
+                  startDateTime:
                     type: string
                   simulationName:
                     type: string
-                    default: |-
-                      Veberöd intersection 1
+                  location:
+                    type: string
                   sumocfgPath:
                     type: string
-                    default: |-
-                      /usr/local/src/TLC/input/Veberod_intersection_pedestrian.sumocfg
                   fcdFilePath:
                     type: string
-                    default: |-
-                      /usr/local/src/TLC/output/veberod-fcd.xml
+                  netFilePath:
+                    type: string
                   startSeconds:
                     type: number
-                    default: 0
                   endSeconds:
                     type: number
-                    default: 300
                   stepSeconds:
                     type: number
-                    default: 1
+                  paramAvgVehiclePerMinFromWestToEast:
+                    type: number
+                  paramAvgVehiclePerMinFromSouthToNorth:
+                    type: number
+                  paramVehicleDemandScalingFactor:
+                    type: number
+                  paramAvgPedestrianPerMinFromWestToEast:
+                    type: number
+                  paramAvgPedestrianPerMinFromSouthToNorth:
+                    type: number
+                  paramPedestrianDemandScalingFactor:
+                    type: number
+                  paramMinGreenTimeSecWestEast:
+                    type: number
+                  paramMaxGreenTimeSecWestEast:
+                    type: number
+                  paramMinGreenTimeSecSouthNorth:
+                    type: number
+                  paramMaxGreenTimeSecSouthNorth:
+                    type: number
+                  paramPedestrianWaitThresholdSecNorthSouth:
+                    type: number
+                  paramPedestrianWaitThresholdSecWestEast:
+                    type: number
+                  paramVehicleQueueThresholdWestEast:
+                    type: number
+                  paramVehicleQueueThresholdSouthNorth:
+                    type: number
+                  paramPedestrianQueueThresholdNorthSouth:
+                    type: number
+                  paramPedestrianQueueThresholdWestEast:
+                    type: number
                   paramStepSize:
                     type: number
-                    default: 1
                   paramRunTime:
                     type: number
-                    default: 1000
                   paramItersPerPar:
                     type: number
-                    default: 3
                   paramTotalIterNum:
                     type: number
-                    default: 5
               managementState:
                 type: string
                 default: |-
@@ -161,7 +187,6 @@ spec:
                 type: object
                 properties:
                   id:
-                    default: VeberodIntersection1
                     type: string
                   subscription_url:
                     default: http://orionld-smartvillage-sync:8080
@@ -184,6 +209,16 @@ spec:
                     type: string
                   smart_model_api:
                     default: /api/traffic-simulation
+                    type: string
+
+              alternate_model:
+                type: object
+                properties:
+                  enabled:
+                    default: TrafficSimulation
+                    type: string
+                  id:
+                    default: trafficsimulation
                     type: string
 
           status:

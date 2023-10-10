@@ -15,7 +15,9 @@ spec:
   - name: v1
     schema:
       openAPIV3Schema:
-        description: SmartTrafficLight is the Schema for the smarttrafficlights API
+        description: |
+          SmartTrafficLight is the Schema for the smarttrafficlights API
+          
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -32,7 +34,189 @@ spec:
           spec:
             description: Spec defines the desired state of SmartTrafficLight
             type: object
-            x-kubernetes-preserve-unknown-fields: true
+            properties:
+              attributes:
+                type: object
+                properties:
+                  object_id:
+                    type: string
+                  entityId:
+                    type: string
+                  smartTrafficLightName:
+                    type: string
+                  routeIdNorth:
+                    type: string
+                  routeIdEast:
+                    type: string
+                  trafficFlowObservedSearch:
+                    type: 
+                  trafficFlowObserveds:
+                    type: 
+                  trafficFlowObservedNorth_:
+                    type: 
+                  trafficFlowObservedEast_:
+                    type: 
+                  paramAvgVehiclePerMinFromWestToEast:
+                    type: number
+                  paramAvgVehiclePerMinFromSouthToNorth:
+                    type: number
+                  paramVehicleDemandScalingFactor:
+                    type: number
+                  paramAvgPedestrianPerMinFromWestToEast:
+                    type: number
+                  paramAvgPedestrianPerMinFromSouthToNorth:
+                    type: number
+                  paramPedestrianDemandScalingFactor:
+                    type: number
+                  paramMinGreenTimeSecWestEast:
+                    type: number
+                  paramMaxGreenTimeSecWestEast:
+                    type: number
+                  paramMinGreenTimeSecSouthNorth:
+                    type: number
+                  paramMaxGreenTimeSecSouthNorth:
+                    type: number
+                  paramPedestrianWaitThresholdSecNorthSouth:
+                    type: number
+                  paramPedestrianWaitThresholdSecWestEast:
+                    type: number
+                  paramVehicleQueueThresholdWestEast:
+                    type: number
+                  paramVehicleQueueThresholdSouthNorth:
+                    type: number
+                  paramPedestrianQueueThresholdNorthSouth:
+                    type: number
+                  paramPedestrianQueueThresholdWestEast:
+                    type: number
+                  paramStepSize:
+                    type: number
+                  paramRunTime:
+                    type: number
+                  paramItersPerPar:
+                    type: number
+                  paramTotalIterNum:
+                    type: number
+              managementState:
+                type: string
+                default: |-
+                  Managed
+              iotagent:
+                type: object
+                properties:
+                  base_url:
+                    type: string
+                  name:
+                    default: iotagent-json
+                    type: string
+                  namespace:
+                    default: iotagent
+                    type: string
+                  service_name:
+                    default: iotagent-json
+                    type: string
+
+              context_broker:
+                type: object
+                properties:
+                  base_url:
+                    type: string
+                  name:
+                    default: scorpiobroker
+                    type: string
+                  namespace:
+                    default: scorpiobroker
+                    type: string
+                  service_name:
+                    default: scorpiobroker
+                    type: string
+
+              ngsi_ld:
+                type: object
+                properties:
+                  context:
+                    default: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
+                    type: string
+                  service:
+                    default: smarttrafficlights
+                    type: string
+                  service_path:
+                    default: /Sweden/Veberod/CityCenter
+                    type: string
+
+              service_group:
+                type: object
+                properties:
+                  apikey:
+                    default: SmartTrafficLight
+                    type: string
+                  resource:
+                    default: /iot/json
+                    type: string
+
+              message_broker:
+                type: object
+                properties:
+                  host:
+                    default: default-mqtt-0-svc.amqbroker.svc
+                    type: string
+                  port:
+                    default: 1883
+                    type: number
+                  secret:
+                    properties:
+                      name:
+                        type: string
+                      property:
+                        type: string
+                    type: object
+                  transport:
+                    default: MQTT
+                    enum:
+                    - MQTT
+                    - AMQP
+                    type: string
+                  user:
+                    type: string
+
+              device:
+                type: object
+                properties:
+                  id:
+                    default: VeberodIntersection1
+                    type: string
+                  subscription_url:
+                    default: http://orionld-smartvillage-sync:8080
+                    type: string
+
+              smartabyar_smartvillage:
+                type: object
+                properties:
+                  auth_secret_name:
+                    default: keycloak-client-secret-smartvillage
+                    type: string
+                  auth_token_url:
+                    default: https://keycloak-sso.apps-crc.testing/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+                    type: string
+                  enabled:
+                    default: true
+                    type: boolean
+                  site_base_url:
+                    default: https://smartvillage-web-smartvillage.apps-crc.testing
+                    type: string
+                  smart_model_api:
+                    default: /api/smart-traffic-light
+                    type: string
+
+              alternate_model:
+                type: object
+                properties:
+                  enabled:
+                    default: SmartTrafficLight
+                    type: string
+                  id:
+                    default: smarttrafficlight
+                    type: string
+
           status:
             description: Status defines the observed state of SmartTrafficLight
             type: object

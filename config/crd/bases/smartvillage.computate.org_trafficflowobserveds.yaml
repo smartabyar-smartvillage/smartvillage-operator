@@ -17,7 +17,8 @@ spec:
       openAPIV3Schema:
         description: |
           TrafficFlowObserved is the Schema for the trafficflowobserveds API
-          An observation of traffic flow conditions at a certain place and time.
+          A device for watching vehicles in a lane of traffic on a road. 
+
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -40,7 +41,21 @@ spec:
                 properties:
                   object_id:
                     type: string
+                  color:
+                    type: string
+                  entityId:
+                    type: string
+                  trafficSimulationId:
+                    type: string
+                  laneAreaDetectorId:
+                    type: string
                   location:
+                    type: string
+                  simulationName:
+                    type: string
+                  sumocfgPath:
+                    type: string
+                  customTrafficLightId:
                     type: string
                   address:
                     type: object
@@ -70,10 +85,9 @@ spec:
                   alternateName:
                     type: string
                   areaServed:
-                    type: string
+                    type: geo:linestring
                   averageGapDistance:
                     type: number
-                    default: 1
                   averageHeadwayTime:
                     type: number
                   averageVehicleLength:
@@ -106,17 +120,19 @@ spec:
                     type: string
                   occupancy:
                     type: number
+                  owner:
+                    type: object
                   refRoadSegment:
                     type: string
                   reversedLane:
                     type: boolean
+                  seeAlso:
+                    type: object
                   source:
                     type: string
                   vehicleSubType:
                     type: string
                   vehicleType:
-                    type: string
-                  customRouteId:
                     type: string
                   customSigma:
                     type: number
@@ -134,11 +150,6 @@ spec:
                     type: number
                   customQueueLengthThreshold:
                     type: number
-                  customTrafficLightId:
-                    type: string
-                  customVehicleQueueThreshold:
-                    type: number
-                    default: 8
               managementState:
                 type: string
                 default: |-
@@ -180,7 +191,7 @@ spec:
                     default: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
                     type: string
                   service:
-                    default: smarttrafficlights
+                    default: trafficflowobserveds
                     type: string
                   service_path:
                     default: /Sweden/Veberod/CityCenter
@@ -190,7 +201,7 @@ spec:
                 type: object
                 properties:
                   apikey:
-                    default: VeberodIntersection1
+                    default: TrafficFlowObserved
                     type: string
                   resource:
                     default: /iot/json
@@ -225,7 +236,6 @@ spec:
                 type: object
                 properties:
                   id:
-                    default: Sjobovagen-SE
                     type: string
                   subscription_url:
                     default: http://orionld-smartvillage-sync:8080
@@ -254,13 +264,10 @@ spec:
                 type: object
                 properties:
                   enabled:
-                    default: true
-                    type: boolean
-                  id:
-                    default: sumo
+                    default: TrafficFlowObserved
                     type: string
-                  name:
-                    default: SUMO
+                  id:
+                    default: trafficflowobserved
                     type: string
 
           status:

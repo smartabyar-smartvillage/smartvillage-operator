@@ -7,13 +7,12 @@ metadata:
     app.kubernetes.io/part-of: smartvillage-operator
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/created-by: smartvillage-operator
-  name: sweden-veberod-1-sjobovagen-se
+  name: smartvillage
 spec:
   description: |
-    An observation of traffic flow conditions at a certain place and time.
+    A device for watching vehicles in a lane of traffic on a road. 
+
   attributes:
-    averageGapDistance: 1
-    customVehicleQueueThreshold: 8
   managementState: |-
     Managed
   iotagent:
@@ -32,7 +31,7 @@ spec:
       scorpiobroker
   ngsi_ld:
     service: |-
-      smarttrafficlights
+      trafficflowobserveds
     service_path: |-
       /Sweden/Veberod/CityCenter
     context: |-
@@ -41,7 +40,7 @@ spec:
     resource: |-
       /iot/json
     apikey: |-
-      VeberodIntersection1
+      TrafficFlowObserved
   message_broker:
     transport: |-
       MQTT
@@ -50,8 +49,6 @@ spec:
     secret:
     port: 1883
   device:
-    id: |-
-      Sjobovagen-SE
     subscription_url: |-
       http://orionld-smartvillage-sync:8080
   smartabyar_smartvillage:
@@ -65,8 +62,7 @@ spec:
     smart_model_api: |-
       /api/traffic-flow-observed
   alternate_model:
-    enabled: True
+    enabled: |-
+      TrafficFlowObserved
     id: |-
-      sumo
-    name: |-
-      SUMO
+      trafficflowobserved
