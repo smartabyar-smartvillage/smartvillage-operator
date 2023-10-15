@@ -1,0 +1,6 @@
+apiVersion: smartvillage.computate.org/v1
+kind: EdgeAmqBroker
+metadata:
+  name: amqbroker
+  namespace: amqbroker
+spec: {}

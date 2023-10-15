@@ -57,7 +57,7 @@ spec:
                 type: object
                 properties:
                   mqtt_host:
-                    default: default-rabbitmq.rabbitmq.svc
+                    default: default-mqtt-0-svc.amqbroker.svc
                     type: string
                   mqtt_port:
                     default: 1883
@@ -65,6 +65,19 @@ spec:
                   name:
                     default: default
                     description: The name of the RabbitMQ Broker
+                    type: string
+                  password_secret:
+                    properties:
+                      key:
+                        description: The key within the secret containing the password value.
+                        type: string
+                      name:
+                        description: The name of the Kubernetes/OpenShift secret containing the message
+                          broker password.
+                        type: string
+                    type: object
+                  user:
+                    description: The optional user used to authenticate to the message broker.
                     type: string
 
               orionld:

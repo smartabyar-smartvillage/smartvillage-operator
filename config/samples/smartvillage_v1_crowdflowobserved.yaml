@@ -1,0 +1,68 @@
+apiVersion: smartvillage.computate.org/v1
+kind: CrowdFlowObserved
+metadata:
+  labels:
+    app.kubernetes.io/name: crowdflowobserved
+    app.kubernetes.io/instance: crowdflowobserved-sample
+    app.kubernetes.io/part-of: smartvillage-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: smartvillage-operator
+  name: smartvillage
+spec:
+  description: |
+    ApiTag.enUS: CrowdFlowObserved
+
+  attributes:
+  managementState: |-
+    Managed
+  iotagent:
+    name: |-
+      iotagent-json
+    namespace: |-
+      iotagent
+    service_name: |-
+      iotagent-json
+  context_broker:
+    name: |-
+      scorpiobroker
+    namespace: |-
+      scorpiobroker
+    service_name: |-
+      scorpiobroker
+  ngsi_ld:
+    service: |-
+      crowdflowobserveds
+    service_path: |-
+      /Sweden/Veberod/CityCenter
+    context: |-
+      https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
+  service_group:
+    resource: |-
+      /iot/json
+    apikey: |-
+      CrowdFlowObserved
+  message_broker:
+    transport: |-
+      MQTT
+    host: |-
+      default-mqtt-0-svc.amqbroker.svc
+    secret:
+    port: 1883
+  device:
+    subscription_url: |-
+      http://orionld-smartvillage-sync:8080
+  smartabyar_smartvillage:
+    enabled: True
+    auth_secret_name: |-
+      keycloak-client-secret-smartvillage
+    auth_token_url: |-
+      https://keycloak-sso.apps-crc.testing/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+    site_base_url: |-
+      https://smartvillage-web-smartvillage.apps-crc.testing
+    smart_model_api: |-
+      /api/crowd-flow-observed
+  alternate_model:
+    enabled: |-
+      CrowdFlowObserved
+    id: |-
+      crowdflowobserved

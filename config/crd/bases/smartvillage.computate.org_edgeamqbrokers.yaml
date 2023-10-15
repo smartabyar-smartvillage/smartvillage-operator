@@ -40,6 +40,9 @@ spec:
                 type: string
                 default: |-
                   Managed
+              enable_dev_nodeports:
+                type: boolean
+                default: False
               amq_broker:
                 type: object
                 properties:

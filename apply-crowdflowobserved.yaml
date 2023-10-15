@@ -1,0 +1,31 @@
+---
+- name: Install a CrowdFlowObserved resource from OpenShift
+  hosts: localhost
+  connection: local
+  pre_tasks:
+    - fail:
+        msg: Variable crd_path is not defined
+      when: crd_path is not defined
+    - name: "Query CrowdFlowObserved"
+      set_fact:
+        crd_complete: "{{ (lookup('file', crd_path) | from_yaml) }}"
+      vars:
+        ENTITY_TYPE: CrowdFlowObserved
+      when: crd_path is defined
+    - name: "Set name and namespace vars"
+      set_fact:
+        crd: "{{ crd_complete.spec }}"
+        ansible_operator_meta_name: "{{ crd_complete.metadata.name }}"
+        ansible_operator_meta_namespace: "{{ crd_complete.metadata.namespace }}"
+  roles:
+    - smart-data-model-vars
+    - apply-crowdflowobserved
+  vars:
+    ENTITY_TYPE: CrowdFlowObserved
+    ansible_operator_meta:
+      name: "{{ ansible_operator_meta_name }}"
+      namespace: "{{ ansible_operator_meta_namespace }}"
+    mqtt_nodeport: 30083
+    mqtt_nodeport_hostname: mqtt.apps-crc.testing
+    verify_connections: false
+    enable_dev_nodeports: true

@@ -12,8 +12,23 @@
     name: smart-data-model-vars
   vars:
     ENTITY_TYPE: EdgeRabbitMQ
-- name: Run Ansible role delete-smartdatamodel
-  include_role:
-    name: delete-smartdatamodel
-  vars:
-    ENTITY_TYPE: EdgeRabbitMQ
+
+- name: "Delete mqtt-nodeport NodePort service on OpenShift"
+  k8s:
+    state: absent
+    api_version: v1
+    kind: Service
+    name: "mqtt-nodeport"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+
+- name: Delete rabbitmq helm chart
+  kubernetes.core.helm:
+    name: "{{ values.rabbitmq.name }}"
+    chart_ref: bitnami/rabbitmq
+    history_max: 1
+    force: true
+    disable_hook: true
+    release_namespace: "{{ ansible_operator_meta.namespace }}"
+    release_state: absent
+    skip_crds: true
+  ignore_errors: true

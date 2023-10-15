@@ -1,7 +1,7 @@
 ---
 name: smartvillage
 description: |
-  
+  A SUMO Traffic Simulation
 schema:
   managementState:
     type: string
@@ -69,19 +69,16 @@ schema:
           - AMQP
       host:
         type: string
-        default: default-rabbitmq.rabbitmq.svc
+        default: default-mqtt-0-svc.amqbroker.svc
       user:
         type: string
-        default: user
       secret:
         type: object
         properties:
           name:
             type: string
-            default: default-rabbitmq
           property:
             type: string
-            default: rabbitmq-password
       port:
         type: number
         default: 1883
@@ -90,7 +87,6 @@ schema:
     properties:
       id:
         type: string
-        default: 'VeberodIntersection1'
       subscription_url:
         type: string
         default: "http://orionld-smartvillage-sync:8080"
@@ -112,59 +108,289 @@ schema:
       smart_model_api:
         type: string
         default: /api/traffic-simulation
+  alternate_model:
+    type: object
+    properties:
+      enabled:
+        type: boolean
+        default: true
+      id:
+        type: string
+        default: trafficsimulation
+      enabled:
+        type: string
+        default: TrafficSimulation
 smart_data_model:
   attributes:
-    location:
-      required: true
-      name: location
-      type: "geo:point"
-      description: |
-        Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon
+    entityId:
+      name: entityId
+      type: string
+      description: >+
+        A unique ID for this Smart Data Model
+    startDateTime:
+      name: startDateTime
+      type: string
+      description: >+
+        The start date and time. 
+      x-ngsi:
+        model: https://schema.org/DateTime
     simulationName:
       name: simulationName
       type: string
-      default: Veberöd intersection 1
+      required: true
+    location:
+      name: location
+      type: geo:point
     sumocfgPath:
       name: sumocfgPath
       type: string
-      default: /usr/local/src/TLC/input/Veberod_intersection_pedestrian.sumocfg
     fcdFilePath:
       name: fcdFilePath
       type: string
-      default: /usr/local/src/TLC/output/veberod-fcd.xml
+    netFilePath:
+      name: netFilePath
+      type: string
     startSeconds:
       name: startSeconds
       type: number
-      default: 0
+      description: >+
+        -b, --begin TIME Defines the begin time in seconds; The simulation
+        starts at this time
+      x-ngsi:
+        model: https://schema.org/Number
     endSeconds:
       name: endSeconds
       type: number
-      default: 300
+      description: >+
+        -e, --end TIME Defines the end time in seconds; The simulation ends at
+        this time
+      x-ngsi:
+        model: https://schema.org/Number
     stepSeconds:
       name: stepSeconds
       type: number
-      default: 1
+      description: >+
+        --step-length TIME Defines the step duration in seconds
+      x-ngsi:
+        model: https://schema.org/Number
+    paramAvgVehiclePerMinFromWestToEast:
+      name: paramAvgVehiclePerMinFromWestToEast
+      type: number
+      description: >+
+        Min: 1
+      minimum: 1
+      maximum: 30
+      x-ngsi:
+        model: https://schema.org/Number
+    paramAvgVehiclePerMinFromSouthToNorth:
+      name: paramAvgVehiclePerMinFromSouthToNorth
+      type: number
+      description: >+
+        Min: 1
+      minimum: 1
+      maximum: 30
+      x-ngsi:
+        model: https://schema.org/Number
+    paramVehicleDemandScalingFactor:
+      name: paramVehicleDemandScalingFactor
+      type: number
+      description: >+
+        Min: 1
+      minimum: 1
+      maximum: 2
+      x-ngsi:
+        model: https://schema.org/Number
+    paramAvgPedestrianPerMinFromWestToEast:
+      name: paramAvgPedestrianPerMinFromWestToEast
+      type: number
+      description: >+
+        Min: 1
+      minimum: 1
+      maximum: 30
+      x-ngsi:
+        model: https://schema.org/Number
+    paramAvgPedestrianPerMinFromSouthToNorth:
+      name: paramAvgPedestrianPerMinFromSouthToNorth
+      type: number
+      description: >+
+        Min: 1
+      minimum: 1
+      maximum: 30
+      x-ngsi:
+        model: https://schema.org/Number
+    paramPedestrianDemandScalingFactor:
+      name: paramPedestrianDemandScalingFactor
+      type: number
+      description: >+
+        Min: 1
+      minimum: 1
+      maximum: 2
+      x-ngsi:
+        model: https://schema.org/Number
+    paramDemandScale:
+      name: paramDemandScale
+      type: array
+      items:
+        type: string
+    paramMinGreenTimeSecWestEast:
+      name: paramMinGreenTimeSecWestEast
+      type: number
+      description: >+
+        Min: 1
+      minimum: 1
+      maximum: 50
+      x-ngsi:
+        model: https://schema.org/Number
+    paramMaxGreenTimeSecWestEast:
+      name: paramMaxGreenTimeSecWestEast
+      type: number
+      description: >+
+        Min: 1
+      minimum: 1
+      maximum: 100
+      x-ngsi:
+        model: https://schema.org/Number
+    paramMinGreenTimeSecSouthNorth:
+      name: paramMinGreenTimeSecSouthNorth
+      type: number
+      description: >+
+        Min: 1
+      minimum: 1
+      maximum: 50
+      x-ngsi:
+        model: https://schema.org/Number
+    paramMaxGreenTimeSecSouthNorth:
+      name: paramMaxGreenTimeSecSouthNorth
+      type: number
+      description: >+
+        Min: 1
+      minimum: 1
+      maximum: 100
+      x-ngsi:
+        model: https://schema.org/Number
+    paramPedestrianWaitThresholdSecNorthSouth:
+      name: paramPedestrianWaitThresholdSecNorthSouth
+      type: number
+      description: >+
+        Min: 1
+      minimum: 1
+      maximum: 60
+      x-ngsi:
+        model: https://schema.org/Number
+    paramPedestrianWaitThresholdSecWestEast:
+      name: paramPedestrianWaitThresholdSecWestEast
+      type: number
+      description: >+
+        Min: 1
+      minimum: 1
+      maximum: 60
+      x-ngsi:
+        model: https://schema.org/Number
+    paramVehicleQueueThresholdWestEast:
+      name: paramVehicleQueueThresholdWestEast
+      type: number
+      description: >+
+        Min: 1
+      minimum: 1
+      maximum: 60
+      x-ngsi:
+        model: https://schema.org/Number
+    paramVehicleQueueThresholdSouthNorth:
+      name: paramVehicleQueueThresholdSouthNorth
+      type: number
+      description: >+
+        Min: 1
+      minimum: 1
+      maximum: 15
+      x-ngsi:
+        model: https://schema.org/Number
+    paramPedestrianQueueThresholdNorthSouth:
+      name: paramPedestrianQueueThresholdNorthSouth
+      type: number
+      description: >+
+        Min: 1
+      minimum: 1
+      maximum: 15
+      x-ngsi:
+        model: https://schema.org/Number
+    paramPedestrianQueueThresholdWestEast:
+      name: paramPedestrianQueueThresholdWestEast
+      type: number
+      description: >+
+        Min: 1
+      minimum: 1
+      maximum: 15
+      x-ngsi:
+        model: https://schema.org/Number
     paramStepSize:
       name: paramStepSize
       type: number
-      default: 1
+      description: >+
+        Min: 0.5
       minimum: 0.5
       maximum: 2
+      x-ngsi:
+        model: https://schema.org/Number
     paramRunTime:
       name: paramRunTime
       type: number
-      default: 1000
+      description: >+
+        Time duration of each simulated sample path. 
       minimum: 500
       maximum: 3600
+      x-ngsi:
+        model: https://schema.org/Number
     paramItersPerPar:
       name: paramItersPerPar
       type: number
-      default: 3
+      description: >+
+        Number of repeats per round. 
       minimum: 1
       maximum: 30
+      x-ngsi:
+        model: https://schema.org/Number
     paramTotalIterNum:
       name: paramTotalIterNum
       type: number
-      default: 5
+      description: >+
+        Total iterations to update performance. 
       minimum: 1
       maximum: 30
+      x-ngsi:
+        model: https://schema.org/Number
+    laneAreaDetectorIds:
+      name: laneAreaDetectorIds
+      type: array
+      items:
+        type: string
+    laneAreaDetectorLanes:
+      name: laneAreaDetectorLanes
+      type: array
+    laneAreaDetectorPaths:
+      name: laneAreaDetectorPaths
+      type: array
+      items:
+        type: string
+    e1DetectorIds:
+      name: e1DetectorIds
+      type: array
+      items:
+        type: string
+    e1DetectorLanes:
+      name: e1DetectorLanes
+      type: array
+      items:
+        type: string
+    e1DetectorPaths:
+      name: e1DetectorPaths
+      type: array
+      items:
+        type: string
+    walkingAreaIds:
+      name: walkingAreaIds
+      type: array
+      items:
+        type: string
+    walkingAreaLanes:
+      name: walkingAreaLanes
+      type: array

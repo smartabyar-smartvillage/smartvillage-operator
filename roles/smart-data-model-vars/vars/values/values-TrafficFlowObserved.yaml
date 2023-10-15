@@ -1,11 +1,18 @@
 values:
 
   attributes:
+    color: "{{ crd.attributes.color | default('') }}"
+    entityId: "{{ crd.attributes.entityId | default('') }}"
+    trafficSimulationId: "{{ crd.attributes.trafficSimulationId | default('') }}"
+    laneAreaDetectorId: "{{ crd.attributes.laneAreaDetectorId | default('') }}"
     location: "{{ crd.attributes.location | default('') }}"
+    simulationName: "{{ crd.attributes.simulationName | default('') }}"
+    sumocfgPath: "{{ crd.attributes.sumocfgPath | default('') }}"
+    customTrafficLightId: "{{ crd.attributes.customTrafficLightId | default('') }}"
     address: "{{ crd.attributes.address | default('') }}"
     alternateName: "{{ crd.attributes.alternateName | default('') }}"
     areaServed: "{{ crd.attributes.areaServed | default('') }}"
-    averageGapDistance: "{{ crd.attributes.averageGapDistance | default(schema | community.general.json_query('averageGapDistance.default')) }}"
+    averageGapDistance: "{{ crd.attributes.averageGapDistance | default('') }}"
     averageHeadwayTime: "{{ crd.attributes.averageHeadwayTime | default('') }}"
     averageVehicleLength: "{{ crd.attributes.averageVehicleLength | default('') }}"
     averageVehicleSpeed: "{{ crd.attributes.averageVehicleSpeed | default('') }}"
@@ -29,7 +36,6 @@ values:
     source: "{{ crd.attributes.source | default('') }}"
     vehicleSubType: "{{ crd.attributes.vehicleSubType | default('') }}"
     vehicleType: "{{ crd.attributes.vehicleType | default('') }}"
-    customRouteId: "{{ crd.attributes.customRouteId | default('') }}"
     customSigma: "{{ crd.attributes.customSigma | default('') }}"
     customAcceleration: "{{ crd.attributes.customAcceleration | default('') }}"
     customDeceleration: "{{ crd.attributes.customDeceleration | default('') }}"
@@ -38,8 +44,6 @@ values:
     customAverageVehiclesPerMinute: "{{ crd.attributes.customAverageVehiclesPerMinute | default('') }}"
     customDemandScalingFactor: "{{ crd.attributes.customDemandScalingFactor | default('') }}"
     customQueueLengthThreshold: "{{ crd.attributes.customQueueLengthThreshold | default('') }}"
-    customTrafficLightId: "{{ crd.attributes.customTrafficLightId | default('') }}"
-    customVehicleQueueThreshold: "{{ crd.attributes.customVehicleQueueThreshold | default(schema | community.general.json_query('customVehicleQueueThreshold.default')) }}"
 
   managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
   iotagent:
@@ -62,13 +66,13 @@ values:
   message_broker:
     transport: "{{ crd.message_broker.transport | default(schema | community.general.json_query('message_broker.properties.transport.default')) }}"
     host: "{{ crd.message_broker.host | default(schema | community.general.json_query('message_broker.properties.host.default')) }}"
-    user: "{{ crd.message_broker.user | default(schema | community.general.json_query('message_broker.properties.user.default')) }}"
+    user: "{{ crd.message_broker.user | default('') }}"
     secret:
-      name: "{{ crd.message_broker.secret.name | default(schema | community.general.json_query('message_broker.properties.secret.properties.name.default')) }}"
-      property: "{{ crd.message_broker.secret.property | default(schema | community.general.json_query('message_broker.properties.secret.properties.property.default')) }}"
+      name: "{{ crd.message_broker.secret.name | default('') }}"
+      property: "{{ crd.message_broker.secret.property | default('') }}"
     port: "{{ crd.message_broker.port | default(schema | community.general.json_query('message_broker.properties.port.default')) }}"
   device:
-    id: "{{ crd.device.id | default(schema | community.general.json_query('device.properties.id.default')) }}"
+    id: "{{ crd.device.id | default('') }}"
     subscription_url: "{{ crd.device.subscription_url | default(schema | community.general.json_query('device.properties.subscription_url.default')) }}"
   smartabyar_smartvillage:
     enabled: "{{ crd.smartabyar_smartvillage.enabled | default(schema | community.general.json_query('smartabyar_smartvillage.properties.enabled.default')) }}"
@@ -79,4 +83,3 @@ values:
   alternate_model:
     enabled: "{{ crd.alternate_model.enabled | default(schema | community.general.json_query('alternate_model.properties.enabled.default')) }}"
     id: "{{ crd.alternate_model.id | default(schema | community.general.json_query('alternate_model.properties.id.default')) }}"
-    name: "{{ crd.alternate_model.name | default(schema | community.general.json_query('alternate_model.properties.name.default')) }}"

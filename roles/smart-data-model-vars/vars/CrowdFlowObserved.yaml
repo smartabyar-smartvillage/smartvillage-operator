@@ -1,0 +1,276 @@
+---
+MODEL_NAME: CrowdFlowObserved
+SUBMODULE_SHORT_NAME: Transportation
+DOMAIN_NAME: SmartCities
+name: smartvillage
+description: |
+  ApiTag.enUS: CrowdFlowObserved
+schema:
+  managementState:
+    type: string
+    default: Managed
+    enum:
+      - Managed
+      - Unmanaged
+  iotagent:
+    type: object
+    properties:
+      name:
+        type: string
+        default: iotagent-json
+      namespace:
+        type: string
+        default: iotagent
+      service_name:
+        type: string
+        default: iotagent-json
+      base_url:
+        type: string
+  context_broker:
+    type: object
+    properties:
+      name:
+        type: string
+        default: scorpiobroker
+      namespace:
+        type: string
+        default: scorpiobroker
+      service_name:
+        type: string
+        default: scorpiobroker
+      base_url:
+        type: string
+  ngsi_ld:
+    type: object
+    properties:
+      service:
+        type: string
+        default: crowdflowobserveds
+      service_path:
+        type: string
+        default: /Sweden/Veberod/CityCenter
+      context:
+        type: string
+        default: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
+  service_group:
+    type: object
+    properties:
+      resource:
+        type: string
+        default: /iot/json
+      apikey:
+        type: string
+        default: CrowdFlowObserved
+  message_broker:
+    type: object
+    properties:
+      transport:
+        type: string
+        default: MQTT
+        enum:
+          - MQTT
+          - AMQP
+      host:
+        type: string
+        default: default-mqtt-0-svc.amqbroker.svc
+      user:
+        type: string
+      secret:
+        type: object
+        properties:
+          name:
+            type: string
+          property:
+            type: string
+      port:
+        type: number
+        default: 1883
+  device:
+    type: object
+    properties:
+      id:
+        type: string
+      subscription_url:
+        type: string
+        default: "http://orionld-smartvillage-sync:8080"
+  smartabyar_smartvillage:
+    type: object
+    properties:
+      enabled:
+        type: boolean
+        default: true
+      auth_secret_name:
+        type: string
+        default: keycloak-client-secret-smartvillage
+      auth_token_url:
+        type: string
+        default: https://keycloak-sso.apps-crc.testing/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+      site_base_url:
+        type: string
+        default: https://smartvillage-web-smartvillage.apps-crc.testing
+      smart_model_api:
+        type: string
+        default: /api/crowd-flow-observed
+  alternate_model:
+    type: object
+    properties:
+      enabled:
+        type: boolean
+        default: true
+      id:
+        type: string
+        default: crowdflowobserved
+      enabled:
+        type: string
+        default: CrowdFlowObserved
+smart_data_model:
+  attributes:
+    color:
+      name: color
+      type: string
+    entityId:
+      name: entityId
+      type: string
+      description: >+
+        A unique ID for this Smart Data Model
+    trafficSimulationId:
+      name: trafficSimulationId
+      type: string
+      description: >+
+        The Traffic Simulation ID
+    walkingAreaId:
+      name: walkingAreaId
+      type: string
+      description: >+
+        The walking area ID of pedestrians in SUMO
+    alternateName:
+      name: alternateName
+      type: string
+      description: >+
+        An alternative name for this item
+    areaServed:
+      name: areaServed
+      type: object
+      description: >+
+        The geographic area where a service or offered item is provided
+    averageCrowdSpeed:
+      name: averageCrowdSpeed
+      type: number
+      description: >+
+        Average speed of the crowd transiting during the observation period
+      x-ngsi:
+        model: https://schema.org/Number
+    averageHeadwayTime:
+      name: averageHeadwayTime
+      type: number
+      description: >+
+        Average headway time. Headway time is the time elapsed between two
+        consecutive persons
+      x-ngsi:
+        model: https://schema.org/Number
+    congested:
+      name: congested
+      type: boolean
+      description: >+
+        Flags whether there was a crowd congestion during the observation
+        period in the referred walkway. The absence of this attribute means no
+        crowd congestion
+      x-ngsi:
+        model: https://schema.org/Boolean
+    dataProvider:
+      name: dataProvider
+      type: string
+      description: >+
+        A sequence of characters identifying the provider of the harmonised
+        data entity.
+    dateCreated:
+      name: dateCreated
+      type: string
+      description: >+
+        Entity creation timestamp. This will usually be allocated by the
+        storage platform.
+    dateModified:
+      name: dateModified
+      type: string
+      description: >+
+        Timestamp of the last modification of the entity. This will usually be
+        allocated by the storage platform.
+    dateObserved:
+      name: dateObserved
+      type: string
+      description: >+
+        The date and time of this observation in ISO8601 UTC format. It can be
+        represented by an specific time instant or by an ISO8601 interval. As
+        a workaround for the lack of support of Orion Context Broker for
+        datetime intervals, it can be used two separate attributes:
+        `dateObservedFrom`, `dateObservedTo`
+    dateObservedFrom:
+      name: dateObservedFrom
+      type: string
+      description: >+
+        Observation period start date and time. See `dateObserved`.
+    dateObservedTo:
+      name: dateObservedTo
+      type: string
+      description: >+
+        Observation period end date and time. See `dateObserved`.
+    description:
+      name: description
+      type: string
+      description: >+
+        A description of this item
+    direction:
+      name: direction
+      type: string
+      description: >+
+        Usual direction of travel in the walkway referred by this observation
+        with respect to the city center. Enum:'inbound, outbound'
+    location:
+      name: location
+      type: geo:point
+      description: >+
+        Geojson reference to the item. It can be Point, LineString, Polygon,
+        MultiPoint, MultiLineString or MultiPolygon
+    name:
+      name: name
+      type: string
+      description: >+
+        The name of this item.
+    occupancy:
+      name: occupancy
+      type: number
+      description: >+
+        Fraction of the observation time where a person has been occupying the
+        observed walkway
+      x-ngsi:
+        model: https://schema.org/Number
+    owner:
+      name: owner
+      type: object
+      description: >+
+        A List containing a JSON encoded sequence of characters referencing
+        the unique Ids of the owner(s)
+    peopleCount:
+      name: peopleCount
+      type: number
+      description: >+
+        Total number of people detected during this observation.
+      x-ngsi:
+        model: https://schema.org/Number
+    refRoadSegment:
+      name: refRoadSegment
+      type: object
+      description: >+
+        Concerned road segment on which the observation has been made
+    seeAlso:
+      name: seeAlso
+      type: object
+      description: >+
+        list of uri pointing to additional resources about the item
+    source:
+      name: source
+      type: string
+      description: >+
+        A sequence of characters giving the original source of the entity data
+        as a URL. Recommended to be the fully qualified domain name of the
+        source provider, or the URL to the source object.

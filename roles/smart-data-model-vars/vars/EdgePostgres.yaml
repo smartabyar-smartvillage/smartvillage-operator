@@ -17,6 +17,72 @@ schema:
       backup_storage:
         type: string
         default: '10Gi'
+      config:
+        type: object
+        properties:
+          files:
+            type: array
+            items:
+              type: object
+              properties:
+                configMap:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    items:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          key:
+                            type: string
+                          path:
+                            type: string
+                          mode:
+                            type: string
+                          instance:
+                            type: string
+                            description: |-
+                              The optional instance to run this init script in. 
+                          database:
+                            type: string
+                            description: |-
+                              The optional database to run this init script in. 
+                          user:
+                            type: string
+                            description: |-
+                              The optional database user to run this init script in. 
+                secret:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    keys:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          key:
+                            type: string
+                          path:
+                            type: string
+                            description: |-
+                              The relative path to the file within `/etc/postgres/`. 
+                          mode:
+                            type: string
+                          instance:
+                            type: string
+                            description: |-
+                              The optional instance to run this init script in. 
+                          database:
+                            type: string
+                            description: |-
+                              The optional database to run this init script in. 
+                          user:
+                            type: string
+                            description: |-
+                              The optional database user to run this init script in. 
       instances:
         type: array
         items:

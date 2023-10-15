@@ -1,0 +1,222 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: crowdflowobserveds.smartvillage.computate.org
+spec:
+  group: smartvillage.computate.org
+  names:
+    kind: CrowdFlowObserved
+    listKind: CrowdFlowObservedList
+    plural: crowdflowobserveds
+    singular: crowdflowobserved
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: |
+          CrowdFlowObserved is the Schema for the crowdflowobserveds API
+          ApiTag.enUS: CrowdFlowObserved
+
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: Spec defines the desired state of CrowdFlowObserved
+            type: object
+            properties:
+              attributes:
+                type: object
+                properties:
+                  object_id:
+                    type: string
+                  color:
+                    type: string
+                  entityId:
+                    type: string
+                  trafficSimulationId:
+                    type: string
+                  walkingAreaId:
+                    type: string
+                  alternateName:
+                    type: string
+                  areaServed:
+                    type: object
+                  averageCrowdSpeed:
+                    type: number
+                  averageHeadwayTime:
+                    type: number
+                  congested:
+                    type: boolean
+                  dataProvider:
+                    type: string
+                  dateCreated:
+                    type: string
+                  dateModified:
+                    type: string
+                  dateObserved:
+                    type: string
+                  dateObservedFrom:
+                    type: string
+                  dateObservedTo:
+                    type: string
+                  description:
+                    type: string
+                  direction:
+                    type: string
+                  location:
+                    type: string
+                  name:
+                    type: string
+                  occupancy:
+                    type: number
+                  owner:
+                    type: object
+                  peopleCount:
+                    type: number
+                  refRoadSegment:
+                    type: object
+                  seeAlso:
+                    type: object
+                  source:
+                    type: string
+              managementState:
+                type: string
+                default: |-
+                  Managed
+              iotagent:
+                type: object
+                properties:
+                  base_url:
+                    type: string
+                  name:
+                    default: iotagent-json
+                    type: string
+                  namespace:
+                    default: iotagent
+                    type: string
+                  service_name:
+                    default: iotagent-json
+                    type: string
+
+              context_broker:
+                type: object
+                properties:
+                  base_url:
+                    type: string
+                  name:
+                    default: scorpiobroker
+                    type: string
+                  namespace:
+                    default: scorpiobroker
+                    type: string
+                  service_name:
+                    default: scorpiobroker
+                    type: string
+
+              ngsi_ld:
+                type: object
+                properties:
+                  context:
+                    default: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
+                    type: string
+                  service:
+                    default: crowdflowobserveds
+                    type: string
+                  service_path:
+                    default: /Sweden/Veberod/CityCenter
+                    type: string
+
+              service_group:
+                type: object
+                properties:
+                  apikey:
+                    default: CrowdFlowObserved
+                    type: string
+                  resource:
+                    default: /iot/json
+                    type: string
+
+              message_broker:
+                type: object
+                properties:
+                  host:
+                    default: default-mqtt-0-svc.amqbroker.svc
+                    type: string
+                  port:
+                    default: 1883
+                    type: number
+                  secret:
+                    properties:
+                      name:
+                        type: string
+                      property:
+                        type: string
+                    type: object
+                  transport:
+                    default: MQTT
+                    enum:
+                    - MQTT
+                    - AMQP
+                    type: string
+                  user:
+                    type: string
+
+              device:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  subscription_url:
+                    default: http://orionld-smartvillage-sync:8080
+                    type: string
+
+              smartabyar_smartvillage:
+                type: object
+                properties:
+                  auth_secret_name:
+                    default: keycloak-client-secret-smartvillage
+                    type: string
+                  auth_token_url:
+                    default: https://keycloak-sso.apps-crc.testing/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+                    type: string
+                  enabled:
+                    default: true
+                    type: boolean
+                  site_base_url:
+                    default: https://smartvillage-web-smartvillage.apps-crc.testing
+                    type: string
+                  smart_model_api:
+                    default: /api/crowd-flow-observed
+                    type: string
+
+              alternate_model:
+                type: object
+                properties:
+                  enabled:
+                    default: CrowdFlowObserved
+                    type: string
+                  id:
+                    default: crowdflowobserved
+                    type: string
+
+          status:
+            description: Status defines the observed state of CrowdFlowObserved
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

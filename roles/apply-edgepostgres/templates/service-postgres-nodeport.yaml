@@ -9,6 +9,6 @@ spec:
   selector:
     postgres-operator.crunchydata.com/cluster: postgres
     postgres-operator.crunchydata.com/data: postgres
-    postgres-operator.crunchydata.com/instance-set: smartvillage
+    postgres-operator.crunchydata.com/instance-set: {{ values.postgres.instances[0].name }}
     postgres-operator.crunchydata.com/patroni: postgres-ha
     postgres-operator.crunchydata.com/role: master

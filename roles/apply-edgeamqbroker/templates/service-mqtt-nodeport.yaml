@@ -1,0 +1,12 @@
+spec:
+  ports:
+    - name: "mqtt"
+      protocol: TCP
+      port: 1883
+      targetPort: 1883
+      nodePort: {{ mqtt_nodeport }}
+  type: NodePort
+  selector:
+    ActiveMQArtemis: "{{ values.amq_broker.name }}"
+    application: "{{ values.amq_broker.name }}-app"
+    statefulset.kubernetes.io/pod-name: "{{ values.amq_broker.name }}-ss-0"

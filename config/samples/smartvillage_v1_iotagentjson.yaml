@@ -24,8 +24,9 @@ spec:
     name: |-
       default
     mqtt_host: |-
-      default-rabbitmq.rabbitmq.svc
+      default-mqtt-0-svc.amqbroker.svc
     mqtt_port: 1883
+    password_secret:
   orionld:
     host: |-
       scorpiobroker.scorpiobroker.svc

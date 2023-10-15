@@ -101,3 +101,38 @@ spec:
           - "{{ pg_hba_entry }}"
 {% endfor %}
 {% endif %}
+{% if values.postgres.config.files is defined %}
+  config:
+    files:
+{% for config in values.postgres.config.files %}
+{% if config.configMap is defined %}
+      - configMap:
+          name: "{{ config.configMap.name }}"
+{% if config.configMap['items'] is defined %}
+          items:
+{% for item in config.configMap['items'] %}
+            - key: {{ item.key }}
+              path: {{ item.path }}
+{% if item.mode is defined %}
+              mode: {{ item.key }}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% else %}
+{% if config.secret is defined %}
+      - secret:
+          name: "{{ config.secret.name }}"
+{% if config.secret['items'] is defined %}
+          items:
+{% for item in config.secret['items'] %}
+            - key: {{ item.key }}
+              path: {{ item.path }}
+{% if item.mode is defined %}
+              mode: {{ item.key }}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endif %}

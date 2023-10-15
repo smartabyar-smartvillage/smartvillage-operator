@@ -14,53 +14,53 @@
 
 # Install Solr
 
-- name: Add Zookeeper chart repo
-  kubernetes.core.helm_repository:
-    name: pravega
-    repo_url: https://charts.pravega.io
-  changed_when: false
+#- name: Add Zookeeper chart repo
+#  kubernetes.core.helm_repository:
+#    name: pravega
+#    repo_url: https://charts.pravega.io
+#  changed_when: false
 - name: Add Solr chart repo
   kubernetes.core.helm_repository:
     name: solr
     repo_url: https://solr.apache.org/charts
   changed_when: false
-- name: Install Zookeeper helm chart
-  kubernetes.core.helm:
-    name: zookeeper-operator
-    chart_ref: pravega/zookeeper-operator
-    chart_version: 0.2.15
-    history_max: 1
-    force: true
-    disable_hook: true
-    set_values:
-      - value: disableFinalizer=true
-      - value: hooks.delete=false
-      - value: hooks.backoffLimit=1
-      - value: crd.create=false
-      - value: rbac.create=false
-      - value: watchNamespace={{ ansible_operator_meta.namespace }}
-    release_namespace: "{{ ansible_operator_meta.namespace }}"
-    release_state: present
-    skip_crds: true
-  changed_when: false
-  register: helm_zookeeper
-  ignore_errors: true
-- k8s:
-    state: absent
-    api_version: v1
-    kind: Secret
-    label_selectors:
-      - 'owner=helm'
-    namespace: "{{ ansible_operator_meta.namespace }}"
-  when: helm_zookeeper.failed
-- fail:
-    msg: "Installing zookeeper helm chart failed: {{ helm_zookeeper }}"
-  when: helm_zookeeper.failed
+#- name: Install Zookeeper helm chart
+#  kubernetes.core.helm:
+#    name: zookeeper-operator
+#    chart_ref: pravega/zookeeper-operator
+#    chart_version: 0.2.15
+#    history_max: 1
+#    force: true
+#    disable_hook: true
+#    set_values:
+#      - value: disableFinalizer=true
+#      - value: hooks.delete=false
+#      - value: hooks.backoffLimit=1
+#      - value: crd.create=false
+#      - value: rbac.create=false
+#      - value: watchNamespace={{ ansible_operator_meta.namespace }}
+#    release_namespace: "{{ ansible_operator_meta.namespace }}"
+#    release_state: present
+#    skip_crds: true
+#  changed_when: false
+#  register: helm_zookeeper
+#  ignore_errors: true
+#- k8s:
+#    state: absent
+#    api_version: v1
+#    kind: Secret
+#    label_selectors:
+#      - 'owner=helm'
+#    namespace: "{{ ansible_operator_meta.namespace }}"
+#  when: helm_zookeeper.failed
+#- fail:
+#    msg: "Installing zookeeper helm chart failed: {{ helm_zookeeper }}"
+#  when: helm_zookeeper.failed
 - name: Install Solr helm chart
   kubernetes.core.helm:
     name: solr-operator
     chart_ref: solr/solr-operator
-    chart_version: 0.7.0
+    chart_version: 0.6.0
     history_max: 1
     force: true
     disable_hook: true
@@ -71,8 +71,8 @@
       - value: serviceAccount.name=solr
       - value: podOptions.serviceAccountName=solr
       - value: watchNamespaces={{ ansible_operator_meta.namespace }}
-      - value: zookeeper-operator.install=false
-      - value: zookeeper-operator.use=true
+#      - value: zookeeper-operator.install=false
+#      - value: zookeeper-operator.use=true
     release_namespace: "{{ ansible_operator_meta.namespace }}"
     release_state: present
     skip_crds: true
@@ -108,28 +108,28 @@
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'route-solr.yaml') }}"
   ignore_errors: true
-- name: "Remove readinessGates from solrcloud"
-  kubernetes.core.k8s_json_patch:
-    kind: StatefulSet
-    api_version: apps/v1
-    name: "{{ values.solr.name }}-solrcloud"
-    namespace: "{{ ansible_operator_meta.namespace }}"
-    patch:
-      - op: remove
-        path: /spec/template/spec/readinessGates
-  ignore_errors: true
-  register: remove_readinessGates
-- name: Delete solr pods with readinessGates
-  k8s:
-    state: absent
-    api_version: v1
-    kind: Pod
-    label_selectors:
-      - "solr-cloud={{ values.solr.name }}"
-      - "statefulset.kubernetes.io/pod-name={{ values.solr.name }}-solrcloud-0"
-      - "technology=solr-cloud"
-    namespace: "{{ ansible_operator_meta.namespace }}"
-  when: not remove_readinessGates.failed
+#- name: "Remove readinessGates from solrcloud"
+#  kubernetes.core.k8s_json_patch:
+#    kind: StatefulSet
+#    api_version: apps/v1
+#    name: "{{ values.solr.name }}-solrcloud"
+#    namespace: "{{ ansible_operator_meta.namespace }}"
+#    patch:
+#      - op: remove
+#        path: /spec/template/spec/readinessGates
+#  ignore_errors: true
+#  register: remove_readinessGates
+#- name: Delete solr pods with readinessGates
+#  k8s:
+#    state: absent
+#    api_version: v1
+#    kind: Pod
+#    label_selectors:
+#      - "solr-cloud={{ values.solr.name }}"
+#      - "statefulset.kubernetes.io/pod-name={{ values.solr.name }}-solrcloud-0"
+#      - "technology=solr-cloud"
+#    namespace: "{{ ansible_operator_meta.namespace }}"
+#  when: not remove_readinessGates.failed
 
 - name: "Verify Solr"
   wait_for:

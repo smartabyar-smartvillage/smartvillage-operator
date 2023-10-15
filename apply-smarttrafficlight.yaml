@@ -1,0 +1,33 @@
+---
+- name: Install a SmartTrafficLight resource from OpenShift
+  hosts: localhost
+  connection: local
+  pre_tasks:
+    - fail:
+        msg: Variable ansible_operator_meta_name is not defined
+      when: ansible_operator_meta_name is not defined
+    - fail:
+        msg: Variable ansible_operator_meta_namespace is not defined
+      when: ansible_operator_meta_namespace is not defined
+    - fail:
+        msg: Variable crd_path is not defined
+      when: crd_path is not defined
+    - name: "Query SmartTrafficLight"
+      set_fact:
+        crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
+      ignore_errors: true
+      vars:
+        ENTITY_TYPE: SmartTrafficLight
+      when: crd_path is defined
+  roles:
+    - smart-data-model-vars
+    - apply-smarttrafficlight
+  vars:
+    ENTITY_TYPE: SmartTrafficLight
+    ansible_operator_meta:
+      name: "{{ ansible_operator_meta_name }}"
+      namespace: "{{ ansible_operator_meta_namespace }}"
+    mqtt_nodeport: 30083
+    mqtt_nodeport_hostname: mqtt.apps-crc.testing
+    verify_connections: false
+    enable_dev_nodeports: true
