@@ -2,6 +2,7 @@
 - name: Install a EdgePostgres resource from OpenShift
   hosts: localhost
   connection: local
+  gather_facts: false
   pre_tasks:
     - fail:
         msg: Variable crd_path is not defined
@@ -9,14 +10,23 @@
     - name: "Query EdgePostgres"
       set_fact:
         crd_complete: "{{ (lookup('file', crd_path) | from_yaml) }}"
-    - name: "Set name and namespace vars"
+      vars:
+        ENTITY_TYPE: EdgePostgres
+      when: crd_path is defined
+    - name: "Set crd var"
       set_fact:
         crd: "{{ crd_complete.spec }}"
-        ansible_operator_meta_name: "{{ crd_complete.metadata.name }}"
-        ansible_operator_meta_namespace: "{{ crd_complete.metadata.namespace }}"
-      vars:
-        ENTITY_TYPE: EdgeSolr
       when: crd_path is defined
+    - name: "Set name var"
+      set_fact:
+        ansible_operator_meta_name: "{{ crd_complete.metadata.name }}"
+      when:
+        crd_path is defined and ansible_operator_meta_name is not defined
+    - name: "Set namespace var"
+      set_fact:
+        ansible_operator_meta_namespace: "{{ crd_complete.metadata.namespace }}"
+      when:
+        crd_path is defined and ansible_operator_meta_namespace is not defined
   roles:
     - smart-data-model-vars
     - apply-edgepostgres
@@ -25,5 +35,7 @@
     ansible_operator_meta:
       name: "{{ ansible_operator_meta_name }}"
       namespace: "{{ ansible_operator_meta_namespace }}"
+    mqtt_nodeport: 30083
+    mqtt_nodeport_hostname: mqtt.apps-crc.testing
     verify_connections: false
     enable_dev_nodeports: true

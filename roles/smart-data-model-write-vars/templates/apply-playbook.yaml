@@ -2,6 +2,7 @@
 - name: Install a {{ ENTITY_TYPE }} resource from OpenShift
   hosts: localhost
   connection: local
+  gather_facts: false
   pre_tasks:
     - fail:
         msg: Variable crd_path is not defined
@@ -12,11 +13,20 @@
       vars:
         ENTITY_TYPE: {{ ENTITY_TYPE }}
       when: crd_path is defined
-    - name: "Set name and namespace vars"
+    - name: "Set crd var"
       set_fact:
         crd: "\{\{ crd_complete.spec \}\}"
+      when: crd_path is defined
+    - name: "Set name var"
+      set_fact:
         ansible_operator_meta_name: "\{\{ crd_complete.metadata.name \}\}"
+      when:
+        crd_path is defined and ansible_operator_meta_name is not defined
+    - name: "Set namespace var"
+      set_fact:
         ansible_operator_meta_namespace: "\{\{ crd_complete.metadata.namespace \}\}"
+      when:
+        crd_path is defined and ansible_operator_meta_namespace is not defined
   roles:
     - smart-data-model-vars
     - apply-{{ ENTITY_TYPE | lower }}
