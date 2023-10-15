@@ -220,7 +220,7 @@ kubectl logs -n smartvillage-operator-system deployment/smartvillage-operator-co
 ## Start a debug pod of the Smart Village Operator
 
 ```bash
-kubectl logs -n smartvillage-operator-system deployment/smartvillage-operator-controller-manager -f
+oc debug -n smartvillage-operator-system --image quay.io/computateorg/smartvillage-operator
 ```
 
 ## Expose the orion-ld context broker as Ingress
