@@ -1,7 +1,10 @@
 values:
 
   attributes:
-    address: "{{ crd.attributes.address | default('') }}"
+    color: "{{ crd.attributes.color | default('') }}"
+    entityId: "{{ crd.attributes.entityId | default('') }}"
+    trafficSimulationId: "{{ crd.attributes.trafficSimulationId | default('') }}"
+    walkingAreaId: "{{ crd.attributes.walkingAreaId | default('') }}"
     alternateName: "{{ crd.attributes.alternateName | default('') }}"
     areaServed: "{{ crd.attributes.areaServed | default('') }}"
     averageCrowdSpeed: "{{ crd.attributes.averageCrowdSpeed | default('') }}"
@@ -23,7 +26,6 @@ values:
     refRoadSegment: "{{ crd.attributes.refRoadSegment | default('') }}"
     seeAlso: "{{ crd.attributes.seeAlso | default('') }}"
     source: "{{ crd.attributes.source | default('') }}"
-    type: "{{ crd.attributes.type | default('') }}"
 
   managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
   iotagent:
@@ -52,7 +54,7 @@ values:
       property: "{{ crd.message_broker.secret.property | default('') }}"
     port: "{{ crd.message_broker.port | default(schema | community.general.json_query('message_broker.properties.port.default')) }}"
   device:
-    id: "{{ crd.device.id | default(schema | community.general.json_query('device.properties.id.default')) }}"
+    id: "{{ crd.device.id | default('') }}"
     subscription_url: "{{ crd.device.subscription_url | default(schema | community.general.json_query('device.properties.subscription_url.default')) }}"
   smartabyar_smartvillage:
     enabled: "{{ crd.smartabyar_smartvillage.enabled | default(schema | community.general.json_query('smartabyar_smartvillage.properties.enabled.default')) }}"

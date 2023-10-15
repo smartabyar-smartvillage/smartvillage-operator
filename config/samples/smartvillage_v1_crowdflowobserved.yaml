@@ -49,8 +49,6 @@ spec:
     secret:
     port: 1883
   device:
-    id: |-
-      VeberodIntersection1
     subscription_url: |-
       http://orionld-smartvillage-sync:8080
   smartabyar_smartvillage:
@@ -62,7 +60,7 @@ spec:
     site_base_url: |-
       https://smartvillage-web-smartvillage.apps-crc.testing
     smart_model_api: |-
-      /api/CrowdFlowObserved
+      /api/crowd-flow-observed
   alternate_model:
     enabled: |-
       CrowdFlowObserved

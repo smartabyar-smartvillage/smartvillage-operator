@@ -140,7 +140,7 @@ smart_data_model:
       required: true
     location:
       name: location
-      type: string
+      type: geo:point
     sumocfgPath:
       name: sumocfgPath
       type: string
@@ -386,3 +386,11 @@ smart_data_model:
       type: array
       items:
         type: string
+    walkingAreaIds:
+      name: walkingAreaIds
+      type: array
+      items:
+        type: string
+    walkingAreaLanes:
+      name: walkingAreaLanes
+      type: array

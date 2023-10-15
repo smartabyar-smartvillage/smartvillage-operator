@@ -48,45 +48,7 @@ spec:
                     type: string
                   routeIdEast:
                     type: string
-                  trafficFlowObservedSearch:
-                    type: 
-                  trafficFlowObserveds:
-                    type: 
-                  trafficFlowObservedNorth_:
-                    type: 
-                  trafficFlowObservedEast_:
-                    type: 
-                  paramAvgVehiclePerMinFromWestToEast:
-                    type: number
-                  paramAvgVehiclePerMinFromSouthToNorth:
-                    type: number
                   paramVehicleDemandScalingFactor:
-                    type: number
-                  paramAvgPedestrianPerMinFromWestToEast:
-                    type: number
-                  paramAvgPedestrianPerMinFromSouthToNorth:
-                    type: number
-                  paramPedestrianDemandScalingFactor:
-                    type: number
-                  paramMinGreenTimeSecWestEast:
-                    type: number
-                  paramMaxGreenTimeSecWestEast:
-                    type: number
-                  paramMinGreenTimeSecSouthNorth:
-                    type: number
-                  paramMaxGreenTimeSecSouthNorth:
-                    type: number
-                  paramPedestrianWaitThresholdSecNorthSouth:
-                    type: number
-                  paramPedestrianWaitThresholdSecWestEast:
-                    type: number
-                  paramVehicleQueueThresholdWestEast:
-                    type: number
-                  paramVehicleQueueThresholdSouthNorth:
-                    type: number
-                  paramPedestrianQueueThresholdNorthSouth:
-                    type: number
-                  paramPedestrianQueueThresholdWestEast:
                     type: number
                   paramStepSize:
                     type: number
@@ -182,7 +144,6 @@ spec:
                 type: object
                 properties:
                   id:
-                    default: VeberodIntersection1
                     type: string
                   subscription_url:
                     default: http://orionld-smartvillage-sync:8080

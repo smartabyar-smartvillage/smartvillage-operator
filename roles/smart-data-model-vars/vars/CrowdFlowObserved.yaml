@@ -110,7 +110,7 @@ schema:
         default: https://smartvillage-web-smartvillage.apps-crc.testing
       smart_model_api:
         type: string
-        default: /api/CrowdFlowObserved
+        default: /api/crowd-flow-observed
   alternate_model:
     type: object
     properties:
@@ -125,13 +125,24 @@ schema:
         default: CrowdFlowObserved
 smart_data_model:
   attributes:
-    address:
-      name: address
-      type: object
+    color:
+      name: color
+      type: string
+    entityId:
+      name: entityId
+      type: string
       description: >+
-        The mailing address
-      x-ngsi:
-        model: https://schema.org/address
+        A unique ID for this Smart Data Model
+    trafficSimulationId:
+      name: trafficSimulationId
+      type: string
+      description: >+
+        The Traffic Simulation ID
+    walkingAreaId:
+      name: walkingAreaId
+      type: string
+      description: >+
+        The walking area ID of pedestrians in SUMO
     alternateName:
       name: alternateName
       type: string
@@ -139,7 +150,7 @@ smart_data_model:
         An alternative name for this item
     areaServed:
       name: areaServed
-      type: string
+      type: object
       description: >+
         The geographic area where a service or offered item is provided
     averageCrowdSpeed:
@@ -216,7 +227,7 @@ smart_data_model:
         with respect to the city center. Enum:'inbound, outbound'
     location:
       name: location
-      type: string
+      type: geo:point
       description: >+
         Geojson reference to the item. It can be Point, LineString, Polygon,
         MultiPoint, MultiLineString or MultiPolygon
@@ -263,8 +274,3 @@ smart_data_model:
         A sequence of characters giving the original source of the entity data
         as a URL. Recommended to be the fully qualified domain name of the
         source provider, or the URL to the source object.
-    type:
-      name: type
-      type: string
-      description: >+
-        NGSI Entity type. It has to be CrowdFlowObserved
