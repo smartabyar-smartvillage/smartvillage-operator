@@ -45,8 +45,7 @@ spec:
             - name: ORIONLD_SUBCACHE_IVAL
               value: '1'
             - name: ORIONLD_MONGO_HOST
-              value: >-
-                mongodb-orion
+              value: '{{ values.mongodb.name }}.{{ mongodb_pod_namespace }}.svc'
             - name: ORIONLD_MONGO_DB
               value: orion
             - name: ORIONLD_MONGO_USER

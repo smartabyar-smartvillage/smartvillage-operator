@@ -2,6 +2,9 @@ values:
 
 
   managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
+  mongodb:
+    namespace: "{{ crd.mongodb.namespace | default('') }}"
+    name: "{{ crd.mongodb.name | default(schema | community.general.json_query('mongodb.properties.name.default')) }}"
   orionld:
     service_name: "{{ crd.orionld.service_name | default(schema | community.general.json_query('orionld.properties.service_name.default')) }}"
     route:

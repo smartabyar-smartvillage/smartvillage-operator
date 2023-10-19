@@ -42,12 +42,23 @@ spec:
                 type: string
                 default: |-
                   Managed
+              mongodb:
+                type: object
+                properties:
+                  name:
+                    default: mongodb
+                    description: The name of the MongoDB
+                    type: string
+                  namespace:
+                    description: The namespace of the MongoDB
+                    type: string
+
               orionld:
                 type: object
                 properties:
                   cors_allowed_origin:
-                    description: "Enable Cross-Origin Resource Sharing with allowed origin. \nUse '__ALL'\
-                      \ for any.\n"
+                    description: "Enable Cross-Origin Resource Sharing with allowed origin. \nUse '__ALL'
+                      for any.\n"
                     type: string
                   log_level:
                     default: INFO

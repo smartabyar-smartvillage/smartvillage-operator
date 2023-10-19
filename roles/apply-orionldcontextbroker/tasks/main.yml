@@ -6,70 +6,23 @@
     repo_url: https://charts.bitnami.com/bitnami
   changed_when: false
 
-- name: Install FIWARE Marinera mongodb helm chart
-  kubernetes.core.helm:
-    name: mongodb-orion
-    chart_ref: bitnami/mongodb
-    chart_version: 12.1.31
-    set_values:
-      - value: nameOverride=mongodb-orion
-      - value: fullnameOverride=mongodb-orion
-      - value: architecture=standalone
-      - value: podSecurityContext.enabled=false
-      - value: containerSecurityContext.enabled=false
-      - value: resources.limits.memory=3Gi
-      - value: resources.requests.cpu=50m
-      - value: resources.requests.memory=300Mi
-      - value: persistence.enabled=true
-      - value: persistence.size=8Gi
-      - value: readinessProbe.timeoutSeconds=60
-      - value: arbiter.podSecurityContext.enabled=false
-      - value: arbiter.containerSecurityContext.enabled=false
-      - value: |-
-          "arbiter.podLabels.marinera/platform=fiware"
-      - value: |-
-          "arbiter.podLabels.marinera/component=core"
-      - value: |-
-          "arbiter.podLabels.marinera/subcomponent=persistence"
-      - value: |-
-          "arbiter.podLabels.marinera/product=mongodb"
-      - value: arbiter.resources.limits.memory=1.5Gi
-      - value: arbiter.resources.requests.cpu=50m
-      - value: arbiter.resources.requests.memory=300Mi
-      - value: arbiter.readinessProbe.timeoutSeconds=60
-      - value: systemLogVerbosity=1
-      - value: |-
-          "podLabels.marinera/platform=fiware"
-      - value: |-
-          "podLabels.marinera/component=core"
-      - value: |-
-          "podLabels.marinera/subcomponent=persistence"
-      - value: |-
-          "podLabels.marinera/product=mongodb"
-      - value: metrics.enabled=true
-      - value: serviceMonitor.enabled=true
-      - value: resources.limits.memory=1Gi
-      - value: resources.requests.cpu=50m
-      - value: resources.requests.memory=50Mi
-      - value: readinessProbe.timeoutSeconds=60
-    release_namespace: "{{ ansible_operator_meta.namespace }}"
-    release_state: present
-  changed_when: false
-  ignore_errors: true
+- name: "Set mongodb namespace var"
+  set_fact:
+    mongodb_pod_namespace: "{{ values.mongodb.namespace | default(ansible_operator_meta.namespace, true) }}"
 
 - name: "Query MongoDB pod"
   set_fact:
-    mongodb_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector='app.kubernetes.io/component=mongodb,app.kubernetes.io/instance=mongodb-orion,app.kubernetes.io/name=mongodb-orion', namespace=ansible_operator_meta.namespace)[0].metadata.name }}"
+    mongodb_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector='app.kubernetes.io/component=mongodb,app.kubernetes.io/instance=' + values.mongodb.name + ',app.kubernetes.io/name=' + values.mongodb.name, namespace=mongodb_pod_namespace)[0].metadata.name }}"
     
 - name: Run create database scripts on MongoDB
   kubernetes.core.k8s_exec:
     pod: "{{ mongodb_pod_name }}"
+    namespace: "{{ mongodb_pod_namespace }}"
     command: >-
       sh -c 'mongo -u "$MONGODB_ROOT_USER" -p "$MONGODB_ROOT_PASSWORD" --eval '"'"'
       db = db.getSiblingDB("orion");
       db.createUser({ user: "root", pwd: "'"'"'"$MONGODB_ROOT_PASSWORD"'"'"'", roles: [{ role: "dbOwner", db: "orion"}]}); 
       '"'"''
-    namespace: "{{ ansible_operator_meta.namespace }}"
   register: create_user
   ignore_errors: True
   changed_when: false
@@ -80,7 +33,7 @@
 
 - name: "Query MongoDB secret"
   set_fact:
-    mongodb_root_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='mongodb-orion', namespace=ansible_operator_meta.namespace)[0].data['mongodb-root-password'] | b64decode }}"
+    mongodb_root_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.mongodb.name, namespace=mongodb_pod_namespace)[0].data['mongodb-root-password'] | b64decode }}"
 - name: "Install orion-ld secret on OpenShift"
   k8s:
     state: present
