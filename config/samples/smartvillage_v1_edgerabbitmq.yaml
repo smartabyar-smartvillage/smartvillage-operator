@@ -17,6 +17,10 @@ spec:
   rabbitmq:
     name: |-
       default
+    username: |-
+      rabbitmq
+    auth_secret: |-
+      rabbitmq-password
     replicas: 1
     resources:
       limits:

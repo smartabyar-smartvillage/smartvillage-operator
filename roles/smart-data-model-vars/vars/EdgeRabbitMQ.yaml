@@ -19,6 +19,14 @@ schema:
         type: string
         default: default
         description: The name of the RabbitMQ Broker
+      username:
+        type: string
+        default: rabbitmq
+        description: The username of the RabbitMQ Broker
+      auth_secret:
+        type: string
+        default: rabbitmq-password
+        description: The admin password secret of the RabbitMQ Broker containing a value for rabbitmq-password key
       replicas:
         type: number
         default: 1

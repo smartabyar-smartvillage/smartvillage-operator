@@ -31,4 +31,5 @@
     release_namespace: "{{ ansible_operator_meta.namespace }}"
     release_state: absent
     skip_crds: true
+    purge: true
   ignore_errors: true

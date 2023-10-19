@@ -17,6 +17,18 @@
     name: bitnami
     repo_url: https://charts.bitnami.com/bitnami
   changed_when: false
+- name: "Query MongoDB secret"
+  set_fact:
+    rabbitmq_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.rabbitmq.name, namespace=ansible_operator_meta.namespace)[0].data['rabbitmq-password'] | default('') }}"
+- name: "Install rabbitmq secret on OpenShift"
+  k8s:
+    state: present
+    kind: Secret
+    api_version: v1
+    name: "{{ values.rabbitmq.auth_secret }}"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'rabbitmq-password-secret.yaml') }}"
+  when: rabbitmq_password == ''
 - name: Install rabbitmq helm chart
   kubernetes.core.helm:
     name: "{{ values.rabbitmq.name }}"
@@ -30,13 +42,17 @@
       - value: "resources.limits.cpu={{ values.rabbitmq.resources.limits.cpu }}"
       - value: "resources.requests.cpu={{ values.rabbitmq.resources.requests.cpu }}"
       - value: "resources.requests.memory={{ values.rabbitmq.resources.requests.memory }}"
-      - value: "extraPlugins=rabbitmq_mqtt"
-      - value: "featureFlags=all"
-      - value: "image.registry=docker.io"
-      - value: "image.repository=rabbitmq"
-      - value: "image.tag=3.13.0-beta.6-management-alpine"
-      - value: 'service.extraPorts=[{"name":"mqtt","port":1883,"targetPort":1883}]'
-        value_type: json
+#      - value: "auth.username={{ values.rabbitmq.username }}"
+      - value: "auth.existingPasswordSecret={{ values.rabbitmq.auth_secret }}"
+      - value: "auth.existingErlangSecret={{ values.rabbitmq.auth_secret }}"
+#      - value: "auth.securePassword=no"
+#      - value: "extraPlugins=rabbitmq_mqtt"
+#      - value: "featureFlags=all"
+#      - value: "image.registry=docker.io"
+#      - value: "image.repository=rabbitmq"
+#      - value: "image.tag=3.13.0-beta.6-management-alpine"
+#      - value: 'service.extraPorts=[{"name":"mqtt","port":1883,"targetPort":1883}]'
+#        value_type: json
       - value: podSecurityContext.enabled=false
       - value: containerSecurityContext.enabled=false
     release_namespace: "{{ ansible_operator_meta.namespace }}"
