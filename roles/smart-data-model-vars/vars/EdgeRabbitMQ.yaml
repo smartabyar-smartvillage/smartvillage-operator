@@ -21,7 +21,7 @@ schema:
         description: The name of the RabbitMQ Broker
       username:
         type: string
-        default: rabbitmq
+        default: user
         description: The username of the RabbitMQ Broker
       auth_secret:
         type: string

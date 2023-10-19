@@ -8,5 +8,8 @@ spec:
     replicas: 1
     route:
       create: true
-  amq_broker:
-    mqtt_service_name: rabbitmq-mqtt
+  message_broker:
+    amqp_host: default-rabbitmq
+    password_secret:
+      name: rabbitmq-password
+      key: rabbitmq-password

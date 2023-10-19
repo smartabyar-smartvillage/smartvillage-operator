@@ -49,15 +49,20 @@ spec:
                     description: The name of the MongoDB
                     type: string
                   namespace:
-                    default: mongodb
                     description: The namespace of the MongoDB
                     type: string
 
               message_broker:
                 type: object
                 properties:
+                  amqp_host:
+                    description: default-amqp-0-svc.amqbroker.svc
+                    type: string
+                  amqp_port:
+                    default: 5672
+                    type: number
                   mqtt_host:
-                    default: default-mqtt-0-svc.amqbroker.svc
+                    description: default-mqtt-0-svc.amqbroker.svc
                     type: string
                   mqtt_port:
                     default: 1883
@@ -65,6 +70,9 @@ spec:
                   name:
                     default: default
                     description: The name of the RabbitMQ Broker
+                    type: string
+                  namespace:
+                    description: The namespace of the RabbitMQ Broker
                     type: string
                   password_secret:
                     properties:
@@ -77,6 +85,7 @@ spec:
                         type: string
                     type: object
                   user:
+                    default: user
                     description: The optional user used to authenticate to the message broker.
                     type: string
 

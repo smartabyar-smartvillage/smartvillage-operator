@@ -48,7 +48,7 @@ spec:
             - name: IOTA_AUTOCAST
               value: 'true'
             - name: IOTA_MONGO_HOST
-              value: "{{ values.mongodb.name }}.{{ values.mongodb.namespace }}.svc"
+              value: "{{ values.mongodb.name }}.{{ mongodb_namespace }}.svc"
             - name: IOTA_MONGO_PORT
               value: '27017'
             - name: IOTA_MONGO_USER
@@ -65,8 +65,9 @@ spec:
             - name: IOTA_PROVIDER_URL
               value: 'http://{{ values.iotagent.host }}:{{ values.iotagent.north_port }}'
   
-            - name: IOTA_MQTT_DISABLED
-              value: 'false'
+{% if values.message_broker.mqtt_host %}
+            - name: IOTA_AMQP_DISABLED
+              value: 'true'
             - name: IOTA_MQTT_HOST
               value: '{{ values.message_broker.mqtt_host }}'
             - name: IOTA_MQTT_PORT
@@ -87,8 +88,30 @@ spec:
             - name: IOTA_MQTT_REJECT_UNAUTHORIZED
               value: 'false'
 {% endif %}
-            - name: IOTA_AMQP_DISABLED
+{% else %}
+            - name: IOTA_MQTT_DISABLED
               value: 'true'
+            - name: IOTA_AMQP_HOST
+              value: '{{ values.message_broker.amqp_host }}'
+            - name: IOTA_AMQP_PORT
+              value: '{{ values.message_broker.amqp_port }}'
+            - name: IOTA_AMQP_USERNAME
+              value: '{{ values.message_broker.user }}'
+{% if values.message_broker.password_secret.name %}
+            - name: IOTA_AMQP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: iotagent-json-message-broker-secret
+                  key: password
+            - name: IOTA_AMQP_REJECT_UNAUTHORIZED
+              value: 'true'
+{% else %}
+            - name: IOTA_AMQP_PASSWORD
+              value: ''
+            - name: IOTA_AMQP_REJECT_UNAUTHORIZED
+              value: 'false'
+{% endif %}
+{% endif %}
           image: 'docker.io/fiware/iotagent-json:1.26.0'
           imagePullPolicy: IfNotPresent
           livenessProbe:
