@@ -171,7 +171,7 @@ smart_data_model:
         An alternative name for this item
     areaServed:
       name: areaServed
-      type: object
+      type: geo:linestring
       description: >+
         The geographic area where a service or offered item is provided.
         Geojson reference to the item. It can be Point, LineString, Polygon,
