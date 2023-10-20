@@ -1,0 +1,79 @@
+---
+
+- name: "Query message broker secret"
+  set_fact:
+    message_broker_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.message_broker.secret.name, namespace=ansible_operator_meta.namespace)[0].data[values.message_broker.secret.key] | b64decode | default('') }}"
+  when: values.message_broker.secret.name
+
+- name: Publish message on MQTT topic to device /{{ values.service_group.apikey }}/{{ values.device.id }}/attrs
+  community.general.mqtt:
+    server: "{{ mqtt_nodeport_hostname if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.host }}"
+    port: "{{ mqtt_nodeport if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.port }}"
+    username: "{{ values.message_broker.user | default('') }}"
+    password: "{{ message_broker_password }}"
+    topic: "/{{ values.service_group.apikey }}/{{ values.device.id }}/attrs"
+    payload: "{{ lookup('template', 'device_values.yml') | from_yaml | ansible.utils.remove_keys(target=['id', 'type']) | to_json }}"
+    qos: 0
+  when: values.message_broker.transport == 'MQTT' and values.message_broker.user is not defined and message_broker_password is not defined
+- name: Publish message on MQTT topic to device /{{ values.service_group.apikey }}/{{ values.device.id }}/attrs
+  community.general.mqtt:
+    server: "{{ mqtt_nodeport_hostname if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.host }}"
+    port: "{{ mqtt_nodeport if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.port }}"
+    topic: "/{{ values.service_group.apikey }}/{{ values.device.id }}/attrs"
+    payload: "{{ lookup('template', 'device_values.yml') | from_yaml | ansible.utils.remove_keys(target=['id', 'type']) | to_json }}"
+    qos: 0
+  when: values.message_broker.transport == 'MQTT' and not (values.message_broker.user is not defined and message_broker_password is not defined)
+
+- name: Publish message on amqp queue to device /{{ values.service_group.apikey }}/{{ values.device.id }}/attrs
+  community.rabbitmq.rabbitmq_publish:
+    proto: amqp
+    vhost: "%2F"
+    durable: true
+    host: "{{ amqp_nodeport_hostname if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.host }}"
+    port: "{{ amqp_nodeport if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.port }}"
+    routing_key: ".{{ values.service_group.apikey }}.{{ values.device.id }}.attrs"
+    username: "{{ values.message_broker.user | default('') }}"
+    password: "{{ message_broker_password }}"
+    exchange: "amq.topic"
+    body: "{{ lookup('template', 'device_values.yml') | from_yaml | ansible.utils.remove_keys(target=['id', 'type']) | to_json }}"
+    content_type: "text/plain"
+  when: values.message_broker.transport == 'AMQP' and values.message_broker.user is defined and message_broker_password is defined
+- name: Publish message on amqp queue to device /{{ values.service_group.apikey }}/{{ values.device.id }}/attrs
+  community.rabbitmq.rabbitmq_publish:
+    proto: amqp
+    vhost: "%2F"
+    durable: true
+    host: "{{ amqp_nodeport_hostname if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.host }}"
+    port: "{{ amqp_nodeport if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.port }}"
+    routing_key: ".{{ values.service_group.apikey }}.{{ values.device.id }}.attrs"
+    username: "{{ values.message_broker.user | default('') }}"
+    password: "{{ message_broker_password }}"
+    exchange: "amq.topic"
+    body: "{{ lookup('template', 'device_values.yml') | from_yaml | ansible.utils.remove_keys(target=['id', 'type']) | to_json }}"
+    content_type: "text/plain"
+  when: values.message_broker.transport == 'AMQP' and not (values.message_broker.user is defined and message_broker_password is defined)
+
+- debug:
+    var: "{{ lookup('template', 'device_values.yml') | from_yaml | ansible.utils.remove_keys(target=['id', 'type']) | to_json }}"
+- debug:
+    var: context_broker_base_url
+- name: "Query the context broker"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ context_broker_base_url }}/ngsi-ld/v1/entities/{{ ENTITY_NAME | urlencode }}"
+    method: GET
+    headers:
+      Fiware-Service: "{{ values.ngsi_ld.service }}"
+      Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
+      NGSILD-Tenant: "{{ values.ngsi_ld.service }}"
+      NGSILD-Path: "{{ values.ngsi_ld.service_path }}"
+      Content-Type: "application/json"
+      Accept: "*/*"
+    return_content: true
+    validate_certs: false
+    status_code: 
+      - 200
+  register: CB_ENTITY_AFTER
+- debug:
+    var: CB_ENTITY_AFTER

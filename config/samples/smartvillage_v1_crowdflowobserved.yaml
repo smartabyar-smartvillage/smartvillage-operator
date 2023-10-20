@@ -49,8 +49,6 @@ spec:
     secret:
     port: 1883
   device:
-    subscription_url: |-
-      http://orionld-smartvillage-sync:8080
   smartabyar_smartvillage:
     enabled: True
     auth_secret_name: |-

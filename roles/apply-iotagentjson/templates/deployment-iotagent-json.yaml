@@ -97,6 +97,10 @@ spec:
               value: '{{ values.message_broker.amqp_port }}'
             - name: IOTA_AMQP_USERNAME
               value: '{{ values.message_broker.user }}'
+            - name: IOTA_AMQP_EXCHANGE
+              value: 'amq.topic'
+            - name: IOTA_AMQP_DURABLE
+              value: 'true'
 {% if values.message_broker.password_secret.name %}
             - name: IOTA_AMQP_PASSWORD
               valueFrom:

@@ -1,0 +1,27 @@
+---
+# if not given  it will be assigned during subscription process and returned to client
+id: "{{ SUBSCRIPTION_NAME }}"
+type: "Subscription"
+#name: "{{ ENTITY_NAME }}"
+description: "{{ ENTITY_NAME }}"
+entities:
+  - id: "{{ ENTITY_NAME }}"
+    type: "{{ ENTITY_TYPE }}"
+notification:
+  endpoint:
+    uri: "{{ values.device.subscription_url }}"
+    accept: "application.json"
+    receiverInfo:
+      - Link: '<{{ values.ngsi_ld.context }}>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
+      - Fiware-Service: "{{ values.ngsi_ld.service }}"
+      - Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
+      - NGSILD-Tenant: "{{ values.ngsi_ld.service }}"
+      - NGSILD-Path: "{{ values.ngsi_ld.service_path }}"
+      - SmartVillage-API: "{{ values.smartabyar_smartvillage.smart_model_api }}"
+"@context":
+  - https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
+  - https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld
+#  attrs:
+#{% for key, attribute in smart_data_model.attributes.items() %}
+#    - "{{ smart_data_model.attributes[key].name | default(key) }}"
+#{% endfor %}

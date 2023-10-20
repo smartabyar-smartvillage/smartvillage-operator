@@ -1,5 +1,8 @@
 ---
 ENTITY_TYPE: EdgeRabbitMQ
 
+amqp_nodeport: 30072
+amqp_nodeport_hostname: amqp.apps-crc.testing
+
 mqtt_nodeport: 30083
 mqtt_nodeport_hostname: mqtt.apps-crc.testing

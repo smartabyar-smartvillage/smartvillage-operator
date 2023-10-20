@@ -2,7 +2,17 @@
 # tasks file for EdgeRabbitMQ
 
 - block:
-    - name: "{{ 'Install' if values.enable_dev_nodeports else 'Skip' }} mqtt-nodeport NodePort service on OpenShift"
+    - name: "{{ 'Install' if values.enable_dev_nodeports else 'Skip' }} amqp-nodeport NodePort service on OpenShift"
+      k8s:
+        state: "{{ 'present' if values.enable_dev_nodeports else 'absent' }}"
+        api_version: v1
+        kind: Service
+        name: "amqp-nodeport"
+        namespace: "{{ ansible_operator_meta.namespace }}"
+        definition: "{{ lookup('template', 'service-amqp-nodeport.yaml') }}"
+  when: values.enable_dev_nodeports
+- block:
+    - name: "{{ 'Install' if values.enable_dev_nodeports else 'Skip' }} amqp-nodeport NodePort service on OpenShift"
       k8s:
         state: "{{ 'present' if values.enable_dev_nodeports else 'absent' }}"
         api_version: v1

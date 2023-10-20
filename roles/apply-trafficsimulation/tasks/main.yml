@@ -1,11 +1,6 @@
 ---
 # tasks file for TrafficSimulation
 
-- name: "Query message broker secret"
-  set_fact:
-    message_broker_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.message_broker.secret.name, namespace=ansible_operator_meta.namespace)[0].data[values.message_broker.secret.property] | b64decode | default('') }}"
-  when: values.message_broker.secret.name
-
 - name: "Query the IOT Agent service"
   set_fact:
     iotagent_port: "{{ query('kubernetes.core.k8s', kind='Service', resource_name=values.iotagent.name, namespace=values.iotagent.namespace)[0].spec.ports | community.general.json_query(QUERY) | first }}"
@@ -63,3 +58,7 @@
 - name: Run Ansible role iotagent-json-subscription
   include_role:
     name: iotagent-json-subscription
+- name: Run Ansible role iotagent-json-send
+  include_role:
+    name: iotagent-json-send
+    

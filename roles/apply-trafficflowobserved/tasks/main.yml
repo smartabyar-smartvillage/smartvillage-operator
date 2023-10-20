@@ -58,3 +58,7 @@
 - name: Run Ansible role iotagent-json-subscription
   include_role:
     name: iotagent-json-subscription
+- name: Run Ansible role iotagent-json-send
+  include_role:
+    name: iotagent-json-send
+    

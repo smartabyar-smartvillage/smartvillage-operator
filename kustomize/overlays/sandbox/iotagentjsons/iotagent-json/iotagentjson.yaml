@@ -8,6 +8,9 @@ spec:
     replicas: 1
     route:
       create: true
+  orionld:
+    host: orion-ld
+    port: 1026
   message_broker:
     amqp_host: default-rabbitmq
     password_secret:
