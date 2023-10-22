@@ -1,50 +1,42 @@
 ---
-- name: Setup iotagent-json
+- name: Install a CRD resource from OpenShift
   hosts: localhost
   connection: local
+  gather_facts: false
+  pre_tasks:
+    - fail:
+        msg: Variable crd_path is not defined
+      when: crd_path is not defined
+    - name: "Query CRD"
+      set_fact:
+        crd_complete: "{{ (lookup('file', crd_path) | from_yaml) }}"
+    - name: "Set crd var"
+      set_fact:
+        crd: "{{ crd_complete.spec }}"
+      when: crd_path is defined
+    - name: "Set name var"
+      set_fact:
+        ansible_operator_meta_name: "{{ crd_complete.metadata.name }}"
+      when:
+        crd_path is defined and ansible_operator_meta_name is not defined
+    - name: "Set namespace var"
+      set_fact:
+        ansible_operator_meta_namespace: "{{ crd_complete.metadata.namespace }}"
+      when:
+        crd_path is defined and ansible_operator_meta_namespace is not defined
+    - name: "Set ENTITY_TYPE var"
+      set_fact:
+        ENTITY_TYPE: "{{ crd_complete.kind }}"
   roles:
     - smart-data-model-vars
-    - iotagent-json-subscription
+    - iotagent-json-send
   vars:
-    ENTITY_TYPE: TrafficFlowObserved
-    iotagent:
-      iot_host: http://iotagent-json-north-fiware.apps-crc.testing
-    fiware:
-      service: smarttrafficlights
-      service_path: /Sweden/Veberod/CityCenter
-    service_group:
-      cb_host: 'http://orion-ld-fiware.apps-crc.testing'
-      resource: /iot/json
-      apikey: VeberodIntersection1
-    device:
-      transport: MQTT
-      id: 'Sjobovagen-SE'
-      mqtt_host: fiware-broker-mqtt-0-svc.fiware.svc.cluster.local
-      mqtt_port: 1883
-      mqtt_subscription_topic: iot-subscribe
-    sumo:
-      initial_parameters: [10, 20, 30, 50, 10, 10, 8, 8, 5, 5]
-      demand_scale: [1.4, 1.4]
-      fix_seed: false
-      lam: [0.11, 0.125, 0.01, 0.01]
-      routes:
-        - edges: '96027913#0 96027913#2 30186293 311389510#1'
-          id: r13
-      run_time: 0
-      v_types:
-        - accel: 2.6
-          decel: 4.5
-          id: v12
-          length: 5
-          max_speed: 55
-          min_gap: 1
-          sigma: 0.5
-    attributes:
-      address:
-        addressCountry: Sweden
-        addressLocality: Veberöd
-        streetAddress: Sjöbovägen
-      area_served: |
-        96027913#0 96027913#2 30186293 311389510#1
-      average_gap_distance: 1
-    ENTITY_NAME: "urn:ngsi-ld:{{ ENTITY_TYPE }}:{{ device.id }}"
+    ansible_operator_meta:
+      name: "{{ ansible_operator_meta_name }}"
+      namespace: "{{ ansible_operator_meta_namespace }}"
+    mqtt_nodeport: 30083
+    mqtt_nodeport_hostname: mqtt.apps-crc.testing
+    amqp_nodeport: 30072
+    amqp_nodeport_hostname: amqp.apps-crc.testing
+    verify_connections: false
+    enable_dev_nodeports: false
