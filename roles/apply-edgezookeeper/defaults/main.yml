@@ -1,0 +1,5 @@
+---
+ENTITY_TYPE: EdgeZookeeper
+
+zookeeper_nodeport: 30081
+zookeeper_nodeport_hostname: zookeeper.apps-crc.testing

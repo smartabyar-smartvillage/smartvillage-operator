@@ -1,0 +1,129 @@
+---
+name: smartvillage
+description: |
+  
+schema:
+  managementState:
+    type: string
+    default: Managed
+    enum:
+      - Managed
+      - Unmanaged
+  enable_dev_nodeports:
+    type: boolean
+    default: false
+  zookeeper:
+    type: object
+    properties:
+      version:
+        type: string
+        default: 3.9.1
+        description: |
+          The version of the zookeeper image to deploy. 
+      host:
+        type: string
+        default: zookeeper.zookeeper.svc
+      port:
+        type: number
+        default: 2181
+      retry_policy:
+        type: string
+        default: one_time
+        description: >-
+          The possible value for the policy are: 
+          exponential_backoff (default), 
+          bounded_exponential_backoff, 
+          one_time, 
+          n_times, 
+          forever, 
+          until_elapsed
+      max_retries:
+        type: number
+        default: 0
+        description: >-
+          max number of times to retry
+      base_sleep_time_millis:
+        type: number
+        default: 5000
+        description: >-
+          initial amount of time to wait between retries
+      max_sleep_millis:
+        type: number
+        default: 5000
+        description: >-
+          max time in ms to sleep on each retry
+      connection_timeout_millis:
+        type: number
+        default: 3000
+        description: >-
+          Zookeeper connection timeout
+      session_timeout_millis:
+        type: number
+        default: 5000
+        description: >-
+          Zookeeper session timeout
+      tick_time:
+        type: number
+        default: 2000
+        description: >-
+          The length of a single tick, which is the basic time unit used by ZooKeeper, as measured in milliseconds. 
+          It is used to regulate heartbeats, and timeouts. 
+          For example, the minimum session timeout will be two ticks. 
+      autopurge_snap_retain_count:
+        type: number
+        default: 10
+        minimum: 3
+        description: >-
+          When enabled, ZooKeeper auto purge feature retains the autopurge.snapRetainCount most recent snapshots and the corresponding transaction logs in the dataDir and dataLogDir respectively and deletes the rest. 
+          Defaults to 3. Minimum value is 3. 
+      autopurge_interval:
+        type: number
+        default: 3
+        description: >-
+          The time interval in hours for which the purge task has to be triggered. 
+          Set to a positive integer (1 and above) to enable the auto purging. 
+          Defaults to 0.
+      init_limit:
+        type: number
+        default: 5
+        description: >-
+          Amount of time, in ticks (see tickTime), to allow followers to connect and sync to a leader. 
+          Increased this value as needed, if the amount of data managed by ZooKeeper is large.
+      sync_limit:
+        type: number
+        default: 2
+        description: >-
+          Amount of time, in ticks (see tickTime), to allow followers to sync with ZooKeeper. 
+          If followers fall too far behind a leader, they will be dropped. 
+      max_client_connections:
+        type: number
+        default: 60
+        description: >-
+          Limits the number of concurrent connections (at the socket level) that a single client, identified by IP address, may make to a single member of the ZooKeeper ensemble.
+      storage:
+        type: string
+        default: '1Gi'
+      replicas:
+        type: number
+        default: 1
+      resources:
+        type: object
+        properties:
+          limits:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '500Mi'
+              cpu:
+                type: string
+                default: '500m'
+          requests:
+            type: object
+            properties:
+              memory:
+                type: string
+                default: '200Mi'
+              cpu:
+                type: string
+                default: '200m'

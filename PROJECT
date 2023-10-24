@@ -97,4 +97,11 @@ resources:
   group: smartvillage
   kind: EdgeSolr
   version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  domain: computate.org
+  group: smartvillage
+  kind: EdgeZookeeper
+  version: v1
 version: "3"

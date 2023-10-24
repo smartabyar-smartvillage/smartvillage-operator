@@ -32,7 +32,7 @@ spec:
       containers:
         - name: zookeeper
           imagePullPolicy: Always
-          image: 'docker.io/zookeeper:3.6.1'
+          image: 'docker.io/zookeeper:{{ values.zookeeper.version }}'
           resources:
             limits:
               memory: '{{ values.zookeeper.resources.limits.memory }}'

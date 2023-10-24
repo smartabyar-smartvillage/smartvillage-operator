@@ -1,0 +1,49 @@
+apiVersion: smartvillage.computate.org/v1
+kind: EdgeZookeeper
+metadata:
+  labels:
+    app.kubernetes.io/name: edgezookeeper
+    app.kubernetes.io/instance: edgezookeeper-sample
+    app.kubernetes.io/part-of: smartvillage-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: smartvillage-operator
+  name: smartvillage
+spec:
+  description: |
+    
+  managementState: |-
+    Managed
+  enable_dev_nodeports: False
+  zookeeper:
+    version: |-
+      3.9.1
+    host: |-
+      zookeeper.zookeeper.svc
+    port: 2181
+    retry_policy: |-
+      one_time
+    max_retries: 0
+    base_sleep_time_millis: 5000
+    max_sleep_millis: 5000
+    connection_timeout_millis: 3000
+    session_timeout_millis: 5000
+    tick_time: 2000
+    autopurge_snap_retain_count: 10
+    autopurge_interval: 3
+    init_limit: 5
+    sync_limit: 2
+    max_client_connections: 60
+    storage: |-
+      1Gi
+    replicas: 1
+    resources:
+      limits:
+        memory: |-
+          500Mi
+        cpu: |-
+          500m
+      requests:
+        memory: |-
+          200Mi
+        cpu: |-
+          200m

@@ -1,0 +1,61 @@
+---
+# tasks file for EdgeZookeeper
+
+- name: "{{ 'Install' if values.enable_dev_nodeports else 'Skip' }} zookeeper-nodeport NodePort service on OpenShift"
+  k8s:
+    state: present
+    api_version: v1
+    kind: Service
+    name: "zookeeper-nodeport"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'service-zookeeper-nodeport.yaml') }}"
+  when: values.enable_dev_nodeports
+
+- name: "Install Zookeeper config map on OpenShift"
+  k8s:
+    state: present
+    kind: ConfigMap
+    api_version: v1
+    name: zookeeper
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'configmap-zookeeper.yaml') }}"
+- name: "Install Zookeeper deployment on OpenShift"
+  k8s:
+    state: present
+    kind: StatefulSet
+    api_version: apps/v1
+    name: zookeeper
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'statefulset-zookeeper.yaml') }}"
+- name: "Install Zookeeper service on OpenShift"
+  k8s:
+    state: present
+    kind: Service
+    api_version: v1
+    name: zookeeper
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'service-zookeeper.yaml') }}"
+- name: "Install Zookeeper service account on OpenShift"
+  k8s:
+    state: present
+    kind: ServiceAccount
+    api_version: v1
+    name: zookeeper
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'serviceaccount-zookeeper.yaml') }}"
+
+- name: "Verify Zookeeper"
+  wait_for:
+    host: "{{ values.zookeeper.host }}"
+    port: "{{ values.zookeeper.port }}"
+    state: started
+    delay: 0
+    timeout: 5
+  register: verify_zookeeper
+  ignore_errors: yes
+  when: verify_connections
+- name: "Verify Zookeeper is running"
+  fail:
+    msg: |-
+      The Zookeeper service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
+  when: verify_connections and verify_zookeeper.failed

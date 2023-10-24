@@ -19,7 +19,7 @@
       when: crd_path is defined
   tasks:
     - include_role:
-      name: smart-data-model-vars
+        name: smart-data-model-vars
     - include_role:
         name: delete-{{ ENTITY_TYPE | lower }}
   vars:

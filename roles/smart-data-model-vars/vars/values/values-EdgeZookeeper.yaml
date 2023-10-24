@@ -1,0 +1,30 @@
+values:
+
+
+  managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
+  enable_dev_nodeports: "{{ crd.enable_dev_nodeports | default(schema | community.general.json_query('enable_dev_nodeports.default')) }}"
+  zookeeper:
+    version: "{{ crd.zookeeper.version | default(schema | community.general.json_query('zookeeper.properties.version.default')) }}"
+    host: "{{ crd.zookeeper.host | default(schema | community.general.json_query('zookeeper.properties.host.default')) }}"
+    port: "{{ crd.zookeeper.port | default(schema | community.general.json_query('zookeeper.properties.port.default')) }}"
+    retry_policy: "{{ crd.zookeeper.retry_policy | default(schema | community.general.json_query('zookeeper.properties.retry_policy.default')) }}"
+    max_retries: "{{ crd.zookeeper.max_retries | default(schema | community.general.json_query('zookeeper.properties.max_retries.default')) }}"
+    base_sleep_time_millis: "{{ crd.zookeeper.base_sleep_time_millis | default(schema | community.general.json_query('zookeeper.properties.base_sleep_time_millis.default')) }}"
+    max_sleep_millis: "{{ crd.zookeeper.max_sleep_millis | default(schema | community.general.json_query('zookeeper.properties.max_sleep_millis.default')) }}"
+    connection_timeout_millis: "{{ crd.zookeeper.connection_timeout_millis | default(schema | community.general.json_query('zookeeper.properties.connection_timeout_millis.default')) }}"
+    session_timeout_millis: "{{ crd.zookeeper.session_timeout_millis | default(schema | community.general.json_query('zookeeper.properties.session_timeout_millis.default')) }}"
+    tick_time: "{{ crd.zookeeper.tick_time | default(schema | community.general.json_query('zookeeper.properties.tick_time.default')) }}"
+    autopurge_snap_retain_count: "{{ crd.zookeeper.autopurge_snap_retain_count | default(schema | community.general.json_query('zookeeper.properties.autopurge_snap_retain_count.default')) }}"
+    autopurge_interval: "{{ crd.zookeeper.autopurge_interval | default(schema | community.general.json_query('zookeeper.properties.autopurge_interval.default')) }}"
+    init_limit: "{{ crd.zookeeper.init_limit | default(schema | community.general.json_query('zookeeper.properties.init_limit.default')) }}"
+    sync_limit: "{{ crd.zookeeper.sync_limit | default(schema | community.general.json_query('zookeeper.properties.sync_limit.default')) }}"
+    max_client_connections: "{{ crd.zookeeper.max_client_connections | default(schema | community.general.json_query('zookeeper.properties.max_client_connections.default')) }}"
+    storage: "{{ crd.zookeeper.storage | default(schema | community.general.json_query('zookeeper.properties.storage.default')) }}"
+    replicas: "{{ crd.zookeeper.replicas | default(schema | community.general.json_query('zookeeper.properties.replicas.default')) }}"
+    resources:
+      limits:
+        memory: "{{ crd.zookeeper.resources.limits.memory | default(schema | community.general.json_query('zookeeper.properties.resources.properties.limits.properties.memory.default')) }}"
+        cpu: "{{ crd.zookeeper.resources.limits.cpu | default(schema | community.general.json_query('zookeeper.properties.resources.properties.limits.properties.cpu.default')) }}"
+      requests:
+        memory: "{{ crd.zookeeper.resources.requests.memory | default(schema | community.general.json_query('zookeeper.properties.resources.properties.requests.properties.memory.default')) }}"
+        cpu: "{{ crd.zookeeper.resources.requests.cpu | default(schema | community.general.json_query('zookeeper.properties.resources.properties.requests.properties.cpu.default')) }}"

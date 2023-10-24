@@ -1,0 +1,35 @@
+---
+# tasks file for EdgeZookeeper
+
+- name: "Query EdgeZookeeper"
+  set_fact:
+    crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
+  ignore_errors: true
+  vars:
+    ENTITY_TYPE: EdgeZookeeper
+  when: crd_path is defined
+- name: "Query EdgeZookeeper"
+  set_fact:
+    crd: "{{ query('kubernetes.core.k8s', kind='EdgeZookeeper', resource_name=ansible_operator_meta.name, namespace=ansible_operator_meta.namespace)[0].spec }}"
+  ignore_errors: true
+  vars:
+    ENTITY_TYPE: EdgeZookeeper
+  when: crd_path is not defined
+- name: Run Ansible role smart-data-model-vars
+  include_role:
+    name: smart-data-model-vars
+  vars:
+    ENTITY_TYPE: EdgeZookeeper
+- name: "Verify EdgeZookeeper exists"
+  fail:
+    msg: |-
+      You need to deploy a EdgeZookeeper to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_edgezookeeper.yaml
+  vars:
+    ENTITY_TYPE: EdgeZookeeper
+  when: crd is not defined
+- name: Run Ansible role apply-edgezookeeper
+  include_role:
+    name: apply-edgezookeeper
+  vars:
+    ENTITY_TYPE: EdgeZookeeper
+  when: values.managementState == 'Managed'

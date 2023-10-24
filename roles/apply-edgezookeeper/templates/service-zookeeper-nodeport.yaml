@@ -7,4 +7,5 @@ spec:
       nodePort: {{ zookeeper_nodeport }}
   type: NodePort
   selector:
-    app: default-solrcloud-zookeeper
+    app: zookeeper
+    statefulset: zookeeper

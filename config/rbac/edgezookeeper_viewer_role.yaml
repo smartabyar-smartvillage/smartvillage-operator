@@ -1,0 +1,27 @@
+# permissions for end users to view edgezookeepers.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: edgezookeeper-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: smartvillage-operator
+    app.kubernetes.io/part-of: smartvillage-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: edgezookeeper-viewer-role
+rules:
+- apiGroups:
+  - smartvillage.computate.org
+  resources:
+  - edgezookeepers
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - smartvillage.computate.org
+  resources:
+  - edgezookeepers/status
+  verbs:
+  - get

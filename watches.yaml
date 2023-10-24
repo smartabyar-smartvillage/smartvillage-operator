@@ -114,4 +114,8 @@
   snakeCaseParameters: false
   version: v1
   watchDependentResources: false
+- version: v1
+  group: smartvillage.computate.org
+  kind: EdgeZookeeper
+  role: edgezookeeper
 #+kubebuilder:scaffold:watch

@@ -1,95 +1,14 @@
 ---
 
-- block:
-    - name: "{{ 'Install' if values.site.enable_dev_nodeports else 'Skip' }} zookeeper-nodeport NodePort service on OpenShift"
-      k8s:
-        state: "{{ 'present' if values.site.enable_dev_nodeports and values.zookeeper.create else 'absent' }}"
-        api_version: v1
-        kind: Service
-        name: "zookeeper-nodeport"
-        namespace: "{{ ansible_operator_meta.namespace }}"
-        definition: "{{ lookup('template', 'service-zookeeper-nodeport.yaml') }}"
-    - name: "{{ 'Install' if values.site.enable_dev_nodeports else 'Skip' }} site-nodeport NodePort service on OpenShift"
-      k8s:
-        state: "{{ 'present' if values.site.enable_dev_nodeports else 'absent' }}"
-        api_version: v1
-        kind: Service
-        name: "site-nodeport"
-        namespace: "{{ ansible_operator_meta.namespace }}"
-        definition: "{{ lookup('template', 'service-site-nodeport.yaml') }}"
+- name: "{{ 'Install' if values.site.enable_dev_nodeports else 'Skip' }} site-nodeport NodePort service on OpenShift"
+  k8s:
+    state: "{{ 'present' if values.site.enable_dev_nodeports else 'absent' }}"
+    api_version: v1
+    kind: Service
+    name: "site-nodeport"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'service-site-nodeport.yaml') }}"
   when: values.site.enable_dev_nodeports
-
-# Install PostgreSQL
-#- block:
-#    - name: "Install PostgreSQL {{ site_name }}-db-create configmap on OpenShift"
-#      k8s:
-#        state: "{{ 'present' if values.postgres.create else 'absent' }}"
-#        api_version: v1
-#        kind: ConfigMap
-#        name: "{{ site_name }}-db-create"
-#        namespace: "{{ ansible_operator_meta.namespace }}"
-#        definition: "{{ lookup('template', 'configmap-db-create.yaml') }}"
-#  when: values.postgres.create
-
-# Install Zookeeper
-- block:
-    - name: "Install Zookeeper persistent volume claim on OpenShift"
-      k8s:
-        state: "{{ 'present' if values.zookeeper.create else 'absent' }}"
-        kind: PersistentVolumeClaim
-        api_version: v1
-        name: zookeeper
-        namespace: "{{ ansible_operator_meta.namespace }}"
-        definition: "{{ lookup('template', 'persistentvolumeclaim-zookeeper.yaml') }}"
-    - name: "Install Zookeeper config map on OpenShift"
-      k8s:
-        state: "{{ 'present' if values.zookeeper.create else 'absent' }}"
-        kind: ConfigMap
-        api_version: v1
-        name: zookeeper
-        namespace: "{{ ansible_operator_meta.namespace }}"
-        definition: "{{ lookup('template', 'configmap-zookeeper.yaml') }}"
-    - name: "Install Zookeeper deployment on OpenShift"
-      k8s:
-        state: "{{ 'present' if values.zookeeper.create else 'absent' }}"
-        kind: Deployment
-        api_version: apps/v1
-        name: zookeeper
-        namespace: "{{ ansible_operator_meta.namespace }}"
-        definition: "{{ lookup('template', 'deployment-zookeeper.yaml') }}"
-    - name: "Install Zookeeper service on OpenShift"
-      k8s:
-        state: "{{ 'present' if values.zookeeper.create else 'absent' }}"
-        kind: Service
-        api_version: v1
-        name: zookeeper
-        namespace: "{{ ansible_operator_meta.namespace }}"
-        definition: "{{ lookup('template', 'service-zookeeper.yaml') }}"
-    - name: "Install Zookeeper service account on OpenShift"
-      k8s:
-        state: "{{ 'present' if values.zookeeper.create else 'absent' }}"
-        kind: ServiceAccount
-        api_version: v1
-        name: zookeeper
-        namespace: "{{ ansible_operator_meta.namespace }}"
-        definition: "{{ lookup('template', 'serviceaccount-zookeeper.yaml') }}"
-  when: values.zookeeper.create
-
-- name: "Verify Zookeeper"
-  wait_for:
-    host: "{{ values.zookeeper.host }}"
-    port: "{{ values.zookeeper.port }}"
-    state: started
-    delay: 0
-    timeout: 5
-  register: verify_zookeeper
-  ignore_errors: yes
-  when: verify_connections and values.zookeeper.create
-- name: "Verify Zookeeper is running"
-  fail:
-    msg: |-
-      The Zookeeper service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
-  when: verify_connections and values.zookeeper.create and verify_zookeeper.failed
 
 # Install site
 - name: "Install {{ site_name }}-web service on OpenShift"

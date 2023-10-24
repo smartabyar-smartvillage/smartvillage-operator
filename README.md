@@ -589,6 +589,28 @@ ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=EdgeRabbit
 make docker-build docker-push deploy && oc -n smartvillage-operator-system delete pod -l 'control-plane=controller-manager'
 ```
 
+## Initialize EdgeZookeeper model
+
+```bash
+operator-sdk create api --group smartvillage --version v1 --kind EdgeZookeeper --generate-role
+ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=EdgeZookeeper
+```
+
+- Edit the newly generated vars values file: `smartvillage-operator/roles/smart-data-model-vars/vars/EdgeZookeeper.yaml`. 
+- Re-run the playbook to regenerate the latest model. 
+
+```bash
+ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=EdgeZookeeper
+```
+
+- Increment the VERSION in the smartvillage-operator/Makefile
+- Build and deploy the new version of the operator
+
+```bash
+make docker-build docker-push deploy && oc -n smartvillage-operator-system delete pod -l 'control-plane=controller-manager'
+```
+```
+
 ## Initialize EdgeSolr model
 
 ```bash

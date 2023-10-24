@@ -13,4 +13,5 @@ resources:
 - smartvillage_v1_edgekafka.yaml
 - smartvillage_v1_edgerabbitmq.yaml
 - smartvillage_v1_edgesolr.yaml
+- smartvillage_v1_edgezookeeper.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples
