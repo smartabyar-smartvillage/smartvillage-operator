@@ -10,12 +10,12 @@
   when: values.iotagent.base_url == ''
 - name: "Configure iotagent_base_url"
   set_fact:
-    iotagent_base_url: "http://\{\{ query('kubernetes.core.k8s', kind='Route', resource_name=values.iotagent.name, namespace=values.iotagent.namespace)[0].spec.host \}\}"
-  when: values.iotagent.base_url == '' and verify_connections is defined and not verify_connections
+    iotagent_route: "\{\{ query('kubernetes.core.k8s', kind='Route', resource_name=values.iotagent.name, namespace=values.iotagent.namespace)[0].spec.host | default('') \}\}"
+  when: values.iotagent.base_url == ''
 - name: "Configure iotagent_base_url"
   set_fact:
-    iotagent_base_url: "http://\{\{ values.iotagent.name \}\}.\{\{ values.iotagent.namespace \}\}.svc:\{\{ iotagent_port \}\}"
-  when: values.iotagent.base_url == '' and (verify_connections is not defined or verify_connections)
+    iotagent_base_url: "http://\{\{ iotagent_route | default( values.iotagent.name + '.' + values.iotagent.namespace + '.svc', true ) \}\}:\{\{ iotagent_port \}\}"
+  when: values.iotagent.base_url == ''
 - name: "Configure iotagent_base_url"
   set_fact:
     iotagent_base_url: "\{\{ values.iotagent.base_url \}\}"
@@ -34,12 +34,12 @@
   when: values.context_broker.base_url == ''
 - name: "Configure context_broker_base_url"
   set_fact:
-    context_broker_base_url: "http://\{\{ query('kubernetes.core.k8s', kind='Route', resource_name=values.context_broker.name, namespace=values.context_broker.namespace)[0].spec.host \}\}"
-  when: values.context_broker.base_url == '' and verify_connections is defined and not verify_connections
+    context_broker_route: "\{\{ query('kubernetes.core.k8s', kind='Route', resource_name=values.context_broker.name, namespace=values.context_broker.namespace)[0].spec.host | default('') \}\}"
+  when: values.context_broker.base_url == ''
 - name: "Configure context_broker_base_url"
   set_fact:
-    context_broker_base_url: "http://\{\{ values.context_broker.name \}\}.\{\{ values.context_broker.namespace \}\}.svc:\{\{ context_broker_port \}\}"
-  when: values.context_broker.base_url == '' and (verify_connections is not defined or verify_connections)
+    context_broker_base_url: "http://\{\{ context_broker_route | default( values.context_broker.name + '.' + values.context_broker.namespace + '.svc', true ) \}\}:\{\{ context_broker_port \}\}"
+  when: values.context_broker.base_url == ''
 - name: "Configure context_broker_base_url"
   set_fact:
     context_broker_base_url: "\{\{ values.context_broker.base_url \}\}"

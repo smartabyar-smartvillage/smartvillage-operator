@@ -1,10 +1,10 @@
 spec:
   ports:
     - protocol: TCP
-      port: 2181
-      targetPort: 2181
+      port: 8983
+      targetPort: 8983
   type: ClusterIP
   sessionAffinity: None
   selector:
-    app: zookeeper
-    statefulset: zookeeper
+    app: solr
+    statefulset: solr

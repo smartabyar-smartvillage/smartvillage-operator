@@ -19,7 +19,7 @@
     name: zookeeper
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'configmap-zookeeper.yaml') }}"
-- name: "Install Zookeeper deployment on OpenShift"
+- name: "Install Zookeeper StatefulSet on OpenShift"
   k8s:
     state: present
     kind: StatefulSet

@@ -1,0 +1,122 @@
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  test: false
+  selector:
+    matchLabels:
+      app: solr
+      statefulset: solr
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  volumeClaimTemplates:
+    - kind: PersistentVolumeClaim
+      apiVersion: v1
+      metadata:
+        name: data
+        labels:
+          app: solr
+          statefulset: solr
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "{{ values.solr.storage }}"
+          limits:
+            storage: "{{ values.solr.storage }}"
+        volumeMode: Filesystem
+  template:
+    metadata:
+      name: solr
+      labels:
+        app: solr
+        statefulset: solr
+    spec:
+      serviceAccountName: solr
+      volumes:
+        - name: volume-solr-conf
+          configMap:
+            name: solr
+            defaultMode: 440
+      containers:
+        - name: solr
+          imagePullPolicy: Always
+          image: 'docker.io/solr:{{ values.solr.version }}'
+          resources:
+            limits:
+              memory: '{{ values.solr.resources.limits.memory }}'
+              cpu: '{{ values.solr.resources.limits.cpu }}'
+            requests:
+              memory: '{{ values.solr.resources.requests.memory }}'
+              cpu: '{{ values.solr.resources.requests.cpu }}'
+          readinessProbe:
+            httpGet:
+              path: /solr/admin/info/system
+              port: 8983
+              scheme: HTTP
+            initialDelaySeconds: 15
+            timeoutSeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /solr/admin/info/system
+              port: 8983
+              scheme: HTTP
+            initialDelaySeconds: 20
+            timeoutSeconds: 20
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 300
+          env:
+            - name: SOLR_JAVA_MEM
+              value: '-Xms1g -Xmx2g'
+            - name: SOLR_HOME
+              value: /var/solr/data
+            - name: SOLR_PORT
+              value: '8983'
+            - name: SOLR_NODE_PORT
+              value: '8983'
+            - name: POD_HOSTNAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+            - name: SOLR_HOST
+              value: $(POD_HOSTNAME).default-solrcloud-headless.solr
+            - name: SOLR_LOG_LEVEL
+              value: INFO
+            - name: GC_TUNE
+            - name: SOLR_STOP_WAIT
+              value: '55'
+            - name: ZK_HOST
+              value: >-
+                default-solrcloud-zookeeper-0.default-solrcloud-zookeeper-headless.solr.svc.cluster.local:2181/
+            - name: ZK_CHROOT
+              value: /
+            - name: ZK_SERVER
+              value: >-
+                default-solrcloud-zookeeper-0.default-solrcloud-zookeeper-headless.solr.svc.cluster.local:2181
+            - name: SOLR_OPTS
+              value: '-DhostPort=$(SOLR_NODE_PORT)'
+          ports:
+            - name: client-port
+              containerPort: 8983
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: volume-solr-conf
+              mountPath: /conf
+          terminationMessagePolicy: File
+          terminationMessagePath: /dev/termination-log
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+#      securityContext: {}
+      securityContext: {}
+      schedulerName: default-scheduler

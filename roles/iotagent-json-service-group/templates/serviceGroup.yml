@@ -1,6 +1,6 @@
 ---
 apikey: "{{ values.service_group.apikey }}"
-cbHost: "{{ values.context_broker.base_url }}"
+cbHost: "{{ context_broker_base_url }}"
 entity_type: "{{ ENTITY_TYPE }}"
 resource: "{{ values.service_group.resource }}"
 attributes:
