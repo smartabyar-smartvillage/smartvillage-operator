@@ -3,13 +3,16 @@ values:
 
   managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
   mongodb:
-    namespace: "{{ crd.mongodb.namespace | default(schema | community.general.json_query('mongodb.properties.namespace.default')) }}"
+    namespace: "{{ crd.mongodb.namespace | default('') }}"
     name: "{{ crd.mongodb.name | default(schema | community.general.json_query('mongodb.properties.name.default')) }}"
   message_broker:
     name: "{{ crd.message_broker.name | default(schema | community.general.json_query('message_broker.properties.name.default')) }}"
-    mqtt_host: "{{ crd.message_broker.mqtt_host | default(schema | community.general.json_query('message_broker.properties.mqtt_host.default')) }}"
+    namespace: "{{ crd.message_broker.namespace | default('') }}"
+    mqtt_host: "{{ crd.message_broker.mqtt_host | default('') }}"
     mqtt_port: "{{ crd.message_broker.mqtt_port | default(schema | community.general.json_query('message_broker.properties.mqtt_port.default')) }}"
-    user: "{{ crd.message_broker.user | default('') }}"
+    amqp_host: "{{ crd.message_broker.amqp_host | default('') }}"
+    amqp_port: "{{ crd.message_broker.amqp_port | default(schema | community.general.json_query('message_broker.properties.amqp_port.default')) }}"
+    user: "{{ crd.message_broker.user | default(schema | community.general.json_query('message_broker.properties.user.default')) }}"
     password_secret:
       name: "{{ crd.message_broker.password_secret.name | default('') }}"
       key: "{{ crd.message_broker.password_secret.key | default('') }}"

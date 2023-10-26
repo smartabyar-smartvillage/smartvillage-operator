@@ -5,6 +5,8 @@ values:
   enable_dev_nodeports: "{{ crd.enable_dev_nodeports | default(schema | community.general.json_query('enable_dev_nodeports.default')) }}"
   rabbitmq:
     name: "{{ crd.rabbitmq.name | default(schema | community.general.json_query('rabbitmq.properties.name.default')) }}"
+    username: "{{ crd.rabbitmq.username | default(schema | community.general.json_query('rabbitmq.properties.username.default')) }}"
+    auth_secret: "{{ crd.rabbitmq.auth_secret | default(schema | community.general.json_query('rabbitmq.properties.auth_secret.default')) }}"
     replicas: "{{ crd.rabbitmq.replicas | default(schema | community.general.json_query('rabbitmq.properties.replicas.default')) }}"
     resources:
       limits:

@@ -8,5 +8,11 @@ spec:
     replicas: 1
     route:
       create: true
-  amq_broker:
-    mqtt_service_name: rabbitmq-mqtt
+  orionld:
+    host: orion-ld
+    port: 1026
+  message_broker:
+    amqp_host: default-rabbitmq
+    password_secret:
+      name: rabbitmq-password
+      key: rabbitmq-password

@@ -80,7 +80,7 @@ schema:
         properties:
           name:
             type: string
-          property:
+          key:
             type: string
       port:
         type: number
@@ -92,7 +92,6 @@ schema:
         type: string
       subscription_url:
         type: string
-        default: "http://orionld-smartvillage-sync:8080"
   smartabyar_smartvillage:
     type: object
     properties:

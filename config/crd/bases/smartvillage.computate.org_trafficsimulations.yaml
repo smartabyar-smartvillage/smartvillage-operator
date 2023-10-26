@@ -169,9 +169,9 @@ spec:
                     type: number
                   secret:
                     properties:
-                      name:
+                      key:
                         type: string
-                      property:
+                      name:
                         type: string
                     type: object
                   transport:
@@ -189,7 +189,6 @@ spec:
                   id:
                     type: string
                   subscription_url:
-                    default: http://orionld-smartvillage-sync:8080
                     type: string
 
               smartabyar_smartvillage:

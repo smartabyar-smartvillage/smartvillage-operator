@@ -47,7 +47,6 @@ export OPENSHIFT_NAMESPACE=$(kubectl get project -o jsonpath={.items[0].metadata
 
 ```bash
 ansible-playbook apply-edgemongodb.yaml \
-  -e ansible_operator_meta_name=mongodb \
   -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/edgemongodbs/mongodb/edgemongodb.yaml
 ```
@@ -56,7 +55,6 @@ ansible-playbook apply-edgemongodb.yaml \
 
 ```bash
 ansible-playbook apply-orionldcontextbroker.yaml \
-  -e ansible_operator_meta_name=orion-ld \
   -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/orionldcontextbrokers/orion-ld/orionldcontextbroker.yaml
 ```
@@ -65,7 +63,6 @@ ansible-playbook apply-orionldcontextbroker.yaml \
 
 ```bash
 ansible-playbook apply-edgerabbitmq.yaml \
-  -e ansible_operator_meta_name=rabbitmq \
   -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/edgerabbitmqs/rabbitmq/edgerabbitmq.yaml
 ```
@@ -74,9 +71,16 @@ ansible-playbook apply-edgerabbitmq.yaml \
 
 ```bash
 ansible-playbook apply-iotagentjson.yaml \
-  -e ansible_operator_meta_name=iotagentjson \
   -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/iotagentjsons/iotagent-json/iotagentjson.yaml
+```
+
+## Install the Traffic Flow Observed JSON in the OpenShift Developer Sandbox
+
+```bash
+ansible-playbook apply-trafficflowobserved.yaml \
+  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=kustomize/overlays/sandbox/trafficflowobserveds/sweden-veberod-1-lakaregatan-ne/trafficflowobserved.yaml
 ```
 
 - [Install Red Hat MicroShift following the official documentation here](https://access.redhat.com/documentation/en-us/red_hat_build_of_microshift). 

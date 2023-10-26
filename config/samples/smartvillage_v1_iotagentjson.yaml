@@ -16,16 +16,15 @@ spec:
   managementState: |-
     Managed
   mongodb:
-    namespace: |-
-      mongodb
     name: |-
       mongodb
   message_broker:
     name: |-
       default
-    mqtt_host: |-
-      default-mqtt-0-svc.amqbroker.svc
     mqtt_port: 1883
+    amqp_port: 5672
+    user: |-
+      user
     password_secret:
   orionld:
     host: |-

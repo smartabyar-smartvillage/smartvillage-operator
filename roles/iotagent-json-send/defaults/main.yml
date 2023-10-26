@@ -1,0 +1,4 @@
+---
+ENTITY_NAME: "urn:ngsi-ld:{{ ENTITY_TYPE }}:{{ values.device.id }}"
+SUBSCRIPTION_BODY: "{{ lookup('template', 'subscription.yml') | from_yaml }}"
+SUBSCRIPTION_NAME: "urn:subscription:{{ ENTITY_TYPE }}-{{ values.device.id }}"

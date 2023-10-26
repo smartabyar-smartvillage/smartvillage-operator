@@ -37,5 +37,7 @@
       namespace: "{{ ansible_operator_meta_namespace }}"
     mqtt_nodeport: 30083
     mqtt_nodeport_hostname: mqtt.apps-crc.testing
+    amqp_nodeport: 30072
+    amqp_nodeport_hostname: amqp.apps-crc.testing
     verify_connections: false
-    enable_dev_nodeports: true
+    enable_dev_nodeports: false

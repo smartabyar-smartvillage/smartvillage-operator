@@ -16,6 +16,9 @@ spec:
 
   managementState: |-
     Managed
+  mongodb:
+    name: |-
+      mongodb
   orionld:
     service_name: |-
       orion-ld
