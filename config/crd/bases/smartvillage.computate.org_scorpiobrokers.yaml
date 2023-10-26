@@ -78,10 +78,10 @@ spec:
                       requests:
                         properties:
                           cpu:
-                            default: 500m
+                            default: '1'
                             type: string
                           memory:
-                            default: 1Gi
+                            default: 2Gi
                             type: string
                         type: object
                     type: object
@@ -92,7 +92,7 @@ spec:
                         description: "Whether to create a route for Scorpio Broker. \n"
                         type: boolean
                       host:
-                        default: scorpiobroker.scorpiobroker.svc
+                        default: scorpiobroker.apps-crc.testing
                         description: "The Route host name for Scorpio Broker. \n"
                         type: string
                     type: object

@@ -433,23 +433,25 @@ spec:
           image: 'docker.io/scorpiobroker/all-in-one-runner:java-kafka-latest'
           imagePullPolicy: IfNotPresent
           livenessProbe:
-            initialDelaySeconds: 30
+            initialDelaySeconds: 20
             periodSeconds: 10
             successThreshold: 1
             tcpSocket:
-              port: 9090
-            timeoutSeconds: 30
+              port: 'http'
+            timeoutSeconds: 10
+            failureThreshold: 10
           ports:
             - containerPort: 9090
               name: http
               protocol: TCP
           readinessProbe:
-            initialDelaySeconds: 30
+            initialDelaySeconds: 20
             periodSeconds: 10
             successThreshold: 1
             tcpSocket:
-              port: 9090
-            timeoutSeconds: 30
+              port: 'http'
+            timeoutSeconds: 10
+            failureThreshold: 10
           resources:
             limits:
               cpu: '{{ values.scorpiobroker.resources.limits.cpu }}'

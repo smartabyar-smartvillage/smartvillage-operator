@@ -21,7 +21,7 @@ spec:
     route:
       create: False
       host: |-
-        scorpiobroker.scorpiobroker.svc
+        scorpiobroker.apps-crc.testing
     port: 9090
     log_level: |-
       INFO
@@ -34,9 +34,9 @@ spec:
           2Gi
       requests:
         cpu: |-
-          500m
+          1
         memory: |-
-          1Gi
+          2Gi
   postgres:
     host: |-
       postgres-primary.postgres.svc

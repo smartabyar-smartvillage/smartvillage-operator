@@ -69,10 +69,10 @@ schema:
             properties:
               cpu:
                 type: string
-                default: 500m
+                default: '1'
               memory:
                 type: string
-                default: 1Gi
+                default: 2Gi
 
   postgres:
     type: object
