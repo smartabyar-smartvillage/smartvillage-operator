@@ -1,0 +1,231 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: parkingaccesss.smartvillage.computate.org
+spec:
+  group: smartvillage.computate.org
+  names:
+    kind: ParkingAccess
+    listKind: ParkingAccessList
+    plural: parkingaccesss
+    singular: parkingaccess
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: |
+          ParkingAccess is the Schema for the parkingaccesss API
+          ApiTag.enUS: ParkingAccess
+
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: Spec defines the desired state of ParkingAccess
+            type: object
+            properties:
+              attributes:
+                type: object
+                properties:
+                  object_id:
+                    type: string
+                  address:
+                    type: object
+                    properties:
+                      addressCountry:
+                        description: Property. The country. For example, Spain. Model:'https://schema.org/addressCountry'
+                        type: string
+                      addressLocality:
+                        description: Property. The locality in which the street address is, and which is
+                          in the region. Model:'https://schema.org/addressLocality'
+                        type: string
+                      addressRegion:
+                        description: Property. The region in which the locality is, and which is in the
+                          country. Model:'https://schema.org/addressRegion'
+                        type: string
+                      postOfficeBoxNumber:
+                        description: Property. The post office box number for PO box addresses. For example,
+                          03578. Model:'https://schema.org/postOfficeBoxNumber'
+                        type: string
+                      postalCode:
+                        description: Property. The postal code. For example, 24004. Model:'https://schema.org/https://schema.org/postalCode'
+                        type: string
+                      streetAddress:
+                        description: Property. The street address. Model:'https://schema.org/streetAddress'
+                        type: string
+
+                  alternateName:
+                    type: string
+                  areaServed:
+                    type: geo:linestring
+                  category:
+                    type: object
+                  dataProvider:
+                    type: string
+                  dateCreated:
+                    type: string
+                  dateModified:
+                    type: string
+                  description:
+                    type: string
+                  features:
+                    type: object
+                  height:
+                    type: number
+                  location:
+                    type: string
+                  name:
+                    type: string
+                  owner:
+                    type: object
+                  refOffStreetParking:
+                    type: object
+                  seeAlso:
+                    type: object
+                  slope:
+                    type: number
+                  source:
+                    type: string
+                  width:
+                    type: number
+              managementState:
+                type: string
+                default: |-
+                  Managed
+              iotagent:
+                type: object
+                properties:
+                  base_url:
+                    type: string
+                  name:
+                    default: iotagent-json
+                    type: string
+                  namespace:
+                    default: iotagent
+                    type: string
+                  service_name:
+                    default: iotagent-json
+                    type: string
+
+              context_broker:
+                type: object
+                properties:
+                  base_url:
+                    type: string
+                  name:
+                    default: scorpiobroker
+                    type: string
+                  namespace:
+                    default: scorpiobroker
+                    type: string
+                  service_name:
+                    default: scorpiobroker
+                    type: string
+
+              ngsi_ld:
+                type: object
+                properties:
+                  context:
+                    default: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
+                    type: string
+                  service:
+                    default: parkingaccesss
+                    type: string
+                  service_path:
+                    default: /Sweden/Veberod/CityCenter
+                    type: string
+
+              service_group:
+                type: object
+                properties:
+                  apikey:
+                    default: ParkingAccess
+                    type: string
+                  resource:
+                    default: /iot/json
+                    type: string
+
+              message_broker:
+                type: object
+                properties:
+                  host:
+                    default: default-mqtt-0-svc.amqbroker.svc
+                    type: string
+                  port:
+                    default: 1883
+                    type: number
+                  secret:
+                    properties:
+                      name:
+                        type: string
+                      property:
+                        type: string
+                    type: object
+                  transport:
+                    default: MQTT
+                    enum:
+                    - MQTT
+                    - AMQP
+                    type: string
+                  user:
+                    type: string
+
+              device:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  subscription_url:
+                    default: http://orionld-smartvillage-sync:8080
+                    type: string
+
+              smartabyar_smartvillage:
+                type: object
+                properties:
+                  auth_secret_name:
+                    default: keycloak-client-secret-smartvillage
+                    type: string
+                  auth_token_url:
+                    default: https://keycloak-sso.apps-crc.testing/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+                    type: string
+                  enabled:
+                    default: true
+                    type: boolean
+                  site_base_url:
+                    default: https://smartvillage-web-smartvillage.apps-crc.testing
+                    type: string
+                  smart_model_api:
+                    default: /api/parking-access
+                    type: string
+
+              alternate_model:
+                type: object
+                properties:
+                  enabled:
+                    default: ParkingAccess
+                    type: string
+                  id:
+                    default: parkingaccess
+                    type: string
+
+          status:
+            description: Status defines the observed state of ParkingAccess
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

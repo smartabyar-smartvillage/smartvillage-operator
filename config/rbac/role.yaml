@@ -419,4 +419,21 @@ rules:
       - patch
       - update
       - watch
+  ##
+  ## Rules for smartvillage.computate.org/v1, Kind: ParkingAccess
+  ##
+  - apiGroups:
+      - smartvillage.computate.org
+    resources:
+      - parkingaccesses
+      - parkingaccesses/status
+      - parkingaccesses/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
 #+kubebuilder:scaffold:rules

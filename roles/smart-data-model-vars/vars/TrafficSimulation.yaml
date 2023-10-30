@@ -77,7 +77,7 @@ schema:
         properties:
           name:
             type: string
-          key:
+          property:
             type: string
       port:
         type: number
@@ -89,6 +89,7 @@ schema:
         type: string
       subscription_url:
         type: string
+        default: "http://orionld-smartvillage-sync:8080"
   smartabyar_smartvillage:
     type: object
     properties:
@@ -121,11 +122,6 @@ schema:
         default: TrafficSimulation
 smart_data_model:
   attributes:
-    entityId:
-      name: entityId
-      type: string
-      description: >+
-        A unique ID for this Smart Data Model
     startDateTime:
       name: startDateTime
       type: string
@@ -137,6 +133,11 @@ smart_data_model:
       name: simulationName
       type: string
       required: true
+    entityId:
+      name: entityId
+      type: string
+      description: >+
+        A unique ID for this Smart Data Model
     location:
       name: location
       type: geo:point

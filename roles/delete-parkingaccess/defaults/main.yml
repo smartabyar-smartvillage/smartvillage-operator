@@ -1,0 +1,3 @@
+---
+ENTITY_TYPE: ParkingAccess
+SUBSCRIPTION_NAME: "urn:subscription:ParkingAccess-{{ values.device.id }}"

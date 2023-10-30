@@ -16,4 +16,5 @@ resources:
 - bases/smartvillage.computate.org_edgerabbitmqs.yaml
 - bases/smartvillage.computate.org_edgesolrs.yaml
 - bases/smartvillage.computate.org_edgezookeepers.yaml
+- bases/smartvillage.computate.org_parkingaccesses.yaml
 #+kubebuilder:scaffold:crdkustomizeresource

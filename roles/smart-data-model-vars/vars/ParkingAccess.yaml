@@ -1,10 +1,10 @@
 ---
-MODEL_NAME: CrowdFlowObserved
-SUBMODULE_SHORT_NAME: Transportation
+MODEL_NAME: ParkingAccess
+SUBMODULE_SHORT_NAME: Parking
 DOMAIN_NAME: SmartCities
 name: smartvillage
 description: |
-  ApiTag.enUS: CrowdFlowObserved
+  ApiTag.enUS: ParkingAccess
 schema:
   managementState:
     type: string
@@ -45,7 +45,7 @@ schema:
     properties:
       service:
         type: string
-        default: crowdflowobserveds
+        default: parkingaccesss
       service_path:
         type: string
         default: /Sweden/Veberod/CityCenter
@@ -60,7 +60,7 @@ schema:
         default: /iot/json
       apikey:
         type: string
-        default: CrowdFlowObserved
+        default: ParkingAccess
   message_broker:
     type: object
     properties:
@@ -110,7 +110,7 @@ schema:
         default: https://smartvillage-web-smartvillage.apps-crc.testing
       smart_model_api:
         type: string
-        default: /api/crowd-flow-observed
+        default: /api/parking-access
   alternate_model:
     type: object
     properties:
@@ -119,30 +119,19 @@ schema:
         default: true
       id:
         type: string
-        default: crowdflowobserved
+        default: parkingaccess
       enabled:
         type: string
-        default: CrowdFlowObserved
+        default: ParkingAccess
 smart_data_model:
   attributes:
-    color:
-      name: color
-      type: string
-    entityId:
-      name: entityId
-      type: string
+    address:
+      name: address
+      type: object
       description: >+
-        A unique ID for this Smart Data Model
-    trafficSimulationId:
-      name: trafficSimulationId
-      type: string
-      description: >+
-        The Traffic Simulation ID
-    walkingAreaId:
-      name: walkingAreaId
-      type: string
-      description: >+
-        The walking area ID of pedestrians in SUMO
+        The mailing address
+      x-ngsi:
+        model: https://schema.org/address
     alternateName:
       name: alternateName
       type: string
@@ -153,30 +142,13 @@ smart_data_model:
       type: geo:linestring
       description: >+
         The geographic area where a service or offered item is provided
-    averageCrowdSpeed:
-      name: averageCrowdSpeed
-      type: number
+    category:
+      name: category
+      type: object
       description: >+
-        Average speed of the crowd transiting during the observation period
-      x-ngsi:
-        model: https://schema.org/Number
-    averageHeadwayTime:
-      name: averageHeadwayTime
-      type: number
-      description: >+
-        Average headway time. Headway time is the time elapsed between two
-        consecutive persons
-      x-ngsi:
-        model: https://schema.org/Number
-    congested:
-      name: congested
-      type: boolean
-      description: >+
-        Flags whether there was a crowd congestion during the observation
-        period in the referred walkway. The absence of this attribute means no
-        crowd congestion
-      x-ngsi:
-        model: https://schema.org/Boolean
+        Category of the access point (entrance, exit, etc.). Allowed values:
+        Those specified by the DATEX II _AccessCategoryEnum_ or other values
+        meaningful to the application.
     dataProvider:
       name: dataProvider
       type: string
@@ -195,36 +167,24 @@ smart_data_model:
       description: >+
         Timestamp of the last modification of the entity. This will usually be
         allocated by the storage platform.
-    dateObserved:
-      name: dateObserved
-      type: string
-      description: >+
-        The date and time of this observation in ISO8601 UTC format. It can be
-        represented by an specific time instant or by an ISO8601 interval. As
-        a workaround for the lack of support of Orion Context Broker for
-        datetime intervals, it can be used two separate attributes:
-        `dateObservedFrom`, `dateObservedTo`
-    dateObservedFrom:
-      name: dateObservedFrom
-      type: string
-      description: >+
-        Observation period start date and time. See `dateObserved`.
-    dateObservedTo:
-      name: dateObservedTo
-      type: string
-      description: >+
-        Observation period end date and time. See `dateObserved`.
     description:
       name: description
       type: string
       description: >+
         A description of this item
-    direction:
-      name: direction
-      type: string
+    features:
+      name: features
+      type: object
       description: >+
-        Usual direction of travel in the walkway referred by this observation
-        with respect to the city center. Enum:'inbound, outbound'
+        Those specified by the DATEX II _essEquipmentEnum_ and by
+        _AccessibilityEnum_ or other values meaningful to the application.
+    height:
+      name: height
+      type: number
+      description: >+
+        Height of the access point
+      x-ngsi:
+        model: https://schema.org/Number
     location:
       name: location
       type: geo:point
@@ -236,37 +196,29 @@ smart_data_model:
       type: string
       description: >+
         The name of this item.
-    occupancy:
-      name: occupancy
-      type: number
-      description: >+
-        Fraction of the observation time where a person has been occupying the
-        observed walkway
-      x-ngsi:
-        model: https://schema.org/Number
     owner:
       name: owner
       type: object
       description: >+
         A List containing a JSON encoded sequence of characters referencing
         the unique Ids of the owner(s)
-    peopleCount:
-      name: peopleCount
-      type: number
-      description: >+
-        Total number of people detected during this observation.
-      x-ngsi:
-        model: https://schema.org/Number
-    refRoadSegment:
-      name: refRoadSegment
+    refOffStreetParking:
+      name: refOffStreetParking
       type: object
       description: >+
-        Concerned road segment on which the observation has been made
+        The offstreet parking site this access point gives access to.
     seeAlso:
       name: seeAlso
       type: object
       description: >+
         list of uri pointing to additional resources about the item
+    slope:
+      name: slope
+      type: number
+      description: >+
+        Slope of the access point (in relative terms)
+      x-ngsi:
+        model: https://schema.org/Number
     source:
       name: source
       type: string
@@ -274,3 +226,10 @@ smart_data_model:
         A sequence of characters giving the original source of the entity data
         as a URL. Recommended to be the fully qualified domain name of the
         source provider, or the URL to the source object.
+    width:
+      name: width
+      type: number
+      description: >+
+        Width of the access point
+      x-ngsi:
+        model: https://schema.org/Number

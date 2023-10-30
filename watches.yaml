@@ -118,4 +118,8 @@
   group: smartvillage.computate.org
   kind: EdgeZookeeper
   role: edgezookeeper
+- version: v1
+  group: smartvillage.computate.org
+  kind: ParkingAccess
+  role: parkingaccess
 #+kubebuilder:scaffold:watch
