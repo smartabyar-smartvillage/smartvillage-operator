@@ -1,0 +1,191 @@
+---
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: vscode-smartvillage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      statefulset: vscode-smartvillage
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: vscode-smartvillage
+        statefulset: vscode-smartvillage
+    spec:
+      restartPolicy: Always
+      serviceAccountName: vscode-smartvillage
+      schedulerName: default-scheduler
+      enableServiceLinks: false
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: nvidia.com/gpu.present
+                    operator: NotIn
+                    values:
+                      - 'true'
+      terminationGracePeriodSeconds: 30
+      securityContext: {}
+      containers:
+        - name: vscode-smartvillage
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: NOTEBOOK_ARGS
+              value: |-
+                --ServerApp.port=8888
+                                  --ServerApp.token=''
+                                  --ServerApp.password=''
+                                  --ServerApp.base_url=/notebook/christophertate-dev/vscode-smartvillage
+                                  --ServerApp.quit_button=False
+                                  --ServerApp.tornado_settings={"hub_prefix":"/projects/christophertate-dev"}
+            - name: JUPYTER_IMAGE
+              value: >-
+                quay.io/opendatahub-contrib/workbench-images:vscode-datascience-c9s-py311_2023c_latest
+            - name: NB_PREFIX
+              value: >-
+                /notebook/christophertate-dev/vscode-smartvillage
+          resources:
+            limits:
+              cpu: '2'
+              memory: 4Gi
+            requests:
+              cpu: '1'
+              memory: 4Gi
+          readinessProbe:
+            httpGet:
+              path: >-
+                /notebook/christophertate-dev/vscode-smartvillage/api
+              port: notebook-port
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          terminationMessagePath: /dev/termination-log
+          livenessProbe:
+            httpGet:
+              path: >-
+                /notebook/christophertate-dev/vscode-smartvillage/api
+              port: notebook-port
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          ports:
+            - name: notebook-port
+              containerPort: 8888
+              protocol: TCP
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: vscode-smartvillage
+              mountPath: /opt/app-root/src
+            - name: shm
+              mountPath: /dev/shm
+          terminationMessagePolicy: File
+          image: >-
+            quay.io/opendatahub-contrib/workbench-images:vscode-datascience-c9s-py311_2023c_latest
+          workingDir: /opt/app-root/src
+        - name: oauth-proxy
+          resources:
+            limits:
+              cpu: 100m
+              memory: 64Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
+          readinessProbe:
+            httpGet:
+              path: /oauth/healthz
+              port: oauth-proxy
+              scheme: HTTPS
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          terminationMessagePath: /dev/termination-log
+          livenessProbe:
+            httpGet:
+              path: /oauth/healthz
+              port: oauth-proxy
+              scheme: HTTPS
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+          ports:
+            - name: oauth-proxy
+              containerPort: 8443
+              protocol: TCP
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: oauth-config
+              mountPath: /etc/oauth/config
+            - name: tls-certificates
+              mountPath: /etc/tls/private
+          terminationMessagePolicy: File
+          image: >-
+            registry.redhat.io/openshift4/ose-oauth-proxy:latest
+          args:
+            - '--provider=openshift'
+            - '--https-address=:8443'
+            - '--http-address='
+            - '--openshift-service-account=vscode-smartvillage'
+            - '--cookie-secret-file=/etc/oauth/config/cookie_secret'
+            - '--cookie-expire=24h0m0s'
+#            - '--tls-cert=/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt'
+            - '--tls-cert=/etc/tls/private/tls.crt'
+            - '--tls-key=/etc/tls/private/tls.key'
+#            - '--tls-client-ca=/etc/tls/private/ca.crt'
+#            - '--upstream-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt'
+            - '--upstream=http://localhost:8888'
+#            - '--upstream-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt'
+            - '--email-domain=*'
+            - '--skip-provider-button'
+#            - '--ssl-insecure-skip-verify'
+            - >-
+              --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"vscode-smartvillage","namespace":"$(NAMESPACE)"}
+            - >-
+              --logout-url=https://vscode.apps.sandbox-m2.ll9k.p1.openshiftapps.com/projects/christophertate-dev?notebookLogout=vscode-smartvillage
+      volumes:
+        - name: vscode-smartvillage
+          persistentVolumeClaim:
+            claimName: vscode-smartvillage
+        - name: shm
+          emptyDir:
+            medium: Memory
+        - name: oauth-config
+          secret:
+            secretName: vscode-smartvillage-oauth-config
+            defaultMode: 420
+        - name: tls-certificates
+          secret:
+            secretName: vscode-smartvillage-tls
+            defaultMode: 420
+      dnsPolicy: ClusterFirst
+  serviceName: ''
+  podManagementPolicy: OrderedReady
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      partition: 0
+  revisionHistoryLimit: 10
+  

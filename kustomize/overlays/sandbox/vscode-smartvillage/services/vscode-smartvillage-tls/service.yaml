@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vscode-smartvillage-tls
+  annotations:
+    service.beta.openshift.io/serving-cert-secret-name: vscode-smartvillage-tls
+spec:
+  ports:
+    - name: oauth-proxy
+      protocol: TCP
+      port: 443
+      targetPort: oauth-proxy
+  selector:
+    statefulset: vscode-smartvillage
+  sessionAffinity: None
+  type: ClusterIP

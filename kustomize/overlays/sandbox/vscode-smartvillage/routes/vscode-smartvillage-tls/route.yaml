@@ -1,0 +1,16 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: vscode
+  annotations:
+    kubernetes.io/tls-acme: "true"
+  labels:
+    notebook-name: vscode-smartvillage
+spec:
+  to:
+    kind: Service
+    name: vscode-smartvillage-tls
+    weight: 100
+  port:
+    targetPort: oauth-proxy
+  wildcardPolicy: None
