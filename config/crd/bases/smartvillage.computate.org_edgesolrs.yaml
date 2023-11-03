@@ -73,7 +73,7 @@ spec:
                       type: object
                     type: array
                   name:
-                    default: default
+                    default: solr
                     type: string
                   port:
                     default: 80
@@ -125,6 +125,12 @@ spec:
               zookeeper:
                 type: object
                 properties:
+                  host:
+                    default: zookeeper.zookeeper.svc
+                    type: string
+                  port:
+                    default: 2181
+                    type: number
                   replicas:
                     default: 1
                     type: number

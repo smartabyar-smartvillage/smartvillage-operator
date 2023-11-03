@@ -6,5 +6,5 @@ spec:
   type: ClusterIP
   sessionAffinity: None
   selector:
-    app: solr
-    statefulset: solr
+    app: {{ values.solr.name }}
+    statefulset: {{ values.solr.name }}

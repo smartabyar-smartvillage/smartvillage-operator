@@ -7,5 +7,5 @@ spec:
       nodePort: {{ solr_nodeport }}
   type: NodePort
   selector:
-    solr-cloud: default
-    technology: solr-cloud
+    app: {{ values.solr.name }}
+    statefulset: {{ values.solr.name }}

@@ -1,0 +1,8 @@
+apiVersion: smartvillage.computate.org/v1
+kind: SmartaByarSmartVillage
+metadata:
+  name: default
+spec:
+  zookeeper:
+    host: zookeeper
+    replicas: 1

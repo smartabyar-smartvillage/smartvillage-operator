@@ -17,7 +17,7 @@ schema:
     properties:
       name:
         type: string
-        default: default
+        default: solr
       version:
         type: string
         default: 9.3.0
@@ -106,6 +106,12 @@ schema:
       storage:
         type: string
         default: '5Gi'
+      host:
+        type: string
+        default: zookeeper.zookeeper.svc
+      port:
+        type: number
+        default: 2181
       resources:
         type: object
         properties:

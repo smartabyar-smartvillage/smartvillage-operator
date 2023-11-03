@@ -16,7 +16,7 @@ spec:
   enable_dev_nodeports: False
   solr:
     name: |-
-      default
+      solr
     version: |-
       9.3.0
     port: 80
@@ -41,6 +41,9 @@ spec:
     replicas: 1
     storage: |-
       5Gi
+    host: |-
+      zookeeper.zookeeper.svc
+    port: 2181
     resources:
       limits:
         memory: |-

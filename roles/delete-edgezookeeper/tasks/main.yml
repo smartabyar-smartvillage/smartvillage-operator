@@ -1,13 +1,14 @@
 ---
-# tasks to delete EdgeZookeeper
+# tasks to delete EdgeSolr
 
-- name: "Remove zookeeper-nodeport NodePort service on OpenShift"
+- name: "{{ 'Remove' if values.enable_dev_nodeports else 'Skip' }} zookeeper-nodeport NodePort service on OpenShift"
   k8s:
     state: absent
     api_version: v1
     kind: Service
     name: "zookeeper-nodeport"
     namespace: "{{ ansible_operator_meta.namespace }}"
+  when: values.enable_dev_nodeports
 
 - name: "Remove Zookeeper config map on OpenShift"
   k8s:
@@ -16,7 +17,7 @@
     api_version: v1
     name: zookeeper
     namespace: "{{ ansible_operator_meta.namespace }}"
-- name: "Remove Zookeeper deployment on OpenShift"
+- name: "Remove Zookeeper StatefulSet on OpenShift"
   k8s:
     state: absent
     kind: StatefulSet
@@ -27,6 +28,13 @@
   k8s:
     state: absent
     kind: Service
+    api_version: v1
+    name: zookeeper
+    namespace: "{{ ansible_operator_meta.namespace }}"
+- name: "Remove Zookeeper service account on OpenShift"
+  k8s:
+    state: absent
+    kind: ServiceAccount
     api_version: v1
     name: zookeeper
     namespace: "{{ ansible_operator_meta.namespace }}"

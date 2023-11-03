@@ -67,6 +67,24 @@ ansible-playbook apply-edgerabbitmq.yaml \
   -e crd_path=kustomize/overlays/sandbox/edgerabbitmqs/rabbitmq/edgerabbitmq.yaml
 ```
 
+## Install zookeeper in the OpenShift Developer Sandbox
+
+```bash
+ansible-playbook apply-edgezookeeper.yaml \
+  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=kustomize/overlays/sandbox/edgezookeepers/default/edgezookeeper.yaml
+```
+
+## Install solr in the OpenShift Developer Sandbox
+
+```bash
+oc apply -k kustomize/overlays/sandbox/edgesolrs/default/configmaps/
+
+ansible-playbook apply-edgesolr.yaml \
+  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=kustomize/overlays/sandbox/edgesolrs/default/edgesolrs/default/edgesolr.yaml
+```
+
 ## Install the IoT Agent JSON in the OpenShift Developer Sandbox
 
 ```bash

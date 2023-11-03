@@ -20,7 +20,7 @@
     state: present
     kind: StatefulSet
     api_version: apps/v1
-    name: solr
+    name: "{{ values.solr.name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'statefulset-solr.yaml') }}"
 - name: "Install solr service on OpenShift"
@@ -28,7 +28,7 @@
     state: present
     kind: Service
     api_version: v1
-    name: solr
+    name: "{{ values.solr.name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'service-solr.yaml') }}"
 - name: "Install solr service account on OpenShift"
@@ -44,7 +44,7 @@
     state: "present"
     kind: Route
     api_version: route.openshift.io/v1
-    name: solr
+    name: "{{ values.solr.name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'route-solr.yaml') }}"
   ignore_errors: true

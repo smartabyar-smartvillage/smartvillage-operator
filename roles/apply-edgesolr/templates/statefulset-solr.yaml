@@ -4,8 +4,8 @@ spec:
   test: false
   selector:
     matchLabels:
-      app: solr
-      statefulset: solr
+      app: {{ values.solr.name }}
+      statefulset: {{ values.solr.name }}
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -17,8 +17,8 @@ spec:
       metadata:
         name: data
         labels:
-          app: solr
-          statefulset: solr
+          app: {{ values.solr.name }}
+          statefulset: {{ values.solr.name }}
       spec:
         accessModes:
           - ReadWriteOnce
@@ -30,17 +30,17 @@ spec:
         volumeMode: Filesystem
   template:
     metadata:
-      name: solr
+      name: {{ values.solr.name }}
       labels:
-        app: solr
-        statefulset: solr
+        app: {{ values.solr.name }}
+        statefulset: {{ values.solr.name }}
     spec:
       serviceAccountName: solr
       volumes:
-        - name: volume-solr-conf
-          configMap:
-            name: solr
-            defaultMode: 440
+#        - name: volume-solr-conf
+#          configMap:
+#            name: solr
+#            defaultMode: 440
       containers:
         - name: solr
           imagePullPolicy: Always
@@ -87,7 +87,7 @@ spec:
                   apiVersion: v1
                   fieldPath: metadata.name
             - name: SOLR_HOST
-              value: $(POD_HOSTNAME).default-solrcloud-headless.solr
+              value: $(POD_HOSTNAME).{{ ansible_operator_meta.namespace }}.svc
             - name: SOLR_LOG_LEVEL
               value: INFO
             - name: GC_TUNE
@@ -95,12 +95,12 @@ spec:
               value: '55'
             - name: ZK_HOST
               value: >-
-                default-solrcloud-zookeeper-0.default-solrcloud-zookeeper-headless.solr.svc.cluster.local:2181/
+                {{ values.zookeeper.host }}:{{ values.zookeeper.port }}/
             - name: ZK_CHROOT
               value: /
             - name: ZK_SERVER
               value: >-
-                default-solrcloud-zookeeper-0.default-solrcloud-zookeeper-headless.solr.svc.cluster.local:2181
+                {{ values.zookeeper.host }}:{{ values.zookeeper.port }}
             - name: SOLR_OPTS
               value: '-DhostPort=$(SOLR_NODE_PORT)'
           ports:
@@ -110,8 +110,8 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /data
-            - name: volume-solr-conf
-              mountPath: /conf
+#            - name: volume-solr-conf
+#              mountPath: /conf
           terminationMessagePolicy: File
           terminationMessagePath: /dev/termination-log
       restartPolicy: Always
