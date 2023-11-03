@@ -6,10 +6,14 @@ metadata:
     service.beta.openshift.io/serving-cert-secret-name: vscode-smartvillage-tls
 spec:
   ports:
-    - name: oauth-proxy
+#    - name: oauth-proxy
+#      protocol: TCP
+#      port: 443
+#      targetPort: oauth-proxy
+    - name: notebook-port
       protocol: TCP
-      port: 443
-      targetPort: oauth-proxy
+      port: 8888
+      targetPort: notebook-port
   selector:
     statefulset: vscode-smartvillage
   sessionAffinity: None

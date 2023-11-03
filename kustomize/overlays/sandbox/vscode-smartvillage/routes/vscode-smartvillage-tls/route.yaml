@@ -7,10 +7,12 @@ metadata:
   labels:
     notebook-name: vscode-smartvillage
 spec:
+  host: vscode.apps.sandbox-m2.ll9k.p1.openshiftapps.com
   to:
     kind: Service
     name: vscode-smartvillage-tls
     weight: 100
   port:
-    targetPort: oauth-proxy
+#    targetPort: oauth-proxy
+    targetPort: notebook-port
   wildcardPolicy: None

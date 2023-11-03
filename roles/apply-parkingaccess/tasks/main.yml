@@ -14,7 +14,7 @@
   when: values.iotagent.base_url == ''
 - name: "Configure iotagent_base_url"
   set_fact:
-    iotagent_base_url: "http://{{ iotagent_route | default( values.iotagent.name + '.' + values.iotagent.namespace + '.svc', true ) }}:{{ iotagent_port }}"
+    iotagent_base_url: "http://{{ iotagent_route | default( values.iotagent.name + '.' + values.iotagent.namespace + '.svc', true ) }}{{ (':' + iotagent_port) if iotagent_route == '' else '' }}"
   when: values.iotagent.base_url == ''
 - name: "Configure iotagent_base_url"
   set_fact:
@@ -38,7 +38,7 @@
   when: values.context_broker.base_url == ''
 - name: "Configure context_broker_base_url"
   set_fact:
-    context_broker_base_url: "http://{{ context_broker_route | default( values.context_broker.name + '.' + values.context_broker.namespace + '.svc', true ) }}:{{ context_broker_port }}"
+    context_broker_base_url: "http://{{ context_broker_route | default( values.context_broker.name + '.' + values.context_broker.namespace + '.svc', true ) }}{{ (':' + context_broker_port) if context_broker_route == '' else '' }}"
   when: values.context_broker.base_url == ''
 - name: "Configure context_broker_base_url"
   set_fact:

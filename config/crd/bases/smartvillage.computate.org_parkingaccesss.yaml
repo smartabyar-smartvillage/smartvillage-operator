@@ -163,6 +163,9 @@ spec:
                   host:
                     default: default-mqtt-0-svc.amqbroker.svc
                     type: string
+                  namespace:
+                    default: amqbroker
+                    type: string
                   port:
                     default: 1883
                     type: number

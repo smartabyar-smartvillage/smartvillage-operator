@@ -154,14 +154,17 @@ spec:
                   host:
                     default: default-mqtt-0-svc.amqbroker.svc
                     type: string
+                  namespace:
+                    default: amqbroker
+                    type: string
                   port:
                     default: 1883
                     type: number
                   secret:
                     properties:
-                      key:
-                        type: string
                       name:
+                        type: string
+                      property:
                         type: string
                     type: object
                   transport:
@@ -179,6 +182,7 @@ spec:
                   id:
                     type: string
                   subscription_url:
+                    default: http://orionld-smartvillage-sync:8080
                     type: string
 
               smartabyar_smartvillage:
