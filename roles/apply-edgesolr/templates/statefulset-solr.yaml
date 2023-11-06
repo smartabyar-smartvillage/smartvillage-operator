@@ -37,10 +37,14 @@ spec:
     spec:
       serviceAccountName: solr
       volumes:
-#        - name: volume-solr-conf
-#          configMap:
-#            name: solr
-#            defaultMode: 440
+{% if values.solr.configsets %}
+{% for configset in values.solr.configsets %}
+        - name: "{{ configset.configmap }}"
+          configMap:
+            defaultMode: 420
+            name: "{{ configset.configmap }}"
+{% endfor %}
+{% endif %}
       containers:
         - name: solr
           imagePullPolicy: Always
@@ -87,7 +91,7 @@ spec:
                   apiVersion: v1
                   fieldPath: metadata.name
             - name: SOLR_HOST
-              value: $(POD_HOSTNAME).{{ ansible_operator_meta.namespace }}.svc
+              value: {{ values.solr.name }}.{{ ansible_operator_meta.namespace }}.svc
             - name: SOLR_LOG_LEVEL
               value: INFO
             - name: GC_TUNE
@@ -109,9 +113,13 @@ spec:
               protocol: TCP
           volumeMounts:
             - name: data
-              mountPath: /data
-#            - name: volume-solr-conf
-#              mountPath: /conf
+              mountPath: /var/solr/data
+{% if values.solr.configsets %}
+{% for configset in values.solr.configsets %}
+            - name: "{{ configset.configmap }}"
+              mountPath: "/opt/solr/server/solr/configsets/{{ configset.name }}/conf"
+{% endfor %}
+{% endif %}
           terminationMessagePolicy: File
           terminationMessagePath: /dev/termination-log
       restartPolicy: Always
