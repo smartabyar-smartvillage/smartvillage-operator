@@ -64,9 +64,6 @@ schema:
   message_broker:
     type: object
     properties:
-      namespace:
-        type: string
-        default: amqbroker
       transport:
         type: string
         default: MQTT

@@ -1,0 +1,147 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sso73
+    application: sso
+    rhsso: 7.3.2.GA
+    template: sso73-postgresql-persistent
+  name: sso
+  namespace: smart-village-faeeb6c
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: sso73
+      application: sso
+      deployment: sso
+  strategy:
+    activeDeadlineSeconds: 21600
+    recreateParams:
+      timeoutSeconds: 600
+    resources: {}
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      creationTimestamp: null
+      labels:
+        app: sso73
+        application: sso
+        deployment: sso
+      name: sso
+    spec:
+      containers:
+        - env:
+            - name: SSO_HOSTNAME
+            - name: DB_SERVICE_PREFIX_MAPPING
+              value: SSO_POSTGRESQL=DB
+            - name: TX_DATABASE_PREFIX_MAPPING
+              value: SSO_POSTGRESQL=DB
+#            - name: DB_JDBC_URL
+#              value: jdbc:postgresql://postgres-primary.smart-village-faeeb6c.svc/sso
+#            - name: DB_JNDI
+#              value: 'java:jboss/datasources/KeycloakDS'
+#            - name: SSO_POSTGRESQL_SERVICE_HOST
+#              valueFrom:
+#                secretKeyRef:
+#                  key: host
+#                  name: postgres-pguser-sso
+#            - name: SSO_POSTGRESQL_SERVICE_PORT
+#              valueFrom:
+#                secretKeyRef:
+#                  key: port
+#                  name: postgres-pguser-sso
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: user
+                  name: postgres-pguser-sso
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: postgres-pguser-sso
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  key: dbname
+                  name: postgres-pguser-sso
+            - name: DB_MIN_POOL_SIZE
+            - name: DB_MAX_POOL_SIZE
+            - name: DB_TX_ISOLATION
+            - name: JGROUPS_PING_PROTOCOL
+              value: openshift.DNS_PING
+            - name: OPENSHIFT_DNS_PING_SERVICE_NAME
+              value: sso-ping
+            - name: OPENSHIFT_DNS_PING_SERVICE_PORT
+              value: '8888'
+            - name: SSO_ADMIN_USERNAME
+              value: keycloak-admin
+            - name: SSO_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: sso-admin
+            - name: SSO_REALM
+              value: SMARTVILLAGE
+            - name: SSO_SERVICE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: user
+                  name: sso-service
+            - name: SSO_SERVICE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: sso-service
+          image: registry.redhat.io/rh-sso-7/sso75-openshift-rhel8:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - '-c'
+                - /opt/eap/bin/livenessProbe.sh
+            failureThreshold: 3
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: sso
+          ports:
+            - containerPort: 8778
+              name: jolokia
+              protocol: TCP
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+            - containerPort: 8443
+              name: https
+              protocol: TCP
+            - containerPort: 8888
+              name: ping
+              protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - '-c'
+                - /opt/eap/bin/readinessProbe.sh
+            failureThreshold: 3
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              memory: 1Gi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 75
+  test: false

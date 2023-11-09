@@ -1,0 +1,51 @@
+apiVersion: smartvillage.computate.org/v1
+kind: EdgeKafka
+metadata:
+  name: default
+  namespace: smart-village-faeeb6c
+spec:
+  kafka:
+    enable_dev_nodeports: true
+    name: default
+    resources:
+      limits:
+        memory: 500Mi
+        cpu: 500m
+      requests:
+        memory: 200Mi
+        cpu: 200m
+    users:
+      - name: smartvillage-kafka
+        cluster: default
+        acls:
+          - resource:
+              name: smartvillage-
+              patternType: prefix
+              type: topic
+            operations:
+              - All
+            type: allow
+          - resource:
+              name: smartvillage-
+              patternType: prefix
+              type: group
+            operations:
+              - All
+            type: allow
+      - name: scorpiobroker-kafka
+        cluster: default
+        acls:
+          - resource:
+              name: scorpiobroker-
+              patternType: prefix
+              type: topic
+            operations:
+              - All
+            type: allow
+          - resource:
+              name: aio-runner
+              patternType: prefix
+              type: group
+            operations:
+              - All
+            type: allow

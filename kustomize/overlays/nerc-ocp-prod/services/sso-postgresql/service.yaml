@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    postgres-operator.crunchydata.com/cluster: postgres
+    postgres-operator.crunchydata.com/role: primary
+  name: sso-postgresql
+spec:
+  ipFamilies:
+    - IPv4
+  ports:
+    - name: postgres
+      protocol: TCP
+      port: 5432
+      targetPort: postgres
+  internalTrafficPolicy: Cluster
+  selector:
+    postgres-operator.crunchydata.com/cluster: postgres
+    postgres-operator.crunchydata.com/instance-set: smartvillage
+    postgres-operator.crunchydata.com/role: master
+  type: ClusterIP
+  sessionAffinity: None

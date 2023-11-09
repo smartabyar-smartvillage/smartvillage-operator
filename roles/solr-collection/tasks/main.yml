@@ -2,7 +2,7 @@
 
 - name: "Create Solr collection {{ item.name }}"
   kubernetes.core.k8s_exec:
-    pod: "{{ values.solr.name }}-solrcloud-0"
+    pod: "{{ values.solr.name }}-0"
     command: >-
       /opt/solr/bin/solr create_collection -c {{ item.name }} -n {{ item.configset }}
     namespace: "{{ ansible_operator_meta.namespace }}"

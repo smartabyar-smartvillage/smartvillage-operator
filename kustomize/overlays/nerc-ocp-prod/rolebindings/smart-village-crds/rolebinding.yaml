@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: smart-village-crds
+  namespace: smart-village-faeeb6c
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: smart-village-crds
+subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: ctate@redhat.com

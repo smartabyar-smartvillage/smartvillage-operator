@@ -1,9 +1,9 @@
 ---
-- name: "Upload the {{ item.name }} configset to solr"
+- name: "Upload the {{ item.name }} configset to solr: /opt/solr/bin/solr zk upconfig -n {{ item.name }} -d /opt/solr/server/solr/configsets/{{ item.name }} -z '{{ values.zookeeper.host }}:{{ values.zookeeper.port }}'"
   kubernetes.core.k8s_exec:
-    pod: "{{ values.solr.name }}-solrcloud-0"
+    pod: "{{ values.solr.name }}-0"
     command: >-
-      /opt/solr/bin/solr zk upconfig -n {{ item.name }} -d /opt/solr/server/solr/configsets/{{ item.name }} -z '{{ values.solr.name }}-solrcloud-zookeeper-client.{{ ansible_operator_meta.namespace }}.svc:2181'
+      /opt/solr/bin/solr zk upconfig -n {{ item.name }} -d /opt/solr/server/solr/configsets/{{ item.name }} -z '{{ values.zookeeper.host }}:{{ values.zookeeper.port }}'
     namespace: "{{ ansible_operator_meta.namespace }}"
   register: solr_upconfig
   changed_when: false

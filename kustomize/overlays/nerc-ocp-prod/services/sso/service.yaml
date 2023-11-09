@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: sso73
+    application: sso
+    rhsso: 7.3.2.GA
+    template: sso73-postgresql-persistent
+  name: sso
+spec:
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    deployment: sso
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
+  

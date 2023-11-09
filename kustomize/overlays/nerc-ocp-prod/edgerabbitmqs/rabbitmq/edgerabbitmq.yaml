@@ -1,0 +1,6 @@
+apiVersion: smartvillage.computate.org/v1
+kind: EdgeRabbitMQ
+metadata:
+  name: rabbitmq
+  namespace: smart-village-faeeb6c
+spec: {}

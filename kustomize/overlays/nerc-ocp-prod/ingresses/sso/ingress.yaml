@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sso
+  namespace: smart-village-faeeb6c
+  annotations:
+    cert-manager.io/issuer: letsencrypt-issuer
+    acme.cert-manager.io/http01-ingress-class: openshift-default
+spec:
+  ingressClassName: openshift-default
+  tls:
+  - hosts:
+    - sso.smartabyarsmartvillage.org
+    secretName: sso-cert
+  rules:
+  - host: sso.smartabyarsmartvillage.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: sso
+            port:
+              number: 8080
