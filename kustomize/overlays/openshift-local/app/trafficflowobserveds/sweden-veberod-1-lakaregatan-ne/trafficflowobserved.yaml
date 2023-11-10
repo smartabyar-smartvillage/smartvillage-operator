@@ -44,9 +44,9 @@ spec:
     customSigma: 0.5
     customAcceleration: 2.6
     customDeceleration: 4.5
-    customMinGreenTime: 33.00
-    customMaxGreenTime: 39.00
-    customAverageVehiclesPerMinute: 12.00
+    customMinGreenTime: 10.0
+    customMaxGreenTime: 20.0
+    customAverageVehiclesPerMinute: 10.0
     customDemandScalingFactor: 1.00
-    customQueueLengthThreshold: 8.00
+    customQueueLengthThreshold: 8.0
     
