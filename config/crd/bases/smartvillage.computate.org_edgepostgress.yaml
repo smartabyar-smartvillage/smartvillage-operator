@@ -110,6 +110,9 @@ spec:
                           type: object
                         type: array
                     type: object
+                  crunchy:
+                    default: true
+                    type: boolean
                   enable_dev_nodeports:
                     default: false
                     type: boolean
@@ -164,6 +167,9 @@ spec:
                           type: string
                       type: object
                     type: array
+                  version:
+                    default: '15.1'
+                    type: string
 
           status:
             description: Status defines the observed state of EdgePostgres

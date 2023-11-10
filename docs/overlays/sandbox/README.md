@@ -93,6 +93,15 @@ ansible-playbook apply-iotagentjson.yaml \
   -e crd_path=kustomize/overlays/sandbox/iotagentjsons/iotagent-json/iotagentjson.yaml
 ```
 
+## Install postgres in the OpenShift Developer Sandbox
+
+```bash
+
+ansible-playbook apply-edgepostgres.yaml \
+  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=kustomize/overlays/sandbox/edgepostgress/postgres/edgepostgres.yaml
+```
+
 ## Install the Traffic Flow Observed JSON in the OpenShift Developer Sandbox
 
 ```bash

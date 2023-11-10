@@ -30,6 +30,15 @@ schema:
       replicas:
         type: number
         default: 1
+      storage:
+        type: object
+        properties:
+          enabled:
+            type: boolean
+            default: true
+          size:
+            type: String
+            default: "1Gi"
       resources:
         type: object
         properties:

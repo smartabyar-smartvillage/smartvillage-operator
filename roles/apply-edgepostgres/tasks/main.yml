@@ -19,6 +19,53 @@
     name: postgres
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'postgrescluster.yaml') }}"
+  when: values.postgres.crunchy
+
+- name: "Install postgres service account on OpenShift"
+  k8s:
+    state: present
+    kind: ServiceAccount
+    api_version: v1
+    name: postgres
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'serviceaccount-postgres.yaml') }}"
+  when: not values.postgres.crunchy
+- name: "Install postgres secret on OpenShift"
+  k8s:
+    state: present
+    kind: Secret
+    api_version: v1
+    name: "postgres-user-{{ user.name }}"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'postgres-user-secret.yaml') }}"
+  when: not values.postgres.crunchy
+  loop: "{{ values.postgres.users | default([]) }}"
+  loop_control:
+    loop_var: user
+- name: Install {{ ansible_operator_meta.name }} postgres StatefulSet on OpenShift
+  k8s:
+    state: "present"
+    api_version: apps/v1
+    kind: StatefulSet
+    name: "postgres-{{ instance.name }}"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'statefulset-postgres.yaml') }}"
+  when: not values.postgres.crunchy
+  loop: "{{ values.postgres.instances }}"
+  loop_control:
+    loop_var: instance
+- name: Install {{ ansible_operator_meta.name }} postgres Service on OpenShift
+  k8s:
+    state: "present"
+    api_version: v1
+    kind: Service
+    name: "postgres-{{ instance.name }}"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'service-postgres.yaml') }}"
+  when: not values.postgres.crunchy
+  loop: "{{ values.postgres.instances }}"
+  loop_control:
+    loop_var: instance
 
 - name: "Verify PostgreSQL"
   wait_for:
@@ -29,7 +76,7 @@
     timeout: 5
   register: verify_postgresql
   ignore_errors: yes
-  when: verify_connections
+  when: verify_connections and values.postgres.crunchy
 - name: "Verify PostgreSQL is running"
   fail:
     msg: |-

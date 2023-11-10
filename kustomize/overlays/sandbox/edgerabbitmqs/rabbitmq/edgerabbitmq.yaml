@@ -3,4 +3,7 @@ kind: EdgeRabbitMQ
 metadata:
   name: rabbitmq
   namespace: smartvillage
-spec: {}
+spec:
+  rabbitmq:
+    storage:
+     enabled: false

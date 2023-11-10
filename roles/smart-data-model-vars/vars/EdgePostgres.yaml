@@ -17,6 +17,12 @@ schema:
       backup_storage:
         type: string
         default: '10Gi'
+      crunchy:
+        type: boolean
+        default: true
+      version:
+        type: string
+        default: '15.1'
       config:
         type: object
         properties:

@@ -1,0 +1,106 @@
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  test: false
+  selector:
+    matchLabels:
+      app: {{ instance.name }}
+      statefulset: {{ instance.name }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  volumeClaimTemplates:
+    - kind: PersistentVolumeClaim
+      apiVersion: v1
+      metadata:
+        name: postgres-primary-data
+        labels:
+          app: {{ instance.name }}
+          statefulset: {{ instance.name }}
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "{{ instance.storage }}"
+          limits:
+            storage: "{{ instance.storage }}"
+        volumeMode: Filesystem
+  template:
+    metadata:
+      name: {{ instance.name }}
+      labels:
+        app: {{ instance.name }}
+        statefulset: {{ instance.name }}
+    spec:
+      serviceAccountName: postgres
+      volumes:
+{% if values.postgres.config.files is defined %}
+{% for config in values.postgres.config.files %}
+{% if config.configMap is defined %}
+        - name: "{{ config.configMap.name }}"
+          configMap:
+            defaultMode: 420
+            name: "{{ config.configMap.name }}"
+{% else %}
+{% if config.secret is defined %}
+        - name: "{{ config.configMap.name }}"
+          secret:
+            defaultMode: 420
+            secretName: "{{ config.configMap.name }}"
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endif %}
+      containers:
+        - name: postgres
+          imagePullPolicy: Always
+          image: 'docker.io/postgres:{{ values.postgres.version }}'
+          resources:
+            limits:
+              memory: '{{ instance.resources.limits.memory }}'
+              cpu: '{{ instance.resources.limits.cpu }}'
+            requests:
+              memory: '{{ instance.resources.requests.memory }}'
+              cpu: '{{ instance.resources.requests.cpu }}'
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: "postgres-user-{{ instance.name }}"
+                  key: database-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: "postgres-user-{{ instance.name }}"
+                  key: database-password
+            - name: POSTGRES_DB
+              value: "{{ instance.name }}"
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          volumeMounts:
+            - name: postgres-primary-data
+              mountPath: /var/lib/postgresql
+{% if values.postgres.config.files is defined %}
+{% for config in values.postgres.config.files %}
+{% if config.configMap is defined %}
+            - name: "{{ config.configMap.name }}"
+              mountPath: "/opt/postgres/server/postgres/configsets/{{ config.configMap.name }}/conf"
+{% else %}
+{% if config.secret is defined %}
+            - name: "{{ config.secret.name }}"
+              mountPath: "/opt/postgres/server/postgres/configsets/{{ config.secret.name }}/conf"
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endif %}
+          terminationMessagePolicy: File
+          terminationMessagePath: /dev/termination-log
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler

@@ -84,8 +84,17 @@ spec:
                             type: string
                         type: object
                     type: object
+                  storage:
+                    properties:
+                      enabled:
+                        default: true
+                        type: boolean
+                      size:
+                        default: 1Gi
+                        type: String
+                    type: object
                   username:
-                    default: rabbitmq
+                    default: user
                     description: The username of the RabbitMQ Broker
                     type: string
 

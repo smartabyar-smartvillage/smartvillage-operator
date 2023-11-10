@@ -17,3 +17,37 @@
     name: "{{ ansible_operator_meta.name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
   ignore_errors: true
+  when: values.postgres.crunchy
+
+- name: "Remove postgres service account on OpenShift"
+  k8s:
+    state: absent
+    kind: ServiceAccount
+    api_version: v1
+    name: postgres
+    namespace: "{{ ansible_operator_meta.namespace }}"
+  when: not values.postgres.crunchy
+- name: Remove {{ ansible_operator_meta.name }} postgres StatefulSet on OpenShift
+  k8s:
+    state: "absent"
+    api_version: apps/v1
+    kind: StatefulSet
+    name: postgres
+    namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
+  when: not values.postgres.crunchy
+  loop: "{{ values.postgres.instances }}"
+  loop_control:
+    loop_var: instance
+- name: Remove {{ ansible_operator_meta.name }} postgres Service on OpenShift
+  k8s:
+    state: "absent"
+    api_version: v1
+    kind: Service
+    name: postgres
+    namespace: "{{ ansible_operator_meta.namespace }}"
+  ignore_errors: true
+  when: not values.postgres.crunchy
+  loop: "{{ values.postgres.instances }}"
+  loop_control:
+    loop_var: instance

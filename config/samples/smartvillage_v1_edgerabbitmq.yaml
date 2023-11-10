@@ -18,10 +18,14 @@ spec:
     name: |-
       default
     username: |-
-      rabbitmq
+      user
     auth_secret: |-
       rabbitmq-password
     replicas: 1
+    storage:
+      enabled: True
+      size: |-
+        1Gi
     resources:
       limits:
         memory: |-

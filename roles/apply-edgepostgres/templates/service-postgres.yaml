@@ -1,0 +1,10 @@
+spec:
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  type: ClusterIP
+  sessionAffinity: None
+  selector:
+    app: {{ instance.name }}
+    statefulset: {{ instance.name }}

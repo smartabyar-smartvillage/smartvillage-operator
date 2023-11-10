@@ -2,12 +2,12 @@ apiVersion: smartvillage.computate.org/v1
 kind: EdgePostgres
 metadata:
   name: postgres
-  namespace: smartvillage
 spec:
   postgres:
     enable_dev_nodeports: false
+    crunchy: false
     instances:
-      - name: scorpiobroker
+      - name: smartvillage
         replicas: 1
         storage: 1Gi
         resources:
@@ -18,10 +18,10 @@ spec:
             memory: 200Mi
             cpu: 200m
     users:
-      - name: scorpiobroker
-        options: "SUPERUSER CREATEDB"
+      - name: smartvillage
+        options: "SUPERUSER"
         databases:
           - scorpiobroker
     pg_hba:
-      - "host all scorpiobroker all md5"
-      - "local all scorpiobroker trust"
+      - "host all smartvillage all md5"
+      - "local all smartvillage trust"

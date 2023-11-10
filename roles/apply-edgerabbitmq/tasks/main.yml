@@ -56,6 +56,8 @@
       - value: "auth.existingPasswordSecret={{ values.rabbitmq.auth_secret }}"
       - value: "auth.existingErlangSecret={{ values.rabbitmq.auth_secret }}"
       - value: "extraPlugins='rabbitmq_auth_backend_ldap rabbitmq_auth_backend_http'"
+      - value: "persistence.enabled={{ values.rabbitmq.storage.enabled | lower }}"
+      - value: "persistence.size={{ values.rabbitmq.storage.size }}"
 #      - value: "auth.securePassword=no"
 #      - value: "extraPlugins=rabbitmq_mqtt"
 #      - value: "featureFlags=all"

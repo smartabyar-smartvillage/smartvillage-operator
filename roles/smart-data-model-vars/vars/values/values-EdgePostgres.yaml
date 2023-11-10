@@ -5,6 +5,8 @@ values:
   postgres:
     enable_dev_nodeports: "{{ crd.postgres.enable_dev_nodeports | default(schema | community.general.json_query('postgres.properties.enable_dev_nodeports.default')) }}"
     backup_storage: "{{ crd.postgres.backup_storage | default(schema | community.general.json_query('postgres.properties.backup_storage.default')) }}"
+    crunchy: "{{ crd.postgres.crunchy | default(schema | community.general.json_query('postgres.properties.crunchy.default')) }}"
+    version: "{{ crd.postgres.version | default(schema | community.general.json_query('postgres.properties.version.default')) }}"
     config:
       files: "{{ crd.postgres.config.files | default([]) }}"
     instances: "{{ crd.postgres.instances | default([]) }}"

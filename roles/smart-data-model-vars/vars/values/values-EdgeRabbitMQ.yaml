@@ -8,6 +8,9 @@ values:
     username: "{{ crd.rabbitmq.username | default(schema | community.general.json_query('rabbitmq.properties.username.default')) }}"
     auth_secret: "{{ crd.rabbitmq.auth_secret | default(schema | community.general.json_query('rabbitmq.properties.auth_secret.default')) }}"
     replicas: "{{ crd.rabbitmq.replicas | default(schema | community.general.json_query('rabbitmq.properties.replicas.default')) }}"
+    storage:
+      enabled: "{{ crd.rabbitmq.storage.enabled | default(schema | community.general.json_query('rabbitmq.properties.storage.properties.enabled.default')) }}"
+      size: "{{ crd.rabbitmq.storage.size | default(schema | community.general.json_query('rabbitmq.properties.storage.properties.size.default')) }}"
     resources:
       limits:
         memory: "{{ crd.rabbitmq.resources.limits.memory | default(schema | community.general.json_query('rabbitmq.properties.resources.properties.limits.properties.memory.default')) }}"

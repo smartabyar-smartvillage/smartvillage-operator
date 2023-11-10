@@ -17,4 +17,7 @@ spec:
     enable_dev_nodeports: False
     backup_storage: |-
       10Gi
+    crunchy: True
+    version: |-
+      15.1
     config:
