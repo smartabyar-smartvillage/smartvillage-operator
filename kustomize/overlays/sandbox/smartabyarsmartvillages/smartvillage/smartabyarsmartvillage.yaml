@@ -1,29 +1,30 @@
 apiVersion: smartvillage.computate.org/v1
 kind: SmartaByarSmartVillage
 metadata:
-  labels:
-    app.kubernetes.io/name: smartabyarsmartvillage
-    app.kubernetes.io/instance: smartabyarsmartvillage-sample
-    app.kubernetes.io/part-of: smartvillage-operator
-    app.kubernetes.io/managed-by: kustomize
-    app.kubernetes.io/created-by: smartvillage-operator
   name: smartvillage
   namespace: smartvillage
 spec:
-  site:
-    create: false
-  zookeeper:
-    create: false
-  sso:
-    create: false
   auth:
-    host_name: sso.computate.org
+    host_name: sso.smartabyarsmartvillage.org
     port: 443
     ssl: True
     realm: SMARTVILLAGE
     client: smartvillage
     token_uri: /auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+  ngsi_ld:
+   sync_replicas: 1
+  kafka:
+    enabled: false
+  zookeeper:
+    host: zookeeper
+  postgres:
+    host: postgres-smartvillage
   solr:
-    create: false
-  email:
+    host: solr
+    port: 8983
+  site:
+    web_replicas: 0
+    sumo_replicas: 0
+    worker_replicas: 1
+  import_data:
     enabled: false

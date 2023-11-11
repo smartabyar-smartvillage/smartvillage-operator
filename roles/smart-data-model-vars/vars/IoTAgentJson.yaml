@@ -111,7 +111,7 @@ schema:
             properties:
               cpu:
                 type: string
-                default: 250m
+                default: '1'
               memory:
                 type: string
                 default: 1Gi
@@ -120,7 +120,7 @@ schema:
             properties:
               cpu:
                 type: string
-                default: 10m
+                default: 200m
               memory:
                 type: string
-                default: 50Mi
+                default: 500Mi

@@ -59,7 +59,7 @@ schema:
           The level of logs to report in the pod logs. 
       replicas:
         type: number
-        default: 2
+        default: 1
         description: |
           The number of Orion-LD pods to run. 
       resources:
@@ -70,7 +70,7 @@ schema:
             properties:
               cpu:
                 type: string
-                default: 250m
+                default: '1'
               memory:
                 type: string
                 default: 1Gi
@@ -79,7 +79,7 @@ schema:
             properties:
               cpu:
                 type: string
-                default: 10m
+                default: 200m
               memory:
                 type: string
-                default: 50Mi
+                default: 500Mi

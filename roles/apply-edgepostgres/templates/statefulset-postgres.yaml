@@ -69,15 +69,18 @@ spec:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: "postgres-user-{{ instance.name }}"
-                  key: database-user
+                  name: "postgres-pguser-{{ instance.name }}"
+                  key: user
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: "postgres-user-{{ instance.name }}"
-                  key: database-password
+                  name: "postgres-pguser-{{ instance.name }}"
+                  key: password
             - name: POSTGRES_DB
-              value: "{{ instance.name }}"
+              valueFrom:
+                secretKeyRef:
+                  name: "postgres-pguser-{{ instance.name }}"
+                  key: dbname
           ports:
             - containerPort: 5432
               protocol: TCP

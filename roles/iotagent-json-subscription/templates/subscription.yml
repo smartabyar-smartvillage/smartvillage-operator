@@ -10,14 +10,29 @@ entities:
 notification:
   endpoint:
     uri: "{{ values.device.subscription_url }}"
-    accept: "application.json"
+    accept: "application/json"
     receiverInfo:
+{% if ':9090' in values.context_broker.base_url %}
       - Link: '<{{ values.ngsi_ld.context }}>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
       - Fiware-Service: "{{ values.ngsi_ld.service }}"
       - Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
       - NGSILD-Tenant: "{{ values.ngsi_ld.service }}"
       - NGSILD-Path: "{{ values.ngsi_ld.service_path }}"
       - SmartVillage-API: "{{ values.smartabyar_smartvillage.smart_model_api }}"
+{% else %}
+      - key: Link
+        value: '<{{ values.ngsi_ld.context }}>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
+      - key: Fiware-Service
+        value: "{{ values.ngsi_ld.service }}"
+      - key: Fiware-ServicePath
+        value: "{{ values.ngsi_ld.service_path }}"
+      - key: NGSILD-Tenant
+        value: "{{ values.ngsi_ld.service }}"
+      - key: NGSILD-Path
+        value: "{{ values.ngsi_ld.service_path }}"
+      - key: SmartVillage-API
+        value: "{{ values.smartabyar_smartvillage.smart_model_api }}"
+{% endif %}
 "@context":
   - https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
   - https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld

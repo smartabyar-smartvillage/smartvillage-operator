@@ -143,6 +143,9 @@ schema:
   zookeeper:
     type: object
     properties:
+      enabled:
+        type: boolean
+        default: true
       create:
         type: boolean
         default: true
@@ -169,33 +172,6 @@ schema:
       session_timeout_millis:
         type: number
         default: 5000
-      storage:
-        type: string
-        default: '1Gi'
-      replicas:
-        type: number
-        default: 2
-      resources:
-        type: object
-        properties:
-          limits:
-            type: object
-            properties:
-              memory:
-                type: string
-                default: '500Mi'
-              cpu:
-                type: string
-                default: '500m'
-          requests:
-            type: object
-            properties:
-              memory:
-                type: string
-                default: '200Mi'
-              cpu:
-                type: string
-                default: '200m'
 
   auth:
     type: object
@@ -271,10 +247,10 @@ schema:
     properties:
       host:
         type: string
-        default: default-solrcloud-common.solr.svc
+        default: solr.solr.svc
       port:
         type: number
-        default: 80
+        default: 8983
       ssl:
         type: boolean
         default: false
@@ -294,19 +270,6 @@ schema:
       collection:
         type: string
         default: "smartvillage"
-  
-  email:
-    type: object
-    properties:
-      enabled: 
-        type: boolean
-        default: false
-      secret_name:
-        type: string
-        default: smartvillage
-        description: |
-          The secret name to store SMTP email secrets. 
-          If empty, "smartvillage" will be used. 
   
   # Enable data import in the site. 
   import_data:
@@ -475,6 +438,9 @@ schema:
   kafka:
     type: object
     properties:
+      enabled:
+        type: boolean
+        default: true
       keystore_secret:
         type: string
         default: smartvillage-kafka

@@ -180,6 +180,9 @@ spec:
                     default: true
                     description: "Determines if a new Zookeeper cluster will be created. \n"
                     type: boolean
+                  enabled:
+                    default: true
+                    type: boolean
                   host:
                     default: zookeeper.zookeeper.svc
                     type: string
@@ -192,36 +195,9 @@ spec:
                   port:
                     default: 2181
                     type: number
-                  replicas:
-                    default: 2
-                    type: number
-                  resources:
-                    properties:
-                      limits:
-                        properties:
-                          cpu:
-                            default: 500m
-                            type: string
-                          memory:
-                            default: 500Mi
-                            type: string
-                        type: object
-                      requests:
-                        properties:
-                          cpu:
-                            default: 200m
-                            type: string
-                          memory:
-                            default: 200Mi
-                            type: string
-                        type: object
-                    type: object
                   session_timeout_millis:
                     default: 5000
                     type: number
-                  storage:
-                    default: 1Gi
-                    type: string
 
               auth:
                 type: object
@@ -302,18 +278,6 @@ spec:
                   ssl:
                     default: false
                     type: boolean
-
-              email:
-                type: object
-                properties:
-                  enabled:
-                    default: false
-                    type: boolean
-                  secret_name:
-                    default: smartvillage
-                    description: "The secret name to store SMTP email secrets. \nIf empty, \"smartvillage\"\
-                      \ will be used. \n"
-                    type: string
 
               import_data:
                 type: object
@@ -480,6 +444,9 @@ spec:
               kafka:
                 type: object
                 properties:
+                  enabled:
+                    default: true
+                    type: boolean
                   group:
                     default: smartvillage-kafka
                     type: string

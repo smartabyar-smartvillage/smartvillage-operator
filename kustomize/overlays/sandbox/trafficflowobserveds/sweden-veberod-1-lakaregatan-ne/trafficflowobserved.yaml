@@ -9,8 +9,7 @@ spec:
       addressCountry: Sweden
       addressLocality: Veberöd
       streetAddress: Läkaregatan
-    area_served: |
-      -355113043#1 -24626686#2 -24626686#1 -34992983#3 -34992983#1
+    areaServed: {"type":"LineString","coordinates":[[13.490729000567772,55.635042880153286],[13.490740537363221,55.63502379074175],[13.490776162245634,55.634985586596365],[13.490830734986353,55.63493799986691],[13.491067592376284,55.634772953726774],[13.491327993372773,55.634602894581384],[13.491782995842591,55.63430474197768],[13.49178625096487,55.63430271507713],[13.49208870997506,55.63410872783783],[13.49222033187515,55.63401967076505],[13.49246460996685,55.63386378966124],[13.4924921587668,55.63384552592146]]}
     averageVehicleLength: 5
     averageGapDistance: 1
     averageVehicleSpeed: 55
@@ -46,5 +45,5 @@ spec:
       key: rabbitmq-password
   smartabyar_smartvillage:
     enabled: true
-    auth_token_url: https://sso.computate.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
-    site_base_url: https://smartvillage-web-smartvillage.apps-crc.testing
+    auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+    site_base_url: http://smartabyar-smartvillage-web:8080

@@ -70,6 +70,7 @@ spec:
     route:
       create: True
   zookeeper:
+    enabled: True
     create: True
     host: |-
       zookeeper.zookeeper.svc
@@ -79,20 +80,6 @@ spec:
     max_sleep_millis: 5000
     connection_timeout_millis: 3000
     session_timeout_millis: 5000
-    storage: |-
-      1Gi
-    replicas: 2
-    resources:
-      limits:
-        memory: |-
-          500Mi
-        cpu: |-
-          500m
-      requests:
-        memory: |-
-          200Mi
-        cpu: |-
-          200m
   auth:
     port: 443
     ssl: True
@@ -122,10 +109,6 @@ spec:
       host_name: |-
         solr.apps-crc.testing
     collection: |-
-      smartvillage
-  email:
-    enabled: False
-    secret_name: |-
       smartvillage
   import_data:
     enabled: True
@@ -210,6 +193,7 @@ spec:
     auth_local_uri: |-
       /api/auth/local
   kafka:
+    enabled: True
     keystore_secret: |-
       smartvillage-kafka
     truststore_secret: |-

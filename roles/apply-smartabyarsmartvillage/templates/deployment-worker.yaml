@@ -23,7 +23,7 @@ spec:
             - /usr/lib/jvm/java-11-openjdk/bin/java
             - -cp
             - .:*
-            - org.computate.smartvillageview.enus.vertx.MainVerticle
+            - org.computate.smartvillage.enus.vertx.MainVerticle
           ports:
             - containerPort: 8080
               name: http
@@ -76,7 +76,9 @@ spec:
             - name: JAVA_HOME
               value: /usr/lib/jvm/java-11-openjdk
             - name: ENABLE_ZOOKEEPER_CLUSTER
-              value: "true"
+              value: "{{ values.zookeeper.enabled | lower }}"
+            - name: ENABLE_KAFKA
+              value: "{{ values.kafka.enabled | lower }}"
             - name: SITE_PORT
               value: "8080"
             - name: SITE_BASE_URL
@@ -184,44 +186,6 @@ spec:
               value: "{{ 'https://' if values.solr.ssl else 'http://' }}{{ values.solr.host }}:{{ values.solr.port }}/solr/{{ values.solr.collection }}"
             - name: SOLR_COLLECTION
               value: "{{ values.solr.collection }}"
-{% if values.email.enabled %}
-
-            - name: EMAIL_AUTH
-              valueFrom:
-                secretKeyRef:
-                  key: EMAIL_AUTH
-                  name: "{{ values.email.secret_name }}"
-            - name: EMAIL_FROM
-              valueFrom:
-                secretKeyRef:
-                  key: EMAIL_FROM
-                  name: "{{ values.email.secret_name }}"
-            - name: EMAIL_HOST
-              valueFrom:
-                secretKeyRef:
-                  key: EMAIL_HOST
-                  name: "{{ values.email.secret_name }}"
-            - name: EMAIL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: EMAIL_PASSWORD
-                  name: "{{ values.email.secret_name }}"
-            - name: EMAIL_PORT
-              valueFrom:
-                secretKeyRef:
-                  key: EMAIL_PORT
-                  name: "{{ values.email.secret_name }}"
-            - name: EMAIL_SSL
-              valueFrom:
-                secretKeyRef:
-                  key: EMAIL_SSL
-                  name: "{{ values.email.secret_name }}"
-            - name: EMAIL_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  key: EMAIL_USERNAME
-                  name: "{{ values.email.secret_name }}"
-{% endif %}
             - name: ENABLE_IMPORT_DATA
               value: "{{ values.import_data.enabled }}"
             - name: ENABLE_IMPORT_DATA_SitePage
@@ -287,10 +251,10 @@ spec:
               value: /opt/python/bin/python
 
             - name: "DEFAULT_MAP_LOCATION"
-              value: "55.61888,13.548799"
+              value: "{{ values.site.default_map_zoom }}"
             - name: "DEFAULT_MAP_ZOOM"
               value: "11"
-{% if values.email.enabled %}
+{% if values.yggio.enabled %}
 
             - name: "YGGIO_HOST_NAME"
               valueFrom:
@@ -326,6 +290,7 @@ spec:
             - name: "FCD_SYNC_PATH"
               value: /usr/local/share/sumo/fcd
 
+{% if values.kafka.enabled %}
             - name: "KAFKA_BROKERS"
               value: "{{ values.kafka.host }}:{{ values.kafka.port }}"
             - name: "KAFKA_GROUP"
@@ -366,3 +331,4 @@ spec:
           secret:
             defaultMode: 420
             secretName: "{{ values.kafka.truststore_secret }}"
+{% endif %}

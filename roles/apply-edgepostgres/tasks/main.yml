@@ -30,18 +30,19 @@
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'serviceaccount-postgres.yaml') }}"
   when: not values.postgres.crunchy
+
 - name: "Install postgres secret on OpenShift"
   k8s:
     state: present
     kind: Secret
     api_version: v1
-    name: "postgres-user-{{ user.name }}"
+    name: "postgres-pguser-{{ instance.name }}"
     namespace: "{{ ansible_operator_meta.namespace }}"
-    definition: "{{ lookup('template', 'postgres-user-secret.yaml') }}"
-  when: not values.postgres.crunchy
-  loop: "{{ values.postgres.users | default([]) }}"
+    definition: "{{ lookup('template', 'postgres-pguser-secret.yaml') }}"
+  when: not values.postgres.crunchy and (query('kubernetes.core.k8s', kind='Secret', resource_name=('postgres-pguser-' + instance.name), namespace=ansible_operator_meta.namespace)[0].data['password'] | default('')) == ''
+  loop: "{{ values.postgres.instances | default([]) }}"
   loop_control:
-    loop_var: user
+    loop_var: instance
 - name: Install {{ ansible_operator_meta.name }} postgres StatefulSet on OpenShift
   k8s:
     state: "present"

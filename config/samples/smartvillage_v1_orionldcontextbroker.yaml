@@ -27,15 +27,15 @@ spec:
     port: 1026
     log_level: |-
       INFO
-    replicas: 2
+    replicas: 1
     resources:
       limits:
         cpu: |-
-          250m
+          1
         memory: |-
           1Gi
       requests:
         cpu: |-
-          10m
+          200m
         memory: |-
-          50Mi
+          500Mi

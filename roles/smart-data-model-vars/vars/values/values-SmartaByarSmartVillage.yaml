@@ -43,6 +43,7 @@ values:
       create: "{{ crd.site.route.create | default(schema | community.general.json_query('site.properties.route.properties.create.default')) }}"
       host_name: "{{ crd.site.route.host_name | default('') }}"
   zookeeper:
+    enabled: "{{ crd.zookeeper.enabled | default(schema | community.general.json_query('zookeeper.properties.enabled.default')) }}"
     create: "{{ crd.zookeeper.create | default(schema | community.general.json_query('zookeeper.properties.create.default')) }}"
     host: "{{ crd.zookeeper.host | default(schema | community.general.json_query('zookeeper.properties.host.default')) }}"
     port: "{{ crd.zookeeper.port | default(schema | community.general.json_query('zookeeper.properties.port.default')) }}"
@@ -51,15 +52,6 @@ values:
     max_sleep_millis: "{{ crd.zookeeper.max_sleep_millis | default(schema | community.general.json_query('zookeeper.properties.max_sleep_millis.default')) }}"
     connection_timeout_millis: "{{ crd.zookeeper.connection_timeout_millis | default(schema | community.general.json_query('zookeeper.properties.connection_timeout_millis.default')) }}"
     session_timeout_millis: "{{ crd.zookeeper.session_timeout_millis | default(schema | community.general.json_query('zookeeper.properties.session_timeout_millis.default')) }}"
-    storage: "{{ crd.zookeeper.storage | default(schema | community.general.json_query('zookeeper.properties.storage.default')) }}"
-    replicas: "{{ crd.zookeeper.replicas | default(schema | community.general.json_query('zookeeper.properties.replicas.default')) }}"
-    resources:
-      limits:
-        memory: "{{ crd.zookeeper.resources.limits.memory | default(schema | community.general.json_query('zookeeper.properties.resources.properties.limits.properties.memory.default')) }}"
-        cpu: "{{ crd.zookeeper.resources.limits.cpu | default(schema | community.general.json_query('zookeeper.properties.resources.properties.limits.properties.cpu.default')) }}"
-      requests:
-        memory: "{{ crd.zookeeper.resources.requests.memory | default(schema | community.general.json_query('zookeeper.properties.resources.properties.requests.properties.memory.default')) }}"
-        cpu: "{{ crd.zookeeper.resources.requests.cpu | default(schema | community.general.json_query('zookeeper.properties.resources.properties.requests.properties.cpu.default')) }}"
   auth:
     host_name: "{{ crd.auth.host_name | default('') }}"
     port: "{{ crd.auth.port | default(schema | community.general.json_query('auth.properties.port.default')) }}"
@@ -82,9 +74,6 @@ values:
       create: "{{ crd.solr.route.create | default(schema | community.general.json_query('solr.properties.route.properties.create.default')) }}"
       host_name: "{{ crd.solr.route.host_name | default(schema | community.general.json_query('solr.properties.route.properties.host_name.default')) }}"
     collection: "{{ crd.solr.collection | default(schema | community.general.json_query('solr.properties.collection.default')) }}"
-  email:
-    enabled: "{{ crd.email.enabled | default(schema | community.general.json_query('email.properties.enabled.default')) }}"
-    secret_name: "{{ crd.email.secret_name | default(schema | community.general.json_query('email.properties.secret_name.default')) }}"
   import_data:
     enabled: "{{ crd.import_data.enabled | default(schema | community.general.json_query('import_data.properties.enabled.default')) }}"
     sitepage:
@@ -138,6 +127,7 @@ values:
     api_relative_uri_iotnode: "{{ crd.yggio.api_relative_uri_iotnode | default(schema | community.general.json_query('yggio.properties.api_relative_uri_iotnode.default')) }}"
     auth_local_uri: "{{ crd.yggio.auth_local_uri | default(schema | community.general.json_query('yggio.properties.auth_local_uri.default')) }}"
   kafka:
+    enabled: "{{ crd.kafka.enabled | default(schema | community.general.json_query('kafka.properties.enabled.default')) }}"
     keystore_secret: "{{ crd.kafka.keystore_secret | default(schema | community.general.json_query('kafka.properties.keystore_secret.default')) }}"
     truststore_secret: "{{ crd.kafka.truststore_secret | default(schema | community.general.json_query('kafka.properties.truststore_secret.default')) }}"
     host: "{{ crd.kafka.host | default(schema | community.general.json_query('kafka.properties.host.default')) }}"
