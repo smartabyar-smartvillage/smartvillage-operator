@@ -156,15 +156,16 @@ spec:
                     type: string
                   namespace:
                     default: amqbroker
+                    description: The namespace of the message broker
                     type: string
                   port:
                     default: 1883
                     type: number
                   secret:
                     properties:
-                      name:
+                      key:
                         type: string
-                      property:
+                      name:
                         type: string
                     type: object
                   transport:

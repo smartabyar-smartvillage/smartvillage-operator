@@ -41,8 +41,6 @@ spec:
     apikey: |-
       SmartTrafficLight
   message_broker:
-    namespace: |-
-      amqbroker
     transport: |-
       MQTT
     host: |-

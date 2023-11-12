@@ -23,4 +23,5 @@ COPY roles/ ${HOME}/roles/
 COPY playbooks/ ${HOME}/playbooks/
 COPY kustomize/ ${HOME}/kustomize/
 COPY *.yaml ${HOME}/
+COPY *.sh ${HOME}/
 RUN chmod -R a+rw .

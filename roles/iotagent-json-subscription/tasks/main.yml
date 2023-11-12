@@ -69,4 +69,4 @@
       - 201
       - 204
   register: UPDATE_SUBSCRIPTION
-  when: values.device.subscription_url != '' and CREATE_SUBSCRIPTION is defined and CREATE_SUBSCRIPTION.failed is defined and CREATE_SUBSCRIPTION.failed
+  when: values.device.subscription_url != '' and CREATE_SUBSCRIPTION is defined and CREATE_SUBSCRIPTION.failed is defined and CREATE_SUBSCRIPTION.failed and ':1026' not in values.context_broker.base_url

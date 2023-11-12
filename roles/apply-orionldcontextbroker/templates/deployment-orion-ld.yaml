@@ -43,7 +43,7 @@ spec:
             - name: ORIONLD_CACHED_CONTEXT_DIRECTORY
               value: /opt/orion/ldcontexts
             - name: ORIONLD_SUBCACHE_IVAL
-              value: '1'
+              value: '5'
             - name: ORIONLD_MONGO_HOST
               value: '{{ values.mongodb.name }}.{{ mongodb_pod_namespace }}.svc'
             - name: ORIONLD_MONGO_DB
@@ -58,24 +58,16 @@ spec:
             - name: ORIONLD_DISABLE_METRICS
               value: 'TRUE'
             - name: ORIONLD_STAT_COUNTERS
-              value: 'TRUE'
+              value: 'FALSE'
             - name: ORIONLD_LOG_LEVEL
               value: "{{ values.orionld.log_level }}"
             - name: ORIONLD_TROE
               value: 'FALSE'
-            - name: ORIONLD_TROE_USER
-              value: user
-            - name: ORIONLD_TROE_PWD
-              value: password
-            - name: ORIONLD_TROE_HOST
-              value: postgres
-            - name: ORIONLD_TROE_PORT
-              value: '5432'
 {% if values.orionld.cors_allowed_origin is defined %}
             - name: ORIONLD_CORS_ALLOWED_ORIGIN
               value: '{{ values.orionld.cors_allowed_origin }}'
 {% endif %}
-          image: 'quay.io/fiware/orion-ld:1.0.1'
+          image: 'quay.io/fiware/orion-ld:1.4.0'
           imagePullPolicy: IfNotPresent
           livenessProbe:
             initialDelaySeconds: 30

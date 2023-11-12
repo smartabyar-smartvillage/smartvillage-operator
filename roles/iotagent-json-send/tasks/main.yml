@@ -4,18 +4,18 @@
     var: values
 - name: "Query the Orion-LD Context Broker service"
   set_fact:
-    context_broker_port: "{{ query('kubernetes.core.k8s', kind='Service', resource_name=values.context_broker.name, namespace=values.context_broker.namespace)[0].spec.ports | community.general.json_query(QUERY) | first }}"
+    context_broker_port: "{{ query('kubernetes.core.k8s', kind='Service', resource_name=values.context_broker.name, namespace=(values.context_broker.namespace | default(ansible_operator_meta.namespace, true)))[0].spec.ports | community.general.json_query(QUERY) | first }}"
   vars: 
     QUERY: |-
       [?name=='http'].port
   when: values.context_broker.base_url == ''
 - name: "Configure context_broker_base_url"
   set_fact:
-    context_broker_base_url: "http://{{ query('kubernetes.core.k8s', kind='Route', resource_name=values.context_broker.name, namespace=values.context_broker.namespace)[0].spec.host }}"
+    context_broker_base_url: "http://{{ query('kubernetes.core.k8s', kind='Route', resource_name=values.context_broker.name, namespace=(values.context_broker.namespace | default(ansible_operator_meta.namespace, true)))[0].spec.host }}"
   when: values.context_broker.base_url == '' and verify_connections is defined and not verify_connections
 - name: "Configure context_broker_base_url"
   set_fact:
-    context_broker_base_url: "http://{{ values.context_broker.name }}.{{ values.context_broker.namespace }}.svc:{{ context_broker_port }}"
+    context_broker_base_url: "http://{{ values.context_broker.name }}.{{ values.context_broker.namespace | default(ansible_operator_meta.namespace, true) }}.svc:{{ context_broker_port }}"
   when: values.context_broker.base_url == '' and (verify_connections is not defined or verify_connections)
 - name: "Configure context broker base url"
   set_fact:
@@ -28,7 +28,7 @@
 
 - name: "Query message broker secret"
   set_fact:
-    message_broker_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.message_broker.secret.name, namespace=values.message_broker.namespace)[0].data[values.message_broker.secret.key] | b64decode | default('') }}"
+    message_broker_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.message_broker.secret.name, namespace=(values.message_broker.namespace | default(ansible_operator_meta.namespace, true)))[0].data[values.message_broker.secret.key] | b64decode | default('') }}"
   when: values.message_broker.secret.name
 
 - name: Create a /tmp/{{ values.service_group.apikey }} directory for the temporary file data

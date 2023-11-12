@@ -42,8 +42,6 @@ spec:
     apikey: |-
       ParkingAccess
   message_broker:
-    namespace: |-
-      amqbroker
     transport: |-
       MQTT
     host: |-
