@@ -1,28 +1,30 @@
 apiVersion: smartvillage.computate.org/v1
 kind: CrowdFlowObserved
 metadata:
-  name: sweden-veberod-1-sjobovagen-se-lakaregatan-ne
+  name: sweden-veberod-1-dorrodsvagen-ne-sjobovagen-se
   namespace: smartvillage
 spec:
-  service_group:
-    resource: /iot/json
-    apikey: CrowdFlowObserved
+  iotagent:
+    name: iotagent-json
+    namespace: iotagent
+    service_name: iotagent-json
+  context_broker:
+    name: scorpiobroker
+    namespace: scorpiobroker
+    service_name: scorpiobroker
   ngsi_ld:
     service: crowdflowobserveds
     service_path: /Sweden/Veberod/CityCenter
     context: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
   device:
-    context: ngsi-ld
-    id: sweden-veberod-1-sjobovagen-se-lakaregatan-ne
-    mqtt_subscription_topic: iot/subscribe
+    id: sweden-veberod-1-dorrodsvagen-ne-sjobovagen-se
     subscription_url: http://orionld-smartvillage-sync.smartvillage.svc:8080
   smartvillage:
     auth_secret_name: keycloak-client-secret-smartvillage
     auth_token_url: https://sso.computate.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
     site_base_url: https://smartvillage-web-smartvillage.apps-crc.testing
-    smart_model_api: /api/crowd-flow-observed
   attributes:
-    entityId: sweden-veberod-1-sjobovagen-se-lakaregatan-ne
+    entityId: urn:ngsi-ld:CrowdFlowObserved:sweden-veberod-1-dorrodsvagen-ne-sjobovagen-se
     trafficSimulationId: TrafficSimulation-VeberodIntersection1
     location: 55.633703,13.49254
-    walkingAreaId: ":267701936_w0"
+    walkingAreaId: ":267701936_w2"

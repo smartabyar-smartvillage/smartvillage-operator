@@ -10,7 +10,7 @@ spec:
   ngsi_ld:
     service: trafficflowobserveds
     service_path: /Sweden/Veberod/CityCenter
-    context: https://raw.githubusercontent.com/computate-org/smartvillage-platform-static/main/fiware/context.jsonld
+    context: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
   device:
     id: TrafficFlowObserved-Intersection1-Sjobovagen-SE
     subscription_url: "http://orionld-smartvillage-sync:8080"

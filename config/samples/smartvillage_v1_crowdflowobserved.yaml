@@ -42,8 +42,6 @@ spec:
     apikey: |-
       CrowdFlowObserved
   message_broker:
-    namespace: |-
-      amqbroker
     transport: |-
       MQTT
     host: |-

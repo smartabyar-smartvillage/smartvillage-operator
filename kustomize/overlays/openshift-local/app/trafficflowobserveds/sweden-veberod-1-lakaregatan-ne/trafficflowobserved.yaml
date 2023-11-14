@@ -16,9 +16,6 @@ spec:
     service: trafficflowobserveds
     service_path: /Sweden/Veberod/CityCenter
     context: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
-  service_group:
-    resource: /iot/json
-    apikey: TrafficFlowObserved
   device:
     id: sweden-veberod-1-lakaregatan-ne
     subscription_url: http://orionld-smartvillage-sync.smartvillage.svc:8080

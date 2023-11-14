@@ -52,7 +52,7 @@ spec:
                   alternateName:
                     type: string
                   areaServed:
-                    type: geo:linestring
+                    type: object
                   averageCrowdSpeed:
                     type: number
                   averageHeadwayTime:
@@ -155,7 +155,6 @@ spec:
                     default: default-mqtt-0-svc.amqbroker.svc
                     type: string
                   namespace:
-                    default: amqbroker
                     description: The namespace of the message broker
                     type: string
                   port:

@@ -117,10 +117,10 @@ schema:
         default: false
       default_map_location:
         type: string
-        default: "55.61888,13.548799"
+        default: "55.63379,13.49260"
       default_map_zoom:
         type: number
-        default: 11
+        default: 17
       vertx_warning_exception_seconds:
         type: number
         default: 60

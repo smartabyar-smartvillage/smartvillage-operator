@@ -18,7 +18,7 @@ spec:
   ngsi_ld:
     service: crowdflowobserveds
     service_path: /Sweden/Veberod/CityCenter
-    context: https://raw.githubusercontent.com/computate-org/smartvillage-platform-static/main/fiware/context.jsonld
+    context: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
   device:
     id: sweden-veberod-1-lakaregatan-ne-sjobovagen-se
     subscription_url: http://orionld-smartvillage-sync:8080

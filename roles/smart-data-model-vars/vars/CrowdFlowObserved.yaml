@@ -67,7 +67,6 @@ schema:
       namespace:
         type: string
         description: The namespace of the message broker
-        default: amqbroker
       transport:
         type: string
         default: MQTT

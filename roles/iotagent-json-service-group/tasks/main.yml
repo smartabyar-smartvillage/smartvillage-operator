@@ -24,6 +24,14 @@
   ignore_errors: true
 - debug:
     var: CREATE_SERVICE
+- debug:
+    msg: "{{ iotagent_base_url }}/iot/services?apikey={{ values.service_group.apikey | urlencode }}&resource={{ values.service_group.resource | urlencode }}"
+- debug:
+    msg: "{{ SERVICE_GROUP_BODY | ansible.utils.remove_keys(target=['apikey', 'resource']) }}"
+- debug:
+    var: values.ngsi_ld
+- debug:
+    var: values.service_group
 - name: "Update the {{ values.service_group.apikey }} service group"
   connection: local
   uri:

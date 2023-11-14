@@ -1,5 +1,5 @@
 {% for key, attribute in smart_data_model.attributes.items() %}
-{% if key != 'id' and key != 'type' %}
+{% if key != 'id' and key != 'type' and key != 'entityId' %}
 {% if values.attributes[key] is defined and values.attributes[key] != '' %}
 {% if (values.attributes[key] | type_debug) == 'AnsibleUnicode' %}
 {{ key }}: |-
