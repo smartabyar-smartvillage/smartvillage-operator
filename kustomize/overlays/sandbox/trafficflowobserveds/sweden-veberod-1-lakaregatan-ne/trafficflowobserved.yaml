@@ -27,7 +27,7 @@ spec:
     auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
     site_base_url: http://smartabyar-smartvillage-web:8080
   attributes:
-    entityId: sweden-veberod-1-lakaregatan-ne
+    entityId: urn:ngsi-ld:CrowdFlowObserved:sweden-veberod-1-lakaregatan-ne
     trafficSimulationId: TrafficSimulation-VeberodIntersection1
     laneAreaDetectorId: det_13
     location: 55.633703, 13.492540

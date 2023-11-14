@@ -124,3 +124,35 @@ ansible-playbook apply-trafficflowobserved.yaml \
   -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/trafficflowobserveds/sweden-veberod-1-sjobovagen-se/trafficflowobserved.yaml
 ```
+
+## Install the Crowd Flow Observed JSON in the OpenShift Developer Sandbox
+
+```bash
+ansible-playbook apply-crowdflowobserved.yaml \
+  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-sjobovagen-se-dorrodsvagen-sw/crowdflowobserved.yaml
+```
+
+```bash
+ansible-playbook apply-crowdflowobserved.yaml \
+  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-dorrodsvagen-ne-sjobovagen-se/crowdflowobserved.yaml
+```
+
+```bash
+ansible-playbook apply-crowdflowobserved.yaml \
+  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-sjobovagen-nw-lakaregatan-ne/crowdflowobserved.yaml
+```
+
+```bash
+ansible-playbook apply-crowdflowobserved.yaml \
+  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-lakaregatan-sw-sjobovagen-nw/crowdflowobserved.yaml
+```
+
+```bash
+ansible-playbook apply-crowdflowobserved.yaml \
+  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-sjobovagen-se-dorrodsvagen-sw/crowdflowobserved.yaml
+```

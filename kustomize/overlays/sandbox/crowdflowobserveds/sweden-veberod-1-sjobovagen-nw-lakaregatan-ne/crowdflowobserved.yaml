@@ -27,7 +27,7 @@ spec:
     auth_token_url: https://sso.computate.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
     site_base_url: https://smartvillage-web-smartvillage.apps-crc.testing
   attributes:
-    entityId: sweden-veberod-1-sjobovagen-nw-lakaregatan-ne
+    entityId: urn:ngsi-ld:CrowdFlowObserved:sweden-veberod-1-sjobovagen-nw-lakaregatan-ne
     trafficSimulationId: TrafficSimulation-VeberodIntersection1
     location: 55.633703,13.49254
     walkingAreaId: ":267701936_w1"

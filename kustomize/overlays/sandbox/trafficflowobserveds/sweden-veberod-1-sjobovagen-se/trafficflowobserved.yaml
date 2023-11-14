@@ -27,7 +27,7 @@ spec:
     auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
     site_base_url: http://smartabyar-smartvillage-web:8080
   attributes:
-    entityId: sweden-veberod-1-sjobovagen-se
+    entityId: urn:ngsi-ld:CrowdFlowObserved:sweden-veberod-1-sjobovagen-se
     trafficSimulationId: TrafficSimulation-VeberodIntersection1
     laneAreaDetectorId: det_42
     location: 55.633825, 13.492458
