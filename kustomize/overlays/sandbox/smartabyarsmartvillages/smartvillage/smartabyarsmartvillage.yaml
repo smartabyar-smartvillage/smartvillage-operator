@@ -19,6 +19,7 @@ spec:
   kafka:
     enabled: false
   zookeeper:
+    enabled: false
     host: zookeeper
   postgres:
     host: postgres-smartvillage

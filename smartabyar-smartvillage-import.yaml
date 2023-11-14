@@ -22,7 +22,7 @@
     device:
       transport: MQTT
       id: 'Sjobovagen-SE'
-    smartabyar_smartvillage:
+    smartvillage:
       enabled: true
       auth_secret_name: keycloak-client-secret-smartvillage
       auth_token_url: https://keycloak-sso.apps-crc.testing/auth/realms/SMARTVILLAGE/protocol/openid-connect/token

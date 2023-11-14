@@ -16,7 +16,7 @@ spec:
     id: sweden-veberod-1-lakaregatan-ne-sjobovagen-se
     mqtt_subscription_topic: iot/subscribe
     subscription_url: http://orionld-smartvillage-sync.smartvillage.svc:8080
-  smartabyar_smartvillage:
+  smartvillage:
     auth_secret_name: keycloak-client-secret-smartvillage
     auth_token_url: https://sso.computate.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
     site_base_url: https://smartvillage-web-smartvillage.apps-crc.testing

@@ -97,7 +97,7 @@ schema:
       subscription_url:
         type: string
         default: "http://orionld-smartvillage-sync:8080"
-  smartabyar_smartvillage:
+  smartvillage:
     type: object
     properties:
       enabled:

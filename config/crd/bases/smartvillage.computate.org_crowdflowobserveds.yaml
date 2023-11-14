@@ -186,7 +186,7 @@ spec:
                     default: http://orionld-smartvillage-sync:8080
                     type: string
 
-              smartabyar_smartvillage:
+              smartvillage:
                 type: object
                 properties:
                   auth_secret_name:

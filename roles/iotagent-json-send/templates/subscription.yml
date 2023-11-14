@@ -17,7 +17,7 @@ notification:
       - Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
       - NGSILD-Tenant: "{{ values.ngsi_ld.service }}"
       - NGSILD-Path: "{{ values.ngsi_ld.service_path }}"
-      - SmartVillage-API: "{{ values.smartabyar_smartvillage.smart_model_api }}"
+      - SmartVillage-API: "{{ values.smartvillage.smart_model_api }}"
 "@context":
   - https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
   - https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld

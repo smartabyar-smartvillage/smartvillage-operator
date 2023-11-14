@@ -75,12 +75,12 @@ values:
   device:
     id: "{{ crd.device.id | default('') }}"
     subscription_url: "{{ crd.device.subscription_url | default(schema | community.general.json_query('device.properties.subscription_url.default')) }}"
-  smartabyar_smartvillage:
-    enabled: "{{ crd.smartabyar_smartvillage.enabled | default(schema | community.general.json_query('smartabyar_smartvillage.properties.enabled.default')) }}"
-    auth_secret_name: "{{ crd.smartabyar_smartvillage.auth_secret_name | default(schema | community.general.json_query('smartabyar_smartvillage.properties.auth_secret_name.default')) }}"
-    auth_token_url: "{{ crd.smartabyar_smartvillage.auth_token_url | default(schema | community.general.json_query('smartabyar_smartvillage.properties.auth_token_url.default')) }}"
-    site_base_url: "{{ crd.smartabyar_smartvillage.site_base_url | default(schema | community.general.json_query('smartabyar_smartvillage.properties.site_base_url.default')) }}"
-    smart_model_api: "{{ crd.smartabyar_smartvillage.smart_model_api | default(schema | community.general.json_query('smartabyar_smartvillage.properties.smart_model_api.default')) }}"
+  smartvillage:
+    enabled: "{{ crd.smartvillage.enabled | default(schema | community.general.json_query('smartvillage.properties.enabled.default')) }}"
+    auth_secret_name: "{{ crd.smartvillage.auth_secret_name | default(schema | community.general.json_query('smartvillage.properties.auth_secret_name.default')) }}"
+    auth_token_url: "{{ crd.smartvillage.auth_token_url | default(schema | community.general.json_query('smartvillage.properties.auth_token_url.default')) }}"
+    site_base_url: "{{ crd.smartvillage.site_base_url | default(schema | community.general.json_query('smartvillage.properties.site_base_url.default')) }}"
+    smart_model_api: "{{ crd.smartvillage.smart_model_api | default(schema | community.general.json_query('smartvillage.properties.smart_model_api.default')) }}"
   alternate_model:
     enabled: "{{ crd.alternate_model.enabled | default(schema | community.general.json_query('alternate_model.properties.enabled.default')) }}"
     id: "{{ crd.alternate_model.id | default(schema | community.general.json_query('alternate_model.properties.id.default')) }}"

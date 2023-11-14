@@ -53,7 +53,7 @@ spec:
   device:
     subscription_url: |-
       http://orionld-smartvillage-sync:8080
-  smartabyar_smartvillage:
+  smartvillage:
     enabled: True
     auth_secret_name: |-
       keycloak-client-secret-smartvillage

@@ -30,7 +30,7 @@ spec:
     secret:
       name: rabbitmq-password
       key: rabbitmq-password
-  smartabyar_smartvillage:
+  smartvillage:
     auth_secret_name: keycloak-client-secret-smartvillage
     auth_token_url: https://sso.computate.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
     site_base_url: https://smartvillage-web-smartvillage.apps-crc.testing

@@ -1,8 +1,8 @@
 ---
 - name: Get auth secrets
   set_fact:
-    CLIENT_ID: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.smartabyar_smartvillage.auth_secret_name, namespace=ansible_operator_meta.namespace, validate_certs=false)[0].data.CLIENT_ID | b64decode }}"
-    CLIENT_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.smartabyar_smartvillage.auth_secret_name, namespace=ansible_operator_meta.namespace, validate_certs=false)[0].data.CLIENT_SECRET | b64decode }}"
+    CLIENT_ID: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.smartvillage.auth_secret_name, namespace=ansible_operator_meta.namespace, validate_certs=false)[0].data.CLIENT_ID | b64decode }}"
+    CLIENT_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.smartvillage.auth_secret_name, namespace=ansible_operator_meta.namespace, validate_certs=false)[0].data.CLIENT_SECRET | b64decode }}"
 - name: "Get the entity from the context broker"
   connection: local
   uri:
@@ -26,7 +26,7 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ values.smartabyar_smartvillage.auth_token_url }}"
+    url: "{{ values.smartvillage.auth_token_url }}"
     method: POST
     body_format: form-urlencoded
     body:
@@ -43,7 +43,7 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ values.smartabyar_smartvillage.site_base_url }}{{ values.smartabyar_smartvillage.smart_model_api }}?softCommit=true"
+    url: "{{ values.smartvillage.site_base_url }}{{ values.smartvillage.smart_model_api }}?softCommit=true"
     method: PUT
     headers:
       Content-Type: "application/json"

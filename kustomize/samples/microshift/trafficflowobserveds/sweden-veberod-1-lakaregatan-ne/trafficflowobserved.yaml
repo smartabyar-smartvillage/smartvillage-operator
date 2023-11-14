@@ -42,7 +42,7 @@ spec:
     mqtt_port: 1883
     mqtt_subscription_topic: iot/subscribe
     subscription_url: http://orionld-smartvillage-sync.smartvillage.svc:8080
-  smartabyar_smartvillage:
+  smartvillage:
     enabled: true
     auth_token_url: https://sso.computate.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
     site_base_url: https://www.smartabyarsmartvillage.org

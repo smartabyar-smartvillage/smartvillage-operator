@@ -18,7 +18,7 @@ notification:
       - Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
       - NGSILD-Tenant: "{{ values.ngsi_ld.service }}"
       - NGSILD-Path: "{{ values.ngsi_ld.service_path }}"
-      - SmartVillage-API: "{{ values.smartabyar_smartvillage.smart_model_api }}"
+      - SmartVillage-API: "{{ values.smartvillage.smart_model_api }}"
 {% else %}
       - key: Link
         value: '<{{ values.ngsi_ld.context }}>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
@@ -31,7 +31,7 @@ notification:
       - key: NGSILD-Path
         value: "{{ values.ngsi_ld.service_path }}"
       - key: SmartVillage-API
-        value: "{{ values.smartabyar_smartvillage.smart_model_api }}"
+        value: "{{ values.smartvillage.smart_model_api }}"
 {% endif %}
 "@context":
   - https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld

@@ -3,9 +3,35 @@ kind: TrafficFlowObserved
 metadata:
   name: sweden-veberod-1-sjobovagen-se
 spec:
+  iotagent:
+    base_url: http://iotagent-json:4041
+  context_broker:
+    base_url: http://orion-ld:1026
+  ngsi_ld:
+    service: trafficflowobserveds
+    service_path: /Sweden/Veberod/CityCenter
+    context: https://raw.githubusercontent.com/computate-org/smartvillage-platform-static/main/fiware/context.jsonld
+  device:
+    id: TrafficFlowObserved-Intersection1-Sjobovagen-SE
+    subscription_url: "http://orionld-smartvillage-sync:8080"
+  message_broker:
+    transport: AMQP
+    host: default-rabbitmq
+    port: 5672
+    user: user
+    secret:
+      name: rabbitmq-password
+      key: rabbitmq-password
+  smartvillage:
+    auth_secret_name: keycloak-client-secret-smartvillage
+    auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+    site_base_url: http://smartabyar-smartvillage-web:8080
   attributes:
+    entityId: sweden-veberod-1-sjobovagen-se
+    trafficSimulationId: TrafficSimulation-VeberodIntersection1
+    laneAreaDetectorId: det_42
     location: 55.633825, 13.492458
-    area_served: {"type":"LineString","coordinates":[[13.491925461716146,55.63271352675811],[13.491959719458668,55.6328803799553],[13.492001830794774,55.63307851322209],[13.49203583929166,55.633165023015664],[13.492094186839967,55.63326306524109],[13.49212323459849,55.63330503030353],[13.49224266648859,55.633425750604616],[13.49241399185663,55.63359752341646],[13.492416280489497,55.633599977927105],[13.492519465989837,55.63370944475262],[13.492544230047926,55.63372646415785]]}
+    areaServed: {"type":"LineString","coordinates":[[13.491925461716146,55.63271352675811],[13.491959719458668,55.6328803799553],[13.492001830794774,55.63307851322209],[13.49203583929166,55.633165023015664],[13.492094186839967,55.63326306524109],[13.49212323459849,55.63330503030353],[13.49224266648859,55.633425750604616],[13.49241399185663,55.63359752341646],[13.492416280489497,55.633599977927105],[13.492519465989837,55.63370944475262],[13.492544230047926,55.63372646415785]]}
     averageVehicleLength: 5
     averageGapDistance: 1
     averageVehicleSpeed: 55
@@ -19,28 +45,3 @@ spec:
     customDemandScalingFactor: 1.00
     customQueueLengthThreshold: 2.00
     customTrafficLightId: veberod-intersection-1
-  iotagent:
-    base_url: http://iotagent-json:4041
-  context_broker:
-    base_url: http://orion-ld:1026
-  fiware:
-    service: trafficflowobserveds
-    service_path: /Sweden/Veberod/CityCenter
-  service_group:
-    resource: /iot/json
-    apikey: VeberodIntersection1
-  device:
-    id: TrafficFlowObserved-Intersection1-Lakaregatan-NE
-    subscription_url: "http://orionld-smartvillage-sync:8080"
-  message_broker:
-    transport: AMQP
-    host: default-rabbitmq
-    port: 5672
-    user: user
-    secret:
-      name: rabbitmq-password
-      key: rabbitmq-password
-  smartabyar_smartvillage:
-    enabled: true
-    auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
-    site_base_url: http://smartabyar-smartvillage-web:8080
