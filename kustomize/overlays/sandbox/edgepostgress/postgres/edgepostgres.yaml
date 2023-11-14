@@ -6,6 +6,16 @@ spec:
   postgres:
     enable_dev_nodeports: false
     crunchy: false
+    config:
+      files:
+        - configMap:
+            name: smartvillage-db-create
+            items:
+              - key: db-create.sql
+                path: smartvillage-db-create/db-create.sql
+                instance: smartvillage
+                database: smartvillage
+                user: smartvillage
     instances:
       - name: smartvillage
         replicas: 1

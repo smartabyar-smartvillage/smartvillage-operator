@@ -1,5 +1,6 @@
 spec:
   replicas: {{ values.ngsi_ld.sync_replicas }}
+  revisionHistoryLimit: 0
   selector:
     matchLabels:
       app: orionld-smartvillage-sync

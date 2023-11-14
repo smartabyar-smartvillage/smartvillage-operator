@@ -9,4 +9,9 @@ spec:
     route:
       create: true
     replicas: 1
+    resources:
+      limits:
+        memory: 2Gi
+      requests:
+        memory: 2Gi
 

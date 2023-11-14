@@ -13,6 +13,9 @@ spec:
     token_uri: /auth/realms/SMARTVILLAGE/protocol/openid-connect/token
   ngsi_ld:
    sync_replicas: 1
+   host: orion-ld
+   port: 1026
+   ssl: false
   kafka:
     enabled: false
   zookeeper:
@@ -26,5 +29,11 @@ spec:
     web_replicas: 0
     sumo_replicas: 0
     worker_replicas: 1
+    resources:
+      limits:
+        memory: 512Mi
+      requests:
+        memory: 512Mi
+        cpu: 200m
   import_data:
     enabled: false

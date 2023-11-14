@@ -91,11 +91,11 @@ spec:
 {% for config in values.postgres.config.files %}
 {% if config.configMap is defined %}
             - name: "{{ config.configMap.name }}"
-              mountPath: "/opt/postgres/server/postgres/configsets/{{ config.configMap.name }}/conf"
+              mountPath: "/etc/postgres/{{ config.configMap.name }}"
 {% else %}
 {% if config.secret is defined %}
             - name: "{{ config.secret.name }}"
-              mountPath: "/opt/postgres/server/postgres/configsets/{{ config.secret.name }}/conf"
+              mountPath: "/etc/postgres/{{ config.secret.name }}"
 {% endif %}
 {% endif %}
 {% endfor %}

@@ -1,5 +1,6 @@
 spec:
   replicas: {{ values.site.sumo_replicas }}
+  revisionHistoryLimit: 0
   selector:
     matchLabels:
       app: "{{ site_name }}-sumo"

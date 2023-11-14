@@ -35,6 +35,7 @@ spec:
     apikey: VeberodIntersection1
   device:
     id: TrafficFlowObserved-Intersection1-Lakaregatan-NE
+    subscription_url: "http://orionld-smartvillage-sync:8080"
   message_broker:
     transport: AMQP
     host: default-rabbitmq

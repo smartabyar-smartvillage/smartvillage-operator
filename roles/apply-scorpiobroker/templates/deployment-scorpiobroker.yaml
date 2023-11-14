@@ -4,7 +4,7 @@ metadata:
     app.kubernetes.io/name: scorpiobroker
 spec:
   replicas: {{ values.scorpiobroker.replicas }}
-  revisionHistoryLimit: 3
+  revisionHistoryLimit: 0
   selector:
     matchLabels:
       app.kubernetes.io/instance: scorpiobroker

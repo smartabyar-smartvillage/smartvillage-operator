@@ -96,6 +96,7 @@ ansible-playbook apply-iotagentjson.yaml \
 ## Install postgres in the OpenShift Developer Sandbox
 
 ```bash
+oc create configmap smartvillage-db-create --from-file ~/.local/src/smartabyar-smartvillage/src/main/resources/sql/db-create.sql
 
 ansible-playbook apply-edgepostgres.yaml \
   -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
@@ -118,8 +119,8 @@ ansible-playbook apply-trafficflowobserved.yaml \
   -e crd_path=kustomize/overlays/sandbox/trafficflowobserveds/sweden-veberod-1-lakaregatan-ne/trafficflowobserved.yaml
 ```
 
-- [Install Red Hat MicroShift following the official documentation here](https://access.redhat.com/documentation/en-us/red_hat_build_of_microshift). 
-- Make sure you have the `oc` command in your terminal after installation of MicroShift. 
-- Make sure microshift is running: `systemctl status microshift`. 
-- Watch the logs for MicroShift if you find any problems: `journalctl -fu microshift`
-- Make sure your computer has an actual ethernet connection and not WIFI for MicroShift to work. 
+```bash
+ansible-playbook apply-trafficflowobserved.yaml \
+  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=kustomize/overlays/sandbox/trafficflowobserveds/sweden-veberod-1-sjobovagen-se/trafficflowobserved.yaml
+```

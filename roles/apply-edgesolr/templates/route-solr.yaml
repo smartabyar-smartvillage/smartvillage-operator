@@ -4,10 +4,10 @@ spec:
 {% endif %}
   to:
     kind: Service
-    name: default-solrcloud-common
+    name: "{{ values.solr.name }}"
     weight: 100
   port:
-    targetPort: solr-client
+    targetPort: solr
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect

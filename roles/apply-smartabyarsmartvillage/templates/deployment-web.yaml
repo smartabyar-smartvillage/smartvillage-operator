@@ -1,5 +1,6 @@
 spec:
   replicas: {{ values.site.web_replicas }}
+  revisionHistoryLimit: 0
   selector:
     matchLabels:
       app: "smartabyar-smartvillage-web"

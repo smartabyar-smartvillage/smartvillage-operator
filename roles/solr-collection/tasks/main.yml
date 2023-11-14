@@ -1,6 +1,6 @@
 ---
 
-- name: "Create Solr collection {{ item.name }}"
+- name: "Create Solr collection {{ item.name }}: /opt/solr/bin/solr create_collection -c {{ item.name }} -n {{ item.configset }}"
   kubernetes.core.k8s_exec:
     pod: "{{ values.solr.name }}-0"
     command: >-

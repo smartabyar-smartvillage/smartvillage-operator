@@ -6,7 +6,7 @@ metadata:
     helm.sh/chart: orion-ld-1.0.2
 spec:
   replicas: {{ values.orionld.replicas }}
-  revisionHistoryLimit: 3
+  revisionHistoryLimit: 0
   selector:
     matchLabels:
       app.kubernetes.io/instance: orion-ld
@@ -63,6 +63,8 @@ spec:
               value: "{{ values.orionld.log_level }}"
             - name: ORIONLD_TROE
               value: 'FALSE'
+            - name: ORIONLD_CONTEXT_DOWNLOAD_TIMEOUT
+              value: '20000'
 {% if values.orionld.cors_allowed_origin is defined %}
             - name: ORIONLD_CORS_ALLOWED_ORIGIN
               value: '{{ values.orionld.cors_allowed_origin }}'

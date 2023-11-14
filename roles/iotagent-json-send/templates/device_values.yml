@@ -1,4 +1,5 @@
 {% for key, attribute in smart_data_model.attributes.items() %}
+{% if key != 'id' and key != 'type' %}
 {% if values.attributes[key] is defined and values.attributes[key] != '' %}
 {% if (values.attributes[key] | type_debug) == 'AnsibleUnicode' %}
 {{ key }}: |-
@@ -9,6 +10,7 @@
   {{ values.attributes[key] | to_nice_yaml(indent=2) | indent(2, False) }}
 {% else %}
 {{ key }}: {{ values.attributes[key] }}
+{% endif %}
 {% endif %}
 {% endif %}
 {% endif %}

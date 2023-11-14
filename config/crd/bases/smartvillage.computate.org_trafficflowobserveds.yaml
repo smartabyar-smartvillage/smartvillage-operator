@@ -85,7 +85,7 @@ spec:
                   alternateName:
                     type: string
                   areaServed:
-                    type: geo:linestring
+                    type: object
                   averageGapDistance:
                     type: number
                   averageHeadwayTime:

@@ -1,5 +1,6 @@
 spec:
   replicas: 1
+  revisionHistoryLimit: 0
   selector:
     matchLabels:
       app: "smartabyar-smartvillage-web"
@@ -251,9 +252,9 @@ spec:
               value: /opt/python/bin/python
 
             - name: "DEFAULT_MAP_LOCATION"
-              value: "{{ values.site.default_map_zoom }}"
+              value: "{{ values.site.default_map_location }}"
             - name: "DEFAULT_MAP_ZOOM"
-              value: "11"
+              value: "{{ values.site.default_map_zoom }}"
 {% if values.yggio.enabled %}
 
             - name: "YGGIO_HOST_NAME"

@@ -3,6 +3,7 @@ spec:
     - protocol: TCP
       port: 8983
       targetPort: 8983
+      name: solr
   type: ClusterIP
   sessionAffinity: None
   selector:

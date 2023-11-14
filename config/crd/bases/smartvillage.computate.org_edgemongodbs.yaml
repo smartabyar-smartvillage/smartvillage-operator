@@ -57,7 +57,7 @@ spec:
                             default: '1'
                             type: string
                           memory:
-                            default: 3Gi
+                            default: 1Gi
                             type: string
                         type: object
                       requests:

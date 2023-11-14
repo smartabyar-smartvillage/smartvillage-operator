@@ -38,7 +38,7 @@
     mode: '0755'
 - name: Write /tmp/{{ values.service_group.apikey }}/{{ values.device.id }}.json to temporary file
   copy:
-    content: "{{ lookup('template', 'device_values.yml') | from_yaml | ansible.utils.remove_keys(target=['id', 'type']) | to_nice_json }}"
+    content: "{{ lookup('template', 'device_values.yml') | from_yaml | to_nice_json }}"
     dest: "/tmp/{{ values.service_group.apikey }}/{{ values.device.id }}.json"
 
 - name: Publish message on MQTT {{ mqtt_nodeport_hostname if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.host }}:{{ mqtt_nodeport if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.port }} topic /{{ values.service_group.apikey }}/{{ values.device.id }}/attrs to device /{{ values.service_group.apikey }}/{{ values.device.id }}/attrs
@@ -48,7 +48,7 @@
     username: "{{ values.message_broker.user | default('') }}"
     password: "{{ message_broker_password }}"
     topic: "/{{ values.service_group.apikey }}/{{ values.device.id }}/attrs"
-    payload: "{{ lookup('template', 'device_values.yml') | from_yaml | ansible.utils.remove_keys(target=['id', 'type']) | to_json }}"
+    payload: "{{ lookup('template', 'device_values.yml') | from_yaml | to_json }}"
     qos: 0
   when: values.message_broker.transport == 'MQTT' and values.message_broker.user is not defined and message_broker_password is not defined
 - name: Publish message on MQTT {{ mqtt_nodeport_hostname if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.host }}:{{ mqtt_nodeport if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.port }} topic /{{ values.service_group.apikey }}/{{ values.device.id }}/attrs to device /{{ values.service_group.apikey }}/{{ values.device.id }}/attrs
@@ -56,7 +56,7 @@
     server: "{{ mqtt_nodeport_hostname if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.host }}"
     port: "{{ mqtt_nodeport if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.port }}"
     topic: "/{{ values.service_group.apikey }}/{{ values.device.id }}/attrs"
-    payload: "{{ lookup('template', 'device_values.yml') | from_yaml | ansible.utils.remove_keys(target=['id', 'type']) | to_json }}"
+    payload: "{{ lookup('template', 'device_values.yml') | from_yaml | to_json }}"
     qos: 0
   when: values.message_broker.transport == 'MQTT' and not (values.message_broker.user is not defined and message_broker_password is not defined)
 
@@ -71,7 +71,7 @@
     username: "{{ values.message_broker.user | default('') }}"
     password: "{{ message_broker_password }}"
     exchange: "amq.topic"
-    body: "{{ lookup('template', 'device_values.yml') | from_yaml | ansible.utils.remove_keys(target=['id', 'type']) | to_json }}"
+    body: "{{ lookup('template', 'device_values.yml') | from_yaml | to_json }}"
     content_type: "text/plain"
   when: values.message_broker.transport == 'AMQP' and values.message_broker.user is defined and message_broker_password is defined
 - name: Publish message on amqp queue to device /{{ values.service_group.apikey }}/{{ values.device.id }}/attrs
@@ -85,12 +85,12 @@
     username: "{{ values.message_broker.user | default('') }}"
     password: "{{ message_broker_password }}"
     exchange: "amq.topic"
-    body: "{{ lookup('template', 'device_values.yml') | from_yaml | ansible.utils.remove_keys(target=['id', 'type']) | to_json }}"
+    body: "{{ lookup('template', 'device_values.yml') | from_yaml | to_json }}"
     content_type: "text/plain"
   when: values.message_broker.transport == 'AMQP' and not (values.message_broker.user is defined and message_broker_password is defined)
 
 - debug:
-    var: "{{ lookup('template', 'device_values.yml') | from_yaml | ansible.utils.remove_keys(target=['id', 'type']) | to_json }}"
+    var: "{{ lookup('template', 'device_values.yml') | from_yaml | to_json }}"
 - debug:
     var: context_broker_base_url
 - name: "Query the context broker"

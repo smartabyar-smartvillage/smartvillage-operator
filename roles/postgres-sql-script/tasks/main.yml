@@ -2,10 +2,10 @@
 
 - name: "Query postgres pod"
   set_fact:
-    postgres_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector=('postgres-operator.crunchydata.com/instance-set=' + item.instance + ',postgres-operator.crunchydata.com/role=master'), namespace=ansible_operator_meta.namespace)[0].metadata.name }}"
+    postgres_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector=(('postgres-operator.crunchydata.com/instance-set=' + item.instance + ',postgres-operator.crunchydata.com/role=master')  if values.postgres.crunchy else ('statefulset.kubernetes.io/pod-name=postgres-' + item.instance + '-0')), namespace=ansible_operator_meta.namespace)[0].metadata.name }}"
   when: item.instance is defined and item.database is defined
 
-- name: "Run SQL script {{ item.path }} on pod {{ postgres_pod_name }}"
+- name: "Run SQL script {{ item.path }} on pod {{ postgres_pod_name }}: psql {{ ('-U ' + item.user + ' ') if item.user is defined else '' }}{{ item.database }} < '/etc/postgres/{{ item.path }}'"
   kubernetes.core.k8s_exec:
     pod: "{{ postgres_pod_name }}"
     command: >-

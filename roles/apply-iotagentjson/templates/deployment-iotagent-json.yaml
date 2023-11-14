@@ -116,7 +116,7 @@ spec:
               value: 'false'
 {% endif %}
 {% endif %}
-          image: 'docker.io/fiware/iotagent-json:1.26.0'
+          image: 'docker.io/fiware/iotagent-json:2.4.2'
           imagePullPolicy: IfNotPresent
           livenessProbe:
             initialDelaySeconds: 30

@@ -47,7 +47,11 @@ spec:
 {% if 'geo:point' == attribute.type %}
                     type: string
 {% else %}
+{% if 'geo:' in attribute.type %}
+                    type: object
+{% else %}
                     type: {{ attribute.type }}
+{% endif %}
 {% endif %}
 {% if attribute.default is defined %}
 {% if (attribute.default | type_debug) == 'AnsibleUnicode' %}
