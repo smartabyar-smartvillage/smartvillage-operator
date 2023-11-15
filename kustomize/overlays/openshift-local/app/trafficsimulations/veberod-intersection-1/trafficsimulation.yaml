@@ -16,20 +16,15 @@ spec:
     service: trafficsimulations
     service_path: /Sweden/Veberod/CityCenter
     context: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
-  service_group:
-    resource: /iot/json
-    apikey: TrafficSimulation
   device:
     id: TrafficSimulation-VeberodIntersection1
     subscription_url: http://orionld-smartvillage-sync.smartvillage.svc:8080
   smartvillage:
-    enabled: true
     auth_secret_name: keycloak-client-secret-smartvillage
     auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
-    site_base_url: http://192.168.86.37:12080
-    smart_model_api: /api/traffic-simulation
+    site_base_url: https://smartvillage-web-smartvillage.apps-crc.testing
   attributes:
-    entityId: TrafficSimulation-VeberodIntersection1
+    entityId: urn:ngsi-ld:TrafficSimulation:TrafficSimulation-VeberodIntersection1
     location: 55.633703, 13.492540
     simulationName: Veberöd intersection 1
     sumocfgPath: /usr/local/src/TLC/input/Veberod_intersection_pedestrian.sumocfg

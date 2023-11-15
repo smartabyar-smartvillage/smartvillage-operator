@@ -101,6 +101,14 @@ oc -n smartvillage get events -w
 oc -n smartvillage get pods -w
 ```
 
+## Install the Traffic Simulation JSON in the OpenShift Developer Sandbox
+
+```bash
+ansible-playbook apply-trafficsimulation.yaml -e enable_dev_nodeports=true \
+  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=kustomize/overlays/openshift-local/app/trafficsimulations/veberod-intersection-1/trafficsimulation.yaml
+```
+
 ## Install the Traffic Flow Observed JSON in the OpenShift Developer Sandbox
 
 ```bash
@@ -139,10 +147,4 @@ ansible-playbook apply-crowdflowobserved.yaml -e enable_dev_nodeports=true \
 ansible-playbook apply-crowdflowobserved.yaml -e enable_dev_nodeports=true \
   -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/openshift-local/app/crowdflowobserveds/sweden-veberod-1-lakaregatan-sw-sjobovagen-nw/crowdflowobserved.yaml
-```
-
-```bash
-ansible-playbook apply-crowdflowobserved.yaml -e enable_dev_nodeports=true \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=kustomize/overlays/openshift-local/app/crowdflowobserveds/sweden-veberod-1-sjobovagen-se-dorrodsvagen-sw/crowdflowobserved.yaml
 ```

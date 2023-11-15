@@ -44,7 +44,7 @@ spec:
     subscription_url: http://orionld-smartvillage-sync.smartvillage.svc:8080
   smartvillage:
     enabled: true
-    auth_token_url: https://sso.computate.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+    auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
     site_base_url: https://www.smartabyarsmartvillage.org
   alternate_model:
     enabled: true

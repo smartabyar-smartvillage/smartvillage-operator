@@ -12,7 +12,7 @@ notification:
     uri: "{{ values.device.subscription_url }}"
     accept: "application/json"
     receiverInfo:
-{% if ':9090' in values.context_broker.base_url %}
+{% if ':9090' in values.context_broker.base_url or 'scorpio' in values.context_broker.base_url %}
       - Link: '<{{ values.ngsi_ld.context }}>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
       - Fiware-Service: "{{ values.ngsi_ld.service }}"
       - Fiware-ServicePath: "{{ values.ngsi_ld.service_path }}"
