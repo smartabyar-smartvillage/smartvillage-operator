@@ -24,4 +24,5 @@ COPY playbooks/ ${HOME}/playbooks/
 COPY kustomize/ ${HOME}/kustomize/
 COPY *.yaml ${HOME}/
 COPY *.sh ${HOME}/
+COPY bin/* /usr/local/bin/
 RUN chmod -R a+rw .

@@ -29,6 +29,8 @@
 
 ```bash
 oc create rolebinding default-edit --clusterrole=edit --serviceaccount=$(oc get project -o jsonpath={.items[0].metadata.name}):default
+oc create role default-edit-rolebindings --verb=get,list,watch,create,update,patch,delete --resource=roles,rolebindings
+oc create rolebinding default-edit-rolebindings --role=default-edit-rolebindings --serviceaccount=$(oc get project -o jsonpath={.items[0].metadata.name}):default
 ```
 
 - Run a debug pod that can run Ansible and OpenShift
@@ -40,38 +42,55 @@ oc debug --image quay.io/computateorg/smartvillage-operator
 - Load the name of your namespace into an environment variable. 
 
 ```bash
-export OPENSHIFT_NAMESPACE=$(kubectl get project -o jsonpath={.items[0].metadata.name})
+export OPENSHIFT_NAMESPACE=$(oc get project -o jsonpath={.items[0].metadata.name})
 ```
 
 ## Install the MongoDB NOSQL Database in the OpenShift Developer Sandbox
 
 ```bash
 ansible-playbook apply-edgemongodb.yaml \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/edgemongodbs/mongodb/edgemongodb.yaml
-```
 
-## Install the Orion-LD Context Broker in the OpenShift Developer Sandbox
-
-```bash
-ansible-playbook apply-orionldcontextbroker.yaml \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=kustomize/overlays/sandbox/orionldcontextbrokers/orion-ld/orionldcontextbroker.yaml
+oc get pod -l app.kubernetes.io/instance=mongodb -w
+oc logs -l app.kubernetes.io/instance=mongodb -f
 ```
 
 ## Install the RabbitMQ in the OpenShift Developer Sandbox
 
 ```bash
 ansible-playbook apply-edgerabbitmq.yaml \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/edgerabbitmqs/rabbitmq/edgerabbitmq.yaml
+
+oc get pod -l app.kubernetes.io/name=rabbitmq -w
+oc logs -l app.kubernetes.io/name=rabbitmq -f
+```
+
+## Install the Orion-LD Context Broker in the OpenShift Developer Sandbox
+
+```bash
+ansible-playbook apply-orionldcontextbroker.yaml \
+  -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=kustomize/overlays/sandbox/orionldcontextbrokers/orion-ld/orionldcontextbroker.yaml
+
+oc get pod -l app.kubernetes.io/instance=orion-ld -w
+oc logs -l app.kubernetes.io/instance=orion-ld -f
+```
+
+## Install the IoT Agent JSON in the OpenShift Developer Sandbox
+
+```bash
+ansible-playbook apply-iotagentjson.yaml \
+  -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=kustomize/overlays/sandbox/iotagentjsons/iotagent-json/iotagentjson.yaml
 ```
 
 ## Install zookeeper in the OpenShift Developer Sandbox
 
 ```bash
 ansible-playbook apply-edgezookeeper.yaml \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/edgezookeepers/default/edgezookeeper.yaml
 ```
 
@@ -81,16 +100,8 @@ ansible-playbook apply-edgezookeeper.yaml \
 oc apply -k kustomize/overlays/sandbox/edgesolrs/default/configmaps/
 
 ansible-playbook apply-edgesolr.yaml \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/edgesolrs/default/edgesolrs/default/edgesolr.yaml
-```
-
-## Install the IoT Agent JSON in the OpenShift Developer Sandbox
-
-```bash
-ansible-playbook apply-iotagentjson.yaml \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=kustomize/overlays/sandbox/iotagentjsons/iotagent-json/iotagentjson.yaml
 ```
 
 ## Install postgres in the OpenShift Developer Sandbox
@@ -99,7 +110,7 @@ ansible-playbook apply-iotagentjson.yaml \
 oc create configmap smartvillage-db-create --from-file ~/.local/src/smartabyar-smartvillage/src/main/resources/sql/db-create.sql
 
 ansible-playbook apply-edgepostgres.yaml \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/edgepostgress/postgres/edgepostgres.yaml
 ```
 
@@ -107,7 +118,7 @@ ansible-playbook apply-edgepostgres.yaml \
 
 ```bash
 ansible-playbook apply-smartabyarsmartvillage.yaml \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/smartabyarsmartvillages/smartvillage/smartabyarsmartvillage.yaml
 ```
 
@@ -115,13 +126,13 @@ ansible-playbook apply-smartabyarsmartvillage.yaml \
 
 ```bash
 ansible-playbook apply-trafficflowobserved.yaml \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/trafficflowobserveds/sweden-veberod-1-lakaregatan-ne/trafficflowobserved.yaml
 ```
 
 ```bash
 ansible-playbook apply-trafficflowobserved.yaml \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/trafficflowobserveds/sweden-veberod-1-sjobovagen-se/trafficflowobserved.yaml
 ```
 
@@ -129,30 +140,30 @@ ansible-playbook apply-trafficflowobserved.yaml \
 
 ```bash
 ansible-playbook apply-crowdflowobserved.yaml \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-sjobovagen-se-dorrodsvagen-sw/crowdflowobserved.yaml
 ```
 
 ```bash
 ansible-playbook apply-crowdflowobserved.yaml \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-dorrodsvagen-ne-sjobovagen-se/crowdflowobserved.yaml
 ```
 
 ```bash
 ansible-playbook apply-crowdflowobserved.yaml \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-sjobovagen-nw-lakaregatan-ne/crowdflowobserved.yaml
 ```
 
 ```bash
 ansible-playbook apply-crowdflowobserved.yaml \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-lakaregatan-sw-sjobovagen-nw/crowdflowobserved.yaml
 ```
 
 ```bash
 ansible-playbook apply-crowdflowobserved.yaml \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
+  -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-sjobovagen-se-dorrodsvagen-sw/crowdflowobserved.yaml
 ```
