@@ -488,7 +488,7 @@ schema:
         type: boolean
         default: true
         description: |
-          Determines if the orionld-smartvillage-sync application will be created. 
+          Determines if the ngsild-smartvillage-sync application will be created. 
       sync_replicas:
         type: number
         default: 1

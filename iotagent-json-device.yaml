@@ -25,7 +25,7 @@
         mqtt_host: fiware-broker-mqtt-0-svc
         mqtt_port: 1883
         mqtt_subscription_topic: iot/subscribe
-        subscription_url: http://orionld-smartvillage-sync:8080
+        subscription_url: http://ngsild-smartvillage-sync:8080
       smartvillage:
         enabled: true
         auth_secret_name: keycloak-client-secret-smartvillage

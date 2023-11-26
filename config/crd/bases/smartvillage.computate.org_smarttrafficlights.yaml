@@ -149,7 +149,7 @@ spec:
                   id:
                     type: string
                   subscription_url:
-                    default: http://orionld-smartvillage-sync:8080
+                    default: http://ngsild-smartvillage-sync:8080
                     type: string
 
               smartvillage:

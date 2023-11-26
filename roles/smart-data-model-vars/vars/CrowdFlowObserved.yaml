@@ -95,7 +95,7 @@ schema:
         type: string
       subscription_url:
         type: string
-        default: "http://orionld-smartvillage-sync:8080"
+        default: "http://ngsild-smartvillage-sync:8080"
   smartvillage:
     type: object
     properties:

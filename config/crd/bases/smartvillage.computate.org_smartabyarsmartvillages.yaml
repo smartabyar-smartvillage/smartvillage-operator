@@ -525,7 +525,7 @@ spec:
                     type: boolean
                   sync:
                     default: true
-                    description: "Determines if the orionld-smartvillage-sync application will be created.\
+                    description: "Determines if the ngsild-smartvillage-sync application will be created.\
                       \ \n"
                     type: boolean
                   sync_replicas:

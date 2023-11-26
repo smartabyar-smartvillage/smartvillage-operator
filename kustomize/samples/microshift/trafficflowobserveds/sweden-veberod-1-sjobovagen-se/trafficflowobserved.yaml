@@ -41,7 +41,7 @@ spec:
     mqtt_host: fiware-broker-mqtt-0-svc.smartvillage.svc
     mqtt_port: 1883
     mqtt_subscription_topic: iot/subscribe
-    subscription_url: http://orionld-smartvillage-sync.smartvillage.svc:8080
+    subscription_url: http://ngsild-smartvillage-sync.smartvillage.svc:8080
   smartvillage:
     enabled: true
     auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token

@@ -18,7 +18,7 @@ spec:
     context: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
   device:
     id: sweden-veberod-1-dorrodsvagen-ne-sjobovagen-se
-    subscription_url: http://orionld-smartvillage-sync.smartvillage.svc:8080
+    subscription_url: http://ngsild-smartvillage-sync.smartvillage.svc:8080
   smartvillage:
     auth_secret_name: keycloak-client-secret-smartvillage
     auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token

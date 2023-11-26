@@ -3,7 +3,7 @@ spec:
   revisionHistoryLimit: 0
   selector:
     matchLabels:
-      app: orionld-smartvillage-sync
+      app: ngsild-smartvillage-sync
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -12,12 +12,12 @@ spec:
   template:
     metadata:
       labels:
-        app: orionld-smartvillage-sync
+        app: ngsild-smartvillage-sync
     spec:
       containers:
-        - name: orionld-smartvillage-sync
+        - name: ngsild-smartvillage-sync
           imagePullPolicy: Always
-          image: 'quay.io/computateorg/orionld-smartvillage-sync:latest'
+          image: 'quay.io/computateorg/ngsild-smartvillage-sync:latest'
           ports:
             - containerPort: 8080
               name: http
@@ -39,7 +39,7 @@ spec:
             - name: SITE_INSTANCES
               value: "{{ values.site.instances }}"
             - name: SITE_BASE_URL
-              value: "http://orionld-smartvillage-sync.{{ ansible_operator_meta.namespace }}.svc:8080"
+              value: "http://ngsild-smartvillage-sync.{{ ansible_operator_meta.namespace }}.svc:8080"
             - name: NGSI_LD_HOST_NAME
               value: "{{ values.ngsi_ld.host }}"
             - name: NGSI_LD_PORT

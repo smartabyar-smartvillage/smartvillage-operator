@@ -97,12 +97,12 @@
     name: "{{ site_name }}-web"
     namespace: "{{ ansible_operator_meta.namespace }}"
   ignore_errors: true
-- name: "Remove orionld-smartvillage-sync service on OpenShift"
+- name: "Remove ngsild-smartvillage-sync service on OpenShift"
   k8s:
     state: absent
     api_version: v1
     kind: Service
-    name: "orionld-smartvillage-sync"
+    name: "ngsild-smartvillage-sync"
     namespace: "{{ ansible_operator_meta.namespace }}"
 
 #- name: "Remove {{ site_name }} secret on OpenShift"
@@ -136,7 +136,7 @@
     state: absent
     api_version: apps/v1
     kind: Deployment
-    name: "orionld-smartvillage-sync"
+    name: "ngsild-smartvillage-sync"
     namespace: "{{ ansible_operator_meta.namespace }}"
 #- name: "Remove {{ site_name }} worker persistent volume claims on OpenShift"
 #  k8s:

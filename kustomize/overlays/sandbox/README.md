@@ -84,6 +84,9 @@ oc logs -l app.kubernetes.io/instance=orion-ld -f
 ansible-playbook apply-iotagentjson.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/iotagentjsons/iotagent-json/iotagentjson.yaml
+
+oc get pod -l app.kubernetes.io/instance=iotagent-json -w
+oc logs -l app.kubernetes.io/instance=iotagent-json -f
 ```
 
 ## Install zookeeper in the OpenShift Developer Sandbox
@@ -92,6 +95,9 @@ ansible-playbook apply-iotagentjson.yaml \
 ansible-playbook apply-edgezookeeper.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/edgezookeepers/default/edgezookeeper.yaml
+
+oc get pod -l app=zookeeper -w
+oc logs -l app=zookeeper -f
 ```
 
 ## Install solr in the OpenShift Developer Sandbox
@@ -102,12 +108,13 @@ oc apply -k kustomize/overlays/sandbox/edgesolrs/default/configmaps/
 ansible-playbook apply-edgesolr.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/edgesolrs/default/edgesolrs/default/edgesolr.yaml
+oc logs -l app=zookeeper -f
 ```
 
 ## Install postgres in the OpenShift Developer Sandbox
 
 ```bash
-oc create configmap smartvillage-db-create --from-file ~/.local/src/smartabyar-smartvillage/src/main/resources/sql/db-create.sql
+oc apply configmap smartvillage-db-create --from-file ~/.local/src/smartabyar-smartvillage/src/main/resources/sql/db-create.sql
 
 ansible-playbook apply-edgepostgres.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \

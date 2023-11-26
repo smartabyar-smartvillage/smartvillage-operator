@@ -21,7 +21,7 @@ spec:
     apikey: TrafficFlowObserved
   device:
     id: sweden-veberod-1-sjobovagen-se
-    subscription_url: http://orionld-smartvillage-sync:8080
+    subscription_url: http://ngsild-smartvillage-sync:8080
   message_broker:
     transport: AMQP
     host: default-rabbitmq

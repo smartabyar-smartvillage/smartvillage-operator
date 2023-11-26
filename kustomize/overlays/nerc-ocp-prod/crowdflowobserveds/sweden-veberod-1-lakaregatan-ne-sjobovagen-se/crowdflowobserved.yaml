@@ -21,7 +21,7 @@ spec:
     context: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
   device:
     id: sweden-veberod-1-lakaregatan-ne-sjobovagen-se
-    subscription_url: http://orionld-smartvillage-sync:8080
+    subscription_url: http://ngsild-smartvillage-sync:8080
   message_broker:
     transport: AMQP
     host: default-rabbitmq

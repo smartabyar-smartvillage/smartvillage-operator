@@ -29,12 +29,12 @@
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'route-web.yaml') }}"
   when: values.site.create
-- name: "Install orionld-smartvillage-sync service on OpenShift"
+- name: "Install ngsild-smartvillage-sync service on OpenShift"
   k8s:
     state: "{{ 'present' if values.ngsi_ld.sync else 'absent' }}"
     api_version: v1
     kind: Service
-    name: "orionld-smartvillage-sync"
+    name: "ngsild-smartvillage-sync"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'service-orionld-sync.yaml') }}"
   when: values.ngsi_ld.sync
@@ -80,9 +80,9 @@
     state: "{{ 'present' if values.ngsi_ld.sync else 'absent' }}"
     api_version: apps/v1
     kind: Deployment
-    name: "orionld-smartvillage-sync"
+    name: "ngsild-smartvillage-sync"
     namespace: "{{ ansible_operator_meta.namespace }}"
-    definition: "{{ lookup('template', 'deployment-orionld-sync.yaml') }}"
+    definition: "{{ lookup('template', 'deployment-ngsild-sync.yaml') }}"
   when: values.ngsi_ld.sync
 #- name: "Install {{ site_name }} worker persistent volume claims on OpenShift"
 #  k8s:

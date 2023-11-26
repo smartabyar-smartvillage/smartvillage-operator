@@ -9,6 +9,6 @@ spec:
       protocol: TCP
       targetPort: 8081
   selector:
-    app: "orionld-smartvillage-sync"
+    app: "ngsild-smartvillage-sync"
   sessionAffinity: None
   type: ClusterIP
