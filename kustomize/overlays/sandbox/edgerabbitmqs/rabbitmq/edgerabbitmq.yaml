@@ -2,7 +2,6 @@ apiVersion: smartvillage.computate.org/v1
 kind: EdgeRabbitMQ
 metadata:
   name: rabbitmq
-  namespace: smartvillage
 spec:
   rabbitmq:
     storage:

@@ -20,6 +20,15 @@ schema:
         type: string
         default: mongodb
         description: The name of the MongoDB
+      password_secret:
+        type: object
+        properties:
+          name:
+            type: string
+            description: The name of the Kubernetes/OpenShift secret containing the mongodb password. 
+          key:
+            type: string
+            description: The key within the secret containing the password value. 
   message_broker:
     type: object
     properties:
@@ -55,7 +64,7 @@ schema:
           key:
             type: string
             description: The key within the secret containing the password value. 
-  orionld:
+  ngsild:
     type: object
     properties:
       host:

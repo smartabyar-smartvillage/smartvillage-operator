@@ -1,0 +1,14 @@
+apiVersion: smartvillage.computate.org/v1
+kind: OrionLDContextBroker
+metadata:
+  name: orion-ld
+  namespace: orion-ld
+spec:
+  orionld:
+    cors_allowed_origin: '__ALL'
+    route:
+      create: true
+    replicas: 1
+  mongodb:
+    namespace: mongodb
+    name: mongodb

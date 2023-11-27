@@ -52,6 +52,9 @@ spec:
                   port:
                     default: 9093
                     type: number
+                  replicas:
+                    default: 3
+                    type: number
                   resources:
                     properties:
                       limits:

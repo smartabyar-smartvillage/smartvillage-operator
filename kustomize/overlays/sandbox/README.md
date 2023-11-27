@@ -108,17 +108,22 @@ oc apply -k kustomize/overlays/sandbox/edgesolrs/default/configmaps/
 ansible-playbook apply-edgesolr.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/edgesolrs/default/edgesolrs/default/edgesolr.yaml
-oc logs -l app=zookeeper -f
+
+oc get pod -l app=solr -w
+oc logs -l app=solr -f
 ```
 
 ## Install postgres in the OpenShift Developer Sandbox
 
 ```bash
-oc apply configmap smartvillage-db-create --from-file ~/.local/src/smartabyar-smartvillage/src/main/resources/sql/db-create.sql
+oc create configmap smartvillage-db-create --from-file ~/.local/src/smartabyar-smartvillage/src/main/resources/sql/db-create.sql
 
 ansible-playbook apply-edgepostgres.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=kustomize/overlays/sandbox/edgepostgress/postgres/edgepostgres.yaml
+
+oc get pod -l app=postgres -w
+oc logs -l app=postgres -f
 ```
 
 ## Install the SmartaByarSmartVillage in the OpenShift Developer Sandbox

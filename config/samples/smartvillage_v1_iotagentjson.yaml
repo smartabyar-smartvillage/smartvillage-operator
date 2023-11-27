@@ -18,6 +18,7 @@ spec:
   mongodb:
     name: |-
       mongodb
+    password_secret:
   message_broker:
     name: |-
       default
@@ -26,7 +27,7 @@ spec:
     user: |-
       user
     password_secret:
-  orionld:
+  ngsild:
     host: |-
       scorpiobroker.scorpiobroker.svc
     port: 9090

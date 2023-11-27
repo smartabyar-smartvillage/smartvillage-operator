@@ -23,14 +23,5 @@ values:
     configsets: "{{ crd.solr.configsets | default([]) }}"
     collections: "{{ crd.solr.collections | default([]) }}"
   zookeeper:
-    replicas: "{{ crd.zookeeper.replicas | default(schema | community.general.json_query('zookeeper.properties.replicas.default')) }}"
-    storage: "{{ crd.zookeeper.storage | default(schema | community.general.json_query('zookeeper.properties.storage.default')) }}"
     host: "{{ crd.zookeeper.host | default(schema | community.general.json_query('zookeeper.properties.host.default')) }}"
     port: "{{ crd.zookeeper.port | default(schema | community.general.json_query('zookeeper.properties.port.default')) }}"
-    resources:
-      limits:
-        memory: "{{ crd.zookeeper.resources.limits.memory | default(schema | community.general.json_query('zookeeper.properties.resources.properties.limits.properties.memory.default')) }}"
-        cpu: "{{ crd.zookeeper.resources.limits.cpu | default(schema | community.general.json_query('zookeeper.properties.resources.properties.limits.properties.cpu.default')) }}"
-      requests:
-        memory: "{{ crd.zookeeper.resources.requests.memory | default(schema | community.general.json_query('zookeeper.properties.resources.properties.requests.properties.memory.default')) }}"
-        cpu: "{{ crd.zookeeper.resources.requests.cpu | default(schema | community.general.json_query('zookeeper.properties.resources.properties.requests.properties.cpu.default')) }}"

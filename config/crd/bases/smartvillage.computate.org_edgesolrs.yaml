@@ -63,9 +63,9 @@ spec:
                     items:
                       properties:
                         configmap:
-                          description: "The name of the configMap where the configset is defined. \n\
-                            This should include a solrconfig.xml, managed-schema, and other definitions\
-                            \ like stopwords, synonyms and contractions. "
+                          description: "The name of the configMap where the configset is defined. \nThis
+                            should include a solrconfig.xml, managed-schema, and other definitions like
+                            stopwords, synonyms and contractions. "
                           type: string
                         name:
                           description: 'The name of the configset as it will be defined in Solr. '
@@ -131,33 +131,6 @@ spec:
                   port:
                     default: 2181
                     type: number
-                  replicas:
-                    default: 1
-                    type: number
-                  resources:
-                    properties:
-                      limits:
-                        properties:
-                          cpu:
-                            default: 500m
-                            type: string
-                          memory:
-                            default: 500Mi
-                            type: string
-                        type: object
-                      requests:
-                        properties:
-                          cpu:
-                            default: 500m
-                            type: string
-                          memory:
-                            default: 500Mi
-                            type: string
-                        type: object
-                    type: object
-                  storage:
-                    default: 5Gi
-                    type: string
 
           status:
             description: Status defines the observed state of EdgeSolr

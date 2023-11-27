@@ -1,5 +1,0 @@
-apiVersion: smartvillage.computate.org/v1
-kind: EdgeMongoDB
-metadata:
-  name: mongodb
-spec: {}

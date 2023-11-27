@@ -6,6 +6,7 @@ values:
     enable_dev_nodeports: "{{ crd.kafka.enable_dev_nodeports | default(schema | community.general.json_query('kafka.properties.enable_dev_nodeports.default')) }}"
     name: "{{ crd.kafka.name | default(schema | community.general.json_query('kafka.properties.name.default')) }}"
     service_name: "{{ crd.kafka.service_name | default(schema | community.general.json_query('kafka.properties.service_name.default')) }}"
+    replicas: "{{ crd.kafka.replicas | default(schema | community.general.json_query('kafka.properties.replicas.default')) }}"
     port: "{{ crd.kafka.port | default(schema | community.general.json_query('kafka.properties.port.default')) }}"
     resources:
       limits:

@@ -14,62 +14,130 @@ Clone the Smart Village Operator source code:
 git clone git@github.com:computate-org/smartvillage-operator.git ~/.local/src/smartvillage-operator
 ```
 
-## Deploy the operator into the smartvillage-operator-manager namespace
+# Install prerequisite helm binary
+
+Download the latest [helm binary here](https://github.com/helm/helm/releases), I recommend the Linux amd64 binary if you are on a Linux x86_64 system. 
 
 ```bash
-cd ~/.local/src/smartvillage-operator
-make deploy
-```
-
-## View the logs of the operator
-
-```bash
-oc logs -n smartvillage-operator-system deployment/smartvillage-operator-controller-manager -f
+mkdir -p ~/.local/opt/helm/
+tar xvf ~/Downloads/helm-v3.13.2-linux-amd64.tar.gz --strip-components=1 -C ~/.local/opt/helm/
+cp ~/.local/opt/helm/helm ~/.local/bin/
 ```
 
 ## Deploy the required namespaces, subscriptions, SCCs, and CRDs for the Smart Village Operator
 
 ```bash
-oc create -k kustomize/overlays/openshift-local/app/base/
+oc apply -k kustomize/overlays/openshift-local/base/
 ```
 
-## Deploy PostgreSQL relational database to OpenShift Local
+## Install the MongoDB NOSQL Database in the OpenShift Developer openshift-local
 
 ```bash
-oc create -k kustomize/overlays/openshift-local/app/app/edgepostgress/
+ansible-playbook apply-edgemongodb.yaml \
+  -e crd_path=kustomize/overlays/openshift-local/ansible/edgemongodbs/mongodb/edgemongodb.yaml
+
+oc -n mongodb get pod -l app.kubernetes.io/instance=mongodb -w
+oc -n mongodb logs -l app.kubernetes.io/instance=mongodb -f
 ```
 
-Watch for pods and events in the `postgres` namespace: 
+## Install the RabbitMQ in the OpenShift Developer openshift-local
 
 ```bash
-oc -n postgres get events -w
-oc -n postgres get pods -w
+ansible-playbook apply-edgerabbitmq.yaml \
+  -e crd_path=kustomize/overlays/openshift-local/ansible/edgerabbitmqs/rabbitmq/edgerabbitmq.yaml
+
+oc -n rabbitmq get pod -l app.kubernetes.io/name=rabbitmq -w
+oc -n rabbitmq logs -l app.kubernetes.io/name=rabbitmq -f
 ```
 
-## Deploy Apache Solr to OpenShift Local
+## Install the Orion-LD Context Broker in the OpenShift Developer openshift-local
 
 ```bash
-oc create -k kustomize/overlays/openshift-local/app/app/edgesolrs/
+ansible-playbook apply-orionldcontextbroker.yaml \
+  -e crd_path=kustomize/overlays/openshift-local/ansible/orionldcontextbrokers/orion-ld/orionldcontextbroker.yaml
+
+oc -n orion-ld get pod -l app.kubernetes.io/instance=orion-ld -w
+oc -n orion-ld logs -l app.kubernetes.io/instance=orion-ld -f
 ```
 
-Watch for pods and events in the `solr` namespace: 
+## Install the IoT Agent JSON in the OpenShift Developer openshift-local
 
 ```bash
-oc -n solr get events -w
-oc -n solr get pods -w
+ansible-playbook apply-iotagentjson.yaml \
+  -e crd_path=kustomize/overlays/openshift-local/ansible/iotagentjsons/iotagent-json/iotagentjson.yaml
+
+oc -n iotagent get pod -l app.kubernetes.io/instance=iotagent-json -w
+oc -n iotagent logs -l app.kubernetes.io/instance=iotagent-json -f
 ```
 
-## Deploy AMQ Streams Kafka to OpenShift Local
+## Install zookeeper in the OpenShift Developer openshift-local
 
 ```bash
-oc create -k kustomize/overlays/openshift-local/app/app/edgekafkas/
+ansible-playbook apply-edgezookeeper.yaml \
+  -e crd_path=kustomize/overlays/openshift-local/ansible/edgezookeepers/default/edgezookeeper.yaml
+
+oc -n zookeeper get pod -l app=zookeeper -w
+oc -n zookeeper logs -l app=zookeeper -f
 ```
 
-Watch for pods and events in the `kafka` namespace: 
+## Install solr in the OpenShift Developer openshift-local
 
 ```bash
-oc -n kafka get events -w
-oc -n kafka get pods -w
+oc apply -k kustomize/overlays/openshift-local/ansible/edgesolrs/default/configmaps/
+
+ansible-playbook apply-edgesolr.yaml \
+  -e crd_path=kustomize/overlays/openshift-local/ansible/edgesolrs/default/edgesolrs/default/edgesolr.yaml
+
+oc -n solr get pod -l app=solr -w
+oc -n solr logs -l app=solr -f
+```
+
+You should see a play recap that has failed. 
+This is expected because the solr pod is barely getting created. 
+The final tasks in the playbook expect the solr pod to be running to upload the computate configset, and create a smartvillage solr collection based on the computate configset. 
+Retry the playbook once the solr pod is running. 
+
+```bash
+ansible-playbook apply-edgesolr.yaml \
+  -e crd_path=kustomize/overlays/openshift-local/ansible/edgesolrs/default/edgesolrs/default/edgesolr.yaml
+
+oc -n solr get pod -l app=solr -w
+oc -n solr logs -l app=solr -f
+```
+
+## Install kafka in the OpenShift Developer openshift-local
+
+```bash
+ansible-playbook apply-edgekafka.yaml \
+  -e crd_path=kustomize/overlays/openshift-local/ansible/edgekafkas/default/edgekafka.yaml
+
+oc -n kafka get pod -l strimzi.io/name=default-kafka -w
+oc -n kafka logs -l strimzi.io/name=default-kafka -f
+```
+
+## Install postgres in the OpenShift Developer openshift-local
+
+```bash
+oc -n postgres create configmap smartvillage-db-create --from-file ~/.local/src/smartabyar-smartvillage/src/main/resources/sql/db-create.sql
+
+ansible-playbook apply-edgepostgres.yaml \
+  -e crd_path=kustomize/overlays/openshift-local/ansible/edgepostgress/postgres/edgepostgres.yaml
+
+oc -n postgres get pod -l postgres-operator.crunchydata.com/cluster=postgres -w
+oc -n postgres logs -l postgres-operator.crunchydata.com/cluster=postgres -f
+```
+
+You should see a play recap that has failed. 
+This is expected because the postgres pod is barely getting created. 
+The final tasks in the playbook expect the database create SQL scripts to be run for the smartvillage application in postgres.  
+Retry the playbook once the postgres pod is running. 
+
+```bash
+ansible-playbook apply-edgepostgres.yaml \
+  -e crd_path=kustomize/overlays/openshift-local/ansible/edgepostgress/postgres/edgepostgres.yaml
+
+oc -n postgres get pod -l postgres-operator.crunchydata.com/cluster=postgres -w
+oc -n postgres logs -l postgres-operator.crunchydata.com/cluster=postgres -f
 ```
 
 ## Copy secrets
@@ -80,12 +148,19 @@ oc -n kafka get pods -w
 oc -n postgres get secret postgres-pguser-smartvillage -o json \
     | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
     | oc -n smartvillage apply -f -
-oc -n kafka get secret smartvillage-kafka -o json \
+oc -n kafka get secret default-kafka -o json \
     | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
     | oc -n smartvillage apply -f -
 oc -n kafka get secret default-cluster-ca-cert -o json \
     | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
     | oc -n smartvillage apply -f -
+```
+
+## Install the SmartaByarSmartVillage in the OpenShift Developer openshift-local
+
+```bash
+ansible-playbook apply-smartabyarsmartvillage.yaml \
+  -e crd_path=kustomize/overlays/openshift-local/ansible/smartabyarsmartvillages/smartvillage/smartabyarsmartvillage.yaml
 ```
 
 ## Deploy Smarta Byar Smart Village to OpenShift Local
@@ -101,50 +176,43 @@ oc -n smartvillage get events -w
 oc -n smartvillage get pods -w
 ```
 
-## Install the Traffic Simulation JSON in the OpenShift Developer Sandbox
+## Install the Traffic Simulation JSON in the OpenShift Developer openshift-local
 
 ```bash
 ansible-playbook apply-trafficsimulation.yaml -e enable_dev_nodeports=true \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=kustomize/overlays/openshift-local/app/trafficsimulations/veberod-intersection-1/trafficsimulation.yaml
+  -e crd_path=kustomize/overlays/openshift-local/ansible/app/trafficsimulations/veberod-intersection-1/trafficsimulation.yaml
 ```
 
-## Install the Traffic Flow Observed JSON in the OpenShift Developer Sandbox
+## Install the Traffic Flow Observed JSON in the OpenShift Developer openshift-local
 
 ```bash
 ansible-playbook apply-trafficflowobserved.yaml -e enable_dev_nodeports=true \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=kustomize/overlays/openshift-local/app/trafficflowobserveds/sweden-veberod-1-lakaregatan-ne/trafficflowobserved.yaml
+  -e crd_path=kustomize/overlays/openshift-local/ansible/app/trafficflowobserveds/sweden-veberod-1-lakaregatan-ne/trafficflowobserved.yaml
 ```
 
 ```bash
 ansible-playbook apply-trafficflowobserved.yaml -e enable_dev_nodeports=true \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=kustomize/overlays/openshift-local/app/trafficflowobserveds/sweden-veberod-1-sjobovagen-se/trafficflowobserved.yaml
+  -e crd_path=kustomize/overlays/openshift-local/ansible/app/trafficflowobserveds/sweden-veberod-1-sjobovagen-se/trafficflowobserved.yaml
 ```
 
-## Install the Crowd Flow Observed JSON in the OpenShift Developer Sandbox
+## Install the Crowd Flow Observed JSON in the OpenShift Developer openshift-local
 
 ```bash
 ansible-playbook apply-crowdflowobserved.yaml -e enable_dev_nodeports=true \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=kustomize/overlays/openshift-local/app/crowdflowobserveds/sweden-veberod-1-sjobovagen-se-dorrodsvagen-sw/crowdflowobserved.yaml
-```
-
-```bash
-ansible-playbook apply-crowdflowobserved.yaml -e enable_dev_nodeports=true \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=kustomize/overlays/openshift-local/app/crowdflowobserveds/sweden-veberod-1-dorrodsvagen-ne-sjobovagen-se/crowdflowobserved.yaml
+  -e crd_path=kustomize/overlays/openshift-local/ansible/app/crowdflowobserveds/sweden-veberod-1-sjobovagen-se-dorrodsvagen-sw/crowdflowobserved.yaml
 ```
 
 ```bash
 ansible-playbook apply-crowdflowobserved.yaml -e enable_dev_nodeports=true \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=kustomize/overlays/openshift-local/app/crowdflowobserveds/sweden-veberod-1-sjobovagen-nw-lakaregatan-ne/crowdflowobserved.yaml
+  -e crd_path=kustomize/overlays/openshift-local/ansible/app/crowdflowobserveds/sweden-veberod-1-dorrodsvagen-ne-sjobovagen-se/crowdflowobserved.yaml
 ```
 
 ```bash
 ansible-playbook apply-crowdflowobserved.yaml -e enable_dev_nodeports=true \
-  -e ansible_operator_meta_namespace=$(kubectl get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=kustomize/overlays/openshift-local/app/crowdflowobserveds/sweden-veberod-1-lakaregatan-sw-sjobovagen-nw/crowdflowobserved.yaml
+  -e crd_path=kustomize/overlays/openshift-local/ansible/app/crowdflowobserveds/sweden-veberod-1-sjobovagen-nw-lakaregatan-ne/crowdflowobserved.yaml
+```
+
+```bash
+ansible-playbook apply-crowdflowobserved.yaml -e enable_dev_nodeports=true \
+  -e crd_path=kustomize/overlays/openshift-local/ansible/app/crowdflowobserveds/sweden-veberod-1-lakaregatan-sw-sjobovagen-nw/crowdflowobserved.yaml
 ```

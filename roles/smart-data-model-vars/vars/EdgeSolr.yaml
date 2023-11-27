@@ -100,37 +100,9 @@ schema:
   zookeeper:
     type: object
     properties:
-      replicas:
-        type: number
-        default: 1
-      storage:
-        type: string
-        default: '5Gi'
       host:
         type: string
         default: zookeeper.zookeeper.svc
       port:
         type: number
         default: 2181
-      resources:
-        type: object
-        properties:
-          limits:
-            type: object
-            properties:
-              memory:
-                type: string
-                default: '500Mi'
-              cpu:
-                type: string
-                default: '500m'
-          requests:
-            type: object
-            properties:
-              memory:
-                type: string
-                default: '500Mi'
-              cpu:
-                type: string
-                default: '500m'
-

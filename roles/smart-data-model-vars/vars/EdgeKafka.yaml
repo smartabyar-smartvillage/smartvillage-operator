@@ -23,6 +23,9 @@ schema:
       service_name:
         type: string
         default: smartvillage-kafka-kafka-bootstrap
+      replicas:
+        type: number
+        default: 3
       port:
         type: number
         default: 9093

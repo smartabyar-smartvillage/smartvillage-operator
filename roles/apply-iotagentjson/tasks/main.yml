@@ -9,6 +9,7 @@
   set_fact:
     mongodb_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector=('app.kubernetes.io/component=mongodb,app.kubernetes.io/instance=' + values.mongodb.name + ',app.kubernetes.io/name=' + values.mongodb.name), namespace=mongodb_namespace)[0].metadata.name }}"
     message_broker_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.message_broker.password_secret.name, namespace=message_broker_namespace)[0].data[values.message_broker.password_secret.key] | b64decode }}"
+    mongodb_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.mongodb.password_secret.name, namespace=mongodb_namespace)[0].data[values.mongodb.password_secret.key] | b64decode }}"
 
 - name: "Install message broker secret on OpenShift"
   k8s:
@@ -18,6 +19,14 @@
     name: iotagent-json-message-broker-secret
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'message-broker-password-secret.yaml') }}"
+- name: "Install mongodb secret on OpenShift"
+  k8s:
+    state: present
+    kind: Secret
+    api_version: v1
+    name: iotagent-json-mongodb-secret
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'mongodb-password-secret.yaml') }}"
     
 - name: Run create database scripts on MongoDB
   kubernetes.core.k8s_exec:

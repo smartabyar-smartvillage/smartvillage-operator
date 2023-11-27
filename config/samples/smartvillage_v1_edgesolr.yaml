@@ -38,20 +38,6 @@ spec:
         cpu: |-
           1
   zookeeper:
-    replicas: 1
-    storage: |-
-      5Gi
     host: |-
       zookeeper.zookeeper.svc
     port: 2181
-    resources:
-      limits:
-        memory: |-
-          500Mi
-        cpu: |-
-          500m
-      requests:
-        memory: |-
-          500Mi
-        cpu: |-
-          500m

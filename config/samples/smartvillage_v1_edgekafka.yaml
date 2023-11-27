@@ -19,6 +19,7 @@ spec:
       default
     service_name: |-
       smartvillage-kafka-kafka-bootstrap
+    replicas: 3
     port: 9093
     resources:
       limits:

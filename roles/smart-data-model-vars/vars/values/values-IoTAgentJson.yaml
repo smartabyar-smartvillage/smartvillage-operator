@@ -5,6 +5,9 @@ values:
   mongodb:
     namespace: "{{ crd.mongodb.namespace | default('') }}"
     name: "{{ crd.mongodb.name | default(schema | community.general.json_query('mongodb.properties.name.default')) }}"
+    password_secret:
+      name: "{{ crd.mongodb.password_secret.name | default('') }}"
+      key: "{{ crd.mongodb.password_secret.key | default('') }}"
   message_broker:
     name: "{{ crd.message_broker.name | default(schema | community.general.json_query('message_broker.properties.name.default')) }}"
     namespace: "{{ crd.message_broker.namespace | default('') }}"
@@ -16,9 +19,9 @@ values:
     password_secret:
       name: "{{ crd.message_broker.password_secret.name | default('') }}"
       key: "{{ crd.message_broker.password_secret.key | default('') }}"
-  orionld:
-    host: "{{ crd.orionld.host | default(schema | community.general.json_query('orionld.properties.host.default')) }}"
-    port: "{{ crd.orionld.port | default(schema | community.general.json_query('orionld.properties.port.default')) }}"
+  ngsild:
+    host: "{{ crd.ngsild.host | default(schema | community.general.json_query('ngsild.properties.host.default')) }}"
+    port: "{{ crd.ngsild.port | default(schema | community.general.json_query('ngsild.properties.port.default')) }}"
   iotagent:
     http_port: "{{ crd.iotagent.http_port | default(schema | community.general.json_query('iotagent.properties.http_port.default')) }}"
     north_port: "{{ crd.iotagent.north_port | default(schema | community.general.json_query('iotagent.properties.north_port.default')) }}"

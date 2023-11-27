@@ -28,9 +28,9 @@ spec:
       containers:
         - env:
             - name: IOTA_CB_HOST
-              value: '{{ values.orionld.host }}'
+              value: '{{ values.ngsild.host }}'
             - name: IOTA_CB_PORT
-              value: '{{ values.orionld.port }}'
+              value: '{{ values.ngsild.port }}'
             - name: IOTA_NORTH_PORT
               value: '{{ values.iotagent.north_port }}'
             - name: IOTA_REGISTRY_TYPE
@@ -56,8 +56,8 @@ spec:
             - name: IOTA_MONGO_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: "{{ values.mongodb.name }}"
-                  key: mongodb-root-password
+                  name: "iotagent-json-mongodb-secret"
+                  key: "password"
             - name: IOTA_MONGO_DB
               value: 'iotagentjson'
             - name: IOTA_HTTP_PORT
@@ -78,8 +78,8 @@ spec:
             - name: IOTA_MQTT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: "{{ values.message_broker.password_secret.name }}"
-                  key: "{{ values.message_broker.password_secret.key }}"
+                  name: "iotagent-json-message-broker-secret"
+                  key: "password"
             - name: IOTA_MQTT_REJECT_UNAUTHORIZED
               value: 'true'
 {% else %}

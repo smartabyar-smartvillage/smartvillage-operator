@@ -1,9 +1,9 @@
 spec:
   kafka:
     config:
-      default.replication.factor: 3
-      min.insync.replicas: 3
-    replicas: 3
+      default.replication.factor: {{ values.kafka.replicas }}
+      min.insync.replicas: {{ values.kafka.replicas }}
+    replicas: {{ values.kafka.replicas }}
     authorization:
       type: simple
     resources:
