@@ -1,11 +1,12 @@
 apiVersion: smartvillage.computate.org/v1
 kind: EdgeSolr
 metadata:
-  name: default
+  name: solr
   namespace: solr
 spec:
+  enable_dev_nodeports: true
   solr:
-    name: default
+    name: solr
     route:
       create: true
     replicas: 1

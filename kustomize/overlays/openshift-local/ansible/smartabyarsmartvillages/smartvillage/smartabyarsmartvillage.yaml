@@ -54,12 +54,12 @@ spec:
     cluster_name: postgres
     secret_name: postgres-pguser-smartvillage
   solr:
-    service_name: default-solrcloud-common
-    port: 80
+    service_name: solr
+    port: 8983
     ssl: false
     route:
       create: true
-      host_name: solr.apps-crc.testing
+      host_name: solr-solr.apps-crc.testing
     collection: smartvillage
   email:
     enabled: true
@@ -120,8 +120,8 @@ spec:
   kafka:
     create: true
     keystore_secret: smartvillage-kafka
-    truststore_secret: smartvillage-kafka-cluster-ca-cert
-    service_name: smartvillage-kafka-kafka-bootstrap
+    truststore_secret: default-cluster-ca-cert
+    service_name: default-kafka-bootstrap
     port: 9093
     group: smartvillage-kafka
     security_protocol: SSL

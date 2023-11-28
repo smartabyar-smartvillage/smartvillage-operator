@@ -83,10 +83,10 @@ oc -n zookeeper logs -l app=zookeeper -f
 ## Install solr in the OpenShift Developer openshift-local
 
 ```bash
-oc apply -k kustomize/overlays/openshift-local/ansible/edgesolrs/default/configmaps/
+oc apply -k kustomize/overlays/openshift-local/ansible/edgesolrs/solr/configmaps/
 
 ansible-playbook apply-edgesolr.yaml \
-  -e crd_path=kustomize/overlays/openshift-local/ansible/edgesolrs/default/edgesolrs/default/edgesolr.yaml
+  -e crd_path=kustomize/overlays/openshift-local/ansible/edgesolrs/solr/edgesolrs/solr/edgesolr.yaml
 
 oc -n solr get pod -l app=solr -w
 oc -n solr logs -l app=solr -f
@@ -99,7 +99,7 @@ Retry the playbook once the solr pod is running.
 
 ```bash
 ansible-playbook apply-edgesolr.yaml \
-  -e crd_path=kustomize/overlays/openshift-local/ansible/edgesolrs/default/edgesolrs/default/edgesolr.yaml
+  -e crd_path=kustomize/overlays/openshift-local/ansible/edgesolrs/solr/edgesolrs/solr/edgesolr.yaml
 
 oc -n solr get pod -l app=solr -w
 oc -n solr logs -l app=solr -f
@@ -148,7 +148,7 @@ oc -n postgres logs -l postgres-operator.crunchydata.com/cluster=postgres -f
 oc -n postgres get secret postgres-pguser-smartvillage -o json \
     | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
     | oc -n smartvillage apply -f -
-oc -n kafka get secret default-kafka -o json \
+oc -n kafka get secret smartvillage-kafka -o json \
     | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
     | oc -n smartvillage apply -f -
 oc -n kafka get secret default-cluster-ca-cert -o json \
