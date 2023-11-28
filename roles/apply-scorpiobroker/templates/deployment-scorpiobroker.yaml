@@ -432,7 +432,7 @@ spec:
             - name: "SCORPIO_TOPICS_REGSUBSYNC"
               value: "{{ values.kafka.topic_names.regsubsync }}"
 {% endif %}
-          image: 'docker.io/scorpiobroker/all-in-one-runner:java-latest'
+          image: 'docker.io/scorpiobroker/all-in-one-runner:java{% if values.kafka.enabled %}-kafka{% else %}{% endif %}-latest'
           imagePullPolicy: IfNotPresent
           livenessProbe:
             initialDelaySeconds: 20
