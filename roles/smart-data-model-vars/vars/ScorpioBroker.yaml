@@ -63,7 +63,7 @@ schema:
                 default: '1'
               memory:
                 type: string
-                default: 2Gi
+                default: 3Gi
           requests:
             type: object
             properties:
@@ -72,7 +72,7 @@ schema:
                 default: '1'
               memory:
                 type: string
-                default: 2Gi
+                default: 3Gi
 
   postgres:
     type: object
@@ -97,6 +97,9 @@ schema:
   kafka:
     type: object
     properties:
+      enabled:
+        type: boolean
+        default: true
       topic_names:
         type: object
         properties:

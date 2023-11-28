@@ -51,6 +51,7 @@ spec:
                   key: password
                   name: "{{ values.postgres.secret_name }}"
 
+{% if values.kafka.enabled %}
             - name: "BUSHOST"
               value: "{{ values.kafka.host }}"
             - name: "BUSPORT"
@@ -430,7 +431,8 @@ spec:
               value: "{{ values.kafka.topic_names.regsubalive }}"
             - name: "SCORPIO_TOPICS_REGSUBSYNC"
               value: "{{ values.kafka.topic_names.regsubsync }}"
-          image: 'docker.io/scorpiobroker/all-in-one-runner:java-kafka-latest'
+{% endif %}
+          image: 'docker.io/scorpiobroker/all-in-one-runner:java-latest'
           imagePullPolicy: IfNotPresent
           livenessProbe:
             initialDelaySeconds: 20
@@ -459,6 +461,7 @@ spec:
             requests:
               cpu: '{{ values.scorpiobroker.resources.requests.cpu }}'
               memory: '{{ values.scorpiobroker.resources.requests.memory }}'
+{% if values.kafka.enabled %}
           volumeMounts:
             - mountPath: /opt/kafka/keystore
               name: "{{ values.kafka.keystore_secret }}"
@@ -475,3 +478,4 @@ spec:
           secret:
             defaultMode: 420
             secretName: "{{ values.kafka.truststore_secret }}"
+{% endif %}

@@ -4,6 +4,7 @@ metadata:
   name: rabbitmq
   namespace: rabbitmq
 spec:
+  enable_dev_nodeports: true
   rabbitmq:
     storage:
      enabled: false

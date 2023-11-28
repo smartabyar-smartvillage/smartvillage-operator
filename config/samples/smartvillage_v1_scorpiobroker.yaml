@@ -31,12 +31,12 @@ spec:
         cpu: |-
           1
         memory: |-
-          2Gi
+          3Gi
       requests:
         cpu: |-
           1
         memory: |-
-          2Gi
+          3Gi
   postgres:
     host: |-
       postgres-primary.postgres.svc
@@ -44,6 +44,7 @@ spec:
     secret_name: |-
       postgres-pguser-scorpiobroker
   kafka:
+    enabled: True
     topic_names:
       entity: |-
         scorpiobroker-entity

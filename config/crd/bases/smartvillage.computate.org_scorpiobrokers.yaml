@@ -45,8 +45,8 @@ spec:
                 type: object
                 properties:
                   cors_allowed_origin:
-                    description: "Enable Cross-Origin Resource Sharing with allowed origin. \nUse '__ALL'\
-                      \ for any.\n"
+                    description: "Enable Cross-Origin Resource Sharing with allowed origin. \nUse '__ALL'
+                      for any.\n"
                     type: string
                   log_level:
                     default: INFO
@@ -72,7 +72,7 @@ spec:
                             default: '1'
                             type: string
                           memory:
-                            default: 2Gi
+                            default: 3Gi
                             type: string
                         type: object
                       requests:
@@ -81,7 +81,7 @@ spec:
                             default: '1'
                             type: string
                           memory:
-                            default: 2Gi
+                            default: 3Gi
                             type: string
                         type: object
                     type: object
@@ -113,13 +113,16 @@ spec:
                     type: number
                   secret_name:
                     default: postgres-pguser-scorpiobroker
-                    description: "Optional secret name where the postgres secrets are stored. \nIf empty,\
-                      \ \"postgres-pguser-scorpiobroker\" will be used. \n"
+                    description: "Optional secret name where the postgres secrets are stored. \nIf empty,
+                      \"postgres-pguser-scorpiobroker\" will be used. \n"
                     type: string
 
               kafka:
                 type: object
                 properties:
+                  enabled:
+                    default: true
+                    type: boolean
                   group:
                     default: aio-runner
                     type: string

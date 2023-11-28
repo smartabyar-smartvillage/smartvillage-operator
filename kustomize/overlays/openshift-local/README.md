@@ -24,6 +24,12 @@ tar xvf ~/Downloads/helm-v3.13.2-linux-amd64.tar.gz --strip-components=1 -C ~/.l
 cp ~/.local/opt/helm/helm ~/.local/bin/
 ```
 
+# Install prerequisite python libraries
+
+```bash
+pip3 install pika
+```
+
 ## Deploy the required namespaces, subscriptions, SCCs, and CRDs for the Smart Village Operator
 
 ```bash
@@ -50,14 +56,28 @@ oc -n rabbitmq get pod -l app.kubernetes.io/name=rabbitmq -w
 oc -n rabbitmq logs -l app.kubernetes.io/name=rabbitmq -f
 ```
 
-## Install the Orion-LD Context Broker in the OpenShift Developer openshift-local
+## Install the scorpiobroker Context Broker in the OpenShift Developer openshift-local
+
+### Copy the kafka secrets to the `scorpiobroker` namespace. 
 
 ```bash
-ansible-playbook apply-orionldcontextbroker.yaml \
-  -e crd_path=kustomize/overlays/openshift-local/ansible/orionldcontextbrokers/orion-ld/orionldcontextbroker.yaml
+oc -n postgres get secret postgres-pguser-scorpiobroker -o json \
+    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
+    | oc -n scorpiobroker apply -f -
+oc -n kafka get secret scorpiobroker-kafka -o json \
+    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
+    | oc -n scorpiobroker apply -f -
+oc -n kafka get secret default-cluster-ca-cert -o json \
+    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
+    | oc -n scorpiobroker apply -f -
+```
 
-oc -n orion-ld get pod -l app.kubernetes.io/instance=orion-ld -w
-oc -n orion-ld logs -l app.kubernetes.io/instance=orion-ld -f
+```bash
+ansible-playbook apply-scorpiobroker.yaml \
+  -e crd_path=kustomize/overlays/openshift-local/ansible/scorpiobrokers/scorpiobroker/scorpiobroker.yaml
+
+oc -n orion-ld get pod -l app=scorpiobroker -w
+oc -n orion-ld logs -l app=scorpiobroker -f
 ```
 
 ## Install the IoT Agent JSON in the OpenShift Developer openshift-local
@@ -161,17 +181,7 @@ oc -n kafka get secret default-cluster-ca-cert -o json \
 ```bash
 ansible-playbook apply-smartabyarsmartvillage.yaml \
   -e crd_path=kustomize/overlays/openshift-local/ansible/smartabyarsmartvillages/smartvillage/smartabyarsmartvillage.yaml
-```
 
-## Deploy Smarta Byar Smart Village to OpenShift Local
-
-```bash
-oc create -k kustomize/overlays/openshift-local/app/app/smartabyarsmartvillages/
-```
-
-Watch for pods and events in the `smartvillage` namespace: 
-
-```bash
 oc -n smartvillage get events -w
 oc -n smartvillage get pods -w
 ```
@@ -180,39 +190,39 @@ oc -n smartvillage get pods -w
 
 ```bash
 ansible-playbook apply-trafficsimulation.yaml -e enable_dev_nodeports=true \
-  -e crd_path=kustomize/overlays/openshift-local/ansible/app/trafficsimulations/veberod-intersection-1/trafficsimulation.yaml
+  -e crd_path=kustomize/overlays/openshift-local/ansible/trafficsimulations/veberod-intersection-1/trafficsimulation.yaml
 ```
 
 ## Install the Traffic Flow Observed JSON in the OpenShift Developer openshift-local
 
 ```bash
 ansible-playbook apply-trafficflowobserved.yaml -e enable_dev_nodeports=true \
-  -e crd_path=kustomize/overlays/openshift-local/ansible/app/trafficflowobserveds/sweden-veberod-1-lakaregatan-ne/trafficflowobserved.yaml
+  -e crd_path=kustomize/overlays/openshift-local/ansible/trafficflowobserveds/sweden-veberod-1-lakaregatan-ne/trafficflowobserved.yaml
 ```
 
 ```bash
 ansible-playbook apply-trafficflowobserved.yaml -e enable_dev_nodeports=true \
-  -e crd_path=kustomize/overlays/openshift-local/ansible/app/trafficflowobserveds/sweden-veberod-1-sjobovagen-se/trafficflowobserved.yaml
+  -e crd_path=kustomize/overlays/openshift-local/ansible/trafficflowobserveds/sweden-veberod-1-sjobovagen-se/trafficflowobserved.yaml
 ```
 
 ## Install the Crowd Flow Observed JSON in the OpenShift Developer openshift-local
 
 ```bash
 ansible-playbook apply-crowdflowobserved.yaml -e enable_dev_nodeports=true \
-  -e crd_path=kustomize/overlays/openshift-local/ansible/app/crowdflowobserveds/sweden-veberod-1-sjobovagen-se-dorrodsvagen-sw/crowdflowobserved.yaml
+  -e crd_path=kustomize/overlays/openshift-local/ansible/crowdflowobserveds/sweden-veberod-1-sjobovagen-se-dorrodsvagen-sw/crowdflowobserved.yaml
 ```
 
 ```bash
 ansible-playbook apply-crowdflowobserved.yaml -e enable_dev_nodeports=true \
-  -e crd_path=kustomize/overlays/openshift-local/ansible/app/crowdflowobserveds/sweden-veberod-1-dorrodsvagen-ne-sjobovagen-se/crowdflowobserved.yaml
+  -e crd_path=kustomize/overlays/openshift-local/ansible/crowdflowobserveds/sweden-veberod-1-dorrodsvagen-ne-sjobovagen-se/crowdflowobserved.yaml
 ```
 
 ```bash
 ansible-playbook apply-crowdflowobserved.yaml -e enable_dev_nodeports=true \
-  -e crd_path=kustomize/overlays/openshift-local/ansible/app/crowdflowobserveds/sweden-veberod-1-sjobovagen-nw-lakaregatan-ne/crowdflowobserved.yaml
+  -e crd_path=kustomize/overlays/openshift-local/ansible/crowdflowobserveds/sweden-veberod-1-sjobovagen-nw-lakaregatan-ne/crowdflowobserved.yaml
 ```
 
 ```bash
 ansible-playbook apply-crowdflowobserved.yaml -e enable_dev_nodeports=true \
-  -e crd_path=kustomize/overlays/openshift-local/ansible/app/crowdflowobserveds/sweden-veberod-1-lakaregatan-sw-sjobovagen-nw/crowdflowobserved.yaml
+  -e crd_path=kustomize/overlays/openshift-local/ansible/crowdflowobserveds/sweden-veberod-1-lakaregatan-sw-sjobovagen-nw/crowdflowobserved.yaml
 ```

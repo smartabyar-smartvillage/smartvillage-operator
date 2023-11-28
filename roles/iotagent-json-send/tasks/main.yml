@@ -60,7 +60,7 @@
     qos: 0
   when: values.message_broker.transport == 'MQTT' and not (values.message_broker.user is not defined and message_broker_password is not defined)
 
-- name: Publish message on amqp queue to device /{{ values.service_group.apikey }}/{{ values.device.id }}/attrs
+- name: Publish message on AMQP amqp://{{ amqp_nodeport_hostname if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.host }}:{{ amqp_nodeport if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.port }}/%2F routing key .{{ values.service_group.apikey }}.{{ values.device.id }}.attrs to device /{{ values.service_group.apikey }}/{{ values.device.id }}/attrs
   community.rabbitmq.rabbitmq_publish:
     proto: amqp
     vhost: "%2F"
@@ -74,7 +74,7 @@
     body: "{{ lookup('template', 'device_values.yml') | from_yaml | to_json }}"
     content_type: "text/plain"
   when: values.message_broker.transport == 'AMQP' and values.message_broker.user is defined and message_broker_password is defined
-- name: Publish message on amqp queue to device /{{ values.service_group.apikey }}/{{ values.device.id }}/attrs
+- name: Publish message on AMQP amqp://{{ amqp_nodeport_hostname if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.host }}:{{ amqp_nodeport if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.port }}/%2F routing key .{{ values.service_group.apikey }}.{{ values.device.id }}.attrs to device /{{ values.service_group.apikey }}/{{ values.device.id }}/attrs
   community.rabbitmq.rabbitmq_publish:
     proto: amqp
     vhost: "%2F"
@@ -82,8 +82,6 @@
     host: "{{ amqp_nodeport_hostname if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.host }}"
     port: "{{ amqp_nodeport if (enable_dev_nodeports is defined and enable_dev_nodeports) else values.message_broker.port }}"
     routing_key: ".{{ values.service_group.apikey }}.{{ values.device.id }}.attrs"
-    username: "{{ values.message_broker.user | default('') }}"
-    password: "{{ message_broker_password }}"
     exchange: "amq.topic"
     body: "{{ lookup('template', 'device_values.yml') | from_yaml | to_json }}"
     content_type: "text/plain"
@@ -93,7 +91,15 @@
     var: "{{ lookup('template', 'device_values.yml') | from_yaml | to_json }}"
 - debug:
     var: context_broker_base_url
-- name: "Query the context broker"
+- name: >-
+    Query the context broker: 
+    curl -H 'Accept: "*/*"'
+    -H 'Content-Type: application-json'
+    -H 'Fiware-Service: {{ values.ngsi_ld.service }}'
+    -H 'Fiware-ServicePath: {{ values.ngsi_ld.service_path }}'
+    -H 'NGSILD-Tenant: {{ values.ngsi_ld.service }}'
+    -H 'NGSILD-Path: {{ values.ngsi_ld.service_path }}'
+    '{{ values.orionld.route.host | default(context_broker_base_url) }}/ngsi-ld/v1/entities/{{ ENTITY_NAME | urlencode }}'
   connection: local
   uri:
     timeout: 90

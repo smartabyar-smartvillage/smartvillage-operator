@@ -5,8 +5,8 @@ metadata:
   namespace: iotagent
 spec:
   ngsild:
-    host: orion-ld.orion-ld.svc
-    port: 1026
+    host: scorpiobroker.scorpiobroker.svc
+    port: 9090
   mongodb:
     name: mongodb
     namespace: mongodb
@@ -16,6 +16,7 @@ spec:
   message_broker:
     name: rabbitmq
     namespace: rabbitmq
+    amqp_host: default-rabbitmq.rabbitmq.svc
     password_secret:
       name: rabbitmq-password
       key: rabbitmq-password

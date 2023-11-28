@@ -23,6 +23,7 @@ values:
     port: "{{ crd.postgres.port | default(schema | community.general.json_query('postgres.properties.port.default')) }}"
     secret_name: "{{ crd.postgres.secret_name | default(schema | community.general.json_query('postgres.properties.secret_name.default')) }}"
   kafka:
+    enabled: "{{ crd.kafka.enabled | default(schema | community.general.json_query('kafka.properties.enabled.default')) }}"
     topic_names:
       entity: "{{ crd.kafka.topic_names.entity | default(schema | community.general.json_query('kafka.properties.topic_names.properties.entity.default')) }}"
       entitybatch: "{{ crd.kafka.topic_names.entitybatch | default(schema | community.general.json_query('kafka.properties.topic_names.properties.entitybatch.default')) }}"

@@ -2,8 +2,13 @@ apiVersion: smartvillage.computate.org/v1
 kind: ScorpioBroker
 metadata:
   name: scorpiobroker
-  namespace: smartvillage
+  namespace: scorpiobroker
 spec:
+  postgres:
+    host: postgres-primary.postgres.svc
+  kafka:
+    enabled: false
+    host: default-kafka-bootstrap.kafka.svc
   scorpiobroker:
     route:
       create: true

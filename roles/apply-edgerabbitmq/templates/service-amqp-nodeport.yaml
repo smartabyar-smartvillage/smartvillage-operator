@@ -1,0 +1,11 @@
+spec:
+  ports:
+    - name: amqp
+      protocol: TCP
+      port: 5672
+      targetPort: 5672
+      nodePort: {{ amqp_nodeport }}
+  type: NodePort
+  selector:
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/name: rabbitmq
