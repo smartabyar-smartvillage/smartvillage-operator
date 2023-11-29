@@ -4,4 +4,4 @@ ENTITY_TYPE: EdgeKafka
 verify_connections: true
 
 kafka_nodeport: 32000
-kafka_nodeport_hostname: kafka.apps-crc.testing
+kafka_nodeport_hostname: kafka0.apps-crc.testing

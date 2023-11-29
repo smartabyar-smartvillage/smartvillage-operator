@@ -73,8 +73,8 @@ spec:
             - name: SSL_VERIFY
               value: "false"
             - name: SMARTVILLAGE_HOST_NAME
-              value: "{{ site_host_name }}"
+              value: "{{ values.site.host_name }}"
             - name: SMARTVILLAGE_PORT
-              value: "443"
+              value: "8080"
             - name: SMARTVILLAGE_SSL
-              value: "true"
+              value: "false"

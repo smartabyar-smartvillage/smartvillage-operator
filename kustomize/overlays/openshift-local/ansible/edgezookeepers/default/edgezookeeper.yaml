@@ -4,6 +4,7 @@ metadata:
   name: default
   namespace: zookeeper
 spec:
+  enable_dev_nodeports: true
   zookeeper:
     host: zookeeper.zookeeper.svc
     replicas: 1

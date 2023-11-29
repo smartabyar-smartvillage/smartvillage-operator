@@ -11,7 +11,7 @@ postgres_nodeport_hostname: postgres.apps-crc.testing
 solr_nodeport: 30983
 
 kafka_nodeport: 32000
-kafka_nodeport_hostname: kafka.apps-crc.testing
+kafka_nodeport_hostname: kafka0.apps-crc.testing
 
 mqtt_nodeport: 30083
 mqtt_nodeport_hostname: mqtt.apps-crc.testing

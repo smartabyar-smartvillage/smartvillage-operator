@@ -24,7 +24,7 @@ spec:
       requests:
         memory: 500Mi
         cpu: 400m
-    host_name: smartvillage.apps-crc.testing
+    host_name: smartabyar-smartvillage-web.smartvillage.svc
     zone: America/New_York
     instances: 3
     worker_pool_size: 1
