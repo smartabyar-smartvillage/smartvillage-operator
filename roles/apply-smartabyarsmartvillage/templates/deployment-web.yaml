@@ -21,7 +21,7 @@ spec:
           imagePullPolicy: Always
           image: 'quay.io/computateorg/smartabyar-smartvillage:latest'
           command:
-            - /usr/lib/jvm/java-11-openjdk/bin/java
+            - /usr/lib/jvm/java-17-openjdk/bin/java
             - -cp
             - .:*
             - org.computate.smartvillage.enus.vertx.MainVerticle

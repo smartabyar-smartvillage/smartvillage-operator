@@ -19,19 +19,27 @@ spec:
   device:
     id: sweden-veberod-1-lakaregatan-ne
     subscription_url: http://ngsild-smartvillage-sync.smartvillage.svc:8080
+  message_broker:
+    namespace: rabbitmq
+    transport: AMQP
+    host: default-rabbitmq
+    port: 5672
+    user: user
+    secret:
+      name: rabbitmq-password
+      key: rabbitmq-password
   smartvillage:
     enabled: true
     auth_secret_name: keycloak-client-secret-smartvillage
     auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
     site_base_url: https://smartvillage-web-smartvillage.apps-crc.testing
-    smart_model_api: /api/traffic-flow-observed
   alternate_model:
     enabled: true
     id: sumo
     name: SUMO
   attributes:
     entityId: sweden-veberod-1-lakaregatan-ne
-    trafficSimulationId: TrafficSimulation-VeberodIntersection1
+    trafficSimulationId: urn:ngsi-ld:TrafficSimulation:TrafficSimulation-VeberodIntersection1
     laneAreaDetectorId: det_13
     location: 55.633703, 13.492540
     averageVehicleLength: 5
