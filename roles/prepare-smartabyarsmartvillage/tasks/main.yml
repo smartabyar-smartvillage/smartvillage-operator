@@ -29,7 +29,7 @@
 
 - name: "Query postgres pod"
   set_fact:
-    postgres_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selectors=['postgres-operator.crunchydata.com/cluster=postgres','postgres-operator.crunchydata.com/data=postgres','postgres-operator.crunchydata.com/instance-set=smartvillage','postgres-operator.crunchydata.com/patroni=postgres-ha','postgres-operator.crunchydata.com/role=master'], namespace=ansible_operator_meta.namespace)[0].metadata.name }}"
+    postgres_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector=('postgres-operator.crunchydata.com/cluster=postgres,postgres-operator.crunchydata.com/data=postgres,postgres-operator.crunchydata.com/instance-set=smartvillage,postgres-operator.crunchydata.com/patroni=postgres-ha,postgres-operator.crunchydata.com/role=master'), namespace=ansible_operator_meta.namespace)[0].metadata.name }}"
 - name: Run create database scripts on PostgreSQL
   kubernetes.core.k8s_exec:
     pod: "{{ postgres_pod_name }}"
