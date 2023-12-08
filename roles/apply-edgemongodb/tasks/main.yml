@@ -59,4 +59,4 @@
 
 - name: "Query MongoDB pod"
   set_fact:
-    mongodb_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector=('app.kubernetes.io/component=mongodb,app.kubernetes.io/instance=' + values.mongodb.name + ',app.kubernetes.io/name=' + values.mongodb.name), namespace=ansible_operator_meta.namespace)[0].metadata.name }}"
+    mongodb_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector=('app.kubernetes.io/component=mongodb,app.kubernetes.io/instance=' + values.mongodb.name + ',app.kubernetes.io/name=' + values.mongodb.name | string), namespace=ansible_operator_meta.namespace)[0].metadata.name }}"
