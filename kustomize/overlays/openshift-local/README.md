@@ -56,6 +56,28 @@ oc -n rabbitmq get pod -l app.kubernetes.io/name=rabbitmq -w
 oc -n rabbitmq logs -l app.kubernetes.io/name=rabbitmq -f
 ```
 
+## Install postgres in the OpenShift Developer openshift-local
+
+```bash
+oc -n postgres create configmap smartvillage-db-create --from-file ~/.local/src/smartabyar-smartvillage/src/main/resources/sql/db-create.sql
+
+ansible-playbook ~/.local/src/smartvillage-operator/apply-edgepostgres.yaml \
+  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/openshift-local/ansible/edgepostgress/postgres/edgepostgres.yaml
+```
+
+You should see a play recap that has failed. 
+This is expected because the postgres pod is barely getting created. 
+The final tasks in the playbook expect the database create SQL scripts to be run for the smartvillage application in postgres.  
+Retry the playbook once the postgres pod is running. 
+
+```bash
+ansible-playbook ~/.local/src/smartvillage-operator/apply-edgepostgres.yaml \
+  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/openshift-local/ansible/edgepostgress/postgres/edgepostgres.yaml
+
+oc -n postgres get pod -l postgres-operator.crunchydata.com/cluster=postgres -w
+oc -n postgres logs -l postgres-operator.crunchydata.com/cluster=postgres -f
+```
+
 ## Install the scorpiobroker Context Broker in the OpenShift Developer openshift-local
 
 ### Copy the kafka secrets to the `scorpiobroker` namespace. 
@@ -133,31 +155,6 @@ ansible-playbook ~/.local/src/smartvillage-operator/apply-edgekafka.yaml \
 
 oc -n kafka get pod -l strimzi.io/name=default-kafka -w
 oc -n kafka logs -l strimzi.io/name=default-kafka -f
-```
-
-## Install postgres in the OpenShift Developer openshift-local
-
-```bash
-oc -n postgres create configmap smartvillage-db-create --from-file ~/.local/src/smartabyar-smartvillage/src/main/resources/sql/db-create.sql
-
-ansible-playbook ~/.local/src/smartvillage-operator/apply-edgepostgres.yaml \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/openshift-local/ansible/edgepostgress/postgres/edgepostgres.yaml
-
-oc -n postgres get pod -l postgres-operator.crunchydata.com/cluster=postgres -w
-oc -n postgres logs -l postgres-operator.crunchydata.com/cluster=postgres -f
-```
-
-You should see a play recap that has failed. 
-This is expected because the postgres pod is barely getting created. 
-The final tasks in the playbook expect the database create SQL scripts to be run for the smartvillage application in postgres.  
-Retry the playbook once the postgres pod is running. 
-
-```bash
-ansible-playbook ~/.local/src/smartvillage-operator/apply-edgepostgres.yaml \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/openshift-local/ansible/edgepostgress/postgres/edgepostgres.yaml
-
-oc -n postgres get pod -l postgres-operator.crunchydata.com/cluster=postgres -w
-oc -n postgres logs -l postgres-operator.crunchydata.com/cluster=postgres -f
 ```
 
 ## Copy secrets
