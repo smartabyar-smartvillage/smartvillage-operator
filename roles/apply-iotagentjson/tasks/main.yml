@@ -7,7 +7,7 @@
 
 - name: "Query mongodb and message broker pod"
   set_fact:
-    mongodb_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector=('app.kubernetes.io/component=mongodb,app.kubernetes.io/instance=' + values.mongodb.name + ',app.kubernetes.io/name=' + values.mongodb.name), namespace=mongodb_namespace)[0].metadata.name }}"
+    mongodb_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selectors=['app.kubernetes.io/component=mongodb','app.kubernetes.io/instance=' + values.mongodb.name,'app.kubernetes.io/name=' + values.mongodb.name], namespace=mongodb_namespace)[0].metadata.name }}"
     message_broker_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.message_broker.password_secret.name, namespace=message_broker_namespace)[0].data[values.message_broker.password_secret.key] | b64decode }}"
     mongodb_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.mongodb.password_secret.name, namespace=mongodb_namespace)[0].data[values.mongodb.password_secret.key] | b64decode }}"
 

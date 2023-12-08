@@ -12,7 +12,7 @@
 
 - name: "Query MongoDB pod"
   set_fact:
-    mongodb_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector='app.kubernetes.io/component=mongodb,app.kubernetes.io/instance=' + values.mongodb.name + ',app.kubernetes.io/name=' + values.mongodb.name, namespace=mongodb_pod_namespace)[0].metadata.name }}"
+    mongodb_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selectors=['app.kubernetes.io/component=mongodb','app.kubernetes.io/instance=' + values.mongodb.name,'app.kubernetes.io/name=' + values.mongodb.name], namespace=mongodb_pod_namespace)[0].metadata.name }}"
     
 - name: Run create database scripts on MongoDB
   kubernetes.core.k8s_exec:

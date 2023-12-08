@@ -37,7 +37,7 @@
             name: '{{ item.metadata.name }}'
             namespace: '{{ namespace }}'
             container: manager
-          loop: "{{ q('k8s', api_version='v1', kind='Pod', namespace=namespace, label_selector=ctrl_label) }}"
+          loop: "{{ q('k8s', api_version='v1', kind='Pod', namespace=namespace, label_selectors=[ctrl_label]) }}"
           register: debug_logs
 
         - name: Output gathered resources
