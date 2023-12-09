@@ -56,16 +56,6 @@ oc -n rabbitmq get pod -l app.kubernetes.io/name=rabbitmq -w
 oc -n rabbitmq logs -l app.kubernetes.io/name=rabbitmq -f
 ```
 
-## Install kafka in the OpenShift Developer openshift-local
-
-```bash
-ansible-playbook ~/.local/src/smartvillage-operator/apply-edgekafka.yaml \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/openshift-local/ansible/edgekafkas/default/edgekafka.yaml
-
-oc -n kafka get pod -l strimzi.io/name=default-kafka -w
-oc -n kafka logs -l strimzi.io/name=default-kafka -f
-```
-
 ## Install postgres in the OpenShift Developer openshift-local
 
 ```bash
@@ -73,9 +63,6 @@ oc -n postgres create configmap smartvillage-db-create --from-file ~/.local/src/
 
 ansible-playbook ~/.local/src/smartvillage-operator/apply-edgepostgres.yaml \
   -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/openshift-local/ansible/edgepostgress/postgres/edgepostgres.yaml
-
-oc -n postgres get pod -l postgres-operator.crunchydata.com/cluster=postgres -w
-oc -n postgres logs -l postgres-operator.crunchydata.com/cluster=postgres -f
 ```
 
 You should see a play recap that has failed. 
