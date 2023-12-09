@@ -1,0 +1,8 @@
+apiVersion: smartvillage.computate.org/v1
+kind: EdgeMongoDB
+metadata:
+  name: mongodb
+  namespace: mongodb
+spec:
+  mongodb:
+    storage: 10Gi

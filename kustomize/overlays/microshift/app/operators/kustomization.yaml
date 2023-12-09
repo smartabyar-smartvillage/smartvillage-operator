@@ -6,4 +6,3 @@ resources:
     # See: https://www.crunchydata.com/developers/download-postgres/containers/postgres-operator-5x
     # See: https://access.crunchydata.com/documentation/postgres-operator/v5/quickstart/
   - postgres/
-  - solr/

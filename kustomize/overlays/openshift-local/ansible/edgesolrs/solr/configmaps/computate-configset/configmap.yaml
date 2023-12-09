@@ -2,6 +2,7 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: computate-configset
+  namespace: solr
 data:
   contractions_ca.txt: "# Set of Catalan contractions for ElisionFilter\r\n# TODO:
     load this as a resource from the analyzer and sync it in build.xml\r\nd\r\nl\r\nm\r\nn\r\ns\r\nt\r\n"
