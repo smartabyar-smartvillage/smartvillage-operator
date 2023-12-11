@@ -1,72 +1,19 @@
 
-# Become a Red Hat Developer
-
-- Get started for free at [developers.redhat.com](https://developers.redhat.com/). 
-- Click [ Start building apps ] in the top left corner. 
-- Click [ Developer Sandbox for Red Hat OpenShift ](https://developers.redhat.com/developer-sandbox). 
-- Click [ Start your sandbox for free ]. 
-- Click [ Register for a Red Hat account ]. 
-- You can simply use your existing GitHub, GMail, or Microsoft account
-- Click [ DevSandbox ] to login. 
-
-# Download the oc command
-
-- Click the [ ? ] button in the top right of the Developer Sandbox. 
-- Click [ Command line tools ]. 
-- Click the download link for your operating system. 
-- You'll need to extract the `oc` command and place it in your path, for example in a `bin` directory in your `$HOME` directory. 
-
-# Log into the OpenShift Developer Sandbox in your terminal
-
-- Click your username in the top right corner of the Developer Sandbox. 
-- Click [ Copy login command ]. 
-- Click [ DevSandbox ]. 
-- Click [ Display token ]. 
-- Copy the line to the clipboard that looks like this `oc login --token=sha256~DFEbJlutndAeZi4VABjJyfXeov1C3ZtSJypVq4DJvFg --server=https://api.sandbox-m2.ll9k.p1.openshiftapps.com:6443`. 
-- Paste the command into your terminal to log in to the Developer Sandbox in the terminal. 
 
 ## Grant the default service account edit privileges in your namespace. 
 
-- In the terminal, run these commands to grant access to your pods and other namespace resources
-
 ```bash
-SERVICE_ACCOUNT=python
+SERVICE_ACCOUNT=$(oc get sa -l controller.devfile.io/devworkspace_name=quarkus-quickstart  --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
 oc create rolebinding $SERVICE_ACCOUNT-edit --clusterrole=edit --serviceaccount=$(oc get project -o jsonpath={.items[0].metadata.name}):$SERVICE_ACCOUNT
 oc create role $SERVICE_ACCOUNT-edit-rolebindings --verb=get,list,watch,create,update,patch,delete --resource=roles,rolebindings
 oc create rolebinding $SERVICE_ACCOUNT-edit-rolebindings --role=$SERVICE_ACCOUNT-edit-rolebindings --serviceaccount=$(oc get project -o jsonpath={.items[0].metadata.name}):$SERVICE_ACCOUNT
 ```
 
-# Create a new OpenShift AI Minimal Python Workbench
-
-- In the Red Hat OpenShift Developer Sandbox, click on the apps button with 9 squares at the top, and select "Red Hat OpenShift Data Science". 
-- Log in with [ Dev Sandbox ]
-- Click [ Data Science Projects ]
-- Click on your data science project, but make sure it's running first
-- Click [ Create workbench ]
-  - Name: python
-  - Image selection: Minimal Python
-  - Click [ Create workbench ]
-- When your workbench is running after a minute, click on the "Open" link
-- Log in with [ Dev Sandbox ]
-
-# Install prerequisite helm binary
-
-Download the latest [helm binary here](https://github.com/helm/helm/releases), I recommend the Linux amd64 binary if you are on a Linux x86_64 system. 
-
-```bash
-curl https://get.helm.sh/helm-v3.13.2-linux-amd64.tar.gz -o /tmp/helm-v3.13.2-linux-amd64.tar.gz
-mkdir -p ~/.local/opt/helm/ ~/.local/bin/
-tar xvf /tmp/helm-v3.13.2-linux-amd64.tar.gz --strip-components=1 -C ~/.local/opt/helm/
-cp ~/.local/opt/helm/helm ~/.local/bin/
-```
-
 ## Set up a new Python virtualenv
 
 ```bash
-pip install virtualenv
-virtualenv ~/python
-echo "source ~/python/bin/activate" | tee -a ~/.bashrc
-source ~/.bashrc
+virtualenv /projects/python
+source /projects/python/bin/activate
 ```
 
 ## Install the latest Ansible
@@ -88,28 +35,23 @@ ansible-galaxy collection install kubernetes.core -U
 ## Setup the directory for the project and clone the git repository into it 
 
 ```bash
-git clone https://github.com/computate-org/smartabyar-smartvillage.git ~/smartabyar-smartvillage
+git clone https://github.com/computate-org/smartabyar-smartvillage.git /projects/smartabyar-smartvillage
 ```
 
-## Setup a directory for Ansible roles and clone the Ansible role to install the project
+- Right-click on the Explorer and select "Add Folder to Workspace..."
+- Select /projects/smartabyar-smartvillage/
+- Click [ OK ]
 
 ```bash
-mkdir -p ~/.ansible/roles/
-git clone https://github.com/computate-org/computate_project.git ~/.ansible/roles/computate.computate_project
-```
-
-## Run the Ansible Playbook to install the project
-
-```bash
-ansible-playbook ~/smartabyar-smartvillage/install.yml -e SYSTEMD_ENABLED=false
+ansible-playbook /projects/smartabyar-smartvillage/install.yml -e SYSTEMD_ENABLED=false
 ```
 
 ## Install the MongoDB NOSQL Database in the OpenShift Developer Sandbox
 
 ```bash
-ansible-playbook ~/smartvillage-operator/apply-edgemongodb.yaml \
+ansible-playbook /projects/smartvillage-operator/apply-edgemongodb.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/edgemongodbs/mongodb/edgemongodb.yaml
+  -e crd_path=/projects/smartvillage-operator/kustomize/overlays/sandbox/edgemongodbs/mongodb/edgemongodb.yaml
 
 oc get pod -l app.kubernetes.io/instance=mongodb -w
 oc logs -l app.kubernetes.io/instance=mongodb -f
@@ -118,9 +60,9 @@ oc logs -l app.kubernetes.io/instance=mongodb -f
 ## Install the RabbitMQ in the OpenShift Developer Sandbox
 
 ```bash
-ansible-playbook ~/smartvillage-operator/apply-edgerabbitmq.yaml \
+ansible-playbook /projects/smartvillage-operator/apply-edgerabbitmq.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/edgerabbitmqs/rabbitmq/edgerabbitmq.yaml
+  -e crd_path=/projects/smartvillage-operator/kustomize/overlays/sandbox/edgerabbitmqs/rabbitmq/edgerabbitmq.yaml
 
 oc get pod -l app.kubernetes.io/name=rabbitmq -w
 oc logs -l app.kubernetes.io/name=rabbitmq -f
@@ -129,11 +71,11 @@ oc logs -l app.kubernetes.io/name=rabbitmq -f
 ## Install postgres in the OpenShift Developer Sandbox
 
 ```bash
-oc create configmap smartvillage-db-create --from-file ~/smartabyar-smartvillage/src/main/resources/sql/db-create.sql
+oc create configmap smartvillage-db-create --from-file /projects/smartabyar-smartvillage/src/main/resources/sql/db-create.sql
 
-ansible-playbook ~/smartvillage-operator/apply-edgepostgres.yaml \
+ansible-playbook /projects/smartvillage-operator/apply-edgepostgres.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/edgepostgress/postgres/edgepostgres.yaml
+  -e crd_path=/projects/smartvillage-operator/kustomize/overlays/sandbox/edgepostgress/postgres/edgepostgres.yaml
 ```
 
 You should see a play recap that has failed. 
@@ -142,30 +84,31 @@ The final tasks in the playbook expect the database create SQL scripts to be run
 Retry the playbook once the postgres pod is running. 
 
 ```bash
-ansible-playbook ~/smartvillage-operator/apply-edgepostgres.yaml \
+ansible-playbook /projects/smartvillage-operator/apply-edgepostgres.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/edgepostgress/postgres/edgepostgres.yaml
+  -e crd_path=/projects/smartvillage-operator/kustomize/overlays/sandbox/edgepostgress/postgres/edgepostgres.yaml
 
 oc get pod -l app=postgres -w
 oc logs -l app=postgres -f
 ```
 
-## Install the scorpiobroker Context Broker in the OpenShift Developer Sandbox
+## Install the Orion-LD Context Broker in the OpenShift Developer Sandbox
 
 ```bash
-ansible-playbook ~/smartvillage-operator/apply-scorpiobroker.yaml \
-  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/scorpiobrokers/scorpiobroker/scorpiobroker.yaml
+ansible-playbook /projects/smartvillage-operator/apply-orionldcontextbroker.yaml \
+  -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=/projects/smartvillage-operator/kustomize/overlays/sandbox/orionldcontextbrokers/orion-ld/orionldcontextbroker.yaml
 
-oc -n orion-ld get pod -l app=scorpiobroker -w
-oc -n orion-ld logs -l app=scorpiobroker -f
+oc get pod -l app.kubernetes.io/instance=orion-ld -w
+oc logs -l app.kubernetes.io/instance=orion-ld -f
 ```
 
 ## Install the IoT Agent JSON in the OpenShift Developer Sandbox
 
 ```bash
-ansible-playbook ~/smartvillage-operator/apply-iotagentjson.yaml \
+ansible-playbook /projects/smartvillage-operator/apply-iotagentjson.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/iotagentjsons/iotagent-json/iotagentjson.yaml
+  -e crd_path=/projects/smartvillage-operator/kustomize/overlays/sandbox/iotagentjsons/iotagent-json/iotagentjson.yaml
 
 oc get pod -l app.kubernetes.io/instance=iotagent-json -w
 oc logs -l app.kubernetes.io/instance=iotagent-json -f
@@ -174,9 +117,9 @@ oc logs -l app.kubernetes.io/instance=iotagent-json -f
 ## Install zookeeper in the OpenShift Developer Sandbox
 
 ```bash
-ansible-playbook ~/smartvillage-operator/apply-edgezookeeper.yaml \
+ansible-playbook /projects/smartvillage-operator/apply-edgezookeeper.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/edgezookeepers/default/edgezookeeper.yaml
+  -e crd_path=/projects/smartvillage-operator/kustomize/overlays/sandbox/edgezookeepers/default/edgezookeeper.yaml
 
 oc get pod -l app=zookeeper -w
 oc logs -l app=zookeeper -f
@@ -187,9 +130,9 @@ oc logs -l app=zookeeper -f
 ```bash
 oc apply -k kustomize/overlays/sandbox/edgesolrs/default/configmaps/
 
-ansible-playbook ~/smartvillage-operator/apply-edgesolr.yaml \
+ansible-playbook /projects/smartvillage-operator/apply-edgesolr.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/edgesolrs/default/edgesolrs/default/edgesolr.yaml
+  -e crd_path=/projects/smartvillage-operator/kustomize/overlays/sandbox/edgesolrs/default/edgesolrs/default/edgesolr.yaml
 
 oc get pod -l app=solr -w
 oc logs -l app=solr -f
@@ -198,55 +141,55 @@ oc logs -l app=solr -f
 ## Install the SmartaByarSmartVillage in the OpenShift Developer Sandbox
 
 ```bash
-ansible-playbook ~/smartvillage-operator/apply-smartabyarsmartvillage.yaml \
+ansible-playbook /projects/smartvillage-operator/apply-smartabyarsmartvillage.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/smartabyarsmartvillages/smartvillage/smartabyarsmartvillage.yaml
+  -e crd_path=/projects/smartvillage-operator/kustomize/overlays/sandbox/smartabyarsmartvillages/smartvillage/smartabyarsmartvillage.yaml
 ```
 
 ## Install the Traffic Flow Observed JSON in the OpenShift Developer Sandbox
 
 ```bash
-ansible-playbook ~/smartvillage-operator/apply-trafficflowobserved.yaml \
+ansible-playbook /projects/smartvillage-operator/apply-trafficflowobserved.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/trafficflowobserveds/sweden-veberod-1-lakaregatan-ne/trafficflowobserved.yaml
+  -e crd_path=/projects/smartvillage-operator/kustomize/overlays/sandbox/trafficflowobserveds/sweden-veberod-1-lakaregatan-ne/trafficflowobserved.yaml
 ```
 
 ```bash
-ansible-playbook ~/smartvillage-operator/apply-trafficflowobserved.yaml \
+ansible-playbook /projects/smartvillage-operator/apply-trafficflowobserved.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/trafficflowobserveds/sweden-veberod-1-sjobovagen-se/trafficflowobserved.yaml
+  -e crd_path=/projects/smartvillage-operator/kustomize/overlays/sandbox/trafficflowobserveds/sweden-veberod-1-sjobovagen-se/trafficflowobserved.yaml
 ```
 
 ## Install the Crowd Flow Observed JSON in the OpenShift Developer Sandbox
 
 ```bash
-ansible-playbook ~/smartvillage-operator/apply-crowdflowobserved.yaml \
+ansible-playbook /projects/smartvillage-operator/apply-crowdflowobserved.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-sjobovagen-se-dorrodsvagen-sw/crowdflowobserved.yaml
+  -e crd_path=/projects/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-sjobovagen-se-dorrodsvagen-sw/crowdflowobserved.yaml
 ```
 
 ```bash
-ansible-playbook ~/smartvillage-operator/apply-crowdflowobserved.yaml \
+ansible-playbook /projects/smartvillage-operator/apply-crowdflowobserved.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-dorrodsvagen-ne-sjobovagen-se/crowdflowobserved.yaml
+  -e crd_path=/projects/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-dorrodsvagen-ne-sjobovagen-se/crowdflowobserved.yaml
 ```
 
 ```bash
-ansible-playbook ~/smartvillage-operator/apply-crowdflowobserved.yaml \
+ansible-playbook /projects/smartvillage-operator/apply-crowdflowobserved.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-sjobovagen-nw-lakaregatan-ne/crowdflowobserved.yaml
+  -e crd_path=/projects/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-sjobovagen-nw-lakaregatan-ne/crowdflowobserved.yaml
 ```
 
 ```bash
-ansible-playbook ~/smartvillage-operator/apply-crowdflowobserved.yaml \
+ansible-playbook /projects/smartvillage-operator/apply-crowdflowobserved.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-lakaregatan-sw-sjobovagen-nw/crowdflowobserved.yaml
+  -e crd_path=/projects/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-lakaregatan-sw-sjobovagen-nw/crowdflowobserved.yaml
 ```
 
 ```bash
-ansible-playbook ~/smartvillage-operator/apply-crowdflowobserved.yaml \
+ansible-playbook /projects/smartvillage-operator/apply-crowdflowobserved.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-sjobovagen-se-dorrodsvagen-sw/crowdflowobserved.yaml
+  -e crd_path=/projects/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-sjobovagen-se-dorrodsvagen-sw/crowdflowobserved.yaml
 ```
 
 
@@ -272,7 +215,7 @@ ansible-playbook ~/smartvillage-operator/apply-crowdflowobserved.yaml \
 
 
 ```bash
-(cd ~/computate && mvn clean install)
+(cd /projects/computate && mvn clean install)
 
 ## Run the Ansible Galaxy roles to install the complete project locally. 
 
@@ -289,7 +232,7 @@ The smartabyar-smartvillage project uses Maven to build and test the software.
 You can run the build and test suite with this command: 
 
 ```
-cd ~/smartabyar-smartvillage
+cd /projects/smartabyar-smartvillage
 mvn clean install
 ```
 
@@ -301,20 +244,20 @@ Here is an example of creating a vault directory and creating a new vault, it wi
 Be sure to not commit your vault to source control, it should be ignored by default in the .gitignore file that is created in the project. 
 
 ```bash
-install -d ~/smartabyar-smartvillage-ansible/vault
-ansible-vault create ~/smartabyar-smartvillage-ansible/vault/$USER-local
+install -d /projects/smartabyar-smartvillage-ansible/vault
+ansible-vault create /projects/smartabyar-smartvillage-ansible/vault/$USER-local
 ```
 
 You can edit the vault, it will ask for the password. 
 
 ```bash
-ansible-vault edit ~/smartabyar-smartvillage-ansible/vault/$USER-local
+ansible-vault edit /projects/smartabyar-smartvillage-ansible/vault/$USER-local
 ```
 
 You can then run the project install automation again with the secrets in the vault, it will ask for the password. 
 
 ```bash
-ansible-playbook ~/.ansible/roles/computate.computate_project/install.yml -e SITE_NAME=smartabyar-smartvillage -e ENABLE_CODE_GENERATION_SERVICE=true -e @~/smartabyar-smartvillage-ansible/vault/$USER-local --vault-id @prompt
+ansible-playbook ~/.ansible/roles/computate.computate_project/install.yml -e SITE_NAME=smartabyar-smartvillage -e ENABLE_CODE_GENERATION_SERVICE=true -e @/projects/smartabyar-smartvillage-ansible/vault/$USER-local --vault-id @prompt
 ```
 
 # Configure Eclipse IDE 
@@ -340,7 +283,7 @@ Now run the Eclipse installer:
 - I recommend installing Eclipse in the following subdirectory of your home directory: .local/opt/eclipse
 - Click [ Accept Now ] for the User Agreement
 
-When you run Eclipse Studio, I suggest you create your workspace here: ~
+When you run Eclipse Studio, I suggest you create your workspace here: /projects
 
 ## Install these update sites: 
 
@@ -371,7 +314,7 @@ Add these update sites and install these useful plugins:
 * In Eclipse, go to File -> Import...
 * Select Maven -> Existing Maven Projects
 * Click [ Next > ]
-* Browse to the directory: ~/smartabyar-smartvillage
+* Browse to the directory: /projects/smartabyar-smartvillage
 * Click [ Finish ]
 
 ## Setup a Eclipse Debug/Run configuration to generate the OpenAPI 3 spec and the SQL create and drop scripts in smartabyar-smartvillage
@@ -386,7 +329,7 @@ Add these update sites and install these useful plugins:
 
 Setup the following variables to setup the Vert.x verticle. 
 
-* CONFIG_PATH: ~/smartabyar-smartvillage/config/smartabyar-smartvillage.yml
+* CONFIG_PATH: /projects/smartabyar-smartvillage/config/smartabyar-smartvillage.yml
 * RUN_OPENAPI3_GENERATOR: true
 * RUN_SQL_GENERATOR: true
 * RUN_FIWARE_GENERATOR: true
@@ -413,7 +356,7 @@ Setup the following VM arguments to disable caching for easier web development:
 
 Setup the following variables to setup the Vert.x verticle. 
 
-* CONFIG_PATH: ~/smartabyar-smartvillage/config/smartabyar-smartvillage.yml
+* CONFIG_PATH: /projects/smartabyar-smartvillage/config/smartabyar-smartvillage.yml
 * VERTXWEB_ENVIRONMENT: dev
 
 Click [ Apply ] and [ Debug ] to debug the application. 
@@ -445,10 +388,10 @@ You can create and edit an encrypted ansible vault with a password for the host 
 It will have you create a password when you save the file for the first time, like using vim to exit. 
 
 ```bash
-install -d ~/smartabyar-smartvillage-ansible
-install -d ~/smartabyar-smartvillage-ansible/vault/$USER-staging/vault
-ansible-vault create ~/smartabyar-smartvillage-ansible/vault/$USER-staging/vault
-ansible-vault edit ~/smartabyar-smartvillage-ansible/vault/$USER-staging/vault
+install -d /projects/smartabyar-smartvillage-ansible
+install -d /projects/smartabyar-smartvillage-ansible/vault/$USER-staging/vault
+ansible-vault create /projects/smartabyar-smartvillage-ansible/vault/$USER-staging/vault
+ansible-vault edit /projects/smartabyar-smartvillage-ansible/vault/$USER-staging/vault
 ```
 
 Here is an example of a vault that I have used to deploy the smartabyar-smartvillage application. 
@@ -489,13 +432,13 @@ AUTH_TOKEN_URI: "/auth/realms/SMARTVILLAGE/protocol/openid-connect/token"
 
 ```bash
 
-ansible-playbook --vault-id @prompt -e @~/smartabyar-smartvillage-ansible/vault/$USER-staging/vault ~/.ansible/roles/computate.computate_postgres_openshift/install.yml -e SITE_NAME=smartabyar-smartvillage
+ansible-playbook --vault-id @prompt -e @/projects/smartabyar-smartvillage-ansible/vault/$USER-staging/vault ~/.ansible/roles/computate.computate_postgres_openshift/install.yml -e SITE_NAME=smartabyar-smartvillage
 
-ansible-playbook --vault-id @prompt -e @~/smartabyar-smartvillage-ansible/vault/$USER-staging/vault ~/.ansible/roles/computate.computate_zookeeper_openshift/install.yml -e SITE_NAME=smartabyar-smartvillage
+ansible-playbook --vault-id @prompt -e @/projects/smartabyar-smartvillage-ansible/vault/$USER-staging/vault ~/.ansible/roles/computate.computate_zookeeper_openshift/install.yml -e SITE_NAME=smartabyar-smartvillage
 
-ansible-playbook --vault-id @prompt -e @~/smartabyar-smartvillage-ansible/vault/$USER-staging/vault ~/.ansible/roles/computate.computate_solr_openshift/install.yml -e SITE_NAME=smartabyar-smartvillage
+ansible-playbook --vault-id @prompt -e @/projects/smartabyar-smartvillage-ansible/vault/$USER-staging/vault ~/.ansible/roles/computate.computate_solr_openshift/install.yml -e SITE_NAME=smartabyar-smartvillage
 
-ansible-playbook --vault-id @prompt -e @~/smartabyar-smartvillage-ansible/vault/$USER-staging/vault ~/.ansible/roles/computate.computate_project_openshift/install.yml -e SITE_NAME=smartabyar-smartvillage
+ansible-playbook --vault-id @prompt -e @/projects/smartabyar-smartvillage-ansible/vault/$USER-staging/vault ~/.ansible/roles/computate.computate_project_openshift/install.yml -e SITE_NAME=smartabyar-smartvillage
 ```
 
 ## How to run the application as a Podman container
@@ -510,7 +453,7 @@ pkcon install -y podman
 ### Build the container with podman
 
 ```bash
-cd ~/smartabyar-smartvillage
+cd /projects/smartabyar-smartvillage
 podman build -t computateorg/smartabyar-smartvillage:latest .
 ```
 
@@ -523,7 +466,7 @@ podman push computateorg/smartabyar-smartvillage:latest quay.io/computateorg/sma
 ## How the base classes for this project were created
 
 ```bash
-ansible-playbook -e @~/smartabyar-smartvillage/local/ansible_install_vars.yml ~/computate-org/vertx_project.yml
+ansible-playbook -e @/projects/smartabyar-smartvillage/local/ansible_install_vars.yml /projects/computate-org/vertx_project.yml
 ```
 
 # Load a new map traffic data into SUMO
@@ -604,7 +547,7 @@ mv ~/.local/opt/yq/yq_linux_amd64 ~/.local/bin/yq
 Run the command
 
 ```bash
-yq -o json '.AUTH_CLIENTS' ~/smartabyar-smartvillage/config/smartabyar-smartvillage.yml | jq -c
+yq -o json '.AUTH_CLIENTS' /projects/smartabyar-smartvillage/config/smartabyar-smartvillage.yml | jq -c
 ```
 
 # Restart a workbench
@@ -612,5 +555,5 @@ yq -o json '.AUTH_CLIENTS' ~/smartabyar-smartvillage/config/smartabyar-smartvill
 ## Set up a new Python virtualenv
 
 ```bash
-source ~/python/bin/activate
+source /projects/python/bin/activate
 ```

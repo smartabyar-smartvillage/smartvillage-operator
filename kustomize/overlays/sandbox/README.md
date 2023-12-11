@@ -87,21 +87,7 @@ oc get pod -l app=postgres -w
 oc logs -l app=postgres -f
 ```
 
-## Install the scorpiobroker Context Broker in the OpenShift Developer openshift-local
-
-### Copy the kafka secrets to the `scorpiobroker` namespace. 
-
-```bash
-oc get secret postgres-pguser-scorpiobroker -o json \
-    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
-    | oc -n scorpiobroker apply -f -
-oc get secret scorpiobroker-kafka -o json \
-    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
-    | oc -n scorpiobroker apply -f -
-oc get secret default-cluster-ca-cert -o json \
-    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
-    | oc -n scorpiobroker apply -f -
-```
+## Install the scorpiobroker Context Broker in the OpenShift Developer Sandbox
 
 ```bash
 ansible-playbook ~/.local/src/smartvillage-operator/apply-scorpiobroker.yaml \
