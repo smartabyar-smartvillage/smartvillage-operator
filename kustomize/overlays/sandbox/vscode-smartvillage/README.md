@@ -180,7 +180,7 @@ oc logs -l app=zookeeper -f
 ## Install solr in the OpenShift Developer Sandbox
 
 ```bash
-oc apply -k kustomize/overlays/sandbox/edgesolrs/default/configmaps/
+oc apply -k ~/smartvillage-operator/kustomize/overlays/sandbox/edgesolrs/default/configmaps/
 
 ansible-playbook ~/smartvillage-operator/apply-edgesolr.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \

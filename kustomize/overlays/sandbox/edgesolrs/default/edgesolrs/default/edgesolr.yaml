@@ -10,10 +10,10 @@ spec:
     replicas: 1
     resources:
       limits:
-        memory: 2Gi
-        cpu: '2'
+        memory: 1500Mi
+        cpu: '1'
       requests:
-        memory: 1Gi
+        memory: 1500Mi
         cpu: '200m'
     configsets:
       - name: computate

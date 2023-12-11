@@ -5,4 +5,11 @@ metadata:
 spec:
   rabbitmq:
     storage:
-     enabled: false
+      enabled: false
+    resources:
+      limits:
+        memory: 400Mi
+        cpu: 400m
+      requests:
+        memory: 400Mi
+        cpu: 400m
