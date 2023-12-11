@@ -70,8 +70,8 @@ spec:
               memory: '{{ values.site.worker_resources.limits.memory }}'
               cpu: '{{ values.site.worker_resources.limits.cpu }}'
             requests:
-              memory: '{{ values.site.worker_resources.limits.memory }}'
-              cpu: '{{ values.site.worker_resources.limits.cpu }}'
+              memory: '{{ values.site.worker_resources.requests.memory }}'
+              cpu: '{{ values.site.worker_resources.requests.cpu }}'
           env:
 
             - name: JAVA_HOME

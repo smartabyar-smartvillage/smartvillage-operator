@@ -30,8 +30,8 @@ spec:
               memory: '{{ values.ngsi_ld.resources.limits.memory }}'
               cpu: '{{ values.ngsi_ld.resources.limits.cpu }}'
             requests:
-              memory: '{{ values.ngsi_ld.resources.limits.memory }}'
-              cpu: '{{ values.ngsi_ld.resources.limits.cpu }}'
+              memory: '{{ values.ngsi_ld.resources.requests.memory }}'
+              cpu: '{{ values.ngsi_ld.resources.requests.cpu }}'
           env:
 
             - name: SITE_PORT
