@@ -6,7 +6,7 @@ spec:
   iotagent:
     base_url: http://iotagent-json:4041
   context_broker:
-    base_url: http://orion-ld:1026
+    base_url: http://scorpiobroker:9090
   ngsi_ld:
     service: trafficflowobserveds
     service_path: /Sweden/Veberod/CityCenter
