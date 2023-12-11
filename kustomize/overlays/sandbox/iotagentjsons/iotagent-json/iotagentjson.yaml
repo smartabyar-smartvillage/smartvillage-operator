@@ -14,6 +14,11 @@ spec:
   orionld:
     host: scorpiobroker
     port: 9090
+  mongodb:
+    name: mongodb
+    password_secret:
+      name: mongodb
+      key: mongodb-root-password
   message_broker:
     amqp_host: default-rabbitmq
     password_secret:
