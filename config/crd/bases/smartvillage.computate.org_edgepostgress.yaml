@@ -168,7 +168,7 @@ spec:
                       type: object
                     type: array
                   version:
-                    default: '15.1'
+                    default: '15'
                     type: string
 
           status:

@@ -57,7 +57,7 @@ spec:
       containers:
         - name: postgres
           imagePullPolicy: Always
-          image: 'docker.io/postgres:{{ values.postgres.version }}'
+          image: 'docker.io/postgis/postgis:{{ values.postgres.version }}-master'
           resources:
             limits:
               memory: '{{ instance.resources.limits.memory }}'

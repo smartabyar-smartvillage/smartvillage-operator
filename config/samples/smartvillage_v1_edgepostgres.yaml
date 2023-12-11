@@ -19,5 +19,5 @@ spec:
       10Gi
     crunchy: True
     version: |-
-      15.1
+      15
     config:
