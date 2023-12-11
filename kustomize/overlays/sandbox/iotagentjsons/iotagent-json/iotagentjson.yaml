@@ -12,8 +12,8 @@ spec:
       limits:
         memory: 512Mi
   orionld:
-    host: orion-ld
-    port: 1026
+    host: scorpiobroker
+    port: 9090
   message_broker:
     amqp_host: default-rabbitmq
     password_secret:
