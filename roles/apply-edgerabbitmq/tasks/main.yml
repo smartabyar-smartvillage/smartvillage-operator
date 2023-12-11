@@ -29,7 +29,7 @@
   changed_when: false
 - name: "Query MongoDB secret"
   set_fact:
-    rabbitmq_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.rabbitmq.name, namespace=ansible_operator_meta.namespace)[0].data['rabbitmq-password'] | default('') }}"
+    rabbitmq_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.rabbitmq.auth_secret, namespace=ansible_operator_meta.namespace)[0].data['rabbitmq-password'] | default('') }}"
 - name: "Install rabbitmq secret on OpenShift"
   k8s:
     state: present
