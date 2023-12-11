@@ -4,7 +4,7 @@ metadata:
   name: scorpiobroker
 spec:
   postgres:
-    host: postgres-primary
+    host: postgres-smartvillage
   kafka:
     enabled: false
   scorpiobroker:
