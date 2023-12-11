@@ -36,13 +36,28 @@
     state: present
     kind: Secret
     api_version: v1
-    name: "postgres-pguser-{{ instance.name }}"
+    name: "postgres-pguser-postgres"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'postgres-pguser-secret.yaml') }}"
-  when: not values.postgres.crunchy and (query('kubernetes.core.k8s', kind='Secret', resource_name=('postgres-pguser-' + instance.name), namespace=ansible_operator_meta.namespace)[0].data['password'] | default('')) == ''
-  loop: "{{ values.postgres.instances | default([]) }}"
+  vars:
+    user:
+      name: postgres
+      options: "SUPERUSER CREATEDB"
+      databases:
+        - postgres
+  when: not values.postgres.crunchy and (query('kubernetes.core.k8s', kind='Secret', resource_name=('postgres-pguser-' + user.name), namespace=ansible_operator_meta.namespace)[0].data['password'] | default('')) == ''
+- name: "Install postgres user secret on OpenShift"
+  k8s:
+    state: present
+    kind: Secret
+    api_version: v1
+    name: "postgres-pguser-{{ user.name }}"
+    namespace: "{{ ansible_operator_meta.namespace }}"
+    definition: "{{ lookup('template', 'postgres-pguser-secret.yaml') }}"
+  when: not values.postgres.crunchy and (query('kubernetes.core.k8s', kind='Secret', resource_name=('postgres-pguser-' + user.name), namespace=ansible_operator_meta.namespace)[0].data['password'] | default('')) == ''
+  loop: "{{ values.postgres.users | default([]) }}"
   loop_control:
-    loop_var: instance
+    loop_var: user
 - name: Install {{ ansible_operator_meta.name }} postgres StatefulSet on OpenShift
   k8s:
     state: "present"
@@ -83,6 +98,13 @@
     msg: |-
       The PostgreSQL service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
   when: verify_connections and verify_postgresql.failed
+
+- name: Create database users
+  include_role:
+    name: postgres-user-init
+  loop: "{{ values.postgres.users | default([]) }}"
+  loop_control:
+    loop_var: user
 
 - name: Run SQL configMap scripts on postgres
   include_role:

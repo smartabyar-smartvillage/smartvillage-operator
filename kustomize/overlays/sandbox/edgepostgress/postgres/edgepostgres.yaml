@@ -29,9 +29,16 @@ spec:
             cpu: 200m
     users:
       - name: smartvillage
-        options: "SUPERUSER"
+        options: "SUPERUSER CREATEDB"
+        databases:
+          - smartvillage
+      - name: scorpiobroker
+        options: "SUPERUSER CREATEDB"
         databases:
           - scorpiobroker
     pg_hba:
       - "host all smartvillage all md5"
       - "local all smartvillage trust"
+      - "host all scorpiobroker all md5"
+      - "local all scorpiobroker trust"
+      

@@ -77,12 +77,6 @@ pip install --upgrade pip
 pip install ansible kubernetes openshift jmespath --upgrade
 ```
 
-## Update the Ansible Galaxy collections for kubernetes.core
-
-```bash
-ansible-galaxy collection install kubernetes.core -U
-```
-
 # Setup the project
 
 ## Setup the directory for the project and clone the git repository into it 
@@ -154,6 +148,7 @@ oc logs -l app=postgres -f
 
 ```bash
 ansible-playbook ~/smartvillage-operator/apply-scorpiobroker.yaml \
+  -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
   -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/scorpiobrokers/scorpiobroker/scorpiobroker.yaml
 
 oc -n orion-ld get pod -l app=scorpiobroker -w
