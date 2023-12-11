@@ -1,0 +1,10 @@
+apiVersion: smartvillage.computate.org/v1
+kind: EdgeRabbitMQ
+metadata:
+  name: rabbitmq
+  namespace: rabbitmq
+spec:
+  enable_dev_nodeports: true
+  rabbitmq:
+    storage:
+     enabled: false

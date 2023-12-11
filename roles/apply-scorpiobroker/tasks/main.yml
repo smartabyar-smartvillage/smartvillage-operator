@@ -18,7 +18,7 @@
     name: "scorpiobroker"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'deployment-scorpiobroker.yaml') }}"
-- name: "Install Orion-LD route on OpenShift"
+- name: "Install scorpiobroker route on OpenShift"
   k8s:
     state: "{{ 'present' if values.scorpiobroker.route.create else 'absent' }}"
     kind: Route

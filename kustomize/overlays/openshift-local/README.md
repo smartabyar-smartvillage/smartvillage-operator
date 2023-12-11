@@ -86,20 +86,13 @@ oc -n postgres logs -l postgres-operator.crunchydata.com/cluster=postgres -f
 oc -n postgres get secret postgres-pguser-scorpiobroker -o json \
     | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
     | oc -n scorpiobroker apply -f -
-oc -n kafka get secret scorpiobroker-kafka -o json \
-    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
-    | oc -n scorpiobroker apply -f -
-oc -n kafka get secret default-cluster-ca-cert -o json \
-    | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
-    | oc -n scorpiobroker apply -f -
-```
 
 ```bash
 ansible-playbook ~/.local/src/smartvillage-operator/apply-scorpiobroker.yaml \
   -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/openshift-local/ansible/scorpiobrokers/scorpiobroker/scorpiobroker.yaml
 
-oc -n orion-ld get pod -l app=scorpiobroker -w
-oc -n orion-ld logs -l app=scorpiobroker -f
+oc -n scorpiobroker get pod -l app.kubernetes.io/name=scorpiobroker -w
+oc -n scorpiobroker logs -l app.kubernetes.io/name=scorpiobroker -f
 ```
 
 ## Install the IoT Agent JSON in the OpenShift Developer openshift-local
@@ -145,16 +138,6 @@ ansible-playbook ~/.local/src/smartvillage-operator/apply-edgesolr.yaml \
 
 oc -n solr get pod -l app=solr -w
 oc -n solr logs -l app=solr -f
-```
-
-## Install kafka in the OpenShift Developer openshift-local
-
-```bash
-ansible-playbook ~/.local/src/smartvillage-operator/apply-edgekafka.yaml \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/openshift-local/ansible/edgekafkas/default/edgekafka.yaml
-
-oc -n kafka get pod -l strimzi.io/name=default-kafka -w
-oc -n kafka logs -l strimzi.io/name=default-kafka -f
 ```
 
 ## Copy secrets

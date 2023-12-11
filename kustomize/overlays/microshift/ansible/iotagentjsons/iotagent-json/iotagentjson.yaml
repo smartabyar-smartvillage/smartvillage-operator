@@ -1,0 +1,26 @@
+apiVersion: smartvillage.computate.org/v1
+kind: IoTAgentJson
+metadata:
+  name: iotagent-json
+  namespace: iotagent
+spec:
+  ngsild:
+    host: scorpiobroker.scorpiobroker.svc
+    port: 9090
+  mongodb:
+    name: mongodb
+    namespace: mongodb
+    password_secret:
+      name: mongodb
+      key: mongodb-root-password
+  message_broker:
+    name: rabbitmq
+    namespace: rabbitmq
+    amqp_host: default-rabbitmq.rabbitmq.svc
+    password_secret:
+      name: rabbitmq-password
+      key: rabbitmq-password
+  iotagent:
+    replicas: 1
+    route:
+      create: true

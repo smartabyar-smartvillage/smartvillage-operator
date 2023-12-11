@@ -8,7 +8,4 @@ spec:
     weight: 100
   port:
     targetPort: solr
-  tls:
-    termination: edge
-    insecureEdgeTerminationPolicy: Redirect
   wildcardPolicy: None

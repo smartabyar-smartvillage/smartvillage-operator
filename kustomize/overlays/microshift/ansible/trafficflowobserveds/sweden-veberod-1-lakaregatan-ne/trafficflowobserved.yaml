@@ -1,0 +1,57 @@
+apiVersion: smartvillage.computate.org/v1
+kind: TrafficFlowObserved
+metadata:
+  name: sweden-veberod-1-lakaregatan-ne
+  namespace: smartvillage
+spec:
+  iotagent:
+    name: iotagent-json
+    namespace: iotagent
+    service_name: iotagent-json
+  context_broker:
+    name: scorpiobroker
+    namespace: scorpiobroker
+    service_name: scorpiobroker
+  ngsi_ld:
+    service: trafficflowobserveds
+    service_path: /Sweden/Veberod/CityCenter
+    context: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
+  device:
+    id: sweden-veberod-1-lakaregatan-ne
+    subscription_url: http://ngsild-smartvillage-sync.smartvillage.svc:8080
+  message_broker:
+    namespace: rabbitmq
+    transport: AMQP
+    host: default-rabbitmq
+    port: 5672
+    user: user
+    secret:
+      name: rabbitmq-password
+      key: rabbitmq-password
+  smartvillage:
+    enabled: true
+    auth_secret_name: keycloak-client-secret-smartvillage
+    auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+    site_base_url: https://smartvillage-web-smartvillage.apps-crc.testing
+  alternate_model:
+    enabled: true
+    id: sumo
+    name: SUMO
+  attributes:
+    entityId: sweden-veberod-1-lakaregatan-ne
+    trafficSimulationId: urn:ngsi-ld:TrafficSimulation:TrafficSimulation-VeberodIntersection1
+    laneAreaDetectorId: det_13
+    location: 55.633703, 13.492540
+    averageVehicleLength: 5
+    averageGapDistance: 1
+    averageVehicleSpeed: 55
+    customRouteId: r42
+    customSigma: 0.5
+    customAcceleration: 2.6
+    customDeceleration: 4.5
+    customMinGreenTime: 10.0
+    customMaxGreenTime: 20.0
+    customAverageVehiclesPerMinute: 10.0
+    customDemandScalingFactor: 1.00
+    customQueueLengthThreshold: 8.0
+    
