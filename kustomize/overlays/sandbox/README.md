@@ -27,30 +27,83 @@
 
 ## Grant the default service account edit privileges in your namespace. 
 
+- In the terminal, run these commands to grant access to your pods and other namespace resources
+
 ```bash
-oc create rolebinding default-edit --clusterrole=edit --serviceaccount=$(oc get project -o jsonpath={.items[0].metadata.name}):default
-oc create role default-edit-rolebindings --verb=get,list,watch,create,update,patch,delete --resource=roles,rolebindings
-oc create rolebinding default-edit-rolebindings --role=default-edit-rolebindings --serviceaccount=$(oc get project -o jsonpath={.items[0].metadata.name}):default
+SERVICE_ACCOUNT=python
+oc create rolebinding $SERVICE_ACCOUNT-edit --clusterrole=edit --serviceaccount=$(oc get project -o jsonpath={.items[0].metadata.name}):$SERVICE_ACCOUNT
+oc create role $SERVICE_ACCOUNT-edit-rolebindings --verb=get,list,watch,create,update,patch,delete --resource=roles,rolebindings
+oc create rolebinding $SERVICE_ACCOUNT-edit-rolebindings --role=$SERVICE_ACCOUNT-edit-rolebindings --serviceaccount=$(oc get project -o jsonpath={.items[0].metadata.name}):$SERVICE_ACCOUNT
 ```
 
-- Run a debug pod that can run Ansible and OpenShift
+# Create a new OpenShift AI Minimal Python Workbench
+
+- In the Red Hat OpenShift Developer Sandbox, click on the apps button with 9 squares at the top, and select "Red Hat OpenShift Data Science". 
+- Log in with [ Dev Sandbox ]
+- Click [ Data Science Projects ]
+- Click on your data science project, but make sure it's running first
+- Click [ Create workbench ]
+  - Name: python
+  - Image selection: Minimal Python
+  - Click [ Create workbench ]
+- When your workbench is running after a minute, click on the "Open" link
+- Log in with [ Dev Sandbox ]
+
+# Install prerequisite helm binary
+
+Download the latest [helm binary here](https://github.com/helm/helm/releases), I recommend the Linux amd64 binary if you are on a Linux x86_64 system. 
 
 ```bash
-oc debug --image quay.io/computateorg/smartvillage-operator
+curl https://get.helm.sh/helm-v3.13.2-linux-amd64.tar.gz -o /tmp/helm-v3.13.2-linux-amd64.tar.gz
+mkdir -p ~/.local/opt/helm/ ~/.local/bin/
+tar xvf /tmp/helm-v3.13.2-linux-amd64.tar.gz --strip-components=1 -C ~/.local/opt/helm/
+cp ~/.local/opt/helm/helm ~/.local/bin/
 ```
 
-- Load the name of your namespace into an environment variable. 
+## Set up a new Python virtualenv
 
 ```bash
-export OPENSHIFT_NAMESPACE=$(oc get project -o jsonpath={.items[0].metadata.name})
+pip install virtualenv
+virtualenv ~/python
+echo "source ~/python/bin/activate" | tee -a ~/.bashrc
+source ~/.bashrc
+```
+
+## Install the latest Ansible
+
+```bash
+pip install setuptools_rust wheel
+pip install --upgrade pip
+pip install ansible kubernetes openshift jmespath --upgrade
+```
+
+# Setup the project
+
+## Setup the directory for the project and clone the git repository into it 
+
+```bash
+git clone https://github.com/computate-org/smartabyar-smartvillage.git ~/smartabyar-smartvillage
+```
+
+## Setup a directory for Ansible roles and clone the Ansible role to install the project
+
+```bash
+mkdir -p ~/.ansible/roles/
+git clone https://github.com/computate-org/computate_project.git ~/.ansible/roles/computate.computate_project
+```
+
+## Run the Ansible Playbook to install the project
+
+```bash
+ansible-playbook ~/smartabyar-smartvillage/install.yml -e SYSTEMD_ENABLED=false
 ```
 
 ## Install the MongoDB NOSQL Database in the OpenShift Developer Sandbox
 
 ```bash
-ansible-playbook ~/.local/src/smartvillage-platform/apply-edgemongodb.yaml \
+ansible-playbook ~/smartvillage-operator/apply-edgemongodb.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/sandbox/edgemongodbs/mongodb/edgemongodb.yaml
+  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/edgemongodbs/mongodb/edgemongodb.yaml
 
 oc get pod -l app.kubernetes.io/instance=mongodb -w
 oc logs -l app.kubernetes.io/instance=mongodb -f
@@ -59,9 +112,9 @@ oc logs -l app.kubernetes.io/instance=mongodb -f
 ## Install the RabbitMQ in the OpenShift Developer Sandbox
 
 ```bash
-ansible-playbook ~/.local/src/smartvillage-platform/apply-edgerabbitmq.yaml \
+ansible-playbook ~/smartvillage-operator/apply-edgerabbitmq.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/sandbox/edgerabbitmqs/rabbitmq/edgerabbitmq.yaml
+  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/edgerabbitmqs/rabbitmq/edgerabbitmq.yaml
 
 oc get pod -l app.kubernetes.io/name=rabbitmq -w
 oc logs -l app.kubernetes.io/name=rabbitmq -f
@@ -70,11 +123,11 @@ oc logs -l app.kubernetes.io/name=rabbitmq -f
 ## Install postgres in the OpenShift Developer Sandbox
 
 ```bash
-oc create configmap smartvillage-db-create --from-file ~/.local/src/smartabyar-smartvillage/src/main/resources/sql/db-create.sql
+oc create configmap smartvillage-db-create --from-file ~/smartabyar-smartvillage/src/main/resources/sql/db-create.sql
 
-ansible-playbook ~/.local/src/smartvillage-platform/apply-edgepostgres.yaml \
+ansible-playbook ~/smartvillage-operator/apply-edgepostgres.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/sandbox/edgepostgress/postgres/edgepostgres.yaml
+  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/edgepostgress/postgres/edgepostgres.yaml
 ```
 
 You should see a play recap that has failed. 
@@ -83,6 +136,10 @@ The final tasks in the playbook expect the database create SQL scripts to be run
 Retry the playbook once the postgres pod is running. 
 
 ```bash
+ansible-playbook ~/smartvillage-operator/apply-edgepostgres.yaml \
+  -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/edgepostgress/postgres/edgepostgres.yaml
+
 oc get pod -l app=postgres -w
 oc logs -l app=postgres -f
 ```
@@ -90,8 +147,9 @@ oc logs -l app=postgres -f
 ## Install the scorpiobroker Context Broker in the OpenShift Developer Sandbox
 
 ```bash
-ansible-playbook ~/.local/src/smartvillage-operator/apply-scorpiobroker.yaml \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/openshift-local/ansible/scorpiobrokers/scorpiobroker/scorpiobroker.yaml
+ansible-playbook ~/smartvillage-operator/apply-scorpiobroker.yaml \
+  -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
+  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/scorpiobrokers/scorpiobroker/scorpiobroker.yaml
 
 oc -n orion-ld get pod -l app=scorpiobroker -w
 oc -n orion-ld logs -l app=scorpiobroker -f
@@ -100,9 +158,9 @@ oc -n orion-ld logs -l app=scorpiobroker -f
 ## Install the IoT Agent JSON in the OpenShift Developer Sandbox
 
 ```bash
-ansible-playbook ~/.local/src/smartvillage-platform/apply-iotagentjson.yaml \
+ansible-playbook ~/smartvillage-operator/apply-iotagentjson.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/sandbox/iotagentjsons/iotagent-json/iotagentjson.yaml
+  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/iotagentjsons/iotagent-json/iotagentjson.yaml
 
 oc get pod -l app.kubernetes.io/instance=iotagent-json -w
 oc logs -l app.kubernetes.io/instance=iotagent-json -f
@@ -111,9 +169,9 @@ oc logs -l app.kubernetes.io/instance=iotagent-json -f
 ## Install zookeeper in the OpenShift Developer Sandbox
 
 ```bash
-ansible-playbook ~/.local/src/smartvillage-platform/apply-edgezookeeper.yaml \
+ansible-playbook ~/smartvillage-operator/apply-edgezookeeper.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/sandbox/edgezookeepers/default/edgezookeeper.yaml
+  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/edgezookeepers/default/edgezookeeper.yaml
 
 oc get pod -l app=zookeeper -w
 oc logs -l app=zookeeper -f
@@ -122,11 +180,11 @@ oc logs -l app=zookeeper -f
 ## Install solr in the OpenShift Developer Sandbox
 
 ```bash
-oc apply -k kustomize/overlays/sandbox/edgesolrs/default/configmaps/
+oc apply -k ~/smartvillage-operator/kustomize/overlays/sandbox/edgesolrs/default/configmaps/
 
-ansible-playbook ~/.local/src/smartvillage-platform/apply-edgesolr.yaml \
+ansible-playbook ~/smartvillage-operator/apply-edgesolr.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/sandbox/edgesolrs/default/edgesolrs/default/edgesolr.yaml
+  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/edgesolrs/default/edgesolrs/default/edgesolr.yaml
 
 oc get pod -l app=solr -w
 oc logs -l app=solr -f
@@ -135,53 +193,53 @@ oc logs -l app=solr -f
 ## Install the SmartaByarSmartVillage in the OpenShift Developer Sandbox
 
 ```bash
-ansible-playbook ~/.local/src/smartvillage-platform/apply-smartabyarsmartvillage.yaml \
+ansible-playbook ~/smartvillage-operator/apply-smartabyarsmartvillage.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/sandbox/smartabyarsmartvillages/smartvillage/smartabyarsmartvillage.yaml
+  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/smartabyarsmartvillages/smartvillage/smartabyarsmartvillage.yaml
 ```
 
 ## Install the Traffic Flow Observed JSON in the OpenShift Developer Sandbox
 
 ```bash
-ansible-playbook ~/.local/src/smartvillage-platform/apply-trafficflowobserved.yaml \
+ansible-playbook ~/smartvillage-operator/apply-trafficflowobserved.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/sandbox/trafficflowobserveds/sweden-veberod-1-lakaregatan-ne/trafficflowobserved.yaml
+  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/trafficflowobserveds/sweden-veberod-1-lakaregatan-ne/trafficflowobserved.yaml
 ```
 
 ```bash
-ansible-playbook ~/.local/src/smartvillage-platform/apply-trafficflowobserved.yaml \
+ansible-playbook ~/smartvillage-operator/apply-trafficflowobserved.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/sandbox/trafficflowobserveds/sweden-veberod-1-sjobovagen-se/trafficflowobserved.yaml
+  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/trafficflowobserveds/sweden-veberod-1-sjobovagen-se/trafficflowobserved.yaml
 ```
 
 ## Install the Crowd Flow Observed JSON in the OpenShift Developer Sandbox
 
 ```bash
-ansible-playbook ~/.local/src/smartvillage-platform/apply-crowdflowobserved.yaml \
+ansible-playbook ~/smartvillage-operator/apply-crowdflowobserved.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-sjobovagen-se-dorrodsvagen-sw/crowdflowobserved.yaml
+  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-sjobovagen-se-dorrodsvagen-sw/crowdflowobserved.yaml
 ```
 
 ```bash
-ansible-playbook ~/.local/src/smartvillage-platform/apply-crowdflowobserved.yaml \
+ansible-playbook ~/smartvillage-operator/apply-crowdflowobserved.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-dorrodsvagen-ne-sjobovagen-se/crowdflowobserved.yaml
+  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-dorrodsvagen-ne-sjobovagen-se/crowdflowobserved.yaml
 ```
 
 ```bash
-ansible-playbook ~/.local/src/smartvillage-platform/apply-crowdflowobserved.yaml \
+ansible-playbook ~/smartvillage-operator/apply-crowdflowobserved.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-sjobovagen-nw-lakaregatan-ne/crowdflowobserved.yaml
+  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-sjobovagen-nw-lakaregatan-ne/crowdflowobserved.yaml
 ```
 
 ```bash
-ansible-playbook ~/.local/src/smartvillage-platform/apply-crowdflowobserved.yaml \
+ansible-playbook ~/smartvillage-operator/apply-crowdflowobserved.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-lakaregatan-sw-sjobovagen-nw/crowdflowobserved.yaml
+  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-lakaregatan-sw-sjobovagen-nw/crowdflowobserved.yaml
 ```
 
 ```bash
-ansible-playbook ~/.local/src/smartvillage-platform/apply-crowdflowobserved.yaml \
+ansible-playbook ~/smartvillage-operator/apply-crowdflowobserved.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-sjobovagen-se-dorrodsvagen-sw/crowdflowobserved.yaml
+  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-sjobovagen-se-dorrodsvagen-sw/crowdflowobserved.yaml
 ```
