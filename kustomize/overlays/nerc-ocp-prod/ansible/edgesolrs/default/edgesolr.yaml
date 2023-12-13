@@ -1,21 +1,18 @@
 apiVersion: smartvillage.computate.org/v1
 kind: EdgeSolr
 metadata:
-  name: solr
-  namespace: solr
+  name: default
+  namespace: smart-village-faeeb6c
 spec:
-  enable_dev_nodeports: true
   solr:
     name: solr
-    route:
-      create: true
     replicas: 1
     resources:
       limits:
-        memory: 4Gi
-        cpu: '2'
+        memory: 8Gi
+        cpu: '4'
       requests:
-        memory: 1Gi
+        memory: 2Gi
         cpu: '1'
     configsets:
       - name: computate
@@ -26,5 +23,5 @@ spec:
       - name: smartvillage
         configset: computate
   zookeeper:
-    host: zookeeper.zookeeper.svc
-    port: 2181
+    replicas: 1
+    host: zookeeper

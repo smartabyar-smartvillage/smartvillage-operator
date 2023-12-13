@@ -6,3 +6,10 @@ spec:
   zookeeper:
     host: zookeeper
     replicas: 1
+    resources:
+      limits:
+        memory: 400Mi
+        cpu: 400m
+      requests:
+        memory: 200Mi
+        cpu: 200m

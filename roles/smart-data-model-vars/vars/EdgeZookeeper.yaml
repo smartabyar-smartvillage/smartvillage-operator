@@ -114,10 +114,10 @@ schema:
             properties:
               memory:
                 type: string
-                default: '500Mi'
+                default: '1Gi'
               cpu:
                 type: string
-                default: '500m'
+                default: '1'
           requests:
             type: object
             properties:

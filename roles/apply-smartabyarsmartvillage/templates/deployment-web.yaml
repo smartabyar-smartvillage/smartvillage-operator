@@ -155,6 +155,10 @@ spec:
               value: "https://{{ values.auth.host_name | default(values.auth.host_name) }}/auth"
             - name: AUTH_TOKEN_URI
               value: "{{ values.auth.token_uri }}"
+            - name: AUTH_CALLBACK_URI
+              value: "{{ values.auth.callback_uri }}"
+            - name: AUTH_LOGOUT_URI
+              value: "{{ values.auth.logout_uri }}"
 
             - name: JDBC_HOST
               value: "{{ values.postgres.host }}"

@@ -59,7 +59,10 @@ values:
     realm: "{{ crd.auth.realm | default(schema | community.general.json_query('auth.properties.realm.default')) }}"
     client: "{{ crd.auth.client | default(schema | community.general.json_query('auth.properties.client.default')) }}"
     secret: "{{ crd.auth.secret | default('') }}"
+    open_api_id: "{{ crd.auth.open_api_id | default(schema | community.general.json_query('auth.properties.open_api_id.default')) }}"
     token_uri: "{{ crd.auth.token_uri | default(schema | community.general.json_query('auth.properties.token_uri.default')) }}"
+    callback_uri: "{{ crd.auth.callback_uri | default(schema | community.general.json_query('auth.properties.callback_uri.default')) }}"
+    logout_uri: "{{ crd.auth.logout_uri | default(schema | community.general.json_query('auth.properties.logout_uri.default')) }}"
     client_secret_name: "{{ crd.auth.client_secret_name | default(schema | community.general.json_query('auth.properties.client_secret_name.default')) }}"
   postgres:
     host: "{{ crd.postgres.host | default(schema | community.general.json_query('postgres.properties.host.default')) }}"

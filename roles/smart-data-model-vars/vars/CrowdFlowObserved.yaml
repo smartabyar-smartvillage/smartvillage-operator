@@ -64,9 +64,6 @@ schema:
   message_broker:
     type: object
     properties:
-      namespace:
-        type: string
-        description: The namespace of the message broker
       transport:
         type: string
         default: MQTT
@@ -83,7 +80,7 @@ schema:
         properties:
           name:
             type: string
-          key:
+          property:
             type: string
       port:
         type: number
@@ -95,8 +92,8 @@ schema:
         type: string
       subscription_url:
         type: string
-        default: "http://ngsild-smartvillage-sync:8080"
-  smartvillage:
+        default: "http://orionld-smartvillage-sync:8080"
+  smartabyar_smartvillage:
     type: object
     properties:
       enabled:

@@ -62,8 +62,8 @@ spec:
     enable_zookeeper_cluster: True
     ssl_verify: False
     default_map_location: |-
-      55.61888,13.548799
-    default_map_zoom: 11
+      55.63379,13.49260
+    default_map_zoom: 17
     vertx_warning_exception_seconds: 60
     java_opts: |-
       
@@ -87,8 +87,14 @@ spec:
       SMARTVILLAGE
     client: |-
       smartvillage
+    open_api_id: |-
+      openIdConnect
     token_uri: |-
       /auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+    callback_uri: |-
+      /callback
+    logout_uri: |-
+      /logout
     client_secret_name: |-
       keycloak-client-secret-smartvillage
   postgres:
@@ -101,8 +107,8 @@ spec:
       postgres-pguser-smartvillage
   solr:
     host: |-
-      default-solrcloud-common.solr.svc
-    port: 80
+      solr.solr.svc
+    port: 8983
     ssl: False
     route:
       create: False

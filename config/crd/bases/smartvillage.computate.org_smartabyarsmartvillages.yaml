@@ -51,10 +51,10 @@ spec:
                     description: "Determines if a Smarta Byar Smart Village site will be created. \n"
                     type: boolean
                   default_map_location:
-                    default: 55.61888,13.548799
+                    default: 55.63379,13.49260
                     type: string
                   default_map_zoom:
-                    default: 11
+                    default: 17
                     type: number
                   enable_dev_nodeports:
                     default: false
@@ -91,8 +91,8 @@ spec:
                     type: object
                   secret_name:
                     default: smartvillage
-                    description: "The secret name to store site secrets. \nIf empty, \"smartvillage\"\
-                      \ will be used. \n"
+                    description: "The secret name to store site secrets. \nIf empty, \"smartvillage\"
+                      will be used. \n"
                     type: string
                   site_base_url:
                     type: string
@@ -202,18 +202,27 @@ spec:
               auth:
                 type: object
                 properties:
+                  callback_uri:
+                    default: /callback
+                    type: string
                   client:
                     default: smartvillage
                     type: string
                   client_secret_name:
                     default: keycloak-client-secret-smartvillage
-                    description: "Optional secret name where the SSO secrets are stored. \nIf empty,\
-                      \ \"keycloak-client-secret-smartvillage\" will be used. \n\n```\necho '\nkind:\
-                      \ Secret\napiVersion: v1\nmetadata:\n  name: keycloak-client-secret-smartvillage\n\
-                      \  namespace: smartvillage\nstringData:\n  CLIENT_ID: smartvillage\n  CLIENT_SECRET:\
-                      \ ...\ntype: Opaque\n' | oc apply -f -\n```\n"
+                    description: "Optional secret name where the SSO secrets are stored. \nIf empty,
+                      \"keycloak-client-secret-smartvillage\" will be used. \n\n```\necho '\nkind: Secret\napiVersion:
+                      v1\nmetadata:\n  name: keycloak-client-secret-smartvillage\n  namespace: smartvillage\nstringData:\n
+                      \ CLIENT_ID: smartvillage\n  CLIENT_SECRET: ...\ntype: Opaque\n' | oc apply -f
+                      -\n```\n"
                     type: string
                   host_name:
+                    type: string
+                  logout_uri:
+                    default: /logout
+                    type: string
+                  open_api_id:
+                    default: openIdConnect
                     type: string
                   port:
                     default: 443
@@ -235,8 +244,8 @@ spec:
                 properties:
                   cluster_name:
                     default: postgres
-                    description: "Crunchy Postgres cluster name. \nIf empty, \"postgres\" will be used.\
-                      \ \n"
+                    description: "Crunchy Postgres cluster name. \nIf empty, \"postgres\" will be used.
+                      \n"
                     type: string
                   host:
                     default: postgres-primary.postgres.svc
@@ -248,8 +257,8 @@ spec:
                     type: number
                   secret_name:
                     default: postgres-pguser-smartvillage
-                    description: "Optional secret name where the postgres secrets are stored. \nIf empty,\
-                      \ \"postgres-pguser-smartvillage\" will be used. \n"
+                    description: "Optional secret name where the postgres secrets are stored. \nIf empty,
+                      \"postgres-pguser-smartvillage\" will be used. \n"
                     type: string
 
               solr:
@@ -259,10 +268,10 @@ spec:
                     default: smartvillage
                     type: string
                   host:
-                    default: default-solrcloud-common.solr.svc
+                    default: solr.solr.svc
                     type: string
                   port:
-                    default: 80
+                    default: 8983
                     type: number
                   route:
                     properties:
@@ -525,8 +534,8 @@ spec:
                     type: boolean
                   sync:
                     default: true
-                    description: "Determines if the ngsild-smartvillage-sync application will be created.\
-                      \ \n"
+                    description: "Determines if the ngsild-smartvillage-sync application will be created.
+                      \n"
                     type: boolean
                   sync_replicas:
                     default: 1

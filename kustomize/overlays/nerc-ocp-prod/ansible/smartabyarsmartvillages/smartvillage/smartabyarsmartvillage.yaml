@@ -1,0 +1,140 @@
+apiVersion: smartvillage.computate.org/v1
+kind: SmartaByarSmartVillage
+metadata:
+  name: smartvillage
+  namespace: smart-village-faeeb6c
+spec:
+  auth:
+    host_name: sso.smartabyarsmartvillage.org
+    port: 443
+    ssl: True
+    realm: SMARTVILLAGE
+    client: smartvillage
+    token_uri: /auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+  ngsi_ld:
+   sync_replicas: 1
+   host: scorpiobroker
+   port: 9090
+   ssl: false
+  kafka:
+    keystore_secret: smartvillage-kafka
+    truststore_secret: default-cluster-ca-cert
+    host: default-kafka-bootstrap
+    port: 9093
+    group: smartvillage-kafka
+  site:
+    enable_dev_nodeports: false
+    web_replicas: 0
+    sumo_replicas: 1
+    worker_replicas: 1
+    web_resources:
+      limits:
+        memory: 1Gi
+        cpu: '1'
+      requests:
+        memory: 1Gi
+        cpu: '1'
+    worker_resources:
+      limits:
+        memory: 1Gi
+        cpu: '1'
+      requests:
+        memory: 1Gi
+        cpu: '1'
+    name: smartvillage
+    secret_name: smartvillage
+    host_name: www.smartabyarsmartvillage.org
+    zone: America/New_York
+    locale: en-US
+    worker_pool_size: 1
+    enable_zookeeper_cluster: true
+    static_base_url: https://computate.neocities.org/smart-village-view
+    ssl_verify: False
+    default_map_location: 55.61888,13.548799
+    default_map_zoom: 11
+    route:
+      create: true
+      host_name: www.smartabyarsmartvillage.org
+  zookeeper:
+    host: zookeeper
+  auth:
+    host_name: sso.smartabyarsmartvillage.org
+    port: 443
+    ssl: true
+    realm: SMARTVILLAGE
+    client: smartvillage
+    token_uri: /auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+  postgres:
+    host: postgres-primary
+    port: 5432
+    cluster_name: postgres
+    secret_name: postgres-pguser-smartvillage
+  solr:
+    host: solr
+    port: 8983
+    ssl: false
+    collection: smartvillage
+  import_data:
+    enabled: True
+    sitepage:
+      enabled: True
+    sitehtm:
+      enabled: True
+    iotnode:
+      enabled: False
+    vehiclestep:
+      enabled: False
+    timestep:
+      enabled: False
+    trafficsimulation:
+      enabled: False
+  auth_role:
+    admin: |-
+      SiteAdmin
+    siteuser: |-
+      SiteAdmin
+    sitepage: |-
+      SiteAdmin
+    sitehtm: |-
+      SiteAdmin
+    iotnode: |-
+      SiteAdmin
+    mapresult: |-
+      Public
+    iotnodestep: |-
+      SiteAdmin
+    vehiclestep: |-
+      Public
+    personstep: |-
+      Public
+    smarttrafficlight: |-
+      SiteAdmin
+    trafficlight: |-
+      SiteAdmin
+    trafficlightstep: |-
+      Public
+    trafficsimulation: |-
+      SiteAdmin
+    simulationreport: |-
+      SiteAdmin
+    systemevent: |-
+      SiteAdmin
+    bicyclestep: |-
+      SiteAdmin
+    timestep: |-
+      Public
+    trafficflowobserved: |-
+      SiteAdmin
+  sumo:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1Gi
+      requests:
+        cpu: 400m
+        memory: 500Mi
+    fcd_sync_path: /home/ctate/.local/share/sumo/data/veberod/fcd
+  yggio:
+    enabled: true
+    api_relative_uri_iotnode: /api/iotnodes
+    auth_local_uri: /api/auth/local

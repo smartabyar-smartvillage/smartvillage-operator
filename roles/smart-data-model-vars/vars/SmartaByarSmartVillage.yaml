@@ -192,9 +192,18 @@ schema:
         default: "smartvillage"
       secret: 
         type: string
+      open_api_id:
+        type: string
+        default: "openIdConnect"
       token_uri:
         type: string
         default: "/auth/realms/SMARTVILLAGE/protocol/openid-connect/token"
+      callback_uri:
+        type: string
+        default: "/callback"
+      logout_uri:
+        type: string
+        default: "/logout"
       client_secret_name:
         type: string
         default: keycloak-client-secret-smartvillage

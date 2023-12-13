@@ -2,11 +2,10 @@ apiVersion: smartvillage.computate.org/v1
 kind: SmartaByarSmartVillage
 metadata:
   name: default
-  namespace: zookeeper
+  namespace: smart-village-faeeb6c
 spec:
-  enable_dev_nodeports: true
   zookeeper:
-    host: zookeeper.zookeeper.svc
+    host: zookeeper
     replicas: 1
     resources:
       limits:
