@@ -1,3 +1,2 @@
 ---
 ENTITY_TYPE: EdgeZookeeper
-SUBSCRIPTION_NAME: "urn:subscription:EdgeZookeeper-{{ values.device.id }}"

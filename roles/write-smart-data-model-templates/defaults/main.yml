@@ -3,5 +3,5 @@ MODEL_CRD_PATH: "{{ playbook_dir }}/config/crd/bases/smartvillage.computate.org_
 MODEL_SAMPLE_PATH: "{{ playbook_dir }}/config/samples/smartvillage_v1_{{ ENTITY_TYPE | lower }}.yaml"
 MODEL_VALUES_PATH: "{{ playbook_dir }}/roles/smart-data-model-vars/vars/values/values-{{ ENTITY_TYPE }}.yaml"
 MODEL_SPEC_PATH: "{{ lookup('env', 'HOME') }}/.local/src/smart-data-models/{{ DOMAIN_NAME | default('Smart Cities') | replace(' ', '') }}/dataModel.{{SUBMODULE_SHORT_NAME | default('Transportation') }}/{{ MODEL_NAME | default('TrafficFlowObserved') }}/model.yaml"
-MODEL_SPEC: "{{ lookup('file', MODEL_SPEC_PATH) | from_yaml }}"
+MODEL_SPEC: "{{ lookup('file', MODEL_SPEC_PATH, errors='ignore') | from_yaml | default({}) }}"
 MODEL_DESCRIPTION: "{{ description | default(FIWARE_SMART_DATA_MODELS[(DOMAIN_NAME | default('Smart Cities'))].SUBMODULES[(SUBMODULE_SHORT_NAME | default('Transportation'))].MODELS[(MODEL_NAME | default('TrafficFlowObserved'))].MODEL_DESCRIPTION) | indent(4, False) | default('') }}"

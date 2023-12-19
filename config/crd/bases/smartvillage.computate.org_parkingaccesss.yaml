@@ -43,33 +43,10 @@ spec:
                     type: string
                   address:
                     type: object
-                    properties:
-                      addressCountry:
-                        description: Property. The country. For example, Spain. Model:'https://schema.org/addressCountry'
-                        type: string
-                      addressLocality:
-                        description: Property. The locality in which the street address is, and which is
-                          in the region. Model:'https://schema.org/addressLocality'
-                        type: string
-                      addressRegion:
-                        description: Property. The region in which the locality is, and which is in the
-                          country. Model:'https://schema.org/addressRegion'
-                        type: string
-                      postOfficeBoxNumber:
-                        description: Property. The post office box number for PO box addresses. For example,
-                          03578. Model:'https://schema.org/postOfficeBoxNumber'
-                        type: string
-                      postalCode:
-                        description: Property. The postal code. For example, 24004. Model:'https://schema.org/https://schema.org/postalCode'
-                        type: string
-                      streetAddress:
-                        description: Property. The street address. Model:'https://schema.org/streetAddress'
-                        type: string
-
                   alternateName:
                     type: string
                   areaServed:
-                    type: geo:linestring
+                    type: object
                   category:
                     type: object
                   dataProvider:
@@ -164,7 +141,7 @@ spec:
                     default: default-mqtt-0-svc.amqbroker.svc
                     type: string
                   namespace:
-                    description: The namespace of the message broker
+                    default: amqbroker
                     type: string
                   port:
                     default: 1883
@@ -191,7 +168,7 @@ spec:
                   id:
                     type: string
                   subscription_url:
-                    default: http://ngsild-smartvillage-sync:8080
+                    default: http://orionld-smartvillage-sync:8080
                     type: string
 
               smartvillage:
@@ -217,8 +194,8 @@ spec:
                 type: object
                 properties:
                   enabled:
-                    default: ParkingAccess
-                    type: string
+                    default: true
+                    type: boolean
                   id:
                     default: parkingaccess
                     type: string

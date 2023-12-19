@@ -52,7 +52,7 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ values.iotagent.base_url }}/iot/services?apikey={{ values.service_group.apikey | urlencode }}&resource={{ values.service_group.resource | urlencode }}"
+    url: "{{ values.iotagent.base_url }}/iot/services?apikey={{ values.service_group.apikey | string | urlencode }}&resource={{ values.service_group.resource | string | urlencode }}"
     method: DELETE
     headers:
       Fiware-Service: "{{ values.ngsi_ld.service }}"
@@ -70,7 +70,7 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ values.iotagent.base_url }}/iot/devices/{{ values.device.id | urlencode }}"
+    url: "{{ values.iotagent.base_url }}/iot/devices/{{ values.device.id | string | urlencode }}"
     method: DELETE
     headers:
       Fiware-Service: "{{ values.ngsi_ld.service | lower }}"
@@ -88,7 +88,7 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/subscriptions/{{ SUBSCRIPTION_NAME | urlencode }}"
+    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/subscriptions/{{ SUBSCRIPTION_NAME | string | urlencode }}"
     method: DELETE
     headers:
       Fiware-Service: "{{ values.ngsi_ld.service | lower }}"
@@ -107,7 +107,7 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/entities/{{ ENTITY_NAME | urlencode }}"
+    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/entities/{{ ENTITY_NAME | string | urlencode }}"
     method: DELETE
     headers:
       Fiware-Service: "{{ values.ngsi_ld.service | lower }}"

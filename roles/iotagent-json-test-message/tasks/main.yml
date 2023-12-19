@@ -22,7 +22,7 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/entities/{{ ENTITY_NAME | urlencode }}"
+    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/entities/{{ ENTITY_NAME | string | urlencode }}"
     method: GET
     headers:
       Fiware-Service: "{{ values.ngsi_ld.service }}"

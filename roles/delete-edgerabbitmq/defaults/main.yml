@@ -1,3 +1,2 @@
 ---
 ENTITY_TYPE: EdgeRabbitMQ
-SUBSCRIPTION_NAME: "urn:subscription:EdgeRabbitMQ-{{ values.device.id }}"

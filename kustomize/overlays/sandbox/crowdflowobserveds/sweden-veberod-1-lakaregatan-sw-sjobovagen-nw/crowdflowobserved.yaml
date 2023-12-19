@@ -6,7 +6,7 @@ spec:
   iotagent:
     base_url: http://iotagent-json:4041
   context_broker:
-    base_url: http://orion-ld:1026
+    base_url: http://scorpiobroker:9090
   ngsi_ld:
     service: crowdflowobserveds
     service_path: /Sweden/Veberod/CityCenter
@@ -25,7 +25,7 @@ spec:
   smartvillage:
     auth_secret_name: keycloak-client-secret-smartvillage
     auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
-    site_base_url: https://smartvillage-web-smartvillage.apps-crc.testing
+    site_base_url: http://smartabyar-smartvillage-web:8080
   attributes:
     entityId: urn:ngsi-ld:CrowdFlowObserved:sweden-veberod-1-lakaregatan-sw-sjobovagen-nw
     areaServed: {"type":"Polygon","coordinates":[[[55.633873468364634,13.492550181906596],[55.633885178409066,13.492574355652383],[55.63388689055707,13.492611304455265],[55.63387760915558,13.492638508301688],[55.63386729128204,13.492625242468945],[55.63386074014971,13.492611355424616],[55.63385813540579,13.492596840266819],[55.6338593891775,13.492581859226155],[55.63386449951348,13.492566253512457],[55.633873468364634,13.492550181906596]]]}

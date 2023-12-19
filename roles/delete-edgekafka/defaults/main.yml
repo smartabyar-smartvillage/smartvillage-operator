@@ -1,3 +1,2 @@
 ---
 ENTITY_TYPE: EdgeKafka
-SUBSCRIPTION_NAME: "urn:subscription:EdgeKafka-{{ values.device.id }}"

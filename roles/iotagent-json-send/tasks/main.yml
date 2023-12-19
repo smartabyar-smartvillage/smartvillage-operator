@@ -26,6 +26,10 @@
     values: "{{ values | combine({'context_broker':{'base_url':context_broker_base_url}}, recursive=true) }}"
   when: values.context_broker.base_url == ''
 
+- debug:
+    var: values.message_broker.secret.name
+- debug:
+    var: values.message_broker.namespace
 - name: "Query message broker secret"
   set_fact:
     message_broker_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=values.message_broker.secret.name, namespace=(values.message_broker.namespace | default(ansible_operator_meta.namespace, true)))[0].data[values.message_broker.secret.key] | b64decode | default('') }}"
@@ -99,11 +103,11 @@
     -H 'Fiware-ServicePath: {{ values.ngsi_ld.service_path }}'
     -H 'NGSILD-Tenant: {{ values.ngsi_ld.service }}'
     -H 'NGSILD-Path: {{ values.ngsi_ld.service_path }}'
-    '{{ values.orionld.route.host | default(context_broker_base_url) }}/ngsi-ld/v1/entities/{{ ENTITY_NAME | urlencode }}'
+    '{{ values.orionld.route.host | default(context_broker_base_url) }}/ngsi-ld/v1/entities/{{ ENTITY_NAME | string | urlencode }}'
   connection: local
   uri:
     timeout: 90
-    url: "{{ context_broker_base_url }}/ngsi-ld/v1/entities/{{ ENTITY_NAME | urlencode }}"
+    url: "{{ context_broker_base_url }}/ngsi-ld/v1/entities/{{ ENTITY_NAME | string | urlencode }}"
     method: GET
     headers:
       Fiware-Service: "{{ values.ngsi_ld.service }}"
@@ -128,7 +132,7 @@
       -H 'Fiware-ServicePath: {{ values.ngsi_ld.service_path }}'
       -H 'NGSILD-Tenant: {{ values.ngsi_ld.service }}'
       -H 'NGSILD-Path: {{ values.ngsi_ld.service_path }}'
-      '{{ values.orionld.route.host | default(context_broker_base_url) }}/ngsi-ld/v1/entities/{{ ENTITY_NAME | urlencode }}'
+      '{{ values.orionld.route.host | default(context_broker_base_url) }}/ngsi-ld/v1/entities/{{ ENTITY_NAME | string | urlencode }}'
       | jq
 - name: Run this command to update the entity data in the context broker
   debug:

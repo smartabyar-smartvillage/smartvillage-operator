@@ -67,6 +67,9 @@ schema:
         enum:
           - MQTT
           - AMQP
+      namespace:
+        type: string
+        default: amqbroker
       host:
         type: string
         default: default-mqtt-0-svc.amqbroker.svc
@@ -77,7 +80,7 @@ schema:
         properties:
           name:
             type: string
-          property:
+          key:
             type: string
       port:
         type: number
@@ -90,7 +93,7 @@ schema:
       subscription_url:
         type: string
         default: "http://orionld-smartvillage-sync:8080"
-  smartabyar_smartvillage:
+  smartvillage:
     type: object
     properties:
       enabled:
@@ -117,9 +120,6 @@ schema:
       id:
         type: string
         default: trafficsimulation
-      enabled:
-        type: string
-        default: TrafficSimulation
 smart_data_model:
   attributes:
     startDateTime:

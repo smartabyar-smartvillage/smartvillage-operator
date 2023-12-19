@@ -29,14 +29,9 @@ spec:
       name: rabbitmq-password
       key: rabbitmq-password
   smartvillage:
-    enabled: true
     auth_secret_name: keycloak-client-secret-smartvillage
     auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
     site_base_url: https://smartvillage-web-smartvillage.apps-crc.testing
-  alternate_model:
-    enabled: true
-    id: sumo
-    name: SUMO
   attributes:
     entityId: sweden-veberod-1-lakaregatan-ne
     trafficSimulationId: urn:ngsi-ld:TrafficSimulation:TrafficSimulation-VeberodIntersection1

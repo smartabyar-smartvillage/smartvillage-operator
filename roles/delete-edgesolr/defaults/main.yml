@@ -1,3 +1,2 @@
 ---
 ENTITY_TYPE: EdgeSolr
-SUBSCRIPTION_NAME: "urn:subscription:EdgeSolr-{{ values.device.id }}"

@@ -6,7 +6,6 @@ values:
     trafficSimulationId: "{{ crd.attributes.trafficSimulationId | default('') }}"
     laneAreaDetectorId: "{{ crd.attributes.laneAreaDetectorId | default('') }}"
     location: "{{ crd.attributes.location | default('') }}"
-    simulationName: "{{ crd.attributes.simulationName | default('') }}"
     sumocfgPath: "{{ crd.attributes.sumocfgPath | default('') }}"
     customTrafficLightId: "{{ crd.attributes.customTrafficLightId | default('') }}"
     address: "{{ crd.attributes.address | default('') }}"
@@ -64,8 +63,8 @@ values:
     resource: "{{ crd.service_group.resource | default(schema | community.general.json_query('service_group.properties.resource.default')) }}"
     apikey: "{{ crd.service_group.apikey | default(schema | community.general.json_query('service_group.properties.apikey.default')) }}"
   message_broker:
-    namespace: "{{ crd.message_broker.namespace | default('') }}"
     transport: "{{ crd.message_broker.transport | default(schema | community.general.json_query('message_broker.properties.transport.default')) }}"
+    namespace: "{{ crd.message_broker.namespace | default(schema | community.general.json_query('message_broker.properties.namespace.default')) }}"
     host: "{{ crd.message_broker.host | default(schema | community.general.json_query('message_broker.properties.host.default')) }}"
     user: "{{ crd.message_broker.user | default('') }}"
     secret:

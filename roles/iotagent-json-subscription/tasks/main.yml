@@ -51,7 +51,7 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/subscriptions/{{ SUBSCRIPTION_NAME | urlencode }}"
+    url: "{{ values.context_broker.base_url }}/ngsi-ld/v1/subscriptions/{{ SUBSCRIPTION_NAME | string | urlencode }}"
     method: PATCH
     headers:
       Content-Type: "application/ld+json"

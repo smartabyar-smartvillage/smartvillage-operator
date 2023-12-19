@@ -67,6 +67,9 @@ schema:
         enum:
           - MQTT
           - AMQP
+      namespace:
+        type: string
+        default: amqbroker
       host:
         type: string
         default: default-mqtt-0-svc.amqbroker.svc
@@ -77,7 +80,7 @@ schema:
         properties:
           name:
             type: string
-          property:
+          key:
             type: string
       port:
         type: number
@@ -90,7 +93,7 @@ schema:
       subscription_url:
         type: string
         default: "http://orionld-smartvillage-sync:8080"
-  smartabyar_smartvillage:
+  smartvillage:
     type: object
     properties:
       enabled:
@@ -117,9 +120,6 @@ schema:
       id:
         type: string
         default: smarttrafficlight
-      enabled:
-        type: string
-        default: SmartTrafficLight
 smart_data_model:
   attributes:
     entityId:
@@ -134,6 +134,14 @@ smart_data_model:
     location:
       name: location
       type: geo:point
+    areaServed:
+      name: areaServed
+      type: geo:linestring
+      description: >+
+        The geographic area where a service or offered item is provided.
+        Geojson reference to the item. It can be Point, LineString, Polygon,
+        MultiPoint, MultiLineString or MultiPolygon. 
+      required: true
     routeIds:
       name: routeIds
       type: array

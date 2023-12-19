@@ -155,7 +155,7 @@ spec:
                     default: default-mqtt-0-svc.amqbroker.svc
                     type: string
                   namespace:
-                    description: The namespace of the message broker
+                    default: amqbroker
                     type: string
                   port:
                     default: 1883
@@ -182,7 +182,7 @@ spec:
                   id:
                     type: string
                   subscription_url:
-                    default: http://ngsild-smartvillage-sync:8080
+                    default: http://orionld-smartvillage-sync:8080
                     type: string
 
               smartvillage:
@@ -208,8 +208,8 @@ spec:
                 type: object
                 properties:
                   enabled:
-                    default: CrowdFlowObserved
-                    type: string
+                    default: true
+                    type: boolean
                   id:
                     default: crowdflowobserved
                     type: string

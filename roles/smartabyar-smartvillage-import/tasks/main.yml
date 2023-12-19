@@ -7,7 +7,7 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ values.context_broker.base_url }}/v2/entities/{{ ENTITY_NAME | urlencode }}?options=keyValues"
+    url: "{{ values.context_broker.base_url }}/v2/entities/{{ ENTITY_NAME | string | urlencode }}?options=keyValues"
     method: GET
     headers:
       Fiware-Service: "{{ values.fiware.service | lower }}"

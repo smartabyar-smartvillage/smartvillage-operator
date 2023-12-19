@@ -43,13 +43,15 @@ spec:
   message_broker:
     transport: |-
       MQTT
+    namespace: |-
+      amqbroker
     host: |-
       default-mqtt-0-svc.amqbroker.svc
     secret:
     port: 1883
   device:
     subscription_url: |-
-      http://ngsild-smartvillage-sync:8080
+      http://orionld-smartvillage-sync:8080
   smartvillage:
     enabled: True
     auth_secret_name: |-
@@ -61,7 +63,6 @@ spec:
     smart_model_api: |-
       /api/smart-traffic-light
   alternate_model:
-    enabled: |-
-      SmartTrafficLight
+    enabled: True
     id: |-
       smarttrafficlight

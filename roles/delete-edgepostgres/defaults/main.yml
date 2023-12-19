@@ -1,3 +1,2 @@
 ---
 ENTITY_TYPE: EdgePostgres
-SUBSCRIPTION_NAME: "urn:subscription:EdgePostgres-{{ values.device.id }}"

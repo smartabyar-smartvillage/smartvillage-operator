@@ -1,3 +1,2 @@
 ---
 ENTITY_TYPE: SmartTrafficLight
-SUBSCRIPTION_NAME: "urn:subscription:SmartTrafficLight-{{ values.device.id }}"

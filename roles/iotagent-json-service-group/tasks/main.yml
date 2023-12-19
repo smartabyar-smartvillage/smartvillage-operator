@@ -25,7 +25,7 @@
 - debug:
     var: CREATE_SERVICE
 - debug:
-    msg: "{{ iotagent_base_url }}/iot/services?apikey={{ values.service_group.apikey | urlencode }}&resource={{ values.service_group.resource | urlencode }}"
+    msg: "{{ iotagent_base_url }}/iot/services?apikey={{ values.service_group.apikey | string | urlencode }}&resource={{ values.service_group.resource | string | urlencode }}"
 - debug:
     msg: "{{ SERVICE_GROUP_BODY | ansible.utils.remove_keys(target=['apikey', 'resource']) }}"
 - debug:
@@ -36,7 +36,7 @@
   connection: local
   uri:
     timeout: 90
-    url: "{{ iotagent_base_url }}/iot/services?apikey={{ values.service_group.apikey | urlencode }}&resource={{ values.service_group.resource | urlencode }}"
+    url: "{{ iotagent_base_url }}/iot/services?apikey={{ values.service_group.apikey | string | urlencode }}&resource={{ values.service_group.resource | string | urlencode }}"
     method: PUT
     headers:
       Content-Type: "application/json"

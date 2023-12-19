@@ -173,6 +173,13 @@ ansible-playbook ~/.local/src/smartvillage-operator/apply-trafficsimulation.yaml
   -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/openshift-local/ansible/trafficsimulations/veberod-intersection-1/trafficsimulation.yaml
 ```
 
+## Install the SmartTrafficLight JSON in the OpenShift Developer openshift-local
+
+```bash
+ansible-playbook ~/.local/src/smartvillage-operator/apply-smarttrafficlight.yaml -e enable_dev_nodeports=true \
+  -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/openshift-local/ansible/smarttrafficlights/veberod-intersection-1/smarttrafficlight.yaml
+```
+
 ## Install the Traffic Flow Observed JSON in the OpenShift Developer openshift-local
 
 ```bash
