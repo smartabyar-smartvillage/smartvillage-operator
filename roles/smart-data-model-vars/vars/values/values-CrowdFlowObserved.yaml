@@ -1,9 +1,10 @@
 values:
 
   attributes:
+    customTrafficLightId: "{{ crd.attributes.customTrafficLightId | default('') }}"
+    trafficSimulationId: "{{ crd.attributes.trafficSimulationId | default('') }}"
     color: "{{ crd.attributes.color | default('') }}"
     entityId: "{{ crd.attributes.entityId | default('') }}"
-    trafficSimulationId: "{{ crd.attributes.trafficSimulationId | default('') }}"
     walkingAreaId: "{{ crd.attributes.walkingAreaId | default('') }}"
     alternateName: "{{ crd.attributes.alternateName | default('') }}"
     areaServed: "{{ crd.attributes.areaServed | default('') }}"

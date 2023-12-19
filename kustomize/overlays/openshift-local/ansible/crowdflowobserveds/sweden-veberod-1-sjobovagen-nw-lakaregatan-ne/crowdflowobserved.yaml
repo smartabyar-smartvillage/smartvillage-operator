@@ -33,8 +33,7 @@ spec:
     auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
     site_base_url: https://smartvillage-web-smartvillage.apps-crc.testing
   attributes:
-    entityId: urn:ngsi-ld:CrowdFlowObserved:sweden-veberod-1-sjobovagen-nw-lakaregatan-ne
-    trafficSimulationId: urn:ngsi-ld:TrafficSimulation:TrafficSimulation-VeberodIntersection1
-    customTrafficLightId: urn:ngsi-ld:SmartTrafficLight:SmartTrafficLight-veberod-intersection-1
+    trafficSimulationId: urn:ngsi-ld:TrafficSimulation:veberod-intersection-1
+    customTrafficLightId: urn:ngsi-ld:SmartTrafficLight:veberod-intersection-1
     location: 55.633703,13.49254
     walkingAreaId: ":267701936_w1"

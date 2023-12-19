@@ -33,9 +33,8 @@ spec:
     auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
     site_base_url: https://smartvillage-web-smartvillage.apps-crc.testing
   attributes:
-    entityId: sweden-veberod-1-sjobovagen-se
-    trafficSimulationId: urn:ngsi-ld:TrafficSimulation:TrafficSimulation-VeberodIntersection1
-    customTrafficLightId: urn:ngsi-ld:SmartTrafficLight:SmartTrafficLight-veberod-intersection-1
+    trafficSimulationId: urn:ngsi-ld:TrafficSimulation:veberod-intersection-1
+    customTrafficLightId: urn:ngsi-ld:SmartTrafficLight:veberod-intersection-1
     laneAreaDetectorId: det_42
     location: 55.633825, 13.492458
     averageVehicleLength: 5

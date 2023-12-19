@@ -17,7 +17,7 @@ spec:
     service_path: /Sweden/Veberod/CityCenter
     context: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
   device:
-    id: SmartTrafficLight-veberod-intersection-1
+    id: veberod-intersection-1
     subscription_url: http://ngsild-smartvillage-sync.smartvillage.svc:8080
   message_broker:
     namespace: rabbitmq
@@ -33,6 +33,5 @@ spec:
     auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
     site_base_url: http://smartabyar-smartvillage-web:8080
   attributes:
-    entityId: urn:ngsi-ld:SmartTrafficLight:veberod-intersection-1
     location: 55.633703, 13.492540
     smartTrafficLightName: Veberöd intersection 1

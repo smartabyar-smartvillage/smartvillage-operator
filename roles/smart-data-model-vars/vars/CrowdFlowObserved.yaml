@@ -125,6 +125,16 @@ schema:
         default: crowdflowobserved
 smart_data_model:
   attributes:
+    customTrafficLightId:
+      name: customTrafficLightId
+      type: string
+      description: >+
+        The Smart Traffic Light ID
+    trafficSimulationId:
+      name: trafficSimulationId
+      type: string
+      description: >+
+        The Traffic Simulation ID
     color:
       name: color
       type: string
@@ -133,11 +143,6 @@ smart_data_model:
       type: string
       description: >+
         A unique ID for this Smart Data Model
-    trafficSimulationId:
-      name: trafficSimulationId
-      type: string
-      description: >+
-        The Traffic Simulation ID
     walkingAreaId:
       name: walkingAreaId
       type: string
