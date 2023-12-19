@@ -195,7 +195,7 @@ make deploy
 This will install the following applications: 
 
 - An Edge version of the Red Hat AMQ Broker for AMQP and MQTT protocols
-- A FIWARE Orion-LD Context Broker for smart device entity data
+- A FIWARE NGSI-LD Context Broker for smart device entity data
 - An IoT Agent JSON for receiving AMQP and MQTT messages and updating the Context Broker
 - The Smarta Byar Smart Village Sync microservice, for sending context broker subscription data to the Smart Village application. 
 
@@ -356,7 +356,7 @@ oc logs -n smartvillage-operator-system deployment/smartvillage-operator-control
 This will install the following applications: 
 
 - An Edge version of the Red Hat AMQ Broker for AMQP and MQTT protocols
-- A FIWARE Orion-LD Context Broker for smart device entity data
+- A FIWARE NGSI-LD Context Broker for smart device entity data
 - An IoT Agent JSON for receiving AMQP and MQTT messages and updating the Context Broker
 - The Smarta Byar Smart Village Sync microservice, for sending context broker subscription data to the Smart Village application. 
 
@@ -428,27 +428,6 @@ make docker-build docker-push deploy && oc -n smartvillage-operator-system delet
 podman run --rm -it --entrypoint /bin/bash quay.io/computateorg/smartvillage-operator:latest
 ```
 
-## Initialize TrafficFlowObserved model
-
-```bash
-operator-sdk create api --group smartvillage --version v1 --kind TrafficFlowObserved --generate-role
-ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=TrafficFlowObserved
-```
-
-## Initialize CrowdFlowObserved model
-
-```bash
-operator-sdk create api --group smartvillage --version v1 --kind CrowdFlowObserved --generate-role
-ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=CrowdFlowObserved
-```
-
-## Initialize SmartTrafficLight model
-
-```bash
-operator-sdk create api --group smartvillage --version v1 --kind SmartTrafficLight --generate-role
-ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=SmartTrafficLight
-```
-
 ## Initialize OrionLDContextBroker model
 
 ```bash
@@ -489,6 +468,27 @@ ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=SmartaByar
 ```bash
 operator-sdk create api --group smartvillage --version v1 --kind TrafficSimulation --generate-role
 ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=TrafficSimulation
+```
+
+## Initialize TrafficFlowObserved model
+
+```bash
+operator-sdk create api --group smartvillage --version v1 --kind TrafficFlowObserved --generate-role
+ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=TrafficFlowObserved
+```
+
+## Initialize CrowdFlowObserved model
+
+```bash
+operator-sdk create api --group smartvillage --version v1 --kind CrowdFlowObserved --generate-role
+ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=CrowdFlowObserved
+```
+
+## Initialize SmartTrafficLight model
+
+```bash
+operator-sdk create api --group smartvillage --version v1 --kind SmartTrafficLight --generate-role
+ansible-playbook write-smart-data-model-templates.yaml -e ENTITY_TYPE=SmartTrafficLight
 ```
 
 - Edit the newly generated vars values file: `smartvillage-operator/roles/smart-data-model-vars/vars/TrafficSimulation.yaml`. 
@@ -666,7 +666,7 @@ oc apply -k ~/.local/src/smartabyar-smartvillage/openshift/kustomize/overlays/lo
 # Finishes in about 32 seconds
 ```
 
-- Install the Orion-LD Context Broker and MongoDB, to receive device entity data and activate NGSI-LD APIs. 
+- Install the NGSI-LD Context Broker and MongoDB, to receive device entity data and activate NGSI-LD APIs. 
 
 ```bash
 oc apply -k ~/.local/src/smartabyar-smartvillage/openshift/kustomize/overlays/local/orionldcontextbrokers/

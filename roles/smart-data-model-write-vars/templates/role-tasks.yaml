@@ -25,7 +25,7 @@
     values: "\{\{ values | combine({'iotagent':{'base_url':iotagent_base_url\}\}, recursive=true) \}\}"
   when: values.iotagent.base_url == ''
 
-- name: "Query the Orion-LD Context Broker service"
+- name: "Query the NGSI-LD Context Broker service"
   set_fact:
     context_broker_port: "\{\{ query('kubernetes.core.k8s', kind='Service', resource_name=values.context_broker.name, namespace=values.context_broker.namespace)[0].spec.ports | community.general.json_query(QUERY) | first \}\}"
   vars: 

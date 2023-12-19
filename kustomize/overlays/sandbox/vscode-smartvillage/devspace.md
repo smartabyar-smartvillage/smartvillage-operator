@@ -92,7 +92,7 @@ oc get pod -l app=postgres -w
 oc logs -l app=postgres -f
 ```
 
-## Install the Orion-LD Context Broker in the OpenShift Developer Sandbox
+## Install the NGSI-LD Context Broker in the OpenShift Developer Sandbox
 
 ```bash
 ansible-playbook /projects/smartvillage-operator/apply-orionldcontextbroker.yaml \

@@ -34,6 +34,7 @@ spec:
     site_base_url: https://smartvillage-web-smartvillage.apps-crc.testing
   attributes:
     entityId: urn:ngsi-ld:CrowdFlowObserved:sweden-veberod-1-lakaregatan-sw-sjobovagen-nw
-    trafficSimulationId: TrafficSimulation-VeberodIntersection1
+    trafficSimulationId: urn:ngsi-ld:TrafficSimulation:TrafficSimulation-VeberodIntersection1
+    customTrafficLightId: urn:ngsi-ld:SmartTrafficLight:SmartTrafficLight-veberod-intersection-1
     location: 55.633703,13.49254
     walkingAreaId: ":267701936_w0"
