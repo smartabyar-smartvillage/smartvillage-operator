@@ -9,8 +9,9 @@ spec:
     port: 443
     ssl: True
     realm: SMARTVILLAGE
-    client: smartvillage
+    client: smartvillage-public
     token_uri: /auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+    client_secret_name: smartvillage
   ngsi_ld:
     sync_replicas: 1
     host: orion-ld
@@ -33,6 +34,7 @@ spec:
     host: solr
     port: 8983
   site:
+    secret_name: smartvillage
     web_replicas: 0
     sumo_replicas: 0
     worker_replicas: 1
