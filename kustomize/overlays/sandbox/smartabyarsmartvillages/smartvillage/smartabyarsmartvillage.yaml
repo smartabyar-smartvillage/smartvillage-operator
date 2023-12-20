@@ -35,6 +35,7 @@ spec:
     port: 8983
   site:
     secret_name: smartvillage
+    host_name: smartabyar-smartvillage-web
     web_replicas: 0
     sumo_replicas: 0
     worker_replicas: 1
