@@ -220,6 +220,8 @@ spec:
               value: '{{ values.auth_role.trafficsimulation }}'
             - name: AUTH_ROLE_REQUIRED_TrafficFlowObserved
               value: '{{ values.auth_role.trafficflowobserved }}'
+            - name: AUTH_ROLE_REQUIRED_CrowdFlowObserved
+              value: '{{ values.auth_role.crowdflowobserved }}'
             - name: AUTH_ROLE_REQUIRED_TrafficLight
               value: '{{ values.auth_role.trafficlight }}'
             - name: AUTH_ROLE_REQUIRED_TrafficLightStep

@@ -243,6 +243,8 @@ spec:
               value: '{{ values.auth_role.simulationreport }}'
             - name: AUTH_ROLE_REQUIRED_TrafficFlowObserved
               value: '{{ values.auth_role.trafficflowobserved }}'
+            - name: AUTH_ROLE_REQUIRED_CrowdFlowObserved
+              value: '{{ values.auth_role.crowdflowobserved }}'
             - name: AUTH_ROLE_REQUIRED_SmartTrafficLight
               value: '{{ values.auth_role.smarttrafficlight }}'
             - name: AUTH_ROLE_REQUIRED_TrafficLight
