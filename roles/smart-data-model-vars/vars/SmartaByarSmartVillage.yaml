@@ -391,6 +391,9 @@ schema:
       trafficflowobserved:
         type: string
         default: 'SiteAdmin'
+      crowdflowobserved:
+        type: string
+        default: 'SiteAdmin'
 
   sumo:
     type: object

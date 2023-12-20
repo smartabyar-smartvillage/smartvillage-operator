@@ -113,6 +113,7 @@ values:
     bicyclestep: "{{ crd.auth_role.bicyclestep | default(schema | community.general.json_query('auth_role.properties.bicyclestep.default')) }}"
     timestep: "{{ crd.auth_role.timestep | default(schema | community.general.json_query('auth_role.properties.timestep.default')) }}"
     trafficflowobserved: "{{ crd.auth_role.trafficflowobserved | default(schema | community.general.json_query('auth_role.properties.trafficflowobserved.default')) }}"
+    crowdflowobserved: "{{ crd.auth_role.crowdflowobserved | default(schema | community.general.json_query('auth_role.properties.crowdflowobserved.default')) }}"
   sumo:
     replicas: "{{ crd.sumo.replicas | default(schema | community.general.json_query('sumo.properties.replicas.default')) }}"
     resources:

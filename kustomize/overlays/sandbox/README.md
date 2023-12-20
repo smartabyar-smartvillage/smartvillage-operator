@@ -246,8 +246,10 @@ ansible-playbook ~/smartvillage-operator/apply-crowdflowobserved.yaml \
   -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-lakaregatan-sw-sjobovagen-nw/crowdflowobserved.yaml
 ```
 
+## Install the Smart Traffic Light JSON in the OpenShift Developer Sandbox
+
 ```bash
-ansible-playbook ~/smartvillage-operator/apply-crowdflowobserved.yaml \
+ansible-playbook ~/smartvillage-operator/apply-smarttrafficlight.yaml \
   -e ansible_operator_meta_namespace=$(oc get project -o jsonpath={.items[0].metadata.name}) \
-  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/crowdflowobserveds/sweden-veberod-1-sjobovagen-se-dorrodsvagen-sw/crowdflowobserved.yaml
+  -e crd_path=~/smartvillage-operator/kustomize/overlays/sandbox/smarttrafficlights/veberod-intersection-1/smarttrafficlight.yaml
 ```

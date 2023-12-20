@@ -71,3 +71,4 @@ spec:
     bicyclestep: Public
     timestep: Public
     trafficflowobserved: Public
+    crowdflowobserved: Public

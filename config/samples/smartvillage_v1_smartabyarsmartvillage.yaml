@@ -173,6 +173,8 @@ spec:
       SiteAdmin
     trafficflowobserved: |-
       SiteAdmin
+    crowdflowobserved: |-
+      SiteAdmin
   sumo:
     replicas: 1
     resources:

@@ -346,6 +346,9 @@ spec:
                   bicyclestep:
                     default: SiteAdmin
                     type: string
+                  crowdflowobserved:
+                    default: SiteAdmin
+                    type: string
                   iotnode:
                     default: SiteAdmin
                     type: string
