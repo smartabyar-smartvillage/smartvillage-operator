@@ -114,7 +114,6 @@ spec:
                     default: iotagent-json
                     type: string
                   namespace:
-                    default: iotagent
                     type: string
                   service_name:
                     default: iotagent-json
@@ -129,7 +128,6 @@ spec:
                     default: scorpiobroker
                     type: string
                   namespace:
-                    default: scorpiobroker
                     type: string
                   service_name:
                     default: scorpiobroker
@@ -165,7 +163,6 @@ spec:
                     default: default-mqtt-0-svc.amqbroker.svc
                     type: string
                   namespace:
-                    default: amqbroker
                     type: string
                   port:
                     default: 1883

@@ -17,14 +17,10 @@ spec:
   iotagent:
     name: |-
       iotagent-json
-    namespace: |-
-      iotagent
     service_name: |-
       iotagent-json
   context_broker:
     name: |-
-      scorpiobroker
-    namespace: |-
       scorpiobroker
     service_name: |-
       scorpiobroker
@@ -43,8 +39,6 @@ spec:
   message_broker:
     transport: |-
       MQTT
-    namespace: |-
-      amqbroker
     host: |-
       default-mqtt-0-svc.amqbroker.svc
     secret:

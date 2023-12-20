@@ -20,7 +20,6 @@ schema:
         default: iotagent-json
       namespace:
         type: string
-        default: iotagent
       service_name:
         type: string
         default: iotagent-json
@@ -34,7 +33,6 @@ schema:
         default: scorpiobroker
       namespace:
         type: string
-        default: scorpiobroker
       service_name:
         type: string
         default: scorpiobroker
@@ -72,7 +70,6 @@ schema:
           - AMQP
       namespace:
         type: string
-        default: amqbroker
       host:
         type: string
         default: default-mqtt-0-svc.amqbroker.svc

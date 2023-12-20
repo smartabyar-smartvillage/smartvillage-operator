@@ -23,12 +23,12 @@ values:
   managementState: "{{ crd.managementState | default(schema | community.general.json_query('managementState.default')) }}"
   iotagent:
     name: "{{ crd.iotagent.name | default(schema | community.general.json_query('iotagent.properties.name.default')) }}"
-    namespace: "{{ crd.iotagent.namespace | default(schema | community.general.json_query('iotagent.properties.namespace.default')) }}"
+    namespace: "{{ crd.iotagent.namespace | default('') }}"
     service_name: "{{ crd.iotagent.service_name | default(schema | community.general.json_query('iotagent.properties.service_name.default')) }}"
     base_url: "{{ crd.iotagent.base_url | default('') }}"
   context_broker:
     name: "{{ crd.context_broker.name | default(schema | community.general.json_query('context_broker.properties.name.default')) }}"
-    namespace: "{{ crd.context_broker.namespace | default(schema | community.general.json_query('context_broker.properties.namespace.default')) }}"
+    namespace: "{{ crd.context_broker.namespace | default('') }}"
     service_name: "{{ crd.context_broker.service_name | default(schema | community.general.json_query('context_broker.properties.service_name.default')) }}"
     base_url: "{{ crd.context_broker.base_url | default('') }}"
   ngsi_ld:
@@ -40,7 +40,7 @@ values:
     apikey: "{{ crd.service_group.apikey | default(schema | community.general.json_query('service_group.properties.apikey.default')) }}"
   message_broker:
     transport: "{{ crd.message_broker.transport | default(schema | community.general.json_query('message_broker.properties.transport.default')) }}"
-    namespace: "{{ crd.message_broker.namespace | default(schema | community.general.json_query('message_broker.properties.namespace.default')) }}"
+    namespace: "{{ crd.message_broker.namespace | default('') }}"
     host: "{{ crd.message_broker.host | default(schema | community.general.json_query('message_broker.properties.host.default')) }}"
     user: "{{ crd.message_broker.user | default('') }}"
     secret:
