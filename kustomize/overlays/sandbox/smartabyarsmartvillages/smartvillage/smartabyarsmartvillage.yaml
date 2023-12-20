@@ -14,8 +14,8 @@ spec:
     client_secret_name: smartvillage
   ngsi_ld:
     sync_replicas: 1
-    host: orion-ld
-    port: 1026
+    host: scorpiobroker
+    port: 9090
     ssl: false
     resources:
       limits:
