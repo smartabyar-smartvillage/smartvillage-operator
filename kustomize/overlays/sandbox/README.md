@@ -49,6 +49,14 @@ oc create rolebinding $SERVICE_ACCOUNT-edit-rolebindings --role=$SERVICE_ACCOUNT
 - When your workbench is running after a minute, click on the "Open" link
 - Log in with [ Dev Sandbox ]
 
+## Set up git credentials
+
+```bash
+git config --global user.email '...'
+git config --global user.name '...'
+git config --global credential.helper store
+```
+
 # Install prerequisite helm binary
 
 Download the latest [helm binary here](https://github.com/helm/helm/releases), I recommend the Linux amd64 binary if you are on a Linux x86_64 system. 

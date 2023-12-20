@@ -4,14 +4,7 @@ metadata:
   name: iotagent-json
   namespace: smartvillage
 spec:
-  iotagent:
-    replicas: 1
-    route:
-      create: true
-    resources:
-      limits:
-        memory: 512Mi
-  orionld:
+  ngsild:
     host: scorpiobroker
     port: 9090
   mongodb:
@@ -24,3 +17,10 @@ spec:
     password_secret:
       name: rabbitmq-password
       key: rabbitmq-password
+  iotagent:
+    replicas: 1
+    route:
+      create: true
+    resources:
+      limits:
+        memory: 512Mi
