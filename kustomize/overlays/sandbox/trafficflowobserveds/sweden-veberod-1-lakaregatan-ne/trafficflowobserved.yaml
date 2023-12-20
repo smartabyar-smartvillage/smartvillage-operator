@@ -12,7 +12,7 @@ spec:
     service_path: /Sweden/Veberod/CityCenter
     context: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
   device:
-    id: TrafficFlowObserved-Intersection1-Lakaregatan-NE
+    id: sweden-veberod-1-lakaregatan-ne
     subscription_url: http://ngsild-smartvillage-sync:8080
   message_broker:
     transport: AMQP
@@ -23,12 +23,12 @@ spec:
       name: rabbitmq-password
       key: rabbitmq-password
   smartvillage:
-    auth_secret_name: keycloak-client-secret-smartvillage
+    auth_secret_name: smartvillage
     auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
     site_base_url: http://smartabyar-smartvillage-web:8080
   attributes:
-    entityId: urn:ngsi-ld:CrowdFlowObserved:sweden-veberod-1-lakaregatan-ne
-    trafficSimulationId: TrafficSimulation-VeberodIntersection1
+    trafficSimulationId: urn:ngsi-ld:TrafficSimulation:veberod-intersection-1
+    customTrafficLightId: urn:ngsi-ld:SmartTrafficLight:veberod-intersection-1
     laneAreaDetectorId: det_13
     location: 55.633703, 13.492540
     address:
@@ -43,9 +43,8 @@ spec:
     customSigma: 0.5
     customAcceleration: 2.6
     customDeceleration: 4.5
-    customMinGreenTime: 33.00
-    customMaxGreenTime: 39.00
-    customAverageVehiclesPerMinute: 12.00
+    customMinGreenTime: 10.0
+    customMaxGreenTime: 20.0
+    customAverageVehiclesPerMinute: 10.0
     customDemandScalingFactor: 1.00
-    customQueueLengthThreshold: 8.00
-    customTrafficLightId: veberod-intersection-1
+    customQueueLengthThreshold: 8.0

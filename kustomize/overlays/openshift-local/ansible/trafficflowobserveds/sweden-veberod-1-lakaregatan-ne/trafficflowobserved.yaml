@@ -37,6 +37,10 @@ spec:
     customTrafficLightId: urn:ngsi-ld:SmartTrafficLight:veberod-intersection-1
     laneAreaDetectorId: det_13
     location: 55.633703, 13.492540
+    address:
+      addressCountry: Sweden
+      addressLocality: Veberöd
+      streetAddress: Läkaregatan
     averageVehicleLength: 5
     averageGapDistance: 1
     averageVehicleSpeed: 55

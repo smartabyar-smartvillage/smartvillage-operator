@@ -23,12 +23,12 @@ spec:
       name: rabbitmq-password
       key: rabbitmq-password
   smartvillage:
-    auth_secret_name: keycloak-client-secret-smartvillage
+    auth_secret_name: smartvillage
     auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
     site_base_url: http://smartabyar-smartvillage-web:8080
   attributes:
-    entityId: urn:ngsi-ld:CrowdFlowObserved:sweden-veberod-1-dorrodsvagen-ne-sjobovagen-se
+    trafficSimulationId: urn:ngsi-ld:TrafficSimulation:veberod-intersection-1
+    customTrafficLightId: urn:ngsi-ld:SmartTrafficLight:veberod-intersection-1
     areaServed: {"type":"Polygon","coordinates":[[[13.492653215031588,55.63371800794606],[13.492629362383209,55.63370621199576],[13.492588233600983,55.633705796480186],[13.49256380521436,55.633717268761714],[13.492578413694066,55.633725715953034],[13.492593312031364,55.633730751792605],[13.492608175754006,55.63373255202551],[13.492623008307357,55.63373102682803],[13.492638127257953,55.63372618010228]]]}
-    trafficSimulationId: TrafficSimulation-VeberodIntersection1
     location: 55.633703,13.49254
     walkingAreaId: ":267701936_w2"
