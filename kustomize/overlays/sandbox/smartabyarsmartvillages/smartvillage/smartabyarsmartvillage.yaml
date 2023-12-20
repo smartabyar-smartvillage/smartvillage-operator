@@ -53,3 +53,21 @@ spec:
         cpu: 200m
   import_data:
     enabled: false
+  auth_role:
+    admin: Public
+    siteuser: Public
+    sitepage: Public
+    sitehtm: Public
+    iotnode: Public
+    mapresult: Public
+    iotnodestep: Public
+    vehiclestep: Public
+    personstep: Public
+    smarttrafficlight: Public
+    trafficlight: Public
+    trafficlightstep: Public
+    trafficsimulation: Public
+    simulationreport: Public
+    bicyclestep: Public
+    timestep: Public
+    trafficflowobserved: Public
