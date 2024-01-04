@@ -4,7 +4,7 @@ spec:
   test: false
   selector:
     matchLabels:
-      app: {{ instance.name }}
+      app: postgres
       statefulset: {{ instance.name }}
   strategy:
     rollingUpdate:
@@ -17,7 +17,7 @@ spec:
       metadata:
         name: postgres-primary-data
         labels:
-          app: {{ instance.name }}
+          app: postgres
           statefulset: {{ instance.name }}
       spec:
         accessModes:
@@ -32,7 +32,7 @@ spec:
     metadata:
       name: {{ instance.name }}
       labels:
-        app: {{ instance.name }}
+        app: postgres
         statefulset: {{ instance.name }}
     spec:
       serviceAccountName: postgres
