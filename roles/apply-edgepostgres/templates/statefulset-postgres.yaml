@@ -5,7 +5,7 @@ spec:
   selector:
     matchLabels:
       app: postgres
-      statefulset: {{ instance.name }}
+      statefulset: "postgres-{{ instance.name }}"
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -18,7 +18,7 @@ spec:
         name: postgres-primary-data
         labels:
           app: postgres
-          statefulset: {{ instance.name }}
+          statefulset: "postgres-{{ instance.name }}"
       spec:
         accessModes:
           - ReadWriteOnce
@@ -33,7 +33,7 @@ spec:
       name: {{ instance.name }}
       labels:
         app: postgres
-        statefulset: {{ instance.name }}
+        statefulset: "postgres-{{ instance.name }}"
     spec:
       serviceAccountName: postgres
       volumes:
