@@ -24,11 +24,4 @@ spec:
       - name: smartvillage
         configset: computate
   zookeeper:
-    replicas: 1
     host: zookeeper
-    limits:
-      memory: 500Mi
-      cpu: 500m
-    requests:
-      memory: 200Mi
-      cpu: 200m
