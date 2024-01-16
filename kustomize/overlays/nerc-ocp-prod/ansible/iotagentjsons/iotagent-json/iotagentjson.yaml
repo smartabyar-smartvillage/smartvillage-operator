@@ -15,5 +15,8 @@ spec:
       key: rabbitmq-password
   mongodb:
     namespace: smart-village-faeeb6c
+    password_secret:
+      name: mongodb
+      key: mongodb-root-password
   orionld:
     host: scorpiobroker.smart-village-faeeb6c.svc

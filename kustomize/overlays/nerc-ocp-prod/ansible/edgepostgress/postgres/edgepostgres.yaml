@@ -19,15 +19,15 @@ spec:
                 user: smartvillage
     instances:
       - name: postgres
-        replicas: 2
-        storage: 10Gi
+        replicas: 1
+        storage: 20Gi
         resources:
           limits:
-            memory: 500Mi
-            cpu: 500m
+            memory: 1Gi
+            cpu: '1'
           requests:
-            memory: 200Mi
-            cpu: 200m
+            memory: 1Gi
+            cpu: '1'
     users:
       - name: sso
         options: "SUPERUSER"

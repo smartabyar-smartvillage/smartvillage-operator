@@ -77,7 +77,7 @@ spec:
   import_data:
     enabled: True
     sitepage:
-      enabled: True
+      enabled: true
     sitehtm:
       enabled: True
     iotnode:
@@ -87,7 +87,7 @@ spec:
     timestep:
       enabled: False
     trafficsimulation:
-      enabled: False
+      enabled: true
   auth_role:
     admin: |-
       SiteAdmin
