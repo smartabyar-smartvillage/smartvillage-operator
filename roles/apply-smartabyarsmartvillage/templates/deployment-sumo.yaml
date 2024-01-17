@@ -20,6 +20,9 @@ spec:
         - name: smartvillage-traffic-light-controller-sumo
           imagePullPolicy: Always
           image: 'quay.io/computateorg/smartvillage-traffic-light-controller-sumo:computate-api'
+          command:
+            - python
+            - app.py
           ports:
             - containerPort: 8081
               name: http
