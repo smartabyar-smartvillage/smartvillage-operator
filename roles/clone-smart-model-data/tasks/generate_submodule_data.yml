@@ -1,5 +1,5 @@
 ---
-- name: Append {{ SUBMODULE_SHORT_NAME }} submodule data to fiware_domain/defaults/main.yml
+- name: Append {{ SUBMODULE_SHORT_NAME }} submodule data to {{ DOMAIN_DEFAULTS_PATH }}
   lineinfile:
     line: |-2
             {{ SUBMODULE_SHORT_NAME }}:

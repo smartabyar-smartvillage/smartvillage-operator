@@ -20,7 +20,11 @@
     repo: "{{ DOMAIN_DATA.REPO_URL }}"
     dest: "{{ DOMAIN_DATA.PROJECT_SRC }}"
   when: not SITE_GIT_DIR.stat.exists and not SITE_README.stat.exists
-- name: Append {{ DOMAIN_DATA.PROJECT_SRC }} domain data to fiware_domain/defaults/main.yml
+- name: update git submodules recursively
+  shell:
+    cmd: git submodule update --init --recursive
+    chdir: "{{ DOMAIN_DATA.PROJECT_SRC }}"
+- name: Append {{ DOMAIN_DATA.PROJECT_SRC }} domain data to {{ DOMAIN_DEFAULTS_PATH }}
   lineinfile:
     line: |-2
         {{ DOMAIN_DATA.DOMAIN_NAME }}:

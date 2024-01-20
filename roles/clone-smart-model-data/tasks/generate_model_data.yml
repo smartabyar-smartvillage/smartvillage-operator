@@ -19,7 +19,7 @@
   when: STAT_MODEL_ADOPTERS.stat.exists 
     and STAT_MODEL_DOC_SPEC.stat.exists 
     and STAT_MODEL_SPEC.stat.exists
-- name: Append {{ MODEL_NAME }} model data to fiware_domain/defaults/main.yml
+- name: Append {{ MODEL_NAME }} model data to {{ DOMAIN_DEFAULTS_PATH }}
   lineinfile:
     line: |-2
                 {{ MODEL_NAME }}:
@@ -32,6 +32,38 @@
                   MODEL_DOCUMENTATION: {{ MODEL_DOCUMENTATION | to_json }}
     path: "{{ DOMAIN_DEFAULTS_PATH }}"
     insertbefore: EOF
+  when: STAT_MODEL_ADOPTERS.stat.exists 
+    and STAT_MODEL_DOC_SPEC.stat.exists 
+    and STAT_MODEL_SPEC.stat.exists
+- name: "Index Smart Data Model in Search Engine, see {{ SOLR_BASE_URL }}/solr/{{ SOLR_COLLECTION }}/select?fq=computateFiwareSmartDataModel_docvalues_boolean:true&q=domainName_suggested:{{ MODEL_NAME | urlencode }}^2 OR domainName_text_enUS:{{ MODEL_NAME | urlencode }}^5 OR submoduleShortName_suggested:{{ MODEL_NAME | urlencode }}^3 OR submoduleShortName_text_enUS:{{ MODEL_NAME | urlencode }}^10 OR modelName_suggested:{{ MODEL_NAME | urlencode }}^3 OR modelName_text_enUS:{{ MODEL_NAME | urlencode }}^20&fl=*,score&sort=score desc"
+  connection: local
+  uri:
+    timeout: 90
+    url: "{{ SOLR_BASE_URL }}/solr/{{ SOLR_COLLECTION }}/update?overwrite=true&wt=json&commitWithin=10000"
+    method: POST
+    headers:
+      Content-Type: "application/json"
+    body_format: json
+    validate_certs: false
+    body: 
+      add:
+        doc:
+          computateFiwareSmartDataModel_docvalues_boolean: true
+          modelName_docvalues_string: "{{ MODEL_NAME }}"
+          submoduleShortName_docvalues_string: "{{ SUBMODULE_SHORT_NAME }}"
+          domainName_docvalues_string: "{{ DOMAIN_NAME }}"
+          modelName_text_enUS: "{{ MODEL_NAME | regex_replace('([a-z])([A-Z])', '\\1 \\2') }} {{ MODEL_NAME }}"
+          submoduleShortName_text_enUS: "{{ SUBMODULE_SHORT_NAME | regex_replace('([a-z])([A-Z])', '\\1 \\2') }} {{ SUBMODULE_SHORT_NAME }}"
+          domainName_text_enUS: "{{ DOMAIN_NAME | regex_replace('([a-z])([A-Z])', '\\1 \\2') }} {{ DOMAIN_NAME }}"
+          combinedName_text_enUS: "{{ MODEL_NAME }} {{ SUBMODULE_SHORT_NAME }} {{ DOMAIN_NAME }} {{ MODEL_NAME | regex_replace('([a-z])([A-Z])', '\\1 \\2') }} {{ SUBMODULE_SHORT_NAME | regex_replace('([a-z])([A-Z])', '\\1 \\2') }} {{ DOMAIN_NAME | regex_replace('([a-z])([A-Z])', '\\1 \\2') }}"
+          modelDescription_text_enUS: "{{ MODEL_SPEC[ MODEL_NAME ].description | default('') }}"
+          objectText_text_enUS: "{{ MODEL_NAME }} {{ SUBMODULE_SHORT_NAME }} {{ DOMAIN_NAME }} {{ MODEL_NAME | regex_replace('([a-z])([A-Z])', '\\1 \\2') }} {{ SUBMODULE_SHORT_NAME | regex_replace('([a-z])([A-Z])', '\\1 \\2') }} {{ DOMAIN_NAME | regex_replace('([a-z])([A-Z])', '\\1 \\2') }} {{ MODEL_SPEC[ MODEL_NAME ].description | default('') }}"
+          modelName_suggested: "{{ MODEL_NAME }}"
+          submoduleShortName_suggested: "{{ SUBMODULE_SHORT_NAME }}"
+          domainName_suggested: "{{ DOMAIN_NAME }}"
+          id: "{{ MODEL_NAME }}-{{ SUBMODULE_SHORT_NAME }}-{{ DOMAIN_NAME }}"
+    status_code: 
+      - 200
   when: STAT_MODEL_ADOPTERS.stat.exists 
     and STAT_MODEL_DOC_SPEC.stat.exists 
     and STAT_MODEL_SPEC.stat.exists
