@@ -7,6 +7,7 @@ spec:
   solr:
     name: solr
     replicas: 1
+    storage: 30Gi
     resources:
       limits:
         memory: 8Gi
