@@ -183,8 +183,26 @@ press \[ Ctrl \] + \[ b \].
 - Navigate to `smartabyar-smartvillage-sandbox-course`. 
 - Open the first Notebook [01-install-prerequisites.ipynb](01-install-prerequisites.ipynb) and follow the instructions from there. 
 
+## Run the Smart Village Platform in trafficsimulation
+
+```bash
+(cd ~/smartabyar-smartvillage && env CONFIG_PATH=$HOME/smartabyar-smartvillage/config/smartabyar-smartvillage.yml mvn exec:java -Dexec.mainClass="org.computate.smartvillage.enus.vertx.MainVerticle")
+```
+
+## Install all the Smart Data Models and index in Solr
+
+```bash
+ansible-playbook ~/smartvillage-operator/clone-smart-model-data.yml -e SOLR_BASE_URL="http://solr:8983"
+```
+
+## Watch Smarta Byar Smart Village code serviceaccount
+
+```bash
+env SITE_NAME=smartabyar-smartvillage SITE_PATH=$HOME/smartabyar-smartvillage COMPUTATE_SRC=$HOME/computate SITE_LANG=enUS $HOME/computate/bin/enUS/watch.sh
+```
 
 
+#
 
 
 
