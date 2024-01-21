@@ -1,6 +1,6 @@
 ---
 DOMAIN_DEFAULTS_PATH: "{{ playbook_dir }}/roles/smart-data-model-domain/defaults/main.yml"
-PROJECT_PREFIX: "{{ lookup('env', 'HOME') }}/.local/src"
+PROJECT_PREFIX: "{{ playbook_dir | dirname }}"
 SOLR_BASE_URL: https://solr-solr.apps-crc.testing
 SOLR_COLLECTION: computate
 FIWARE_SMART_DATA_MODEL_DOMAIN_REPOS:
