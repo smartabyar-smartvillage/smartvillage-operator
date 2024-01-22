@@ -183,16 +183,10 @@ press \[ Ctrl \] + \[ b \].
 - Navigate to `smartabyar-smartvillage-sandbox-course`. 
 - Open the first Notebook [01-install-prerequisites.ipynb](01-install-prerequisites.ipynb) and follow the instructions from there. 
 
-## Run the Smart Village Platform in trafficsimulation
-
-```bash
-(cd ~/smartabyar-smartvillage && env CONFIG_PATH=$HOME/smartabyar-smartvillage/config/smartabyar-smartvillage.yml mvn exec:java -Dexec.mainClass="org.computate.smartvillage.enus.vertx.MainVerticle")
-```
-
 ## Install all the Smart Data Models and index in Solr
 
 ```bash
-ansible-playbook ~/smartvillage-operator/clone-smart-model-data.yml -e SOLR_BASE_URL="http://solr:8983"
+ansible-playbook ~/smartvillage-operator/clone-smart-model-data.yml -e PROJECT_PREFIX="$HOME" -e SOLR_BASE_URL="http://solr:8983"
 ```
 
 ## Watch Smarta Byar Smart Village code serviceaccount
@@ -201,113 +195,39 @@ ansible-playbook ~/smartvillage-operator/clone-smart-model-data.yml -e SOLR_BASE
 env SITE_NAME=smartabyar-smartvillage SITE_PATH=$HOME/smartabyar-smartvillage COMPUTATE_SRC=$HOME/computate SITE_LANG=enUS $HOME/computate/bin/enUS/watch.sh
 ```
 
-
-#
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Clone the smartabyar-smartvillage project
+## Command to remove .ipynb_checkpoints directories recursively
 
 ```bash
-install -d ~/.local/src/smartabyar-smartvillage
-git clone git@github.com:computate-org/smartabyar-smartvillage.git ~/.local/src/smartabyar-smartvillage
+rm -rf `find -type d -name .ipynb_checkpoints`
 ```
 
-# Clone the smartvillage-operator project
+## Rebuild the Smart Village OpenAPI spec, database scripts, and more
 
 ```bash
-install -d ~/.local/src/smartvillage-operator
-git clone git@github.com:computate-org/smartvillage-operator.git ~/.local/src/smartvillage-operator
+(cd ~/smartabyar-smartvillage && env \
+  RUN_ARTICLE_GENERATOR=true \
+  RUN_FIWARE_GENERATOR=true \
+  RUN_OPENAPI3_GENERATOR=true \
+  RUN_PROJECT_GENERATOR=true \
+  RUN_SQL_GENERATOR=true \
+  CONFIG_PATH=$HOME/smartabyar-smartvillage/config/smartabyar-smartvillage.yml \
+  mvn exec:java -Dexec.mainClass="org.computate.smartvillage.enus.vertx.MainVerticle")
 ```
 
-# Apply the kustomize base resources
+## Maven build the latest code
 
 ```bash
-oc apply -k kustomize/overlays/nerc-ocp-prod/base/
+(cd ~/smartabyar-smartvillage && mvn clean install)
 ```
 
-# Run the Postgres Ansible Operator
+## Run the Smart Village Platform in trafficsimulation
 
 ```bash
-ansible-playbook ~/.local/src/smartvillage-operator/apply-edgepostgres.yaml -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/nerc-ocp-prod/ansible/edgepostgress/postgres/edgepostgres.yaml
-```
-
-# Run the Zookeeper Ansible Operator
-
-```bash
-ansible-playbook ~/.local/src/smartvillage-operator/apply-edgezookeeper.yaml -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/nerc-ocp-prod/ansible/edgezookeepers/default/edgezookeeper.yaml
-```
-
-# Apply the Solr resources
-
-```bash
-oc apply -k kustomize/overlays/nerc-ocp-prod/app/solr/
-```
-
-# Run the Solr Ansible Operator
-
-```bash
-ansible-playbook ~/.local/src/smartvillage-operator/apply-edgesolr.yaml -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/nerc-ocp-prod/ansible/edgesolrs/default/edgesolr.yaml
-```
-
-# Apply the Red Hat SSO resources
-
-```bash
-oc apply -k kustomize/overlays/nerc-ocp-prod/app/sso/
-```
-
-# Run the Smart Village Ansible Operator
-
-```bash
-ansible-playbook ~/.local/src/smartvillage-operator/apply-smartabyarsmartvillage.yaml -e crd_path=~/.local/src/smartvillage-operator/kustomize/overlays/nerc-ocp-prod/ansible/smartabyarsmartvillages/smartvillage/smartabyarsmartvillage.yaml
-```
-
-# Run the Ansible Playbook to install a TrafficSimulation
-
-```bash
-ansible-playbook apply-trafficsimulation.yaml -e crd_path=kustomize/overlays/nerc-ocp-prod/trafficsimulations/veberod-intersection-1/trafficsimulation.yaml
+(cd ~/smartabyar-smartvillage \
+  && env CONFIG_PATH=$HOME/smartabyar-smartvillage/config/smartabyar-smartvillage.yml \
+  VERTXWEB_ENVIRONMENT=dev \
+  mvn exec:java \
+  -DfileResolverCachingEnabled=false \
+  -Dvertx.disableFileCaching=true \
+  -Dexec.mainClass="org.computate.smartvillage.enus.vertx.MainVerticle")
 ```
