@@ -7,7 +7,7 @@ spec:
   postgres:
     host: postgres-primary.smart-village-faeeb6c.svc
   kafka:
-    host: default-kafka-bootstrap.smart-village-faeeb6c.svc
+    enabled: false
   scorpiobroker:
     route:
       create: false

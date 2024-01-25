@@ -18,5 +18,5 @@ spec:
     password_secret:
       name: mongodb
       key: mongodb-root-password
-  orionld:
+  ngsild:
     host: scorpiobroker.smart-village-faeeb6c.svc
