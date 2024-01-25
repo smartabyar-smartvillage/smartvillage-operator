@@ -189,11 +189,11 @@ spec:
         memory: |-
           500Mi
     executable_path: |-
-      /home/ctate/.local/bin/sumo
+      /usr/local/bin/sumo
     python_executable_path: |-
-      /home/ctate/python/bin/python
+      /opt/app-root/bin/python
     fcd_sync_path: |-
-      /home/ctate/.local/share/sumo/data/veberod/fcd
+      /usr/local/share/sumo/fcd
   yggio:
     enabled: False
     api_relative_uri_iotnode: |-

@@ -405,13 +405,13 @@ spec:
                 type: object
                 properties:
                   executable_path:
-                    default: /home/ctate/.local/bin/sumo
+                    default: /usr/local/bin/sumo
                     type: string
                   fcd_sync_path:
-                    default: /home/ctate/.local/share/sumo/data/veberod/fcd
+                    default: /usr/local/share/sumo/fcd
                     type: string
                   python_executable_path:
-                    default: /home/ctate/python/bin/python
+                    default: /opt/app-root/bin/python
                     type: string
                   replicas:
                     default: 1

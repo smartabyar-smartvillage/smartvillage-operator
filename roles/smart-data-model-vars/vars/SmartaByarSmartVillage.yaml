@@ -426,13 +426,13 @@ schema:
                 default: 500Mi
       executable_path:
         type: string
-        default: /home/ctate/.local/bin/sumo
+        default: /usr/local/bin/sumo
       python_executable_path:
         type: string
-        default: /home/ctate/python/bin/python
+        default: /opt/app-root/bin/python
       fcd_sync_path:
         type: string
-        default: /home/ctate/.local/share/sumo/data/veberod/fcd
+        default: /usr/local/share/sumo/fcd
 
   yggio:
     type: object
