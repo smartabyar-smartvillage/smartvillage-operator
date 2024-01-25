@@ -2,7 +2,7 @@ FROM quay.io/operator-framework/ansible-operator:v1.31.0
 
 ENV ANSIBLE_PYTHON_INTERPRETER=/usr/bin/python3
 USER root
-RUN dnf install -y openssl python3-pyyaml jq
+RUN dnf install -y openssl python3-pyyaml jq podman
 USER ${USER_ID}
 RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
 RUN chmod 700 get_helm.sh
