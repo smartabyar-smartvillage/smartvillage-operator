@@ -3,7 +3,7 @@
 - name: "Query postgres pod"
   set_fact:
     postgres_pod_name: "{{ query('kubernetes.core.k8s', kind='Pod', label_selector=(('postgres-operator.crunchydata.com/instance-set=' + user.instance + ',postgres-operator.crunchydata.com/role=master') if values.postgres.crunchy else ('statefulset.kubernetes.io/pod-name=postgres-' + values.postgres.instances[0].name + '-0') | string), namespace=ansible_operator_meta.namespace)[0].metadata.name }}"
-  when: user.name is defined
+  when: not values.postgres.crunchy and user.name is defined
 
 - name: "Initialize database user {{ user.name }} on pod {{ postgres_pod_name }}: "
   kubernetes.core.k8s_exec:
