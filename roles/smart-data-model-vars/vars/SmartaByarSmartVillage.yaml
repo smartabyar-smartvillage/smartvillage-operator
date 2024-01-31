@@ -295,7 +295,7 @@ schema:
             default: true
           period:
             type: string
-            default: 1 hour
+            default: 1 day
           start_time:
             type: string
             default: 00:00 America/New_York
