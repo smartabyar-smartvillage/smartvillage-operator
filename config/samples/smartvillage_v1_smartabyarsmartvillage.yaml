@@ -123,7 +123,7 @@ spec:
       period: |-
         2 minutes
       start_time: |-
-        00:00:00 [America/New_York]
+        00:000 America/New_York
     sitehtm:
       enabled: True
     iotnode:
