@@ -298,7 +298,7 @@ schema:
             default: 2 minutes
           start_time:
             type: string
-            default: 00:000 America/New_York
+            default: 00:00 America/New_York
       sitehtm:
         type: object
         properties:
