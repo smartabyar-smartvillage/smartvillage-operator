@@ -1,0 +1,222 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: photovoltaicmeasurements.smartvillage.computate.org
+spec:
+  group: smartvillage.computate.org
+  names:
+    kind: PhotovoltaicMeasurement
+    listKind: PhotovoltaicMeasurementList
+    plural: photovoltaicmeasurements
+    singular: photovoltaicmeasurement
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: |
+          PhotovoltaicMeasurement is the Schema for the photovoltaicmeasurements API
+          ApiTag.enUS: PhotovoltaicMeasurement
+
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: Spec defines the desired state of PhotovoltaicMeasurement
+            type: object
+            properties:
+              attributes:
+                type: object
+                properties:
+                  object_id:
+                    type: string
+                  activePower:
+                    type: number
+                  address:
+                    type: object
+                  alternateName:
+                    type: string
+                  areaServed:
+                    type: object
+                  current:
+                    type: number
+                  dataProvider:
+                    type: string
+                  dateCreated:
+                    type: string
+                  dateEnergyMeteringStarted:
+                    type: string
+                  dateModified:
+                    type: string
+                  dateObserved:
+                    type: string
+                  dateObservedFrom:
+                    type: string
+                  dateObservedTo:
+                    type: string
+                  description:
+                    type: string
+                  inverterStatus:
+                    type: object
+                  location:
+                    type: string
+                  name:
+                    type: string
+                  nominalPeakPowerGeneration:
+                    type: number
+                  owner:
+                    type: object
+                  reactivePower:
+                    type: number
+                  refPhotovoltaicDevice:
+                    type: object
+                  refPointOfInterest:
+                    type: object
+                  seeAlso:
+                    type: object
+                  source:
+                    type: string
+                  temperature:
+                    type: number
+                  entityId:
+                    type: string
+              managementState:
+                type: string
+                default: |-
+                  Managed
+              iotagent:
+                type: object
+                properties:
+                  base_url:
+                    type: string
+                  name:
+                    default: iotagent-json
+                    type: string
+                  namespace:
+                    type: string
+                  service_name:
+                    default: iotagent-json
+                    type: string
+
+              context_broker:
+                type: object
+                properties:
+                  base_url:
+                    type: string
+                  name:
+                    default: scorpiobroker
+                    type: string
+                  namespace:
+                    type: string
+                  service_name:
+                    default: scorpiobroker
+                    type: string
+
+              ngsi_ld:
+                type: object
+                properties:
+                  context:
+                    default: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
+                    type: string
+                  service:
+                    default: photovoltaicmeasurements
+                    type: string
+                  service_path:
+                    default: /Sweden/Veberod/CityCenter
+                    type: string
+
+              service_group:
+                type: object
+                properties:
+                  apikey:
+                    default: PhotovoltaicMeasurement
+                    type: string
+                  resource:
+                    default: /iot/json
+                    type: string
+
+              message_broker:
+                type: object
+                properties:
+                  host:
+                    default: default-mqtt-0-svc.amqbroker.svc
+                    type: string
+                  namespace:
+                    type: string
+                  port:
+                    default: 1883
+                    type: number
+                  secret:
+                    properties:
+                      key:
+                        type: string
+                      name:
+                        type: string
+                    type: object
+                  transport:
+                    default: MQTT
+                    enum:
+                    - MQTT
+                    - AMQP
+                    type: string
+                  user:
+                    type: string
+
+              device:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  subscription_url:
+                    default: http://orionld-smartvillage-sync:8080
+                    type: string
+
+              smartvillage:
+                type: object
+                properties:
+                  auth_secret_name:
+                    default: keycloak-client-secret-smartvillage
+                    type: string
+                  auth_token_url:
+                    default: https://keycloak-sso.apps-crc.testing/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+                    type: string
+                  enabled:
+                    default: true
+                    type: boolean
+                  site_base_url:
+                    default: https://smartvillage-web-smartvillage.apps-crc.testing
+                    type: string
+                  smart_model_api:
+                    default: /api/PhotovoltaicMeasurement
+                    type: string
+
+              alternate_model:
+                type: object
+                properties:
+                  enabled:
+                    default: true
+                    type: boolean
+                  id:
+                    default: photovoltaicmeasurement
+                    type: string
+
+          status:
+            description: Status defines the observed state of PhotovoltaicMeasurement
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

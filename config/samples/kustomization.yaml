@@ -15,4 +15,5 @@ resources:
 - smartvillage_v1_edgesolr.yaml
 - smartvillage_v1_edgezookeeper.yaml
 - smartvillage_v1_parkingaccess.yaml
+- smartvillage_v1_photovoltaicmeasurement.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples

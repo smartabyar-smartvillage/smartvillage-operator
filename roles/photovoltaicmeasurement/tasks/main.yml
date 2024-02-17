@@ -1,0 +1,35 @@
+---
+# tasks file for PhotovoltaicMeasurement
+
+- name: "Query PhotovoltaicMeasurement"
+  set_fact:
+    crd: "{{ (lookup('file', crd_path) | from_yaml).spec }}"
+  ignore_errors: true
+  vars:
+    ENTITY_TYPE: PhotovoltaicMeasurement
+  when: crd_path is defined
+- name: "Query PhotovoltaicMeasurement"
+  set_fact:
+    crd: "{{ query('kubernetes.core.k8s', kind='PhotovoltaicMeasurement', resource_name=ansible_operator_meta.name, namespace=ansible_operator_meta.namespace)[0].spec }}"
+  ignore_errors: true
+  vars:
+    ENTITY_TYPE: PhotovoltaicMeasurement
+  when: crd_path is not defined
+- name: Run Ansible role smart-data-model-vars
+  include_role:
+    name: smart-data-model-vars
+  vars:
+    ENTITY_TYPE: PhotovoltaicMeasurement
+- name: "Verify PhotovoltaicMeasurement exists"
+  fail:
+    msg: |-
+      You need to deploy a PhotovoltaicMeasurement to OpenShift before running this playbook. See here for an example: https://github.com/computate-org/smartvillage-operator/blob/main/config/samples/smartvillage_v1_photovoltaicmeasurement.yaml
+  vars:
+    ENTITY_TYPE: PhotovoltaicMeasurement
+  when: crd is not defined
+- name: Run Ansible role apply-photovoltaicmeasurement
+  include_role:
+    name: apply-photovoltaicmeasurement
+  vars:
+    ENTITY_TYPE: PhotovoltaicMeasurement
+  when: values.managementState == 'Managed'

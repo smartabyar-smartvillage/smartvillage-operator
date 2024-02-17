@@ -122,4 +122,8 @@
   group: smartvillage.computate.org
   kind: ParkingAccess
   role: parkingaccess
+- version: v1
+  group: smartvillage.computate.org
+  kind: PhotovoltaicMeasurement
+  role: photovoltaicmeasurement
 #+kubebuilder:scaffold:watch

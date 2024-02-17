@@ -1,0 +1,27 @@
+# permissions for end users to view photovoltaicmeasurements.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: photovoltaicmeasurement-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: smartvillage-operator
+    app.kubernetes.io/part-of: smartvillage-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: photovoltaicmeasurement-viewer-role
+rules:
+- apiGroups:
+  - smartvillage.computate.org
+  resources:
+  - photovoltaicmeasurements
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - smartvillage.computate.org
+  resources:
+  - photovoltaicmeasurements/status
+  verbs:
+  - get

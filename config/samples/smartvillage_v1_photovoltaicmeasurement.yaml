@@ -1,0 +1,63 @@
+apiVersion: smartvillage.computate.org/v1
+kind: PhotovoltaicMeasurement
+metadata:
+  labels:
+    app.kubernetes.io/name: photovoltaicmeasurement
+    app.kubernetes.io/instance: photovoltaicmeasurement-sample
+    app.kubernetes.io/part-of: smartvillage-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: smartvillage-operator
+  name: smartvillage
+spec:
+  description: |
+    ApiTag.enUS: PhotovoltaicMeasurement
+
+  attributes:
+  managementState: |-
+    Managed
+  iotagent:
+    name: |-
+      iotagent-json
+    service_name: |-
+      iotagent-json
+  context_broker:
+    name: |-
+      scorpiobroker
+    service_name: |-
+      scorpiobroker
+  ngsi_ld:
+    service: |-
+      photovoltaicmeasurements
+    service_path: |-
+      /Sweden/Veberod/CityCenter
+    context: |-
+      https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
+  service_group:
+    resource: |-
+      /iot/json
+    apikey: |-
+      PhotovoltaicMeasurement
+  message_broker:
+    transport: |-
+      MQTT
+    host: |-
+      default-mqtt-0-svc.amqbroker.svc
+    secret:
+    port: 1883
+  device:
+    subscription_url: |-
+      http://orionld-smartvillage-sync:8080
+  smartvillage:
+    enabled: True
+    auth_secret_name: |-
+      keycloak-client-secret-smartvillage
+    auth_token_url: |-
+      https://keycloak-sso.apps-crc.testing/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+    site_base_url: |-
+      https://smartvillage-web-smartvillage.apps-crc.testing
+    smart_model_api: |-
+      /api/PhotovoltaicMeasurement
+  alternate_model:
+    enabled: True
+    id: |-
+      photovoltaicmeasurement

@@ -1,0 +1,297 @@
+---
+MODEL_NAME: PhotovoltaicMeasurement
+SUBMODULE_SHORT_NAME: GreenEnergy
+DOMAIN_NAME: SmartEnergy
+name: smartvillage
+description: |
+  ApiTag.enUS: PhotovoltaicMeasurement
+schema:
+  managementState:
+    type: string
+    default: Managed
+    enum:
+      - Managed
+      - Unmanaged
+  iotagent:
+    type: object
+    properties:
+      name:
+        type: string
+        default: iotagent-json
+      namespace:
+        type: string
+      service_name:
+        type: string
+        default: iotagent-json
+      base_url:
+        type: string
+  context_broker:
+    type: object
+    properties:
+      name:
+        type: string
+        default: scorpiobroker
+      namespace:
+        type: string
+      service_name:
+        type: string
+        default: scorpiobroker
+      base_url:
+        type: string
+  ngsi_ld:
+    type: object
+    properties:
+      service:
+        type: string
+        default: photovoltaicmeasurements
+      service_path:
+        type: string
+        default: /Sweden/Veberod/CityCenter
+      context:
+        type: string
+        default: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
+  service_group:
+    type: object
+    properties:
+      resource:
+        type: string
+        default: /iot/json
+      apikey:
+        type: string
+        default: PhotovoltaicMeasurement
+  message_broker:
+    type: object
+    properties:
+      transport:
+        type: string
+        default: MQTT
+        enum:
+          - MQTT
+          - AMQP
+      namespace:
+        type: string
+      host:
+        type: string
+        default: default-mqtt-0-svc.amqbroker.svc
+      user:
+        type: string
+      secret:
+        type: object
+        properties:
+          name:
+            type: string
+          key:
+            type: string
+      port:
+        type: number
+        default: 1883
+  device:
+    type: object
+    properties:
+      id:
+        type: string
+      subscription_url:
+        type: string
+        default: "http://orionld-smartvillage-sync:8080"
+  smartvillage:
+    type: object
+    properties:
+      enabled:
+        type: boolean
+        default: true
+      auth_secret_name:
+        type: string
+        default: keycloak-client-secret-smartvillage
+      auth_token_url:
+        type: string
+        default: https://keycloak-sso.apps-crc.testing/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+      site_base_url:
+        type: string
+        default: https://smartvillage-web-smartvillage.apps-crc.testing
+      smart_model_api:
+        type: string
+        default: /api/PhotovoltaicMeasurement
+  alternate_model:
+    type: object
+    properties:
+      enabled:
+        type: boolean
+        default: true
+      id:
+        type: string
+        default: photovoltaicmeasurement
+smart_data_model:
+  attributes:
+    activePower:
+      name: activePower
+      type: number
+      description: >+
+        Active Power,where phi is the phase shift of the current compared to
+        the voltage. The unit code (text) is given using the
+        UN/CEFACT_Common_Codes (max 3 characters). For instance, For instance,
+        **KWT** represents Kilowatt
+      x-ngsi:
+        model: https://schema.org/Number
+    address:
+      name: address
+      type: object
+      description: >+
+        The mailing address
+      x-ngsi:
+        model: https://schema.org/address
+    alternateName:
+      name: alternateName
+      type: string
+      description: >+
+        An alternative name for this item
+    areaServed:
+      name: areaServed
+      type: geo:linestring
+      description: >+
+        The geographic area where a service or offered item is provided
+    current:
+      name: current
+      type: number
+      description: >+
+        Electrical intensity of the current. The unit code (text) is given
+        using the [UN/CEFACT Common
+        Codes](http://wiki.goodrelations-vocabulary.org/Documentation/UN/CEFACT_Common_Codes).
+        For instance, **AMP** represents Ampere
+      x-ngsi:
+        model: https://schema.org/Number
+    dataProvider:
+      name: dataProvider
+      type: string
+      description: >+
+        A sequence of characters identifying the provider of the harmonised
+        data entity
+    dateCreated:
+      name: dateCreated
+      type: string
+      description: >+
+        Entity creation timestamp. This will usually be allocated by the
+        storage platform
+    dateEnergyMeteringStarted:
+      name: dateEnergyMeteringStarted
+      type: string
+      description: >+
+        The starting date for metering energy in an ISO8601 UTC format
+    dateModified:
+      name: dateModified
+      type: string
+      description: >+
+        Timestamp of the last modification of the entity. This will usually be
+        allocated by the storage platform
+    dateObserved:
+      name: dateObserved
+      type: string
+      description: >+
+        Date of the observed entity defined by the user
+    dateObservedFrom:
+      name: dateObservedFrom
+      type: string
+      description: >+
+        Observation period: Start date and time in an ISO8601 UTC format. The
+        attribute can be used in addition to the 'dateObserved attribute when
+        it corresponds to a time interval to be highlighted
+    dateObservedTo:
+      name: dateObservedTo
+      type: string
+      description: >+
+        Observation period: End date and time in an ISO8601 UTC format. The
+        attribute can be used in addition to the 'dateObserved' attribute when
+        it corresponds to a time interval to be highlighted
+    description:
+      name: description
+      type: string
+      description: >+
+        A description of this item
+    inverterStatus:
+      name: inverterStatus
+      type: object
+      description: >+
+        Active Power,where phi is the phase shift of the current compared to
+        the voltage. The unit code (text) is given using the
+        UN/CEFACT_Common_Codes (max 3 characters). For instance, For instance,
+        **KWT** represents Kilowatt. Enum:'00-On sector, 01-Power failure / On
+        battery, 02-Loss of communication,  03-Battery fault, 04-System
+        shutdown, 05-Tension dip, 06-Overvoltage, 07-Voltage drop, 08-Voltage
+        increase, 09-Line noise, 10-Frequency variation, 11-Transient
+        distortion, 12-Harmonic distortion'
+    location:
+      name: location
+      type: geo:point
+      description: >+
+        Geojson reference to the item. It can be Point, LineString, Polygon,
+        MultiPoint, MultiLineString or MultiPolygon
+    name:
+      name: name
+      type: string
+      description: >+
+        The name of this item
+    nominalPeakPowerGeneration:
+      name: nominalPeakPowerGeneration
+      type: number
+      description: >+
+        nominalPeakPowerGeneration is a number. The unit code (text) is given
+        using the [UN/CEFACT Common
+        Codes](http://wiki.goodrelations-vocabulary.org/Documentation/UN/CEFACT_Common_Codes).
+        For instance, **KWT** represents Kilowatt
+      x-ngsi:
+        model: https://schema.org/Number
+    owner:
+      name: owner
+      type: object
+      description: >+
+        A List containing a JSON encoded sequence of characters referencing
+        the unique Ids of the owner(s)
+    reactivePower:
+      name: reactivePower
+      type: number
+      description: >+
+        Reactive Power used by circuits. The unit code (text) is given using
+        the [UN/CEFACT Common
+        Codes](http://wiki.goodrelations-vocabulary.org/Documentation/UN/CEFACT_Common_Codes).
+        For instance, **K5** represents kilovolt-ampere-reactive
+      x-ngsi:
+        model: https://schema.org/Number
+    refPhotovoltaicDevice:
+      name: refPhotovoltaicDevice
+      type: object
+      description: >+
+        HtmRow: 9
+    refPointOfInterest:
+      name: refPointOfInterest
+      type: object
+      description: >+
+        Reference to a
+        [PointOfInterest](https://github.com/smart-data-models/dataModel.PointOfInterest/blob/master/PointOfInterest/doc/spec.md)
+        linked with the Repository
+    seeAlso:
+      name: seeAlso
+      type: object
+      description: >+
+        list of uri pointing to additional resources about the item
+    source:
+      name: source
+      type: string
+      description: >+
+        A sequence of characters giving the original source of the entity data
+        as a URL. Recommended to be the fully qualified domain name of the
+        source provider, or the URL to the source object
+    temperature:
+      name: temperature
+      type: number
+      description: >+
+        Temperature recorded at the time of Observation compared to the 
+        nominal reference temperature of the device. The unit code (text) is
+        given using the [UN/CEFACT Common
+        Codes](http://wiki.goodrelations-vocabulary.org/Documentation/UN/CEFACT_Common_Codes).
+        For instance, **CEL** represents Degree Celsius
+      x-ngsi:
+        model: https://schema.org/Number
+    entityId:
+      name: entityId
+      type: string
+      description: >+
+        A unique ID for this Smart Data Model
