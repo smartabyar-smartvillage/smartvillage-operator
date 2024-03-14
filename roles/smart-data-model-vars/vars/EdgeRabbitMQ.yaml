@@ -37,7 +37,7 @@ schema:
             type: boolean
             default: true
           size:
-            type: String
+            type: string
             default: "1Gi"
       resources:
         type: object

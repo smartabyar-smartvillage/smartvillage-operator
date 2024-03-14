@@ -91,7 +91,7 @@ spec:
                         type: boolean
                       size:
                         default: 1Gi
-                        type: String
+                        type: string
                     type: object
                   username:
                     default: user
