@@ -1,2 +1,4 @@
 ---
 ENTITY_TYPE: EdgeMongoDB
+
+verify_connections: true

@@ -6,3 +6,5 @@ amqp_nodeport_hostname: amqp.apps-crc.testing
 
 mqtt_nodeport: 30083
 mqtt_nodeport_hostname: mqtt.apps-crc.testing
+
+verify_connections: true

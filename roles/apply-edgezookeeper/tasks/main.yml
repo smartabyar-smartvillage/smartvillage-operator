@@ -46,7 +46,7 @@
 
 - name: "Verify Zookeeper"
   wait_for:
-    host: "{{ values.zookeeper.host }}"
+    host: "{{ 'zookeeper.' + ansible_operator_meta.namespace + '.svc' }}"
     port: "{{ values.zookeeper.port }}"
     state: started
     delay: 0

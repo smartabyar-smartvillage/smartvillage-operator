@@ -2,7 +2,6 @@ apiVersion: smartvillage.computate.org/v1
 kind: SmartaByarSmartVillage
 metadata:
   name: smartvillage
-  namespace: smartvillage
 spec:
   auth:
     host_name: sso.smartabyarsmartvillage.org

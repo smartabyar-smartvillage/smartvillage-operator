@@ -97,7 +97,7 @@
   fail:
     msg: |-
       The PostgreSQL service was unavailable. Have you run the prerequisite Ansible Playbook? https://github.com/computate-org/smartvillage-operator/blob/main/prepare-smartabyarsmartvillage.yaml
-  when: verify_connections and verify_postgresql.failed
+  when: values.postgres.crunchy and verify_connections and verify_postgresql.failed
 
 - name: Create database users
   include_role:

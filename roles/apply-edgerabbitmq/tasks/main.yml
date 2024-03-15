@@ -81,7 +81,7 @@
     label_selectors:
       - 'owner=helm'
     namespace: "{{ ansible_operator_meta.namespace }}"
-  when: rabbitmq.failed
+  when: rabbitmq.failed is defined and rabbitmq.failed
 - fail:
     msg: "Installing rabbitmq helm chart failed: {{ rabbitmq }}"
-  when: rabbitmq.failed
+  when: rabbitmq.failed is defined and rabbitmq.failed

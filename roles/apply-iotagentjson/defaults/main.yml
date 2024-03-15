@@ -2,6 +2,8 @@
 site_name: "{{ site.name | default('smartvillage') }}"
 ENTITY_TYPE: IoTAgentJson
 
+verify_connections: true
+
 MONGODB_CREATE_USER_COMMAND_iotagentjson: >
   db = db.getSiblingDB("iotagentjson"); 
   db.createUser({ user: "root", pwd: "'"'"'"$MONGODB_ROOT_PASSWORD"'"'"'", roles: [{ role: "dbOwner", db: "iotagentjson"}]}); 

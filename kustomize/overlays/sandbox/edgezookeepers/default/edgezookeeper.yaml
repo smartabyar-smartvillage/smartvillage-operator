@@ -1,5 +1,5 @@
 apiVersion: smartvillage.computate.org/v1
-kind: SmartaByarSmartVillage
+kind: EdgeZookeeper
 metadata:
   name: default
 spec:
