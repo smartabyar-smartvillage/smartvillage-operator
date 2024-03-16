@@ -71,11 +71,11 @@ spec:
               path: /solr/admin/info/system
               port: 8983
               scheme: HTTP
-            initialDelaySeconds: 20
-            timeoutSeconds: 20
-            periodSeconds: 10
+            initialDelaySeconds: 15
+            timeoutSeconds: 5
+            periodSeconds: 5
             successThreshold: 1
-            failureThreshold: 300
+            failureThreshold: 3
           env:
             - name: SOLR_JAVA_MEM
               value: '-Xms1g -Xmx2g'
