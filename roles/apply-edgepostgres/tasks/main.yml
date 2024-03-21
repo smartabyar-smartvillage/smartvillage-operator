@@ -9,6 +9,9 @@
     name: "postgres-nodeport"
     namespace: "{{ ansible_operator_meta.namespace }}"
     definition: "{{ lookup('template', 'service-postgres-nodeport.yaml') }}"
+  loop: "{{ values.postgres.instances }}"
+  loop_control:
+    loop_var: instance
 
 # Install PostgreSQL
 - name: Install {{ ansible_operator_meta.name }} PostgreSQL cluster on OpenShift
