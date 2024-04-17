@@ -56,7 +56,11 @@ spec:
                         coordinates:
                           type: array
                           items:
-                            type: number
+                            type: array
+                            items:
+                              type: array
+                              items:
+                                type: number
                   routeIdNorth:
                     type: string
                   routeIdEast:

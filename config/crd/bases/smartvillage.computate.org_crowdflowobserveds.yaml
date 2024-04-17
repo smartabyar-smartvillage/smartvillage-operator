@@ -63,7 +63,9 @@ spec:
                         items:
                           type: array
                           items:
-                            type: number
+                            type: array
+                            items:
+                              type: number
                   averageCrowdSpeed:
                     type: number
                   averageHeadwayTime:

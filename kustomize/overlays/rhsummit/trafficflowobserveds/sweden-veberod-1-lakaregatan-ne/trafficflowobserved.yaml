@@ -29,9 +29,9 @@ spec:
       name: rabbitmq-password
       key: rabbitmq-password
   smartvillage:
-    auth_secret_name: keycloak-client-secret-smartvillage
-    auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
-    site_base_url: https://smartvillage-web-smartvillage.apps-crc.testing
+    auth_secret_name: smartvillage
+    auth_token_url: https://keycloak-rhsso.apps.cluster-7mdxh.sandbox2511.opentlc.com/auth/realms/openshift/protocol/openid-connect/token
+    site_base_url: http://smartabyar-smartvillage-web:8080
   attributes:
     trafficSimulationId: urn:ngsi-ld:TrafficSimulation:veberod-intersection-1
     customTrafficLightId: urn:ngsi-ld:SmartTrafficLight:veberod-intersection-1
@@ -49,4 +49,3 @@ spec:
     customAverageVehiclesPerMinute: 10.0
     customDemandScalingFactor: 1.00
     customQueueLengthThreshold: 8.0
-    

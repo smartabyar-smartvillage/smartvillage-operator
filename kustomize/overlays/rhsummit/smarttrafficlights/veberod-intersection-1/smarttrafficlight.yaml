@@ -6,11 +6,11 @@ metadata:
 spec:
   iotagent:
     name: iotagent-json
-    namespace: iotagent
+    namespace: smartvillage
     service_name: iotagent-json
   context_broker:
     name: scorpiobroker
-    namespace: scorpiobroker
+    namespace: smartvillage
     service_name: scorpiobroker
   ngsi_ld:
     service: smarttrafficlights
@@ -20,17 +20,17 @@ spec:
     id: veberod-intersection-1
     subscription_url: http://ngsild-smartvillage-sync.smartvillage.svc:8080
   message_broker:
-    namespace: rabbitmq
+    namespace: smartvillage
     transport: AMQP
-    host: default-rabbitmq
+    host: default-rabbitmq.smartvillage.svc
     port: 5672
     user: user
     secret:
       name: rabbitmq-password
       key: rabbitmq-password
   smartvillage:
-    auth_secret_name: keycloak-client-secret-smartvillage
-    auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+    auth_secret_name: smartvillage
+    auth_token_url: https://keycloak-rhsso.apps.cluster-7mdxh.sandbox2511.opentlc.com/auth/realms/openshift/protocol/openid-connect/token
     site_base_url: http://smartabyar-smartvillage-web:8080
   attributes:
     areaServed: [{ "coordinates": [ [ [ 13.49255372778316, 55.633798821904264 ], [ 13.49260032865871, 55.633755606079376 ], [ 13.492650258168283, 55.63379318506014 ], [ 13.492603657292733, 55.63382700611217 ], [ 13.49255372778316, 55.633798821904264 ] ] ], "type": "Polygon" }]

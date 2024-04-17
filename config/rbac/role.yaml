@@ -200,6 +200,23 @@ rules:
       - update
       - watch
   ##
+  ## Rules for smartvillage.computate.org/v1, Kind: CrowdFlowObserved
+  ##
+  - apiGroups:
+      - smartvillage.computate.org
+    resources:
+      - crowdflowobserveds
+      - crowdflowobserveds/status
+      - crowdflowobserveds/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  ##
   ## Rules for smartvillage.computate.org/v1, Kind: TrafficFlowObserved
   ##
   - apiGroups:

@@ -1,6 +1,15 @@
 ---
 # Use the 'create api' subcommand to add watches to this file.
 - finalizer:
+    name: smartvillage.computate.org/crowdflowobserved-finalizer
+    role: delete-crowdflowobserved
+  group: smartvillage.computate.org
+  kind: CrowdFlowObserved
+  role: crowdflowobserved
+  snakeCaseParameters: false
+  version: v1
+  watchDependentResources: false
+- finalizer:
     name: smartvillage.computate.org/trafficflowobserved-finalizer
     role: delete-trafficflowobserved
   group: smartvillage.computate.org
