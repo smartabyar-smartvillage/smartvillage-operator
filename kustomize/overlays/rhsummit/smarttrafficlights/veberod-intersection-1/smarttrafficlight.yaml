@@ -33,5 +33,4 @@ spec:
     auth_token_url: https://keycloak-rhsso.apps.cluster-7mdxh.sandbox2511.opentlc.com/auth/realms/openshift/protocol/openid-connect/token
     site_base_url: http://smartabyar-smartvillage-web:8080
   attributes:
-    areaServed: [{ "coordinates": [ [ [ 13.49255372778316, 55.633798821904264 ], [ 13.49260032865871, 55.633755606079376 ], [ 13.492650258168283, 55.63379318506014 ], [ 13.492603657292733, 55.63382700611217 ], [ 13.49255372778316, 55.633798821904264 ] ] ], "type": "Polygon" }]
     smartTrafficLightName: Veberöd intersection 1
