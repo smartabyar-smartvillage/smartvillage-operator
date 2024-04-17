@@ -47,7 +47,16 @@ spec:
                   location:
                     type: string
                   areaServed:
-                    type: object
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                        coordinates:
+                          type: array
+                          items:
+                            type: number
                   routeIdNorth:
                     type: string
                   routeIdEast:

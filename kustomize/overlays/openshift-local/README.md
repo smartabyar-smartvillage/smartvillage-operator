@@ -86,6 +86,7 @@ oc -n postgres logs -l postgres-operator.crunchydata.com/cluster=postgres -f
 oc -n postgres get secret postgres-pguser-scorpiobroker -o json \
     | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences"])' \
     | oc -n scorpiobroker apply -f -
+```
 
 ```bash
 ansible-playbook ~/.local/src/smartvillage-operator/apply-scorpiobroker.yaml \

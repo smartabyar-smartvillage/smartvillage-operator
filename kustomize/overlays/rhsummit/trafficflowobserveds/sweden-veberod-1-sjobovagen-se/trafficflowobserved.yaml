@@ -1,0 +1,51 @@
+apiVersion: smartvillage.computate.org/v1
+kind: TrafficFlowObserved
+metadata:
+  name: sweden-veberod-1-sjobovagen-se
+  namespace: smartvillage
+spec:
+  iotagent:
+    name: iotagent-json
+    namespace: smartvillage
+    service_name: iotagent-json
+  context_broker:
+    name: scorpiobroker
+    namespace: smartvillage
+    service_name: scorpiobroker
+  ngsi_ld:
+    service: trafficflowobserveds
+    service_path: /Sweden/Veberod/CityCenter
+    context: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
+  device:
+    id: sweden-veberod-1-sjobovagen-se
+    subscription_url: http://ngsild-smartvillage-sync.smartvillage.svc:8080
+  message_broker:
+    namespace: smartvillage
+    transport: AMQP
+    host: default-rabbitmq.smartvillage.svc
+    port: 5672
+    user: user
+    secret:
+      name: rabbitmq-password
+      key: rabbitmq-password
+  smartvillage:
+    auth_secret_name: smartvillage
+    auth_token_url: https://keycloak-rhsso.apps.cluster-7mdxh.sandbox2511.opentlc.com/auth/realms/openshift/protocol/openid-connect/token
+    site_base_url: http://smartabyar-smartvillage-web:8080
+  attributes:
+    trafficSimulationId: urn:ngsi-ld:TrafficSimulation:veberod-intersection-1
+    customTrafficLightId: urn:ngsi-ld:SmartTrafficLight:veberod-intersection-1
+    areaServed: {"type":"LineString","coordinates":[[13.490729000567772,55.635042880153286],[13.490740537363221,55.63502379074175],[13.490776162245634,55.634985586596365],[13.490830734986353,55.63493799986691],[13.491067592376284,55.634772953726774],[13.491327993372773,55.634602894581384],[13.491782995842591,55.63430474197768],[13.49178625096487,55.63430271507713],[13.49208870997506,55.63410872783783],[13.49222033187515,55.63401967076505],[13.49246460996685,55.63386378966124],[13.4924921587668,55.63384552592146]]}
+    laneAreaDetectorId: det_42
+    averageVehicleLength: 5
+    averageGapDistance: 1
+    averageVehicleSpeed: 55
+    customRouteId: r13
+    customSigma: 0.5
+    customAcceleration: 2.6
+    customDeceleration: 4.5
+    customMinGreenTime: 30.0
+    customMaxGreenTime: 40.0
+    customAverageVehiclesPerMinute: 10.0
+    customDemandScalingFactor: 1.00
+    customQueueLengthThreshold: 8.0
