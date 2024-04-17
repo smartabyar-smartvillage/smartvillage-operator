@@ -1,0 +1,37 @@
+apiVersion: smartvillage.computate.org/v1
+kind: SmartTrafficLight
+metadata:
+  name: veberod-intersection-1
+  namespace: smartvillage
+spec:
+  iotagent:
+    name: iotagent-json
+    namespace: iotagent
+    service_name: iotagent-json
+  context_broker:
+    name: scorpiobroker
+    namespace: scorpiobroker
+    service_name: scorpiobroker
+  ngsi_ld:
+    service: smarttrafficlights
+    service_path: /Sweden/Veberod/CityCenter
+    context: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
+  device:
+    id: veberod-intersection-1
+    subscription_url: http://ngsild-smartvillage-sync.smartvillage.svc:8080
+  message_broker:
+    namespace: rabbitmq
+    transport: AMQP
+    host: default-rabbitmq
+    port: 5672
+    user: user
+    secret:
+      name: rabbitmq-password
+      key: rabbitmq-password
+  smartvillage:
+    auth_secret_name: keycloak-client-secret-smartvillage
+    auth_token_url: https://sso.smartabyarsmartvillage.org/auth/realms/SMARTVILLAGE/protocol/openid-connect/token
+    site_base_url: http://smartabyar-smartvillage-web:8080
+  attributes:
+    areaServed: [{ "coordinates": [ [ [ 13.49255372778316, 55.633798821904264 ], [ 13.49260032865871, 55.633755606079376 ], [ 13.492650258168283, 55.63379318506014 ], [ 13.492603657292733, 55.63382700611217 ], [ 13.49255372778316, 55.633798821904264 ] ] ], "type": "Polygon" }]
+    smartTrafficLightName: Veberöd intersection 1
