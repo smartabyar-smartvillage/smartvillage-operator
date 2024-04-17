@@ -1,7 +1,7 @@
 apiVersion: smartvillage.computate.org/v1
-kind: SmartTrafficLight
+kind: CrowdFlowObserved
 metadata:
-  name: veberod-intersection-1
+  name: sweden-veberod-1-sjobovagen-nw-lakaregatan-ne
   namespace: smartvillage
 spec:
   iotagent:
@@ -13,11 +13,11 @@ spec:
     namespace: smartvillage
     service_name: scorpiobroker
   ngsi_ld:
-    service: smarttrafficlights
+    service: crowdflowobserveds
     service_path: /Sweden/Veberod/CityCenter
     context: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
   device:
-    id: veberod-intersection-1
+    id: sweden-veberod-1-sjobovagen-nw-lakaregatan-ne
     subscription_url: http://ngsild-smartvillage-sync.smartvillage.svc:8080
   message_broker:
     namespace: smartvillage
@@ -33,4 +33,7 @@ spec:
     auth_token_url: https://keycloak-rhsso.apps.cluster-7mdxh.sandbox2511.opentlc.com/auth/realms/openshift/protocol/openid-connect/token
     site_base_url: http://smartabyar-smartvillage-web:8080
   attributes:
-    smartTrafficLightName: Veberöd intersection 1
+    trafficSimulationId: urn:ngsi-ld:TrafficSimulation:veberod-intersection-1
+    customTrafficLightId: urn:ngsi-ld:SmartTrafficLight:veberod-intersection-1
+    areaServed: {"type":"Polygon","coordinates":[[[13.492725590901866,55.63384794494941],[13.492752794694571,55.63383866352221],[13.492753606885252,55.633767859019244],[13.492729757625137,55.633755973264506],[13.492712723181405,55.63376933374502],[13.492702330121372,55.63378349475492],[13.492698419666088,55.633798454344905],[13.49270099527157,55.63381412269193],[13.492710050048009,55.63383067944304]]]}
+    walkingAreaId: ":267701936_w1"
