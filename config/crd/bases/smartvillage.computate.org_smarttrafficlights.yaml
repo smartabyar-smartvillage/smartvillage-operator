@@ -50,17 +50,26 @@ spec:
                     type: array
                     items:
                       type: object
+                      x-kubernetes-preserve-unknown-fields: true
                       properties:
                         type:
                           type: string
-                        coordinates:
-                          type: array
-                          items:
-                            type: array
-                            items:
-                              type: array
-                              items:
-                                type: number
+#                        coordinates:
+#                          type: array
+#                          unevaluatedItems:
+#                            type: number
+#                          contains:
+#                            type: array
+#                          items:
+#                            type: array
+#                            minItems: 0
+#                            unevaluatedItems:
+#                              type: number
+#                            items:
+#                              type: array
+#                              minItems: 0
+#                              items:
+#                                type: number
                   routeIdNorth:
                     type: string
                   routeIdEast:

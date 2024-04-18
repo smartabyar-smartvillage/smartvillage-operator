@@ -77,6 +77,8 @@ spec:
               value: /usr/lib/jvm/java-11-openjdk
             - name: ENABLE_ZOOKEEPER_CLUSTER
               value: "{{ values.zookeeper.enabled | lower }}"
+            - name: MQTT_ENABLED
+              value: "false"
             - name: ENABLE_KAFKA
               value: "{{ values.kafka.enabled | lower }}"
             - name: SITE_PORT

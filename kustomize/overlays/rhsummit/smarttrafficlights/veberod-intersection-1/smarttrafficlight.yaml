@@ -1,0 +1,37 @@
+apiVersion: smartvillage.computate.org/v1
+kind: SmartTrafficLight
+metadata:
+  name: veberod-intersection-1
+  namespace: smartvillage
+spec:
+  iotagent:
+    name: iotagent-json
+    namespace: smartvillage
+    service_name: iotagent-json
+  context_broker:
+    name: scorpiobroker
+    namespace: smartvillage
+    service_name: scorpiobroker
+  ngsi_ld:
+    service: smarttrafficlights
+    service_path: /Sweden/Veberod/CityCenter
+    context: https://raw.githubusercontent.com/computate-org/smartabyar-smartvillage-static/main/fiware/context.jsonld
+  device:
+    id: veberod-intersection-1
+    subscription_url: http://ngsild-smartvillage-sync.smartvillage.svc:8080
+  message_broker:
+    namespace: smartvillage
+    transport: AMQP
+    host: default-rabbitmq.smartvillage.svc
+    port: 5672
+    user: user
+    secret:
+      name: rabbitmq-password
+      key: rabbitmq-password
+  smartvillage:
+    auth_secret_name: smartvillage
+    auth_token_url: https://keycloak-rhsso.apps.cluster-7mdxh.sandbox2511.opentlc.com/auth/realms/openshift/protocol/openid-connect/token
+    site_base_url: http://smartabyar-smartvillage-web:8080
+  attributes:
+    smartTrafficLightName: Veberöd intersection 1
+    areaServed: [{"type":"Point","coordinates":[13.492248,55.633959]},{"type":"Point","coordinates":[13.492458,55.633757]},{"type":"Point","coordinates":[13.492405,55.633698]},{"type":"Point","coordinates":[13.492122,55.634042]},{"type":"Point","coordinates":[13.492553,55.633854]},{"type":"Point","coordinates":[13.491934,55.632754]},{"type":"Point","coordinates":[13.491919,55.634174]},{"type":"Point","coordinates":[13.492357,55.633659]},{"type":"Point","coordinates":[13.491968,55.632918]},{"type":"Point","coordinates":[13.491962,55.63289]},{"type":"Point","coordinates":[13.491974,55.632948]},{"type":"Point","coordinates":[13.491939,55.632781]},{"type":"Point","coordinates":[13.491993,55.633038]},{"type":"Point","coordinates":[13.491951,55.632836]},{"type":"Point","coordinates":[13.491982,55.632987]},{"type":"Point","coordinates":[13.491945,55.632809]},{"type":"Point","coordinates":[13.492009,55.633098]},{"type":"Point","coordinates":[13.491956,55.632863]},{"type":"Point","coordinates":[13.492515,55.633705]},{"type":"Point","coordinates":[13.492409,55.633592]},{"type":"Point","coordinates":[13.493135,55.634372]},{"type":"Point","coordinates":[13.492034,55.63316]},{"type":"Point","coordinates":[13.492846,55.634016]},{"type":"Point","coordinates":[13.492106,55.63328]},{"type":"Point","coordinates":[13.492671,55.633824]},{"type":"Point","coordinates":[13.492212,55.633395]},{"type":"Point","coordinates":[13.493301,55.634581]},{"type":"Point","coordinates":[13.492307,55.63349]},{"type":"Point","coordinates":[13.492235,55.63401]},{"type":"Point","coordinates":[13.492362,55.633929]},{"type":"Point","coordinates":[13.490762,55.635001]},{"type":"Point","coordinates":[13.492425,55.633889]},{"type":"Point","coordinates":[13.493587,55.634973]},{"type":"Point","coordinates":[13.492298,55.63397]},{"type":"Point","coordinates":[13.493449,55.634775]},{"type":"Point","coordinates":[13.492488,55.633848]},{"type":"Point","coordinates":[13.490858,55.634919]},{"type":"Point","coordinates":[13.49162,55.634412]}]
