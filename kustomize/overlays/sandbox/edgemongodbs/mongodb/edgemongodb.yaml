@@ -4,6 +4,8 @@ metadata:
   name: mongodb
 spec:
   mongodb:
+    replicas: 1
+    storage: 1Gi
     resources:
       limits:
         memory: 512Mi

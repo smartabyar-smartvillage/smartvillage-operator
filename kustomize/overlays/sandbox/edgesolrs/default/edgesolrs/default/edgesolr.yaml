@@ -8,6 +8,7 @@ spec:
     route:
       create: true
     replicas: 1
+    storage: 1Gi
     resources:
       limits:
         memory: 1500Mi
